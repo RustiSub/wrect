@@ -1,0 +1,14 @@
+body {
+	background-color: #222;
+	margin: 0;
+}
+
+body {
+	margin: 0 auto;
+	width: 1280px;
+}
+
+canvas {
+	background-color: transparent;
+	position: absolute;
+}
