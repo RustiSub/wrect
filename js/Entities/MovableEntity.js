@@ -1,3 +1,7 @@
+/**
+ * @augments BaseEntity
+ * @type {void|*}
+ */
 var MovableEntity = BaseEntity.extend({
     position: {
         x: 0,

@@ -1,3 +1,6 @@
+/**
+ * @type {void|*}
+ */
 var BaseEntity = Class.extend({
     collide: true,
     name: '',

@@ -1,3 +1,7 @@
+/**
+ * @augments MovableEntity
+ * @type {void|*}
+ */
 var Player = MovableEntity.extend({
     update: function(){
         this._super();
