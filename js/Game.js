@@ -8,6 +8,7 @@
             inputHandlerClass: InputHandler,
             helpersClass: Helpers,
             entityManagerClass: EntityManager,
+            collisionManagerClass: CollisionManager,
             width: 1280,
             height: 720
         },
@@ -27,6 +28,9 @@
         },
         getEntityManager: function() {
             return this._entityManager;
+        },
+        getCollisionManager: function() {
+          return this._collisionManager;
         },
 
         /**
@@ -51,6 +55,7 @@
 
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
+            this._collisionManager = new this._options.collisionManagerClass();
 
             this.bootstrap();
         },
@@ -80,6 +85,7 @@
             function run() {
                 requestAnimationFrame(run);
                 self._entityManager.update();
+                self._collisionManager.updateAllCollisions(self._entityManager.getEntities());
                 renderer.render(stage);
             }
         },

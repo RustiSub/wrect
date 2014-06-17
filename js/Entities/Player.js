@@ -7,10 +7,10 @@ var Player = MovableEntity.extend({
         this._super();
         var inputHandler = Container.getComponent('InputHandler');
         if (inputHandler.key('left')) {
-            this.position.x -= this.stats.speed;
+            this.moveLeft();
         }
         if (inputHandler.key('right')) {
-            this.position.x += this.stats.speed;
+            this.moveRight();
         }
     }
 });
