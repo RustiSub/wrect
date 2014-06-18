@@ -10,6 +10,7 @@ var BaseEntity = Class.extend({
     },
     spritePath: {},
     _sprite: {},
+    _graphics: {},
 
     /**
      * @param {String} name Name of the entity. Used for identification purposes
@@ -47,6 +48,21 @@ var BaseEntity = Class.extend({
         var texture = PIXI.Texture.fromImage(spritePath, crossOrigin, scaleMode);
         var frame = new PIXI.Texture(texture, {x: 0, y: 0, width: this.size.x, height: this.size.y});
         this._sprite = new PIXI.AnimatedSprite(frame);
+    },
+
+    setGraphics: function() {
+      var graphics = new PIXI.Graphics();
+
+      graphics.beginFill(0x00FF00);
+      graphics.moveTo(this.position.x, this.position.y);
+      graphics.drawCircle(100 + this.position.x, 100 + this.position.y, 10);
+      graphics.endFill();
+
+      this._graphics = graphics;
+    },
+
+    getGraphics: function() {
+      return this._graphics;
     },
 
     getSprite: function() {

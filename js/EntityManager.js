@@ -14,7 +14,8 @@ var EntityManager = Class.extend({
             this._entities.push(entity);
         }
         if (addToWorld === undefined || addToWorld) {
-            this._stage.addChild(entity.getSprite());
+//            this._stage.addChild(entity.getSprite());
+          this._stage.addChild(entity.getGraphics());
         }
     },
 

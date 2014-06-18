@@ -22,7 +22,7 @@ var MovableEntity = BaseEntity.extend({
      */
     init: function(name, position, spritePath, collide, stats) {
         this._super(name, spritePath, collide);
-        this.position = this._sprite.position;
+        this.position = this._graphics.position;
         if (position) {
             this.position.x = position.x;
             this.position.y = position.y;
