@@ -17,6 +17,7 @@ var BaseEntity = Class.extend({
      * @param collide Collide with other entities or not
      */
     init: function(name, spritePath, collide) {
+        this.name = name;
         if (spritePath) {
             this.spritePath = spritePath;
             this.setSprite(spritePath);

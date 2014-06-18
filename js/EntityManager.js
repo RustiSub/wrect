@@ -1,5 +1,6 @@
 var EntityManager = Class.extend({
     _entities: [],
+    _entitiesByName: {},
     _stage: null,
     init: function(stage){
         this._stage = stage;
@@ -11,7 +12,13 @@ var EntityManager = Class.extend({
      */
     addEntity: function(entity, addToWorld){
         if (entity instanceof BaseEntity) {
-            this._entities.push(entity);
+            if (this._entitiesByName[entity.name] === undefined) {
+                this._entities.push(entity);
+                this._entitiesByName[entity.name] = entity;
+            }
+            else {
+                console.error('An entity with name ' + entity.name + ' already exists!');
+            }
         }
         if (addToWorld === undefined || addToWorld) {
             this._stage.addChild(entity.getSprite());

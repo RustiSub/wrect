@@ -89,7 +89,7 @@
             global.Container = {
                 getComponent: function(componentName) {
                     var propertyName = 'get' + componentName;
-                    if (typeof self[propertyName] == 'function') {
+                    if (typeof self[propertyName] === 'function') {
                         return self[propertyName]();
                     }
                     return null;
