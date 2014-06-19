@@ -3,8 +3,12 @@
  * @type {void|*}
  */
 var Block = MovableEntity.extend({
-  init: function() {
-    this.setGraphics();
+
+  width: 400,
+  height: 400,
+
+  init: function(graphics) {
+    this.setGraphics(graphics);
   },
   update: function(){
     this._super();
@@ -23,19 +27,21 @@ var Block = MovableEntity.extend({
       this._physics.increaseSpeedY(1);
     }
 
-    if (this._graphics.position.x > 1000 || this._graphics.position.x < 0) {
+
+    if (this._graphics.position.x > this.width || this._graphics.position.x < 0) {
       this._physics.reverseSpeedX();
     }
 
     this._graphics.position.x += this._physics.calculateSpeedX();
 
-    if (this._graphics.position.y > 600 || this._graphics.position.y < 0) {
+
+    if (this._graphics.position.y > this.height || this._graphics.position.y < 0) {
       this._physics.reverseSpeedY();
     }
 
     this._graphics.position.y += this._physics.calculateSpeedY();
 
-    this._physics.applyFriction(this._graphics.position.y);
+    //this._physics.applyFriction(this._graphics.position.y, this.height);
 
 //    console.log(this._graphics.position.x);
 //    console.log(this._graphics.position.y);

@@ -51,13 +51,17 @@ var BaseEntity = Class.extend({
         this._sprite = new PIXI.AnimatedSprite(frame);
     },
 
-    setGraphics: function() {
-      var graphics = new PIXI.Graphics();
+    setGraphics: function(graphics) {
+      if (graphics == null) {
+        graphics = new PIXI.Graphics();
 
-      graphics.beginFill(0x00FF00);
+        graphics.beginFill(0x00FF00);
+        // graphics.drawCircle(100 + this.position.x, 100 + this.position.y, 10);
+        graphics.drawRect(100, 100, 10, 10);
+        graphics.endFill();
+      }
+
       graphics.moveTo(this.position.x, this.position.y);
-      graphics.drawCircle(100 + this.position.x, 100 + this.position.y, 10);
-      graphics.endFill();
 
       this._graphics = graphics;
     },
