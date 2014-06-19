@@ -8,23 +8,21 @@ var BaseEntity = Class.extend({
         x: 64,
         y: 64
     },
-    spritePath: {},
-    _sprite: {},
     _graphics: {},
-    _physics: new Physics(),
+    _physics: null,
 
     /**
-     * @param {String} name Name of the entity. Used for identification purposes
-     * @param {String} spritePath Path of the sprite to use
-     * @param collide Collide with other entities or not
+     * @param {String} name Name of the entity. Used for identification purposes.
+     * @param {PIXI.Sprite|PIXI.Graphics|String} graphics. Object or path to sprite to use for graphical representation.
      */
-    init: function(name, spritePath, collide) {
-        if (spritePath) {
-            this.spritePath = spritePath;
-            this.setSprite(spritePath);
+    init: function(name, graphics) {
+        this.name = name;
+        if (typeof graphics === 'string') {
+            this._graphics = this.buildSprite(graphics);
         }
-        if (collide !== undefined) {
-            this.collide = Boolean(collide);
+        else {
+            this._graphics = graphics;
+            this._physics = new Physics();
         }
     },
 
@@ -35,7 +33,7 @@ var BaseEntity = Class.extend({
      * @param options.crossOrigin Whether or not the path is on an external server
      * @param options.scaleMode ScaleMode to use for PIXI. See PIXI.scaleModes.
      */
-    setSprite: function(spritePath, options) {
+    buildSprite: function(spritePath, options) {
         var crossOrigin = false;
         var scaleMode = PIXI.scaleModes.NEAREST;
         if (options) {
@@ -48,7 +46,8 @@ var BaseEntity = Class.extend({
         }
         var texture = PIXI.Texture.fromImage(spritePath, crossOrigin, scaleMode);
         var frame = new PIXI.Texture(texture, {x: 0, y: 0, width: this.size.x, height: this.size.y});
-        this._sprite = new PIXI.AnimatedSprite(frame);
+
+        return new PIXI.AnimatedSprite(frame);
     },
 
     setGraphics: function(graphics) {
@@ -67,11 +66,7 @@ var BaseEntity = Class.extend({
     },
 
     getGraphics: function() {
-      return this._graphics;
-    },
-
-    getSprite: function() {
-        return this._sprite;
+        return this._graphics;
     },
 
     update: function() {

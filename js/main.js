@@ -6,8 +6,7 @@ window.onload = function() {
   blockGraphics.drawRect(100, 100, 10, 10);
   blockGraphics.endFill();
 
-  var block = new Block(blockGraphics);
-
+  var block = new Block('block', blockGraphics);
   game.getEntityManager().addEntity(block);
 
   var circleGraphics = new PIXI.Graphics();
@@ -15,7 +14,10 @@ window.onload = function() {
   circleGraphics.drawCircle(200, 100, 10);
   circleGraphics.endFill();
 
-  var circle = new Block(circleGraphics);
+  var circle = new Block('circle', circleGraphics);
+  game.getEntityManager().addEntity(circle);
 
-  //game.getEntityManager().addEntity(circle);
+  var player = new Player('player', 'resources/player.png');
+  game.getEntityManager().addEntity(player);
+
 };

@@ -10,11 +10,8 @@ var EntityManager = Class.extend({
      * @param {Boolean} [addToWorld]
      */
     addEntity: function(entity, addToWorld){
-        if (entity instanceof BaseEntity) {
-            this._entities.push(entity);
-        }
+        this._entities.push(entity);
         if (addToWorld === undefined || addToWorld) {
-//            this._stage.addChild(entity.getSprite());
           this._stage.addChild(entity.getGraphics());
         }
     },

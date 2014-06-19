@@ -7,7 +7,8 @@ var Block = MovableEntity.extend({
   width: 400,
   height: 400,
 
-  init: function(graphics) {
+  init: function(name, graphics) {
+    this._super(name, graphics);
     this.setGraphics(graphics);
   },
   update: function(){

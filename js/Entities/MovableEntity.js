@@ -13,21 +13,19 @@ var MovableEntity = BaseEntity.extend({
     },
     /**
      * @param {String} name
-     * @param {Object} position
-     * @param {Number} position.x
-     * @param {Number} position.y
-     * @param spritePath
-     * @param collide
-     * @param stats
+     * @param {PIXI.Sprite, PIXI.Graphics, String} graphics
+     * @param {Object} options
+     * @param {Object} options.position
+     * @param {Number} options.position.x
+     * @param {Number} options.position.y
      */
-    init: function(name, position, spritePath, collide, stats) {
-        this._super(name, spritePath, collide);
+    init: function(name, graphics, options) {
+        this._super(name, graphics);
         this.position = this._graphics.position;
-        if (position) {
-            this.position.x = position.x;
-            this.position.y = position.y;
+        if (options && options.position) {
+            this.position.x = options.position.x;
+            this.position.y = options.position.y;
         }
-        this.setStats(stats);
     },
     moveLeft: function() {
         this.position.x -= this.stats.speed;
