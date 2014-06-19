@@ -11,6 +11,7 @@ var BaseEntity = Class.extend({
     spritePath: {},
     _sprite: {},
     _graphics: {},
+    _physics: new Physics(),
 
     /**
      * @param {String} name Name of the entity. Used for identification purposes
