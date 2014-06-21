@@ -79,7 +79,14 @@
 
             function run() {
                 requestAnimationFrame(run);
-                self._entityManager.update();
+                var inputHandler = Container.getComponent('InputHandler');
+                if (inputHandler.key('a')) {
+                  self.selectEntity('block1');
+                }
+                if (inputHandler.key('z')) {
+                  self.selectEntity('circle1');
+                }
+              self._entityManager.update();
                 renderer.render(stage);
             }
         },
@@ -98,6 +105,10 @@
                     return self;
                 }
             };
+        },
+
+        selectEntity: function(name) {
+          this._entityManager.getEntityByName(name).selected = true;//toggleSelect(); //selected
         }
     });
 })(this);

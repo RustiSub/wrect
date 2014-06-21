@@ -4,15 +4,13 @@
  */
 var Block = MovableEntity.extend({
 
-  width: 400,
-  height: 400,
+  width: 300,
+  height: 300,
 
   init: function(graphics) {
     this.setGraphics(graphics);
   },
-  update: function(){
-    this._super();
-
+  move: function () {
     var inputHandler = Container.getComponent('InputHandler');
     if (inputHandler.key('left')) {
       this._physics.increaseSpeedX(-1);
@@ -27,6 +25,13 @@ var Block = MovableEntity.extend({
       this._physics.increaseSpeedY(1);
     }
 
+    //this._physics.applyFriction(this._graphics.position.y, this.height);
+  }, update: function(){
+    this._super();
+
+    if (this.selected) {
+      this.move();
+    }
 
     if (this._graphics.position.x > this.width || this._graphics.position.x < 0) {
       this._physics.reverseSpeedX();
@@ -41,9 +46,7 @@ var Block = MovableEntity.extend({
 
     this._graphics.position.y += this._physics.calculateSpeedY();
 
-    //this._physics.applyFriction(this._graphics.position.y, this.height);
-
-//    console.log(this._graphics.position.x);
+    //    console.log(this._graphics.position.x);
 //    console.log(this._graphics.position.y);
 
 //    this._physics.

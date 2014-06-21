@@ -1,5 +1,6 @@
+var game;
 window.onload = function() {
-  var game = new Game();
+  game = new Game();
 
   var blockGraphics = new PIXI.Graphics();
   blockGraphics.beginFill(0x00FF00);
@@ -7,6 +8,7 @@ window.onload = function() {
   blockGraphics.endFill();
 
   var block = new Block(blockGraphics);
+  block.name = 'block1';
 
   game.getEntityManager().addEntity(block);
 
@@ -16,6 +18,9 @@ window.onload = function() {
   circleGraphics.endFill();
 
   var circle = new Block(circleGraphics);
+  circle.name = 'circle1';
 
-  //game.getEntityManager().addEntity(circle);
+  game.getEntityManager().addEntity(circle);
+
+  
 };
