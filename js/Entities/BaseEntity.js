@@ -2,13 +2,32 @@
  * @type {void|*}
  */
 var BaseEntity = Class.extend({
+    /**
+     * Whether or not to collide with other entities
+     * @type Boolean
+     */
     collide: true,
+    /**
+     * Name of the entity. Should be unique.
+     * @type String
+     */
     name: '',
+    /**
+     * Dimensions of the entity in px.
+     */
     size: {
         x: 64,
         y: 64
     },
-    spritePath: {},
+    /**
+     * Path to the sprite
+     * @type String
+     */
+    spritePath: '',
+    /**
+     * Sprite object used for representation.
+     * @type PIXI.Sprite|Object
+     */
     _sprite: {},
     _graphics: {},
     _physics: new Physics(),
@@ -19,6 +38,7 @@ var BaseEntity = Class.extend({
      * @param collide Collide with other entities or not
      */
     init: function(name, spritePath, collide) {
+        this.name = name;
         if (spritePath) {
             this.spritePath = spritePath;
             this.setSprite(spritePath);

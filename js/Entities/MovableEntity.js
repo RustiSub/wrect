@@ -52,7 +52,9 @@ var MovableEntity = BaseEntity.extend({
      */
     setStats: function(stats) {
         for (var stat in stats) {
-            this.stats[stat] = stats[stat]
+            if (stats.hasOwnProperty(stat)) {
+                this.stats[stat] = stats[stat]
+            }
         }
     }
 });
