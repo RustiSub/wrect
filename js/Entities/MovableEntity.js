@@ -3,14 +3,9 @@
  * @type {void|*}
  */
 var MovableEntity = BaseEntity.extend({
-    position: {
-        x: 0,
-        y: 0
-    },
-    stats: {
-        health: 10,
-        speed: 1
-    },
+    position: {},
+    stats: {},
+
     /**
      * @param {String} name
      * @param {Object} position
@@ -22,12 +17,13 @@ var MovableEntity = BaseEntity.extend({
      */
     init: function(name, position, spritePath, collide, stats) {
         this._super(name, spritePath, collide);
-        this.position = this._graphics.position;
+        this.position = this._sprite.position;
+
+        this.stats = Container.getComponent('Helpers').merge(this.getDefaultStats(), stats);
         if (position) {
             this.position.x = position.x;
             this.position.y = position.y;
         }
-        this.setStats(stats);
     },
     moveLeft: function() {
         this.position.x -= this.stats.speed;
@@ -44,15 +40,11 @@ var MovableEntity = BaseEntity.extend({
     jump: function() {
 
     },
-    /**
-     * Set the stats of this entity
-     * @param {int} stats.health Health of the entity
-     * @param {int} stats.speed Speed of the entity
-     *
-     */
-    setStats: function(stats) {
-        for (var stat in stats) {
-            this.stats[stat] = stats[stat]
-        }
+
+    getDefaultStats: function() {
+      return {
+        health: 10,
+        speed: 1
+      }
     }
 });

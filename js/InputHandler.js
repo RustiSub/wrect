@@ -28,20 +28,22 @@ var InputHandler = Class.extend({
         }
         // Register all keys in _keys as keys we should capture. Others will be ignored.
         for (var x in this._keys) {
-            this._keysToCapture.push(this._keys[x])
+            if (this._keys.hasOwnProperty(x)) {
+                this._keysToCapture.push(this._keys[x])
+            }
         }
         captureScope.addEventListener('keyup', this._onKeyup.bind(this));
         captureScope.addEventListener('keydown', this._onKeydown.bind(this));
     },
     _onKeydown: function(event) {
-        if (this._keysToCapture.indexOf(event.keyCode) != -1
-            && this._pressed.indexOf(event.keyCode) == -1) {
+        if (this._keysToCapture.indexOf(event.keyCode) !== -1
+            && this._pressed.indexOf(event.keyCode) === -1) {
             this._pressed.push(event.keyCode);
         }
     },
     _onKeyup: function(event) {
         var index;
-        if ((index = this._pressed.indexOf(event.keyCode)) != -1) {
+        if ((index = this._pressed.indexOf(event.keyCode)) !== -1) {
             this._pressed.splice(index, 1);
         }
     },

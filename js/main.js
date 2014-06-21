@@ -1,21 +1,8 @@
 window.onload = function() {
-  var game = new Game();
+    var game = new Game();
+    var player = new Player('player', {x: 200, y: 200}, 'resources/player.png', true, {speed: 5, health: 5});
+    var otherSprite = new MovableEntity('other', {x: 400, y: 200}, 'resources/player.png', true, {speed: 1, health: 1});
 
-  var blockGraphics = new PIXI.Graphics();
-  blockGraphics.beginFill(0x00FF00);
-  blockGraphics.drawRect(100, 100, 10, 10);
-  blockGraphics.endFill();
-
-  var block = new Block(blockGraphics);
-
-  game.getEntityManager().addEntity(block);
-
-  var circleGraphics = new PIXI.Graphics();
-  circleGraphics.beginFill(0x00FF00);
-  circleGraphics.drawCircle(200, 100, 10);
-  circleGraphics.endFill();
-
-  var circle = new Block(circleGraphics);
-
-  //game.getEntityManager().addEntity(circle);
+    game.getEntityManager().addEntity(player);
+    game.getEntityManager().addEntity(otherSprite);
 };
