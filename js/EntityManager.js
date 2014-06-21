@@ -1,5 +1,6 @@
 var EntityManager = Class.extend({
     _entities: [],
+    _entitiesByName: {},
     _stage: null,
     init: function(stage){
         this._stage = stage;
