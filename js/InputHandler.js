@@ -39,12 +39,14 @@ var InputHandler = Class.extend({
         if (this._keysToCapture.indexOf(event.keyCode) !== -1
             && this._pressed.indexOf(event.keyCode) === -1) {
             this._pressed.push(event.keyCode);
+            event.preventDefault();
         }
     },
     _onKeyup: function(event) {
         var index;
         if ((index = this._pressed.indexOf(event.keyCode)) !== -1) {
             this._pressed.splice(index, 1);
+            event.preventDefault();
         }
     },
     key: function(keyName) {
