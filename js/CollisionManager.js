@@ -14,6 +14,7 @@ var CollisionManager = Class.extend({
             {
               mainBody.collides = true;
               otherBody.collides = true;
+              mainBody.applyCollision();
               console.log('COLLIDE');
             }
           }
