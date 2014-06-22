@@ -4,7 +4,7 @@
  */
 var Block = MovableEntity.extend({
 
-  width: 300,
+  width: 700,
   height: 300,
 
   init: function(graphics) {
@@ -25,7 +25,7 @@ var Block = MovableEntity.extend({
       this._physics.increaseSpeedY(1);
     }
 
-    //this._physics.applyFriction(this._graphics.position.y, this.height);
+    this._physics.applyFriction(this._graphics.position.y, this.height);
   }, update: function(){
     this._super();
 
