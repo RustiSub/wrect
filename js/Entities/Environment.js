@@ -4,9 +4,6 @@
  */
 var Block = MovableEntity.extend({
 
-  width: 700,
-  height: 300,
-
   init: function(graphics) {
     this.setGraphics(graphics);
   },
@@ -33,17 +30,7 @@ var Block = MovableEntity.extend({
       this.move();
     }
 
-    if (this._graphics.position.x > this.width || this._graphics.position.x < 0) {
-      this._physics.reverseSpeedX();
-    }
-
     this._graphics.position.x += this._physics.calculateSpeedX();
-
-
-    if (this._graphics.position.y > this.height || this._graphics.position.y < 0) {
-      this._physics.reverseSpeedY();
-    }
-
     this._graphics.position.y += this._physics.calculateSpeedY();
   },
   applyCollision: function() {

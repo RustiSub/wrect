@@ -72,10 +72,7 @@ var BaseEntity = Class.extend({
     },
 
     setGraphics: function(graphics) {
-
       this._physics = new Physics();
-      graphics.moveTo(this.position.x, this.position.y);
-
       this._graphics = graphics;
     },
 

@@ -86,10 +86,10 @@
                 requestAnimationFrame(run);
                 var inputHandler = Container.getComponent('InputHandler');
                 if (inputHandler.key('a')) {
-                  self.selectEntity('block1');
+                  self.selectEntity('b1');
                 }
                 if (inputHandler.key('z')) {
-                  self.selectEntity('circle1');
+                  self.selectEntity('c1');
                 }              
                 self._entityManager.update();
                 self._collisionManager.updateAllCollisions(self._entityManager.getEntities());

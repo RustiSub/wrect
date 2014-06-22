@@ -5,10 +5,57 @@ var CollisionManager = Class.extend({
 
       for (var y = 0; y < bodies.length; y++) {
         if (x !== y) {
+          var xCollide = false;
+          var yCollide = false;
           var otherBody = bodies[y];
           var xDist = otherBody.position.x - mainBody.position.x;
+          var yDist = otherBody.position.y - mainBody.position.y;
 
-          if (xDist > -otherBody.size.x/2 && xDist < otherBody.size.x/2){
+          if (xDist > 0) {
+            xDist -= mainBody.size.x;
+            xDist -= otherBody.size.x;
+
+            if (xDist <= 0 ) {
+              xCollide = true;
+            }
+          }
+          else {
+            xDist += mainBody.size.x;
+            xDist += otherBody.size.x;
+
+            if (xDist >= 0 ) {
+              xCollide = true;
+            }
+          }
+
+          if (yDist > 0) {
+            yDist -= mainBody.size.y;
+            yDist -= otherBody.size.y;
+
+            if (yDist <= 0 ) {
+              yCollide = true;
+            }
+          }
+          else {
+            yDist += mainBody.size.y;
+            yDist += otherBody.size.y;
+
+            if (yDist >= 0 ) {
+              yCollide = true;
+            }
+          }
+
+          if (xCollide && yCollide) {
+            mainBody.applyCollision();
+          }
+
+//0
+//0 > -10
+//0 < 10
+
+          //mainBody.applyCollision();
+          /*if (xDist > -otherBody.size.x/2 && xDist < otherBody.size.x/2){
+
             var yDist = otherBody.position.y - mainBody.position.y;
             if (yDist > -otherBody.size.y/2 && yDist < otherBody.size.y/2)
             {
@@ -17,7 +64,7 @@ var CollisionManager = Class.extend({
               mainBody.applyCollision();
               console.log('COLLIDE');
             }
-          }
+          }*/
         }
       }
     }

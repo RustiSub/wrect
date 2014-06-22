@@ -75,6 +75,6 @@ var MovableEntity = BaseEntity.extend({
         this.selectedGraphicsCallback();
       }
 
-      this.selected = true;
+      this.selected = true; //!this.selected;
     }
 });
