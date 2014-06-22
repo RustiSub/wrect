@@ -60,7 +60,7 @@ function createCircle() {
 }
 
 window.onload = function() {
-  game = new Game();
+    var game = new Game();
 
   game.getEntityManager().addEntity(createBlock());
   game.getEntityManager().addEntity(createCircle());
