@@ -4,6 +4,8 @@
  */
 var MovableEntity = BaseEntity.extend({
     selected: false,
+    baseGraphicsCallback: {},
+    selectedGraphicsCallback : {},
     position: {
         x: 0,
         y: 0
@@ -59,12 +61,10 @@ var MovableEntity = BaseEntity.extend({
         }
     },
     toggleSelect: function()  {
-      this.select = true;
-
-      if (this.select) {
-        //this._graphics.beginFill(0x000000);
-        //this._graphics.position.x, this._graphics.position.y
-        //this._graphics.drawCircle(100,100, 12);
+      if (!this.selected) {
+        this.selectedGraphicsCallback();
       }
+
+      this.selected = true;
     }
 });

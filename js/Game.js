@@ -108,7 +108,7 @@
         },
 
         selectEntity: function(name) {
-          this._entityManager.getEntityByName(name).selected = true;//toggleSelect(); //selected
+          this._entityManager.getEntityByName(name).toggleSelect();
         }
     });
 })(this);
