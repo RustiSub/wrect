@@ -27,6 +27,8 @@ function createBlock() {
 
   block.baseGraphicsCallback();
 
+  block.size = {x: width, y: height};
+
   return block;
 }
 
@@ -56,11 +58,13 @@ function createCircle() {
 
   circle.baseGraphicsCallback();
 
+  circle.size = {x: radius, y:radius};
+
   return circle;
 }
 
 window.onload = function() {
-    var game = new Game();
+   game = new Game();
 
   game.getEntityManager().addEntity(createBlock());
   game.getEntityManager().addEntity(createCircle());
