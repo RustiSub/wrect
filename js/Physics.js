@@ -35,6 +35,10 @@ var Physics = Class.extend({
     }*/
   },
 
+  isMoving: function() {
+    return (this.xSpeed !== 0 || this.ySpeed !== 0);
+  },
+
   applyFriction: function(yPosition, height) {
 //    this.xSpeed = this.xSpeed * 0.95;
 //    console.log(this.ySpeed);

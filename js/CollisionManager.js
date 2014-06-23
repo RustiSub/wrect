@@ -8,6 +8,11 @@ var CollisionManager = Class.extend({
           var xCollide = false;
           var yCollide = false;
           var otherBody = bodies[y];
+
+          if (mainBody._physics.isMoving() || otherBody._physics.isMoving()) {
+            continue;
+          }
+
           var xDist = otherBody.position.x - mainBody.position.x;
           var yDist = otherBody.position.y - mainBody.position.y;
 
@@ -46,6 +51,9 @@ var CollisionManager = Class.extend({
           }
 
           if (xCollide && yCollide) {
+//            alert(xDist);
+//            alert(yDist);
+            //console.log(xDist, yDist);
             mainBody.applyCollision();
           }
 

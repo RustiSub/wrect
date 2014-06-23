@@ -122,6 +122,4 @@ window.onload = function() {
     width: 400,
     height: 5
   }));
-    game.getEntityManager().addEntity(player);
-    game.getEntityManager().addEntity(otherSprite);
 };
