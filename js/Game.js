@@ -90,11 +90,14 @@
                 }
                 if (inputHandler.key('z')) {
                   self.selectEntity('c1');
-                }              
+                }
                 self._entityManager.update();
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
 
-              
+                for (var i = this.game._stage.children.length - 1; i >= 0; i--) {
+                    this.game._stage.children[i].alpha -= 0.01;
+                }
+
                 renderer.render(stage);
             }
         },
