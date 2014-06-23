@@ -117,6 +117,25 @@
 
         selectEntity: function(name) {
           this._entityManager.getEntityByName(name).toggleSelect();
+        },
+
+        applyForce: function(multiplier) {
+          var forcePoint = {
+            x: 200,
+            y: 200,
+            multiplier: multiplier
+          };
+          var entities = this.getEntityManager().getAllEntities();
+          for (var i = 0; i < entities.length; i++) {
+            var entity = entities[i];
+            if (entity.name.substr(0, 1) == 'b') {
+              var xDist =  entity._graphics.position.x - forcePoint.x;
+              var yDist =  entity._graphics.position.y - forcePoint.y;
+              entity._physics.xSpeed = (xDist / 50) * forcePoint.multiplier;
+              entity._physics.ySpeed = (yDist / 50) * forcePoint.multiplier ;
+
+            }
+          }
         }
     });
 })(this);

@@ -25,7 +25,7 @@ function createBorder(name, coords) {
   return block;
 }
 
-function createBlock(name) {
+function createBlock(name, x, y) {
   var width = 20;
   var height = 20;
   var blockGraphics = new PIXI.Graphics();
@@ -52,8 +52,8 @@ function createBlock(name) {
 
   block.size = {x: width, y: height};
 
-  blockGraphics.position.x = 50;
-  blockGraphics.position.y = 50;
+  blockGraphics.position.x = x;
+  blockGraphics.position.y = y;
 
   return block;
 }
@@ -92,34 +92,43 @@ function createCircle(name) {
 
 window.onload = function() {
   game = new Game();
-  game.getEntityManager().addEntity(createCircle('c1'));
-  game.getEntityManager().addEntity(createBlock('b1'));
+  //game.getEntityManager().addEntity(createCircle('c1'));
+  game.getEntityManager().addEntity(createBlock('b1', 50, 50));
+  game.getEntityManager().addEntity(createBlock('b2', 50, 150));
+  game.getEntityManager().addEntity(createBlock('b3', 20, 190));
+  game.getEntityManager().addEntity(createBlock('b4', 60, 250));
+  game.getEntityManager().addEntity(createBlock('b5', 27, 340));
+  game.getEntityManager().addEntity(createBlock('b6', 200, 50));
+  game.getEntityManager().addEntity(createBlock('b7', 240, 150));
+  game.getEntityManager().addEntity(createBlock('b8', 310, 190));
+  game.getEntityManager().addEntity(createBlock('b9', 170, 250));
+  game.getEntityManager().addEntity(createBlock('b10', 380, 340));
 
-  game.getEntityManager().addEntity(createBorder('left', {
+  game.getEntityManager().addEntity(createBorder('_left', {
     x: 5,
     y: 5,
     width: 5,
     height: 400
-  }));
+  }), true);
 
-  game.getEntityManager().addEntity(createBorder('right', {
+  game.getEntityManager().addEntity(createBorder('_right', {
     x: 5 + 400,
     y: 5,
     width: 5,
     height: 400
-  }));
+  }), true);
 
-  game.getEntityManager().addEntity(createBorder('top', {
+  game.getEntityManager().addEntity(createBorder('_top', {
     x: 5,
     y: 5,
     width: 400,
     height: 5
-  }));
+  }), true);
 
-  game.getEntityManager().addEntity(createBorder('bottom', {
+  game.getEntityManager().addEntity(createBorder('_bottom', {
     x: 5,
     y: 5 + 400,
     width: 400,
     height: 5
-  }));
+  }), true);
 };
