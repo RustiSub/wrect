@@ -11,17 +11,9 @@ var EntityManager = Class.extend({
      * @param {Boolean} [addToWorld]
      */
     addEntity: function(entity, addToWorld){
-        if (entity instanceof BaseEntity) {
-            if (this._entitiesByName[entity.name] === undefined) {
-                this._entities.push(entity);
-                this._entitiesByName[entity.name] = entity;
-            }
-            else {
-                console.error('An entity with name ' + entity.name + ' already exists!');
-            }
-        }
+        this._entities.push(entity);
+        this._entitiesByName[entity.name] = entity;
         if (addToWorld === undefined || addToWorld) {
-//            this._stage.addChild(entity.getSprite());
           this._stage.addChild(entity.getGraphics());
         }
     },
@@ -33,6 +25,14 @@ var EntityManager = Class.extend({
         var index;
         if ((index = this._entities.indexOf(entity)) != -1) {
             this._entities.splice(index, 1);
+            delete this._entitiesByName[entity.name];
+        }
+    },
+
+    removeEntityByName: function(name) {
+        var entity = this._entitiesByName[name];
+        if (entity) {
+            this.removeEntity(entity);
         }
     },
 
@@ -40,8 +40,16 @@ var EntityManager = Class.extend({
      * Returns all entities
      * @returns {*}
      */
-    getEntities: function(){
+    getAllEntities: function(){
         return this._entities;
+    },
+
+    /**
+     * Returns all entities indexed by name
+     * @returns {*}
+     */
+    getAllEntitiesByName: function() {
+        return this._entitiesByName;
     },
 
     /**
@@ -50,17 +58,12 @@ var EntityManager = Class.extend({
      * @returns {*}
      */
     getEntityByName: function(name){
-        for (var i = 0; i < this._entities.length; i++) {
-            if (this._entities[i].name == name) {
-                return this._entities[i];
-            }
-        }
-
-        return false;
+        return this._entitiesByName[name];
     },
 
     /**
      * Get all entities where partOfName is a part of their name
+     * THIS. IS. SLOW.
      * @param partOfName
      * @returns {Array}
      */

@@ -4,7 +4,11 @@
  */
 var Block = MovableEntity.extend({
 
-  init: function(graphics) {
+  width: 400,
+  height: 400,
+
+  init: function(name, graphics) {
+    this._super(name, graphics);
     this.setGraphics(graphics);
   },
   move: function () {
