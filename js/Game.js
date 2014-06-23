@@ -92,7 +92,7 @@
                   self.selectEntity('c1');
                 }              
                 self._entityManager.update();
-                self._collisionManager.updateAllCollisions(self._entityManager.getEntities());
+                self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
 
               
                 renderer.render(stage);

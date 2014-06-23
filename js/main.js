@@ -5,7 +5,7 @@ function createBorder(name, coords) {
   var height = coords.height;
   var blockGraphics = new PIXI.Graphics();
 
-  var block = new Block(blockGraphics);
+  var block = new Block(name, blockGraphics);
   block.name = name;
   block.position = blockGraphics.position;
 
@@ -30,7 +30,7 @@ function createBlock(name) {
   var height = 20;
   var blockGraphics = new PIXI.Graphics();
 
-  var block = new Block(blockGraphics);
+  var block = new Block(name, blockGraphics);
   block.name = name;
   block.position = blockGraphics.position;
 
@@ -62,7 +62,7 @@ function createCircle(name) {
   var radius = 20;
   var circleGraphics = new PIXI.Graphics();
 
-  var circle = new Block(circleGraphics);
+  var circle = new Block(name, circleGraphics);
   circle.name = name;
   circle.position = circleGraphics.position;
 
