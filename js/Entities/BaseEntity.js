@@ -20,7 +20,7 @@ var BaseEntity = Class.extend({
         y: 64
     },
     _graphics: {},
-    _physics: null,
+    _physics: {},
 
     /**
      * @param {String} name Name of the entity. Used for identification purposes.
@@ -62,17 +62,7 @@ var BaseEntity = Class.extend({
     },
 
     setGraphics: function(graphics) {
-      if (graphics == null) {
-        graphics = new PIXI.Graphics();
-
-        graphics.beginFill(0x00FF00);
-        // graphics.drawCircle(100 + this.position.x, 100 + this.position.y, 10);
-        graphics.drawRect(100, 100, 10, 10);
-        graphics.endFill();
-      }
-
-      graphics.moveTo(this.position.x, this.position.y);
-
+      this._physics = new Physics();
       this._graphics = graphics;
     },
 

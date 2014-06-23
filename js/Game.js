@@ -8,6 +8,7 @@
             inputHandlerClass: InputHandler,
             helpersClass: Helpers,
             entityManagerClass: EntityManager,
+            collisionManagerClass: CollisionManager,
             width: 1280,
             height: 720
         },
@@ -27,6 +28,9 @@
         },
         getEntityManager: function() {
             return this._entityManager;
+        },
+        getCollisionManager: function() {
+          return this._collisionManager;
         },
 
         /**
@@ -51,6 +55,7 @@
 
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
+            this._collisionManager = new this._options.collisionManagerClass();
 
             this.bootstrap();
         },
@@ -79,7 +84,17 @@
 
             function run() {
                 requestAnimationFrame(run);
+                var inputHandler = Container.getComponent('InputHandler');
+                if (inputHandler.key('a')) {
+                  self.selectEntity('b1');
+                }
+                if (inputHandler.key('z')) {
+                  self.selectEntity('c1');
+                }              
                 self._entityManager.update();
+                self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
+
+              
                 renderer.render(stage);
             }
         },
@@ -98,6 +113,29 @@
                     return self;
                 }
             };
+        },
+
+        selectEntity: function(name) {
+          this._entityManager.getEntityByName(name).toggleSelect();
+        },
+
+        applyForce: function(multiplier) {
+          var forcePoint = {
+            x: 200,
+            y: 200,
+            multiplier: multiplier
+          };
+          var entities = this.getEntityManager().getAllEntities();
+          for (var i = 0; i < entities.length; i++) {
+            var entity = entities[i];
+            if (entity.name.substr(0, 1) == 'b') {
+              var xDist =  entity._graphics.position.x - forcePoint.x;
+              var yDist =  entity._graphics.position.y - forcePoint.y;
+              entity._physics.xSpeed = (xDist / 50) * forcePoint.multiplier;
+              entity._physics.ySpeed = (yDist / 50) * forcePoint.multiplier ;
+
+            }
+          }
         }
     });
 })(this);
