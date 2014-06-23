@@ -1,134 +1,47 @@
 var game;
-
-function createBorder(name, coords) {
-  var width = coords.width;
-  var height = coords.height;
-  var blockGraphics = new PIXI.Graphics();
-
-  var block = new Block(name, blockGraphics);
-  block.name = name;
-  block.position = blockGraphics.position;
-
-  block.baseGraphicsCallback = function() {
-    block._graphics.beginFill(0xFFFFFF);
-    block._graphics.drawRect(0, 0, coords.width, coords.height);
-    block._graphics.endFill();
-  };
-
-  block.baseGraphicsCallback();
-
-  block.size = {x: width, y: height};
-
-  blockGraphics.position.x = coords.x;
-  blockGraphics.position.y = coords.y;
-
-  return block;
-}
-
-function createBlock(name, x, y) {
-  var width = 20;
-  var height = 20;
-  var blockGraphics = new PIXI.Graphics();
-
-  var block = new Block(name, blockGraphics);
-  block.name = name;
-  block.position = blockGraphics.position;
-
-  block.baseGraphicsCallback = function() {
-    block._graphics.beginFill(0x00FF00);
-    block._graphics.drawRect(0, 0, width, height);
-    block._graphics.endFill();
-  };
-
-  block.selectedGraphicsCallback = function() {
-    block._graphics.beginFill(0xFF0000);
-    block._graphics.drawRect(0 - 1, 0- 1, width + 2, height + 2);
-    block._graphics.endFill();
-
-    block.baseGraphicsCallback();
-  };
-
-  block.baseGraphicsCallback();
-
-  block.size = {x: width, y: height};
-
-  blockGraphics.position.x = x;
-  blockGraphics.position.y = y;
-
-  return block;
-}
-
-function createCircle(name) {
-  var radius = 20;
-  var circleGraphics = new PIXI.Graphics();
-
-  var circle = new Block(name, circleGraphics);
-  circle.name = name;
-  circle.position = circleGraphics.position;
-
-  circle.baseGraphicsCallback = function() {
-    circleGraphics.beginFill(0x00FF00);
-    circleGraphics.drawCircle(0, 0, radius);
-    circleGraphics.endFill();
-  };
-
-  circle.selectedGraphicsCallback = function() {
-    circle._graphics.beginFill(0xFF0000, 90);
-    circle._graphics.drawCircle(0,0, radius + 1);
-    circle._graphics.endFill();
-
-    circle.baseGraphicsCallback();
-  };
-
-  circle.baseGraphicsCallback();
-
-  circle.size = {x: radius, y:radius};
-
-  circleGraphics.position.x = 120;
-  circleGraphics.position.y = 50;
-
-  return circle;
-}
-
 window.onload = function() {
   game = new Game();
-  //game.getEntityManager().addEntity(createCircle('c1'));
-  game.getEntityManager().addEntity(createBlock('b1', 50, 50));
-  game.getEntityManager().addEntity(createBlock('b2', 50, 150));
-  game.getEntityManager().addEntity(createBlock('b3', 20, 190));
-  game.getEntityManager().addEntity(createBlock('b4', 60, 250));
-  game.getEntityManager().addEntity(createBlock('b5', 27, 340));
-  game.getEntityManager().addEntity(createBlock('b6', 200, 50));
-  game.getEntityManager().addEntity(createBlock('b7', 240, 150));
-  game.getEntityManager().addEntity(createBlock('b8', 310, 190));
-  game.getEntityManager().addEntity(createBlock('b9', 170, 250));
-  game.getEntityManager().addEntity(createBlock('b10', 380, 340));
+  //game.addEntity(createCircle('c1'));
+  game.addEntity(game._builder.createBlock('b1', 400, 300, 20, 20));
+  game.addEntity(game._builder.createBlock('b2', 120, 150, 20, 20));
+  game.addEntity(game._builder.createBlock('b3', 190, 190, 20, 20));
+  game.addEntity(game._builder.createBlock('b4', 300, 250, 20, 20));
+  game.addEntity(game._builder.createBlock('b5', 170, 340, 20, 20));
+  game.addEntity(game._builder.createBlock('b6', 600, 50, 20, 20));
+  game.addEntity(game._builder.createBlock('b7', 540, 150, 20, 20));
+  game.addEntity(game._builder.createBlock('b8', 710, 190, 20, 20));
+  game.addEntity(game._builder.createBlock('b9', 670, 250, 20, 20));
+  game.addEntity(game._builder.createBlock('b10', 880, 340, 20, 20));
 
-  game.getEntityManager().addEntity(createBorder('_left', {
+  var height = 400;
+  var width = 1000;
+
+  game.addEntity(game._builder.createBorder('_left', {
     x: 5,
     y: 5,
     width: 5,
-    height: 400
-  }), true);
+    height: height
+  }));
 
-  game.getEntityManager().addEntity(createBorder('_right', {
-    x: 5 + 400,
+  game.addEntity(game._builder.createBorder('_right', {
+    x: 5 + width,
     y: 5,
     width: 5,
-    height: 400
-  }), true);
+    height: height
+  }));
 
-  game.getEntityManager().addEntity(createBorder('_top', {
+
+  game.addEntity(game._builder.createBorder('_top', {
     x: 5,
     y: 5,
-    width: 400,
+    width: width,
     height: 5
-  }), true);
+  }));
 
-  game.getEntityManager().addEntity(createBorder('_bottom', {
+  game.addEntity(game._builder.createBorder('_bottom', {
     x: 5,
-    y: 5 + 400,
-    width: 400,
+    y: 5 + height,
+    width: width,
     height: 5
-  }), true);
+  }));
 };

@@ -9,6 +9,7 @@
             helpersClass: Helpers,
             entityManagerClass: EntityManager,
             collisionManagerClass: CollisionManager,
+            builder: Builder,
             width: 1280,
             height: 720
         },
@@ -56,6 +57,7 @@
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
+            this._builder = new this._options.builder();
 
             this.bootstrap();
         },
@@ -120,22 +122,46 @@
         },
 
         applyForce: function(multiplier) {
+          var maxDistance = 500;
           var forcePoint = {
-            x: 200,
+            x: 500,
             y: 200,
-            multiplier: multiplier
+            multiplier: multiplier,
+            gravity: 100
           };
           var entities = this.getEntityManager().getAllEntities();
           for (var i = 0; i < entities.length; i++) {
             var entity = entities[i];
             if (entity.name.substr(0, 1) == 'b') {
-              var xDist =  entity._graphics.position.x - forcePoint.x;
-              var yDist =  entity._graphics.position.y - forcePoint.y;
-              entity._physics.xSpeed = (xDist / 50) * forcePoint.multiplier;
-              entity._physics.ySpeed = (yDist / 50) * forcePoint.multiplier ;
+              var xMultiplier = multiplier;
+              var yMultiplier = multiplier;
 
+              var xDist =  (entity._graphics.position.x - forcePoint.x);
+              var yDist =  (entity._graphics.position.y - forcePoint.y);
+
+              if (xDist < 0) {
+                xDist = -xDist;
+                xMultiplier = -multiplier;
+              }
+
+              if (xDist != 0) {
+                entity._physics.xSpeed = (1 - (xDist / 500)) * xMultiplier;
+              }
+
+              if (yDist < 0) {
+                yDist = -yDist;
+                yMultiplier = -multiplier;
+              }
+
+              if (yDist != 0) {
+                entity._physics.ySpeed = (1 - (yDist / 500)) * yMultiplier;
+              }
             }
           }
+        },
+
+        addEntity: function(entity) {
+          this.getEntityManager().addEntity(entity);
         }
     });
 })(this);
