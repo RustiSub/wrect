@@ -51,10 +51,10 @@ var CollisionManager = Class.extend({
           }
 
           if (xCollide && yCollide) {
+
 //            alert(xDist);
 //            alert(yDist);
-            console.log(mainBody.name, otherBody.name);
-            mainBody.applyCollision();
+            mainBody.applyCollision(xDist, yDist);
           }
 
 //0
