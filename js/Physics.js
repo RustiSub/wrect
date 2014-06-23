@@ -30,9 +30,9 @@ var Physics = Class.extend({
   reverseSpeedY: function() {
     this.ySpeed = - this.ySpeed;
 
-    if (this.ySpeed < -0.5) {
+/*    if (this.ySpeed < -0.5) {
      this.ySpeed *= 0.99;
-    }
+    }*/
   },
 
   applyFriction: function(yPosition, height) {
