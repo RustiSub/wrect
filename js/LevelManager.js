@@ -1,40 +1,69 @@
 window.LevelManager = Class.extend({
-    level: {},
+    currentLevel: {},
     _stage: {},
     _currentOpacity: 1,
     fading: 'none',
     _fadeReady: false,
+
+    /**
+     * @param stage
+     */
     init: function(stage) {
       this._stage = stage;
     },
-    createInitialLevel: function() {
-      this.level = new BaseLevel();
-      this.level.name = 'Base';
-      this.saveLevel();
-    },
+
+    /**
+     * Initializes a freshly loaded level
+     * @param level
+     */
     initLevel: function(level) {
       console.log(level);
     },
 
+    /////
+    // Managing Logic
+    /////
     /**
-     * Manager logic
+     * Loads the level with the given name
+     * @param name
      */
-
-    loadLevel: function(path) {
+    loadLevel: function(name) {
       this.startFadeOut();
-      this.loadData(path, this.initLevel);
+      this.loadData(name, this.initLevel);
     },
+
+    /**
+     * creates a level of the current entities when none is present in the local storage yet.
+     */
+    createInitialLevel: function() {
+        this.currentLevel = new BaseLevel();
+        this.currentLevel.name = 'Base';
+        this.currentLevel.entityData = Container.getComponent('EntityManager').getAllEntities();
+        this.saveLevel();
+    },
+
+    /**
+     * Saves the current level in it's current state to localStorage
+     */
     saveLevel: function() {
-      if (this.level) {
-        this.level.entities = entities;
-        store.set(this.getCurrentLevelName(), this.level);
+      if (this.currentLevel) {
+        store.set(this.getCurrentLevelName(), this.currentLevel);
       }
-
     },
+
+    /**
+     * Gets the full name of the current level
+     * @returns {*}
+     */
     getCurrentLevelName: function() {
-      return 'Level' + this.level.name;
+      return this.currentLevel.getFullLevelName();
     },
 
+    /**
+     * Load level data from either localStorage or filesystem/server
+     * @param levelName
+     * @param successCallback
+     */
     loadData: function(levelName, successCallback) {
       successCallback(store.get('Level' + levelName));
       /*ajax({
@@ -43,15 +72,15 @@ window.LevelManager = Class.extend({
           successCallback(response);
         },
         error: function(response) {
-          console.error('Something went wrong while loading the next level :(');
+          console.error('Something went wrong while loading the next currentLevel :(');
           console.info('ResponseText: ', response.responseText);
         }
       });*/
     },
 
-    /**
-     * Transition logic
-     */
+     /////
+     //Transition logic
+     /////
     _fadeOut: function() {
       if (this._currentOpacity > 0) {
         var i;
@@ -87,9 +116,9 @@ window.LevelManager = Class.extend({
       this.fading = 'out';
     },
 
-    /**
-     * Update logic
-     */
+    /////
+    // Update logic
+    /////
     update: function() {
 
       this.updateFades();

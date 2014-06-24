@@ -4792,12 +4792,12 @@ PIXI.PixiShader.prototype.initSampler2D = function(uniform)
             var height = (data.height) ? data.height : 2;
             var border = (data.border) ? data.border : 0;
 
-            // void texImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, ArrayBufferView? pixels);
+            // void texImage2D(GLenum target, GLint currentLevel, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, ArrayBufferView? pixels);
             gl.texImage2D(gl.TEXTURE_2D, 0, format, width, height, border, format, gl.UNSIGNED_BYTE, null);
         }
         else
         {
-            //  void texImage2D(GLenum target, GLint level, GLenum internalformat, GLenum format, GLenum type, ImageData? pixels);
+            //  void texImage2D(GLenum target, GLint currentLevel, GLenum internalformat, GLenum format, GLenum type, ImageData? pixels);
             gl.texImage2D(gl.TEXTURE_2D, 0, format, gl.RGBA, gl.UNSIGNED_BYTE, uniform.value.baseTexture.source);
         }
 

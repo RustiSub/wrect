@@ -72,5 +72,15 @@ var BaseEntity = Class.extend({
 
     update: function() {
 
+    },
+    toJSON: function() {
+        var o = {};
+        for (var x in this) {
+            if (x !== '_super' && typeof this[x] !== 'function') {
+                o[x] = this[x];
+            }
+        }
+        console.log(o);
+        return JSON.stringify(o);
     }
 });
