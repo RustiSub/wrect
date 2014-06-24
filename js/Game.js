@@ -4,11 +4,13 @@
         _renderer: null,
         _inputHandler: null,
         _entityManager: null,
+        _levelManager: null,
         _defaults: {
             inputHandlerClass: InputHandler,
             helpersClass: Helpers,
             entityManagerClass: EntityManager,
             collisionManagerClass: CollisionManager,
+            levelManagerClass: LevelManager,
             width: 1280,
             height: 720
         },
@@ -31,6 +33,9 @@
         },
         getCollisionManager: function() {
           return this._collisionManager;
+        },
+        getLevelManager: function() {
+          return this._levelManager;
         },
 
         /**
@@ -56,6 +61,7 @@
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
+            this._levelManager = new this._options.levelManagerClass(this._stage);
 
             this.bootstrap();
         },
@@ -93,10 +99,6 @@
                 }
                 self._entityManager.update();
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
-
-                for (var i = this.game._stage.children.length - 1; i >= 0; i--) {
-                    this.game._stage.children[i].alpha -= 0.01;
-                }
 
                 renderer.render(stage);
             }
