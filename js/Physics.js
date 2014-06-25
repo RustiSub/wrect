@@ -35,6 +35,11 @@ var Physics = Class.extend({
     }*/
   },
 
+  stop: function() {
+    this.xSpeed = 0;
+    this.ySpeed = 0;
+  },
+
   isMoving: function() {
     return (this.xSpeed !== 0 || this.ySpeed !== 0);
   },

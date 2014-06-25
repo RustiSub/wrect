@@ -2,16 +2,23 @@ var game;
 window.onload = function() {
   game = new Game();
   //game.addEntity(createCircle('c1'));
-  game.addEntity(game._builder.createBlock('b1', 400, 300, 20, 20));
-  game.addEntity(game._builder.createBlock('b2', 120, 150, 20, 20));
-  game.addEntity(game._builder.createBlock('b3', 190, 190, 20, 20));
-  game.addEntity(game._builder.createBlock('b4', 300, 250, 20, 20));
-  game.addEntity(game._builder.createBlock('b5', 170, 340, 20, 20));
-  game.addEntity(game._builder.createBlock('b6', 600, 50, 20, 20));
-  game.addEntity(game._builder.createBlock('b7', 540, 150, 20, 20));
-  game.addEntity(game._builder.createBlock('b8', 710, 190, 20, 20));
-  game.addEntity(game._builder.createBlock('b9', 670, 250, 20, 20));
-  game.addEntity(game._builder.createBlock('b10', 880, 340, 20, 20));
+  var block = game._builder.createBlock('b1', 50, 50, 20, 20);
+  game.addEntity(block);
+  //block._physics.xSpeed = 30;
+//  game.addEntity(game._builder.createBlock('b2', 120, 150, 20, 20));
+//  game.addEntity(game._builder.createBlock('b3', 190, 190, 20, 20));
+//  game.addEntity(game._builder.createBlock('b4', 300, 250, 20, 20));
+//  game.addEntity(game._builder.createBlock('b5', 170, 340, 20, 20));
+//  game.addEntity(game._builder.createBlock('b6', 600, 50, 20, 20));
+//  game.addEntity(game._builder.createBlock('b7', 540, 150, 20, 20));
+//  game.addEntity(game._builder.createBlock('b8', 710, 190, 20, 20));
+//  game.addEntity(game._builder.createBlock('b9', 670, 250, 20, 20));
+//  game.addEntity(game._builder.createBlock('b10', 880, 340, 20, 20));
+
+  var entity = game._builder.createBlock('_b10', 300, 200, 400, 20, 0xFFFFFF);
+//  game.addEntity(entity);
+
+//  entity.applyGlue();
 
   var height = 400;
   var width = 1000;

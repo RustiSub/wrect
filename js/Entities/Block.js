@@ -4,6 +4,7 @@
  */
 var Block = MovableEntity.extend({
 
+  hasGlue: false,
   width: 400,
   height: 400,
 
@@ -37,14 +38,8 @@ var Block = MovableEntity.extend({
     this._graphics.position.x += this._physics.calculateSpeedX();
     this._graphics.position.y += this._physics.calculateSpeedY();
   },
-  applyCollision: function(xDist, yDist) {
-    if (xDist > yDist) {
-      this._physics.reverseSpeedY();
-    }
-
-    if (xDist < yDist) {
-      this._physics.reverseSpeedX();
-    }
+  applyGlue: function() {
+    this.hasGlue = true;
   }
 });
 

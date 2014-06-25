@@ -92,9 +92,9 @@
                 }
                 if (inputHandler.key('z')) {
                   self.selectEntity('c1');
-                }              
-                self._entityManager.update();
+                }
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
+                self._entityManager.update();
 
               
                 renderer.render(stage);
@@ -133,9 +133,11 @@
           for (var i = 0; i < entities.length; i++) {
             var entity = entities[i];
             if (entity.name.substr(0, 1) == 'b') {
+              if (entity.hasGlue) {
+                continue;
+              }
               var xMultiplier = multiplier;
               var yMultiplier = multiplier;
-
               var xDist =  (entity._graphics.position.x - forcePoint.x);
               var yDist =  (entity._graphics.position.y - forcePoint.y);
 
@@ -145,7 +147,7 @@
               }
 
               if (xDist != 0) {
-                entity._physics.xSpeed = (1 - (xDist / 500)) * xMultiplier;
+                entity._physics.xSpeed = (1 - (xDist / maxDistance)) * xMultiplier;
               }
 
               if (yDist < 0) {
@@ -154,7 +156,7 @@
               }
 
               if (yDist != 0) {
-                entity._physics.ySpeed = (1 - (yDist / 500)) * yMultiplier;
+                entity._physics.ySpeed = (1 - (yDist / maxDistance)) * yMultiplier;
               }
             }
           }

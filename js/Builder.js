@@ -24,7 +24,9 @@ var Builder = Class.extend({
     return block;
   },
 
-  createBlock: function (name, x, y, width, height) {
+  createBlock: function (name, x, y, width, height, color) {
+    color = typeof color !== 'undefined' ? color : 0x00FF00;
+
     var blockGraphics = new PIXI.Graphics();
 
     var block = new Block(name, blockGraphics);
@@ -32,7 +34,7 @@ var Builder = Class.extend({
     block.position = blockGraphics.position;
 
     block.baseGraphicsCallback = function() {
-      block._graphics.beginFill(0x00FF00);
+      block._graphics.beginFill(color);
       block._graphics.drawRect(0, 0, width, height);
       block._graphics.endFill();
     };
