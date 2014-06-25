@@ -7,7 +7,6 @@
         _levelManager: null,
         _defaults: {
             inputHandlerClass: InputHandler,
-            helpersClass: Helpers,
             entityManagerClass: EntityManager,
             collisionManagerClass: CollisionManager,
             levelManagerClass: LevelManager,
@@ -15,7 +14,6 @@
             height: 720
         },
         _options: {},
-        _helpers: null,
         getStage: function() {
             return this._stage;
         },
@@ -24,9 +22,6 @@
         },
         getInputHandler: function() {
             return this._inputHandler;
-        },
-        getHelpers: function() {
-            return this._helpers;
         },
         getEntityManager: function() {
             return this._entityManager;
@@ -67,14 +62,12 @@
         },
 
         /**
-         * Inits the _helpers and merges passed with default options.
+         * Merges passed with default options.
          * @param options
          */
         buildOptions: function(options) {
-            // We need our _helpers before we can merge.
-            this._helpers = options && options.helpersClass ? new options.helpersClass() : new this._defaults.helpersClass();
-            var defaults = this._helpers.copy(this._defaults);
-            this._options = this._helpers.merge(defaults, options);
+            var defaults = Helpers.copy(this._defaults);
+            this._options = Helpers.merge(defaults, options);
         },
 
         /**

@@ -12,6 +12,18 @@ window.BaseLevel = Class.extend({
         var o = this.getSerializableObject();
         return JSON.stringify(o);
     },
+    fromJSON: function(json) {
+        var data = JSON.parse(json);
+        for (var x in data) {
+          this[x] = data[x];
+          if (x === 'entityData') {
+            for (var y in this[x]) {
+              this[x][y] = JSON.parse(this[x][y]);
+            }
+          }
+        }
+      console.log(this);
+    },
     saveToFile: function(){
         var blob = new Blob(this.getSerializableObject());
         var a = document.createElement('a');

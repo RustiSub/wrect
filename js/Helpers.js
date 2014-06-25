@@ -1,4 +1,4 @@
-var Helpers = Class.extend({
+window.Helpers = {
     merge: function( original, extended ) {
         for( var key in extended ) {
             var ext = extended[key];
@@ -41,5 +41,5 @@ var Helpers = Class.extend({
             }
             return c;
         }
-    },
-});
+    }
+};

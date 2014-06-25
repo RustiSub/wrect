@@ -14,10 +14,11 @@ window.LevelManager = Class.extend({
 
     /**
      * Initializes a freshly loaded level
-     * @param level
+     * @param levelJson
      */
-    initLevel: function(level) {
-      console.log(level);
+    initLevel: function(levelJson) {
+      var level = new BaseLevel();
+      level.fromJSON(levelJson);
     },
 
     /////
