@@ -1,65 +1,121 @@
 var CollisionManager = Class.extend({
-  updateAllCollisions: function(bodies) {
+  checkAxisCollision: function (mainBody, otherBody, debug) {
+    var yDist = null;
+
+    if (mainBody.speed >= 0) {
+      if (mainBody.position < otherBody.position) {
+        if (mainBody.position + mainBody.size >= otherBody.position + otherBody.size) {
+          return (mainBody.position + mainBody.size) - (otherBody.position + otherBody.size);
+        }
+      }
+      if (mainBody.position > otherBody.position) {
+        if (mainBody.position + mainBody.size <= otherBody.position + otherBody.size) {
+          return (otherBody.position + otherBody.size) - (mainBody.position + mainBody.size);
+        }
+      }
+
+      if (mainBody.position + mainBody.size < otherBody.position + otherBody.size) {
+        if (mainBody.position + mainBody.size + mainBody.speed >= otherBody.position + otherBody.speed) {
+          return (otherBody.position + otherBody.size) - (mainBody.position + mainBody.size);
+        }
+      }
+    } else {
+      if (mainBody.position === otherBody.position) {
+        return  0;
+      }
+
+      if (mainBody.position > otherBody.position) {
+        if (mainBody.position + mainBody.speed <= otherBody.position + otherBody.speed) {
+          return  mainBody.position - otherBody.position;
+        }
+      }
+    }
+
+    return yDist;
+  }, updateAllCollisions: function(bodies) {
     for (var x = 0; x < bodies.length; x++) {
       var mainBody = bodies[x];
 
       for (var y = 0; y < bodies.length; y++) {
         if (x !== y) {
-          var xDist = 0;
-          var yDist = 0;
-          var xCollide = false;
-          var yCollide = false;
           var otherBody = bodies[y];
 
           if (!mainBody._physics.isMoving() && !otherBody._physics.isMoving()) {
             continue;
           }
-
-
-          if (mainBody._physics.xSpeed >= 0 && mainBody.position.x < otherBody.position.x ) {
-            if (mainBody.position.x + mainBody.size.x >= otherBody.position.x) {
-              xDist = otherBody.position.x - mainBody.position.x + mainBody.size.x;
-              xCollide = true;
-            }
+          var debug = false;
+          if (mainBody.name == 'b1' && otherBody.name == '_top') {
+            debug = true;
           }
 
-          if (mainBody._physics.xSpeed >= 0 && !xCollide && mainBody.position.x + mainBody.size.x < otherBody.position.x ) {
-            if (mainBody.position.x + mainBody.size.x + mainBody._physics.xSpeed >= otherBody.position.x + otherBody._physics.xSpeed) {
-              xDist = otherBody.position.x - mainBody.position.x + mainBody.size.x;
-              xCollide = true;
-            }
+          var xDist = this.checkAxisCollision(
+              {
+                position: mainBody.position.x,
+                size: mainBody.size.x,
+                speed: mainBody._physics.xSpeed
+              },
+              {
+                position: otherBody.position.x,
+                size: otherBody.size.x,
+                speed: otherBody._physics.xSpeed
+              },debug
+          );
+
+          //Y collision
+          //Check for objects that currently lie below the main object
+          var yDist = this.checkAxisCollision(
+              {
+                position: mainBody.position.y,
+                size: mainBody.size.y,
+                speed: mainBody._physics.ySpeed
+              },
+              {
+                position: otherBody.position.y,
+                size: otherBody.size.y,
+                speed: otherBody._physics.ySpeed
+              }, debug
+          );
+          if (debug) {
+//            console.log(xDist, yDist);
+//            alert('collide');
           }
-
-          if (mainBody._physics.ySpeed >= 0 && mainBody.position.y < otherBody.position.y ) {
-            if (mainBody.position.y + mainBody.size.y >= otherBody.position.y) {
-              yDist = otherBody.position.y - mainBody.position.y + mainBody.size.y;
-              yCollide = true;
-            }
-          }
-
-          if (mainBody._physics.ySpeed >= 0 && !yCollide && mainBody.position.y + mainBody.size.y < otherBody.position.y) {
-            if (mainBody.position.y + mainBody.size.y + mainBody._physics.ySpeed >= otherBody.position.y + otherBody._physics.ySpeed) {
-              yDist = otherBody.position.y - mainBody.position.y + mainBody.size.y;
-              yCollide = true;
-            }
-          }
-
-          if (xCollide && yCollide) {
-            alert(mainBody.position.y);
-            alert(mainBody.size.y);
-            alert(mainBody._physics.ySpeed);
-            alert(otherBody.position.y);
-            alert(otherBody._physics.ySpeed);
-
-            if (xDist > yDist) {
-              mainBody._physics.reverseSpeedX();
-              otherBody._physics.reverseSpeedY();
-            }
-
+          if ((xDist != null) && (yDist != null)) {
+            console.log(xDist, yDist);
+alert('collide');
             if (xDist < yDist) {
-              mainBody._physics.reverseSpeedY();
-              otherBody._physics.reverseSpeedX();
+              mainBody._physics.reverseSpeedX();
             }
+            else {
+              if (mainBody._physics.xSpeed < 0) {
+                mainBody._physics.reverseSpeedX();
+              }
+              else {
+                mainBody._physics.reverseSpeedY();
+              }
+            }
+
+//            if (mainBody._physics.ySpeed > 0) {
+//              if (xDist < yDist) {
+//                mainBody._physics.reverseSpeedX();
+//                otherBody._physics.reverseSpeedY();
+//              }
+//
+//              if (xDist > yDist) {
+//                mainBody._physics.reverseSpeedY();
+//                otherBody._physics.reverseSpeedX();
+//              }
+//            }
+//            else {
+//              if (xDist > yDist) {
+//                mainBody._physics.reverseSpeedX();
+//                otherBody._physics.reverseSpeedY();
+//              }
+//
+//              if (xDist < yDist) {
+//                mainBody._physics.reverseSpeedY();
+//                otherBody._physics.reverseSpeedX();
+//              }
+//            }
           }
         }
       }
