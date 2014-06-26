@@ -2,14 +2,14 @@ var game;
 window.onload = function() {
   game = new Game();
   //game.addEntity(createCircle('c1'));
-  var block = game._builder.createBlock('b1', 250, 200, 20, 20);
+  var block = game._builder.createBlock('b1', 500, 50, 20, 20);
   game.addEntity(block);
-  block._physics.ySpeed = -5;
-  block._physics.xSpeed = 5;
-  var block2 = game._builder.createBlock('b2', 250, 10, 20, 20);
-  game.addEntity(block2);
-  block2._physics.ySpeed = 0;
-  block2._physics.xSpeed = 5;
+  block._physics.ySpeed = 5;
+  block._physics.xSpeed = -5;
+//  var block2 = game._builder.createBlock('b2', 250, 10, 20, 20);
+//  game.addEntity(block2);
+//  block2._physics.ySpeed = 0;
+//  block2._physics.xSpeed = 5;
 //  game.addEntity(game._builder.createBlock('b3', 190, 190, 20, 20));
 //  game.addEntity(game._builder.createBlock('b4', 300, 250, 20, 20));
 //  game.addEntity(game._builder.createBlock('b5', 170, 340, 20, 20));
@@ -20,7 +20,7 @@ window.onload = function() {
 //  game.addEntity(game._builder.createBlock('b10', 880, 340, 20, 20));
 
   var entity = game._builder.createBlock('_b10', 300, 200, 400, 20, 0xFFFFFF);
-//  game.addEntity(entity);
+  game.addEntity(entity);
 
 //  entity.applyGlue();
 

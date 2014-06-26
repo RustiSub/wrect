@@ -2,34 +2,35 @@ var CollisionManager = Class.extend({
   checkAxisCollision: function (mainBody, otherBody, debug) {
     var yDist = null;
 
-    if (mainBody.speed >= 0) {
-      if (mainBody.position < otherBody.position) {
-        if (mainBody.position + mainBody.size >= otherBody.position + otherBody.size) {
-          return (mainBody.position + mainBody.size) - (otherBody.position + otherBody.size);
-        }
-      }
-      if (mainBody.position > otherBody.position) {
-        if (mainBody.position + mainBody.size <= otherBody.position + otherBody.size) {
-          return (otherBody.position + otherBody.size) - (mainBody.position + mainBody.size);
-        }
+//    if (mainBody.speed >= 0) {
+    var mainBodyAbsolutePosition = mainBody.position + mainBody.size;
+    var otherBodyAbsolutePosition = otherBody.position + otherBody.size;
+
+    if (mainBody.position == otherBody.position) {
+      return 0;
+    }
+
+    if (mainBody.position < otherBody.position) {
+      if (mainBodyAbsolutePosition >= otherBody.position) {
+        return mainBodyAbsolutePosition - otherBody.position;
       }
 
-      if (mainBody.position + mainBody.size < otherBody.position + otherBody.size) {
-        if (mainBody.position + mainBody.size + mainBody.speed >= otherBody.position + otherBody.speed) {
-          return (otherBody.position + otherBody.size) - (mainBody.position + mainBody.size);
-        }
-      }
-    } else {
-      if (mainBody.position === otherBody.position) {
-        return  0;
-      }
-
-      if (mainBody.position > otherBody.position) {
-        if (mainBody.position + mainBody.speed <= otherBody.position + otherBody.speed) {
-          return  mainBody.position - otherBody.position;
-        }
+      if (mainBodyAbsolutePosition >= otherBodyAbsolutePosition) {
+        return mainBodyAbsolutePosition - otherBodyAbsolutePosition;
       }
     }
+
+    if (mainBody.position > otherBody.position) {
+      if (mainBody.position <= otherBodyAbsolutePosition) {
+        return otherBodyAbsolutePosition - mainBodyAbsolutePosition;
+      }
+    }
+
+//    if (mainBodyAbsolutePosition < otherBodyAbsolutePosition) {
+//      if (mainBodyAbsolutePosition + mainBody.speed >= otherBody.position + otherBody.speed) {
+//        return otherBodyAbsolutePosition - mainBodyAbsolutePosition;
+//      }
+//    }
 
     return yDist;
   }, updateAllCollisions: function(bodies) {
@@ -44,7 +45,7 @@ var CollisionManager = Class.extend({
             continue;
           }
           var debug = false;
-          if (mainBody.name == 'b1' && otherBody.name == '_top') {
+          if (mainBody.name == 'b1' && otherBody.name == '_b10') {
             debug = true;
           }
 
@@ -81,7 +82,10 @@ var CollisionManager = Class.extend({
           }
           if ((xDist != null) && (yDist != null)) {
             console.log(xDist, yDist, mainBody._physics.xSpeed, mainBody._physics.ySpeed);
-alert('collide');
+            if (debug) {
+              alert('collide');
+            }
+
             if (xDist < yDist) {
               mainBody._physics.reverseSpeedX();
             }
