@@ -40,7 +40,7 @@ var CollisionManager = Class.extend({
         if (x !== y) {
           var otherBody = bodies[y];
 
-          if (!mainBody._physics.isMoving() && !otherBody._physics.isMoving()) {
+          if (!mainBody._physics.isMoving()) { //} && !otherBody._physics.isMoving()) {
             continue;
           }
           var debug = false;
@@ -80,18 +80,13 @@ var CollisionManager = Class.extend({
 //            alert('collide');
           }
           if ((xDist != null) && (yDist != null)) {
-            console.log(xDist, yDist);
+            console.log(xDist, yDist, mainBody._physics.xSpeed, mainBody._physics.ySpeed);
 alert('collide');
             if (xDist < yDist) {
               mainBody._physics.reverseSpeedX();
             }
-            else {
-              if (mainBody._physics.xSpeed < 0) {
-                mainBody._physics.reverseSpeedX();
-              }
-              else {
-                mainBody._physics.reverseSpeedY();
-              }
+            else if(xDist > yDist) {
+              mainBody._physics.reverseSpeedY();
             }
 
 //            if (mainBody._physics.ySpeed > 0) {
