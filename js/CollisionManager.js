@@ -1,5 +1,5 @@
 var CollisionManager = Class.extend({
-  checkAxisCollision: function (mainBody, otherBody, debug) {
+  checkAxisCollision: function (mainBody, otherBody, debug, axis) {
     var yDist = null;
 
 //    if (mainBody.speed >= 0) {
@@ -7,25 +7,30 @@ var CollisionManager = Class.extend({
     var otherBodyAbsolutePosition = otherBody.position + otherBody.size;
 
     if (mainBody.position == otherBody.position) {
+      if (debug) { console.log(axis, '1'); }
       return 0;
     }
 
     if (mainBody.position < otherBody.position) {
       if (mainBodyAbsolutePosition >= otherBody.position) {
+        if (debug) { console.log(axis,'2'); }
         return mainBodyAbsolutePosition - otherBody.position;
       }
 
       if (mainBodyAbsolutePosition + mainBody.speed > otherBody.position) {
-        return mainBodyAbsolutePosition + mainBody.speed - otherBody.position;
+        if (debug) { console.log(axis, '3'); }
+        return mainBodyAbsolutePosition - otherBody.position;
       }
     }
 
     if (mainBody.position > otherBody.position) {
       if (mainBody.position <= otherBodyAbsolutePosition) {
+        if (debug) { console.log(axis, '4'); }
         return otherBodyAbsolutePosition - mainBodyAbsolutePosition;
       }
 
       if (mainBody.position + mainBody.speed < otherBody.position) {
+        if (debug) { console.log(axis, '5'); }
         return otherBody.position - mainBodyAbsolutePosition + mainBody.speed;
       }
     }
@@ -44,7 +49,7 @@ var CollisionManager = Class.extend({
           }
           var debug = false;
           if (mainBody.name == 'b1' && otherBody.name == '_b10') {
-            debug = true;
+            debug = false;
           }
 
           var xDist = this.checkAxisCollision(
@@ -57,7 +62,7 @@ var CollisionManager = Class.extend({
                 position: otherBody.position.x,
                 size: otherBody.size.x,
                 speed: otherBody._physics.xSpeed
-              },debug
+              },debug, 'x'
           );
 
           //Y collision
@@ -72,15 +77,15 @@ var CollisionManager = Class.extend({
                 position: otherBody.position.y,
                 size: otherBody.size.y,
                 speed: otherBody._physics.ySpeed
-              }, debug
+              }, debug, 'y'
           );
           if (debug) {
 //            console.log(xDist, yDist);
 //            alert('collide');
           }
           if ((xDist != null) && (yDist != null)) {
-            //console.log(xDist, yDist, mainBody._physics.xSpeed, mainBody._physics.ySpeed, mainBody.name, otherBody.name);
-
+//            console.log(xDist, yDist, mainBody._physics.xSpeed, mainBody._physics.ySpeed, mainBody.name, otherBody.name);
+//alert('collision');
             if (xDist < yDist) {
               mainBody._physics.reverseSpeedX();
             }

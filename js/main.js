@@ -2,10 +2,10 @@ var game;
 window.onload = function() {
   game = new Game();
   //game.addEntity(createCircle('c1'));
-  var block = game._builder.createBlock('b1', 500, 50, 20, 20);
+  var block = game._builder.createBlock('b1', 15, 60, 20, 20);
   game.addEntity(block);
-  block._physics.xSpeed = 100;
-  block._physics.ySpeed = 70;
+  block._physics.xSpeed = 20;
+  block._physics.ySpeed = 10;
 //  block._physics.xSpeed = -5;
 //  var block2 = game._builder.createBlock('b2', 250, 10, 20, 20);
 //  game.addEntity(block2);
@@ -21,7 +21,7 @@ window.onload = function() {
 //  game.addEntity(game._builder.createBlock('b10', 880, 340, 20, 20));
 
   var entity = game._builder.createBlock('_b10', 300, 200, 400, 20, 0xFFFFFF);
-//  game.addEntity(entity);
+  game.addEntity(entity);
 
 //  entity.applyGlue();
 
