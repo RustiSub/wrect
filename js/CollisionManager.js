@@ -26,7 +26,7 @@ var CollisionManager = Class.extend({
     if (mainBody.position > otherBody.position) {
       if (mainBody.position <= otherBodyAbsolutePosition) {
         if (debug) { console.log(axis, '4'); }
-        return otherBodyAbsolutePosition - mainBodyAbsolutePosition;
+        return otherBodyAbsolutePosition - mainBody.position;
       }
 
       if (mainBody.position + mainBody.speed < otherBody.position) {
@@ -48,7 +48,7 @@ var CollisionManager = Class.extend({
             continue;
           }
           var debug = false;
-          if (mainBody.name == 'b1' && otherBody.name == '_b10') {
+          if (mainBody.name == 'b1' && otherBody.name == '_left') {
             debug = false;
           }
 

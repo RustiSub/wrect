@@ -11,14 +11,14 @@ window.onload = function() {
 //  game.addEntity(block2);
 //  block2._physics.ySpeed = 0;
 //  block2._physics.xSpeed = 5;
-//  game.addEntity(game._builder.createBlock('b3', 190, 190, 20, 20));
-//  game.addEntity(game._builder.createBlock('b4', 300, 250, 20, 20));
-//  game.addEntity(game._builder.createBlock('b5', 170, 340, 20, 20));
-//  game.addEntity(game._builder.createBlock('b6', 600, 50, 20, 20));
-//  game.addEntity(game._builder.createBlock('b7', 540, 150, 20, 20));
-//  game.addEntity(game._builder.createBlock('b8', 710, 190, 20, 20));
-//  game.addEntity(game._builder.createBlock('b9', 670, 250, 20, 20));
-//  game.addEntity(game._builder.createBlock('b10', 880, 340, 20, 20));
+  game.addEntity(game._builder.createBlock('b3', 190, 190, 20, 20));
+  game.addEntity(game._builder.createBlock('b4', 300, 250, 20, 20));
+  game.addEntity(game._builder.createBlock('b5', 170, 340, 20, 20));
+  game.addEntity(game._builder.createBlock('b6', 600, 50, 20, 20));
+  game.addEntity(game._builder.createBlock('b7', 540, 150, 20, 20));
+  game.addEntity(game._builder.createBlock('b8', 710, 190, 20, 20));
+  game.addEntity(game._builder.createBlock('b9', 670, 250, 20, 20));
+  game.addEntity(game._builder.createBlock('b10', 880, 340, 20, 20));
 
   var entity = game._builder.createBlock('_b10', 300, 200, 400, 20, 0xFFFFFF);
   game.addEntity(entity);
