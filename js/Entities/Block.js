@@ -21,7 +21,7 @@ var Block = MovableEntity.extend({
       this._physics.increaseSpeedX(1);
     }
     if (inputHandler.key('up')) {
-      this._physics.increaseSpeedY(-1);
+      this._physics.increaseSpeedY(-5);
     }
     if (inputHandler.key('down')) {
       this._physics.increaseSpeedY(1);

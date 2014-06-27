@@ -8,6 +8,15 @@ var MovableEntity = BaseEntity.extend({
     selectedGraphicsCallback : {},
     position: {},
     stats: {},
+    frozen: true,
+    collision: {
+      x: false,
+      y: false,
+      rest: {
+        x: false,
+        y: false
+      }
+    },
 
     /**
      * @param {String} name

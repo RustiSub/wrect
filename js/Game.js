@@ -9,6 +9,7 @@
             helpersClass: Helpers,
             entityManagerClass: EntityManager,
             collisionManagerClass: CollisionManager,
+            gravityManagerClass: GravityManager,
             builder: Builder,
             width: 1280,
             height: 720
@@ -57,6 +58,7 @@
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
+            this._gravityManager = new this._options.gravityManagerClass();
             this._builder = new this._options.builder();
 
             this.bootstrap();
@@ -94,6 +96,7 @@
                   self.selectEntity('c1');
                 }
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
+                self._gravityManager.applyGravity(self._entityManager.getAllEntities());
                 self._entityManager.update();
 
               
