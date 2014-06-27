@@ -64,7 +64,7 @@ var Physics = Class.extend({
 
     if (collision.rest.y && collision.rest.x) {
       this.ySpeed = 0;
-      this.xSpeed = this.xSpeed * 0.95;
+      this.xSpeed = this.xSpeed * 0.70;
     } else {
       this.xSpeed = this.xSpeed * 0.99;
       if (this.ySpeed >= -0.1 && this.ySpeed <= 0.1) {
@@ -75,7 +75,7 @@ var Physics = Class.extend({
         this.ySpeed = this.ySpeed * 1.05;
       }
       else {
-        this.ySpeed = this.ySpeed * 0.90;
+        this.ySpeed = this.ySpeed * 0.95;
       }
     }
 
