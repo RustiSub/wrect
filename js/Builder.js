@@ -89,5 +89,32 @@ var Builder = Class.extend({
     circleGraphics.position.y = 50;
 
     return circle;
+  },
+
+  createTriangle: function(name) {
+    var color = typeof color !== 'undefined' ? color : 0xFFFFFF;
+
+    var graphics = new PIXI.Graphics();
+
+    var triangle = new Triangle(name, graphics);
+    triangle.name = name;
+    triangle.position = graphics.position;
+
+    triangle.baseGraphicsCallback = function() {
+      triangle._graphics.beginFill(color);
+      triangle._graphics.lineTo(20,20);
+      triangle._graphics.endFill();
+    };
+
+    triangle.baseGraphicsCallback();
+
+    triangle.size = {x: width, y: height};
+
+    graphics.position.x = x;
+    graphics.position.y = y;
+
+    triangle.frozen = false;
+
+    return triangle;
   }
 });

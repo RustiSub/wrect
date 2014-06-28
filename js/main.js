@@ -6,7 +6,7 @@ function test1() {
   var block = game._builder.createBlock('b1', 350, 60, 20, 20);
   block.frozen = false;
   game.addEntity(block);
-  block._physics.xSpeed = 1;
+  block._physics.xSpeed = 0;
   block._physics.ySpeed = 5;
 }
 
@@ -88,13 +88,22 @@ function triangleTest1() {
   var entity = game._builder.createBlock('b3', 190, 190, 20, 20);
   game.addEntity(entity);
 }
+function testCollide1() {
+  var speed = 5;
+  var block1 = game._builder.createBlock('b1', 200, 50, 20, 20);
+  game.addEntity(block1);
+  block1._physics.xSpeed = speed;
+  var block2 = game._builder.createBlock('b2', 810, 50, 20, 20, 0xFF0000);
+  game.addEntity(block2);
+  block2._physics.xSpeed = -speed;
+}
 window.onload = function() {
   game = new Game();
 //  entity.applyGlue();
 
   createFrame();
-  //test1();
+  test1();
   //test2();
   //test3();
-  triangleTest1();
+  //testCollide1();
 };

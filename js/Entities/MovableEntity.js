@@ -1,4 +1,26 @@
-/**
+var collision = {
+  x: false,
+  y: false,
+  direction: {
+    x: 0,
+    y: 0
+  },
+  rest: {
+    x: false,
+    y: false
+  },
+};var collision2 = {
+  x: false,
+  y: false,
+  direction: {
+    x: 0,
+    y: 0
+  },
+  rest: {
+    x: false,
+    y: false
+  }
+};/**
  * @augments BaseEntity
  * @type {void|*}
  */
@@ -9,18 +31,7 @@ var MovableEntity = BaseEntity.extend({
     position: {},
     stats: {},
     frozen: true,
-    collision: {
-      x: false,
-      y: false,
-      direction: {
-        x: 0,
-        y: 0
-      },
-      rest: {
-        x: false,
-        y: false
-      }
-    },
+    collisions: [],
 
     /**
      * @param {String} name
@@ -64,7 +75,7 @@ var MovableEntity = BaseEntity.extend({
       if (!this.selected) {
         this.selectedGraphicsCallback();
       }
-  
+
       this.selected = true; //!this.selected;
     }
 });
