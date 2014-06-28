@@ -96,7 +96,6 @@
                   self.selectEntity('c1');
                 }
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
-                self._gravityManager.applyGravity(self._entityManager.getAllEntities());
                 self._entityManager.update();
 
               

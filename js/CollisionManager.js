@@ -9,30 +9,33 @@ var CollisionManager = Class.extend({
     var otherBodyAbsolutePosition = otherBody.position + otherBody.size;
 
     if (mainBody.position == otherBody.position) {
-//      if (debug) { console.log(axis, '1'); }
+      if (debug) { console.log(axis, '1'); }
       return 0;
     }
 
     if (mainBody.position < otherBody.position) {
       if (mainBodyAbsolutePosition >= otherBody.position) {
-//        if (debug) { console.log(axis,'2'); }
+        if (debug) { console.log(axis,'2'); }
         return mainBodyAbsolutePosition - otherBody.position;
       }
 
       if (mainBodyAbsolutePosition + mainBody.speed > otherBody.position) {
-//        if (debug) { console.log(axis, '3'); }
+        if (debug) { console.log(axis, '3'); }
         return mainBodyAbsolutePosition - otherBody.position;
       }
     }
 
     if (mainBody.position > otherBody.position) {
+      if (debug) {
+        console.log(mainBody.position, otherBody.position, otherBody.size);
+        console.log(axis, '4');
+      }
       if (mainBody.position <= otherBodyAbsolutePosition) {
-//        if (debug) { console.log(axis, '4'); }
         return otherBodyAbsolutePosition - mainBody.position;
       }
 
-      if (mainBody.position + mainBody.speed < otherBody.position) {
-//        if (debug) { console.log(axis, '5'); }
+      if (mainBody.position + mainBody.speed < otherBodyAbsolutePosition) {
+        if (debug) { console.log(axis, '5'); }
         return otherBody.position - mainBodyAbsolutePosition + mainBody.speed;
       }
     }
@@ -49,8 +52,8 @@ var CollisionManager = Class.extend({
           var otherBody = bodies[y];
 
           var debug = false;
-          if (mainBody.name == 'b1') { //} && otherBody.name == '_left') {
-            debug = true;
+          if (mainBody.name == 'b1' && otherBody.name == '_b10') {
+            debug = false;
           }
 
           if (!mainBody._physics.isMoving() && !otherBody._physics.isMoving()) {
@@ -103,28 +106,35 @@ var CollisionManager = Class.extend({
                 position: otherBody.position.y,
                 size: otherBody.size.y,
                 speed: otherBody._physics.ySpeed
-              }, debug, 'y'
+              }, false, 'y'
           );
           if ((xDist != null) && (yDist != null)) {
+            if (debug) {
+              console.log(mainBody._physics.ySpeed);
+              console.log(xDist, yDist);
+              console.log(mainBody.name, otherBody.name);
+              //alert('collide');
+            }
             if (xDist < yDist) {
-              mainBody._physics.reverseSpeedX();
               mainBody.collision.x = true;
+              mainBody.collision.direction.x = mainBody._physics.xSpeed;
             }
             else if(xDist > yDist) {
-              mainBody._physics.reverseSpeedY();
               mainBody.collision.y = true;
+              mainBody.collision.direction.y = mainBody._physics.ySpeed;
             }
             else {
-              mainBody._physics.reverseSpeedX();
+              mainBody.collision.direction.x = mainBody._physics.xSpeed;
+              mainBody.collision.direction.y = mainBody._physics.ySpeed;
               mainBody.collision.x = true;
-              mainBody._physics.reverseSpeedY();
               mainBody.collision.y = true;
             }
           }
         }
 
         if (!mainBody.frozen) {
-          mainBody._physics.applyGravity(mainBody.collision);
+          mainBody._physics.applyCollision(mainBody.collision);
+          //mainBody._physics.applyGravity(mainBody.collision);
         }
       }
     }

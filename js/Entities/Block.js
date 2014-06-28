@@ -21,7 +21,7 @@ var Block = MovableEntity.extend({
       this._physics.increaseSpeedX(1);
     }
     if (inputHandler.key('up')) {
-      this._physics.increaseSpeedY(-5);
+      this._physics.increaseSpeedY(-1);
     }
     if (inputHandler.key('down')) {
       this._physics.increaseSpeedY(1);
@@ -31,12 +31,12 @@ var Block = MovableEntity.extend({
   }, update: function(){
     this._super();
 
+    this._graphics.position.x += this._physics.calculateSpeedX();
+    this._graphics.position.y += this._physics.calculateSpeedY();
+
     if (this.selected) {
       this.move();
     }
-
-    this._graphics.position.x += this._physics.calculateSpeedX();
-    this._graphics.position.y += this._physics.calculateSpeedY();
   },
   applyGlue: function() {
     this.hasGlue = true;

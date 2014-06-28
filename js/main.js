@@ -1,18 +1,35 @@
 var game;
-window.onload = function() {
-  game = new Game();
-  //game.addEntity(createCircle('c1'));
-  var block = game._builder.createBlock('b1', 495, 60, 20, 20);
+function test1() {
+  var entity = game._builder.createBlock('_b10', 300, 250, 400, 20, 0xFFFFFF);
+  game.addEntity(entity);
+
+  var block = game._builder.createBlock('b1', 350, 60, 20, 20);
   block.frozen = false;
   game.addEntity(block);
-  //block._physics.xSpeed = 20;
-  //block._physics.ySpeed = 10;
+  block._physics.xSpeed = 1;
+  block._physics.ySpeed = 5;
+}
+
+function test2() {
+  var block = game._builder.createBlock('b1', 350, 60, 20, 20);
+  block.frozen = false;
+  game.addEntity(block);
+  block._physics.xSpeed = 1;
+  block._physics.ySpeed = 5;
+}
+
+function test3() {
+  //game.addEntity(createCircle('c1'));
+
+  //block._physics.ySpeed = -5;
 //  block._physics.xSpeed = -5;
 //  var block2 = game._builder.createBlock('b2', 250, 10, 20, 20);
 //  game.addEntity(block2);
 //  block2._physics.ySpeed = 0;
 //  block2._physics.xSpeed = 5;
-  game.addEntity(game._builder.createBlock('b3', 190, 190, 20, 20));
+  var entity = game._builder.createBlock('b3', 190, 190, 20, 20);
+  game.addEntity(entity);
+
   game.addEntity(game._builder.createBlock('b4', 300, 250, 20, 20));
   game.addEntity(game._builder.createBlock('b5', 170, 340, 20, 20));
   game.addEntity(game._builder.createBlock('b6', 600, 50, 20, 20));
@@ -21,11 +38,20 @@ window.onload = function() {
   game.addEntity(game._builder.createBlock('b9', 670, 250, 20, 20));
   game.addEntity(game._builder.createBlock('b10', 880, 340, 20, 20));
 
-  var entity = game._builder.createBlock('_b10', 300, 200, 400, 20, 0xFFFFFF);
-  game.addEntity(entity);
+  var staticBlock1 = game._builder.createBlock('_b1', 300, 100, 400, 20, 0xFFFFFF);
+  staticBlock1.frozen = true;
+  game.addEntity(staticBlock1);
 
-//  entity.applyGlue();
+  var staticBlock2 = game._builder.createBlock('_b2', 300, 300, 400, 20, 0xFFFFFF);
+  staticBlock2.frozen = true;
+  game.addEntity(staticBlock2);
 
+  var staticBlock3 = game._builder.createBlock('_b2', 450, 100, 20, 200, 0xFFFFFF);
+  staticBlock2.frozen = true;
+  game.addEntity(staticBlock3);
+}
+
+function createFrame() {
   var height = 400;
   var width = 1000;
 
@@ -57,4 +83,18 @@ window.onload = function() {
     width: width,
     height: 5
   }));
+}
+function triangleTest1() {
+  var entity = game._builder.createBlock('b3', 190, 190, 20, 20);
+  game.addEntity(entity);
+}
+window.onload = function() {
+  game = new Game();
+//  entity.applyGlue();
+
+  createFrame();
+  //test1();
+  //test2();
+  //test3();
+  triangleTest1();
 };

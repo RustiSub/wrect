@@ -29,10 +29,6 @@ var Physics = Class.extend({
 
   reverseSpeedY: function() {
     this.ySpeed = - this.ySpeed;
-
-/*    if (this.ySpeed < -0.5) {
-     this.ySpeed *= 0.99;
-    }*/
   },
 
   stop: function() {
@@ -63,14 +59,14 @@ var Physics = Class.extend({
   applyGravity: function(collision) {
 
     if (collision.rest.y && collision.rest.x) {
-      this.ySpeed = 0;
-      this.xSpeed = this.xSpeed * 0.70;
+//      this.ySpeed = 0;
+//      this.xSpeed = this.xSpeed * 0.70;
     } else {
-      this.xSpeed = this.xSpeed * 0.99;
+//      this.xSpeed = this.xSpeed * 0.99;
       if (this.ySpeed >= -0.1 && this.ySpeed <= 0.1) {
         this.ySpeed = 1;
       }
-
+//
       if (this.ySpeed > 0) {
         this.ySpeed = this.ySpeed * 1.05;
       }
@@ -80,22 +76,29 @@ var Physics = Class.extend({
     }
 
     if (collision.y) {
-      this.ySpeed = 0;
-//      if (this.ySpeed == 0) {
-//        this.ySpeed = 1;
-//      }
-//      this.ySpeed = this.ySpeed * 1.05;
+//      this.ySpeed = 0;
     }
-    else {
-
-    }
-
+  },
+  applyCollision: function(collision) {
     if (collision.x) {
-//      this.xSpeed = 0;
-//      this.xSpeed = this.xSpeed * 0.5;
+      //console.log('before', this.xSpeed);
+      //alert('reverseSpeedX');
+      this.reverseSpeedX();
+      //console.log('after', this.xSpeed);
+      collision.x = false;
+      //alert('speed reversed');
     }
-    else {
 
+    if (collision.y) {
+      //console.log('before', this.ySpeed);
+      //alert('reverseSpeedY');
+      this.reverseSpeedY();
+      //console.log('after', this.ySpeed);
+      collision.y = false;
+      //alert('speed reversed');
     }
+  },
+  absorbSpeed: function(speed) {
+//    return ;
   }
 });

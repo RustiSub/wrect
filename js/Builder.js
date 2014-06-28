@@ -54,6 +54,8 @@ var Builder = Class.extend({
     blockGraphics.position.x = x;
     blockGraphics.position.y = y;
 
+    block.frozen = false;
+
     return block;
   },
 
