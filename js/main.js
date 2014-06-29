@@ -27,7 +27,7 @@ function test3() {
 //  game.addEntity(block2);
 //  block2._physics.ySpeed = 0;
 //  block2._physics.xSpeed = 5;
-  var entity = game._builder.createBlock('b3', 190, 190, 20, 20);
+  var entity = game._builder.createBlock('b1', 190, 190, 20, 20);
   game.addEntity(entity);
 
   game.addEntity(game._builder.createBlock('b4', 300, 250, 20, 20));
@@ -90,20 +90,30 @@ function triangleTest1() {
 }
 function testCollide1() {
   var speed = 5;
-  var block1 = game._builder.createBlock('b1', 200, 50, 20, 20);
+  var block1 = game._builder.createBlock('b1', 185, 50, 20, 20);
   game.addEntity(block1);
   block1._physics.xSpeed = speed;
   var block2 = game._builder.createBlock('b2', 810, 50, 20, 20, 0xFF0000);
   game.addEntity(block2);
   block2._physics.xSpeed = -speed;
 }
+function testCollide2() {
+  var speed = 5;
+  var block1 = game._builder.createBlock('b1', 185, 50, 20, 20);
+  game.addEntity(block1);
+  block1._physics.xSpeed = speed;
+  var block2 = game._builder.createBlock('b2', 250, 50, 20, 20, 0xFF0000);
+  game.addEntity(block2);
+  block2._physics.xSpeed = 4;
+}
 window.onload = function() {
   game = new Game();
 //  entity.applyGlue();
 
   createFrame();
-  test1();
+  //test1();
   //test2();
-  //test3();
+  test3();
   //testCollide1();
+  //testCollide2();
 };

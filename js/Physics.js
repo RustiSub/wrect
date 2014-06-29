@@ -81,21 +81,11 @@ var Physics = Class.extend({
   },
   applyCollision: function(collision) {
     if (collision.x) {
-      //console.log('before', this.xSpeed);
-      //alert('reverseSpeedX');
       this.reverseSpeedX();
-      //console.log('after', this.xSpeed);
-      collision.x = false;
-      //alert('speed reversed');
     }
 
     if (collision.y) {
-      //console.log('before', this.ySpeed);
-      //alert('reverseSpeedY');
       this.reverseSpeedY();
-      //console.log('after', this.ySpeed);
-      collision.y = false;
-      //alert('speed reversed');
     }
   },
   absorbSpeed: function(speed) {

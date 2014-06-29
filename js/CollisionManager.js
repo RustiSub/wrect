@@ -41,7 +41,7 @@ var CollisionManager = Class.extend({
     }
 
     return yDist;
-  }, registerCollision: function (xDist, yDist, body) {
+  }, registerCollision: function (xDist, yDist, body, otherBody) {
     var collision = new Collision();
     if (xDist < yDist) {
       collision.x = true;
@@ -58,12 +58,9 @@ var CollisionManager = Class.extend({
       collision.y = true;
     }
 
+    collision.main = body.name;
+    collision.other = otherBody.name;
     body.collisions.push(collision);
-   /* if (!body.frozen) {
-      console.log(body.collision);
-      body._physics.applyCollision(body.collision);
-      //body._physics.applyGravity(body.collision);
-    }*/
   }, updateAllCollisions: function(bodies) {
     for (var x = 0; x < bodies.length; x++) {
       var mainBody = bodies[x];
@@ -75,32 +72,11 @@ var CollisionManager = Class.extend({
           var otherBody = bodies[y];
 
           var debug = false;
-          if (mainBody.name == 'b1' && otherBody.name == '_b10') {
+          if (mainBody.name == 'b1' && otherBody.name == 'b2') {
             debug = false;
           }
 
           if (!mainBody._physics.isMoving() && !otherBody._physics.isMoving()) {
-            if (debug) {
-//              alert('rest');
-            }
-            //do simple check to see which other objects we are touching
-            var restX = false;
-            var restY = false;
-            if (mainBody.position.y + mainBody.size.y == otherBody.position.y) {
-              restY = true;
-            }
-
-            if (mainBody.position.x > otherBody.position.x) {
-              if (mainBody.position.x < otherBody.position.x + otherBody.size.x) {
-                restX = true;
-              }
-            }
-
-            if (restX && restY) {
-              mainBody.collision.rest.y = true;
-              mainBody.collision.rest.x = true;
-            }
-
             continue;
           }
 
@@ -117,8 +93,6 @@ var CollisionManager = Class.extend({
               },debug, 'x'
           );
 
-          //Y collision
-          //Check for objects that currently lie below the main object
           var yDist = this.checkAxisCollision(
               {
                 position: mainBody.position.y,
@@ -132,12 +106,7 @@ var CollisionManager = Class.extend({
               }, false, 'y'
           );
           if ((xDist != null) && (yDist != null)) {
-
-            if (debug) {
-              //alert('collide');
-            }
-            this.registerCollision(xDist, yDist, mainBody);
-            this.registerCollision(xDist, yDist, otherBody);
+            this.registerCollision(xDist, yDist, mainBody, otherBody);
           }
         }
       }
@@ -145,10 +114,10 @@ var CollisionManager = Class.extend({
 
     for (var x = 0; x < bodies.length; x++) {
       var body = bodies[x];
-
       for (var c = 0; c < body.collisions.length; c++) {
         var collision = body.collisions[c];
         body._physics.applyCollision(collision);
+        //body._physics.applyGravity(collision);
       }
     }
   }
