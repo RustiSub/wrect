@@ -58,8 +58,8 @@ var CollisionManager = Class.extend({
       collision.y = true;
     }
 
-    collision.main = body.name;
-    collision.other = otherBody.name;
+    collision.main = body;
+    collision.other = otherBody;
     body.collisions.push(collision);
   }, updateAllCollisions: function(bodies) {
     for (var x = 0; x < bodies.length; x++) {
@@ -117,6 +117,7 @@ var CollisionManager = Class.extend({
       for (var c = 0; c < body.collisions.length; c++) {
         var collision = body.collisions[c];
         body._physics.applyCollision(collision);
+        body._physics.calculateImpact(collision);
         //body._physics.applyGravity(collision);
       }
     }

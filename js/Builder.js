@@ -43,8 +43,23 @@ var Builder = Class.extend({
       block._graphics.beginFill(0xFF0000);
       block._graphics.drawRect(0 - 1, 0- 1, width + 2, height + 2);
       block._graphics.endFill();
+    };
 
-      block.baseGraphicsCallback();
+    block.damagedGraphicsCallback = function(damage) {
+      if (block.destructible == true) {
+        block._graphics.clear();
+        block._graphics.beginFill(color, damage);
+        block._graphics.drawRect(0, 0, width, height);
+        block._graphics.endFill();
+
+        if (block.damage.health <= 0) {
+          block.size.x = 0;
+          block.size.y = 0;
+          block.position.x = 0;
+          block.position.y = 0;
+          block._graphics.clear();
+        }
+      }
     };
 
     block.baseGraphicsCallback();

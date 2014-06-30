@@ -106,6 +106,30 @@ function testCollide2() {
   game.addEntity(block2);
   block2._physics.xSpeed = 4;
 }
+function testImpact1() {
+  var block1 = game._builder.createBlock('b1', 185, 50, 20, 20);
+  game.addEntity(block1);
+
+  var entity = game._builder.createBlock('_b10', 100, 50, 40, 200, 0xFFFFFF);
+  entity.destructible = true;
+  game.addEntity(entity);
+
+  var entity2 = game._builder.createBlock('_b11', 300, 50, 40, 200, 0xFFFFFF);
+  entity2.destructible = true;
+  game.addEntity(entity2);
+
+  var entity2 = game._builder.createBlock('_b12', 400, 50, 40, 200, 0xFFFFFF);
+  entity2.destructible = true;
+  game.addEntity(entity2);
+
+  var entity2 = game._builder.createBlock('_b13', 500, 50, 40, 200, 0xFFFFFF);
+  entity2.destructible = true;
+  game.addEntity(entity2);
+
+  var entity2 = game._builder.createBlock('_b14', 700, 50, 40, 200, 0xFFFFFF);
+  entity2.destructible = true;
+  game.addEntity(entity2);
+}
 window.onload = function() {
   game = new Game();
 //  entity.applyGlue();
@@ -113,7 +137,8 @@ window.onload = function() {
   createFrame();
   //test1();
   //test2();
-  test3();
+  //test3();
   //testCollide1();
   //testCollide2();
+  testImpact1();
 };

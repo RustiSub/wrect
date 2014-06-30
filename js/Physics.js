@@ -88,6 +88,18 @@ var Physics = Class.extend({
       this.reverseSpeedY();
     }
   },
+  calculateImpact: function(collision) {
+    if (collision.other.damagedGraphicsCallback != null) {
+      collision.other.damage.health -= 10;
+      collision.other.damagedGraphicsCallback(collision.other.damage.health / 100);
+    }
+//    console.log(collision.other.name);
+//    alert('test');
+//    collision.other._graphics.beginFill(0x000000);
+//    collision.other._graphics.drawRect(collision.other.position.x, collision.other.position.y, collision.other.size.x, collision.other.size.y);
+//    collision.other._graphics.endFill();
+
+  },
   absorbSpeed: function(speed) {
 //    return ;
   }

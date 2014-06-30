@@ -13,6 +13,11 @@ var BaseEntity = Class.extend({
      */
     name: '',
     /**
+     * The model that contains all the damage sustained by this entity
+     */
+    damage: {},
+    destructible: false,
+    /**
      * Dimensions of the entity in px.
      */
     size: {
@@ -33,8 +38,10 @@ var BaseEntity = Class.extend({
         }
         else {
             this._graphics = graphics;
-            this._physics = new Physics();
         }
+
+      this._physics = new Physics();
+      this.damage = new Damage();
     },
 
     /**
