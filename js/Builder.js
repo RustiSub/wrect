@@ -1,4 +1,7 @@
 var Builder = Class.extend({
+
+  connectedBodies: {},
+
   createBorder: function (name, coords) {
     var width = coords.width;
     var height = coords.height;
@@ -116,5 +119,63 @@ var Builder = Class.extend({
     triangle.frozen = false;
 
     return triangle;
+  },
+
+  checkConnections: function(bodies) {
+    //Check every entity for neighbouring entities
+    //This means they share pixels
+    //How do we check for shared pixels, given x,y, width, height
+    //-top left: x, y
+    //-top right: x + width, y
+    //-bottom right: x + width, y + height
+    //-bottom left: x + y + height
+    //Check each face of the block and intelligently ask other bodies if they have a face that contains these points
+
+    //When they share pixels, apply a connection drawing to mark them
+    //If there is a chain of connected entities, calculate the enclosing space
+    //Make a new entity of the enclosing space and give it special fill
+    for (var x = 0; x < bodies.length; x++) {
+      var mainBody = bodies[x];
+
+      var face = {
+        p1: {
+          x: mainBody.position.x,
+          y: mainBody.position.y
+        },
+        p2: {
+          x: mainBody.position.x + mainBody.size.x,
+          y: mainBody.position.y + mainBody.size.y
+        }
+      };
+
+
+      for (var y = 0; y < bodies.length; y++) {
+        if (x !== y) {
+          var otherBody = bodies[y];
+
+          var matchingFace = {
+            p1: {
+              x: otherBody.position.x,
+              y: otherBody.position.y
+            },
+            p2: {
+              x: otherBody.position.x,
+              y: otherBody.position.y  + otherBody.size.y
+            }
+          };
+
+          if (face.p2.x >= matchingFace.p1.x && face.p1.x <= matchingFace.p2.x) {
+            //console.log(face.p2.x, matchingFace.p1.x);
+            //console.log(face.p1.x, matchingFace.p2.x);
+            if (face.p2.y >= matchingFace.p1.y && face.p1.y <= matchingFace.p2.y) {
+              //console.log(face.p2.y, matchingFace.p1.y);
+              //console.log(face.p1.y, matchingFace.p2.y);
+              console.log('match!!!');
+            }
+            //console.log(mainBody.name, otherBody.name);
+          }
+        }
+      }
+    }
   }
 });

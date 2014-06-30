@@ -106,14 +106,36 @@ function testCollide2() {
   game.addEntity(block2);
   block2._physics.xSpeed = 4;
 }
+
+function testRooms1() {
+  var staticBlock1 = game._builder.createBlock('wall_left', 300, 100, 20, 100, 0xFFFFFF);
+  staticBlock1.frozen = true;
+  game.addEntity(staticBlock1);
+
+  var staticBlock2 = game._builder.createBlock('wall_top', 300, 200, 400, 20, 0xFFFFFF);
+  staticBlock2.frozen = true;
+  game.addEntity(staticBlock2);
+
+/*  var staticBlock3 = game._builder.createBlock('wall_right', 720, 100, 20, 200, 0xFFFFFF);
+  staticBlock2.frozen = true;
+  game.addEntity(staticBlock3);
+
+  var staticBlock4 = game._builder.createBlock('wall_bottom', 320, 350, 400, 20, 0xFFFFFF);
+  staticBlock4.frozen = true;
+  game.addEntity(staticBlock4);*/
+}
+
 window.onload = function() {
   game = new Game();
 //  entity.applyGlue();
 
-  createFrame();
+  //createFrame();
   //test1();
   //test2();
-  test3();
+  //test3();
   //testCollide1();
   //testCollide2();
+  testRooms1();
+
+  game._builder.checkConnections(game.getEntityManager().getAllEntities());
 };
