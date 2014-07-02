@@ -14,15 +14,11 @@ window.BaseLevel = Class.extend({
     },
     fromJSON: function(json) {
         var data = JSON.parse(json);
-        for (var x in data) {
-          this[x] = data[x];
-          if (x === 'entityData') {
-            for (var y in this[x]) {
-              this[x][y] = JSON.parse(this[x][y]);
-            }
-          }
+        for (var i = 0; i < data.entityData.length; i++) {
+          var entityObject = JSON.parse(data.entityData[i]);
+          // Build entity from classname inside the object.
         }
-      console.log(this);
+        console.log(data);
     },
     saveToFile: function(){
         var blob = new Blob(this.getSerializableObject());
