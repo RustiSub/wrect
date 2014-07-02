@@ -1,24 +1,13 @@
 window.BaseLevel = Class.extend({
-    entityData: {},
+    entities: [],
     backgroundData: {},
     gravity: 1,
     name: '',
+    levelData: {},
     _ready: false,
-    _levelData: {},
+    _className: 'BaseLevel',
     init: function(name) {
         this.name = name;
-    },
-    toJSON: function() {
-        var o = this.getSerializableObject();
-        return JSON.stringify(o);
-    },
-    fromJSON: function(json) {
-        var data = JSON.parse(json);
-        for (var i = 0; i < data.entityData.length; i++) {
-          var entityObject = JSON.parse(data.entityData[i]);
-          // Build entity from classname inside the object.
-        }
-        console.log(data);
     },
     saveToFile: function(){
         var blob = new Blob(this.getSerializableObject());
@@ -27,23 +16,59 @@ window.BaseLevel = Class.extend({
         a.download = this.getFullLevelName();
         console.log(a);
     },
-    getSerializableObject: function() {
-        return {
-            entityData: this.entityData,
-            backgroundData: this.backgroundData,
-            gravity: this.gravity,
-            name: this.name,
-            className: this.getClassName()
-        };
-    },
     getFullLevelName: function() {
         return 'Level' + this.name;
     },
-    // Unfortunately there's no inheritance-proof reliable way to dynamically get this in JS.
-    getClassName: function() {
-        return 'BaseLevel';
-    },
     update: function() {
 
+    },
+
+    // JSON logic
+    toJSON: function() {
+        return {
+            entities: this.entities,
+            backgroundData: this.backgroundData,
+            gravity: this.gravity,
+            name: this.name,
+            _className: this._className,
+            levelData: this.levelData
+        };
+    },
+    fromJSON: function(data) {
+        // EntityData
+        for (var i = 0; i < data.entities.length; i++) {
+            var entityObject = data.entities[i];
+            // TODO: this will break as soon as we namespace. Possibly we can store the whole namespace inside localStorage and split it to separate components?
+            // Dirty check to see what kind of graphics we had (sprite or graphic)
+            var graphic;
+            if (entityObject._graphics.texture !== undefined) {
+                graphic = PIXI.Sprite.fromJso(entityObject._graphics);
+            }
+            else {
+                graphic = PIXI.Graphics.fromJso(entityObject._graphics);
+            }
+            var entity = new window[entityObject._className](entityObject.name, graphic);
+
+            for (var j in entityObject) {
+                if (entity.hasOwnProperty(j) && j !== '_graphics') {
+                    entity[j] = entityObject[j];
+                }
+            }
+            this.entities.push(entity);
+        }
+
+        // Background Data
+        this.backgroundData = data.backgroundData;
+
+        // Gravity
+        this.gravity = data.gravity;
+
+        // Name
+        this.name = data.name;
+
+        // LevelData
+        this.levelData = data.levelData;
+
+        return this;
     }
 });

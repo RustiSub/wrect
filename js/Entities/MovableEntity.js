@@ -8,6 +8,7 @@ var MovableEntity = BaseEntity.extend({
     selectedGraphicsCallback : {},
     position: {},
     stats: {},
+    _className: 'MovableEntity',
 
     /**
      * @param {String} name
@@ -45,13 +46,13 @@ var MovableEntity = BaseEntity.extend({
       return {
         health: 10,
         speed: 1
-      }
+      };
     },
     toggleSelect: function()  {
       if (!this.selected) {
         this.selectedGraphicsCallback();
       }
-  
+
       this.selected = true; //!this.selected;
     }
 });

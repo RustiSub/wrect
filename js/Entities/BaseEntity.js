@@ -21,6 +21,7 @@ var BaseEntity = Class.extend({
     },
     _graphics: {},
     _physics: {},
+    _className: 'BaseEntity',
 
     /**
      * @param {String} name Name of the entity. Used for identification purposes.
@@ -76,11 +77,11 @@ var BaseEntity = Class.extend({
     toJSON: function() {
         var o = {};
         for (var x in this) {
-            if (x !== '_super' && typeof this[x] !== 'function') {
+            if (typeof(this[x]) !== 'function') {
                 o[x] = this[x];
             }
         }
-        console.log(o);
-        return JSON.stringify(o);
+
+        return (o);
     }
 });

@@ -14,15 +14,25 @@ window.LevelManager = Class.extend({
 
     /**
      * Initializes a freshly loaded level
-     * @param levelJson
+     * @param levelJso
      */
-    initLevel: function(levelJson) {
-      var level = new BaseLevel();
-      level.fromJSON(levelJson);
+    initLevel: function(levelJso) {
+      // TODO: this will break as soon as we namespace. Possibly we can store the whole namespace inside localStorage and split it to separate components?
+      var level = new window[levelJso._className]();
+      level.fromJSON(levelJso);
+      this.switchLevel(level);
+    },
+
+    switchLevel: function(level) {
+        this.currentLevel = level;
+        Container.getGame().getEntityManager().clearEntities();
+        for (var x = 0; x < level.entities.length; x++) {
+            Container.getGame().getEntityManager().addEntity(level.entities[x]);
+        }
     },
 
     /////
-    // Managing Logic
+    // Management Logic
     /////
     /**
      * Loads the level with the given name
@@ -39,7 +49,7 @@ window.LevelManager = Class.extend({
     createInitialLevel: function() {
         this.currentLevel = new BaseLevel();
         this.currentLevel.name = 'Base';
-        this.currentLevel.entityData = Container.getComponent('EntityManager').getAllEntities();
+        this.currentLevel.entities = Container.getComponent('EntityManager').getAllEntities();
         this.saveLevel();
     },
 
@@ -66,7 +76,7 @@ window.LevelManager = Class.extend({
      * @param successCallback
      */
     loadData: function(levelName, successCallback) {
-      successCallback(store.get('Level' + levelName));
+      successCallback.call(this, store.get('Level' + levelName));
       /*ajax({
         url: path,
         success: function(response) {
@@ -121,7 +131,6 @@ window.LevelManager = Class.extend({
     // Update logic
     /////
     update: function() {
-
       this.updateFades();
     },
     updateFades: function() {

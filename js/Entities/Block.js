@@ -6,6 +6,7 @@ var Block = MovableEntity.extend({
 
   width: 400,
   height: 400,
+  _className: 'Block',
 
   init: function(name, graphics) {
     this._super(name, graphics);
