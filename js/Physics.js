@@ -6,7 +6,11 @@ var Physics = Class.extend({
   fallTime: 0,
   xSpeed: 0,
   ySpeed: 0,
+  _className: 'Physics',
 
+  init: function() {
+
+  },
   increaseSpeedX: function(increase) {
     this.xSpeed += increase;
   },
@@ -54,5 +58,16 @@ var Physics = Class.extend({
       //this.fallTime = 0;
       this.ySpeed = 0.6;
     }
+  },
+
+  toJSON: function() {
+    var o = {};
+    for (var x in this) {
+      if (typeof x !== 'function') {
+        o[x] = this[x];
+      }
+    }
+
+    return o;
   }
 });

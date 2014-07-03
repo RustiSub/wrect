@@ -47,13 +47,16 @@ window.BaseLevel = Class.extend({
             else {
                 graphic = PIXI.Graphics.fromJso(entityObject._graphics);
             }
+          console.log(graphic);
             var entity = new window[entityObject._className](entityObject.name, graphic);
 
+            entity._physics = new window[entityObject._physics._className]();
             for (var j in entityObject) {
-                if (entity.hasOwnProperty(j) && j !== '_graphics') {
+                if (entity.hasOwnProperty(j) && j !== '_graphics' && j !== '_physics') {
                     entity[j] = entityObject[j];
                 }
             }
+          console.log(entity);
             this.entities.push(entity);
         }
 

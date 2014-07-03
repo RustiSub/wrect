@@ -81,7 +81,8 @@ var BaseEntity = Class.extend({
                 o[x] = this[x];
             }
         }
-
+console.log(o);
+      console.log(this._physics, o._physics);
         return (o);
     }
 });
