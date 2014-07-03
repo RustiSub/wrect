@@ -19,6 +19,8 @@ var BaseEntity = Class.extend({
         x: 64,
         y: 64
     },
+    connectedBodies: [],
+    connected: false,
     _graphics: {},
     _physics: {},
 
@@ -27,6 +29,7 @@ var BaseEntity = Class.extend({
      * @param {PIXI.Sprite|PIXI.Graphics|String} graphics. Object or path to sprite to use for graphical representation.
      */
     init: function(name, graphics) {
+        this.connectedBodies = [];
         this.name = name;
         if (typeof graphics === 'string') {
             this._graphics = this.buildSprite(graphics);

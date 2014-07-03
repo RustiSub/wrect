@@ -1,6 +1,6 @@
 var Builder = Class.extend({
 
-  connectedBodies: {},
+  connectedClusters: [],
 
   createBorder: function (name, coords) {
     var width = coords.width;
@@ -121,7 +121,43 @@ var Builder = Class.extend({
     return triangle;
   },
 
-  checkConnections: function(bodies) {
+  buildConnectedClusters: function(bodies) {
+    var clusterCounter = 0;
+    for (var x = 0; x < bodies.length; x++) {
+      var mainBody = bodies[x];
+      if (mainBody.connected) {
+        continue;
+      }
+
+      var connectedBodies = [];
+      connectedBodies = this.getConnectedBodies(mainBody, connectedBodies);
+      if (connectedBodies.length > 0) {
+        connectedBodies.push(mainBody);
+        clusterCounter += 1;
+        this.connectedClusters.push({
+          id: clusterCounter,
+          bodies: connectedBodies
+        });
+      }
+    }
+
+    console.log(this.connectedClusters);
+  },
+  getConnectedBodies: function(body, connectedBodies) {
+    body.connected = true;
+    if (body.connectedBodies.length > 0) {
+      for (var x = 0; x < body.connectedBodies.length; x++) {
+        var connectedBody = body.connectedBodies[x];
+        if (!connectedBody.connected) {
+          connectedBodies.push(connectedBody);
+          this.getConnectedBodies(connectedBody, connectedBodies);
+        }
+      }
+    }
+
+    return connectedBodies;
+  },
+  buildConnections: function(bodies) {
     //Check every entity for neighbouring entities
     //This means they share pixels
     //How do we check for shared pixels, given x,y, width, height
@@ -134,6 +170,7 @@ var Builder = Class.extend({
     //When they share pixels, apply a connection drawing to mark them
     //If there is a chain of connected entities, calculate the enclosing space
     //Make a new entity of the enclosing space and give it special fill
+    var connectionCounter = 0;
     for (var x = 0; x < bodies.length; x++) {
       var mainBody = bodies[x];
 
@@ -159,7 +196,7 @@ var Builder = Class.extend({
               y: otherBody.position.y
             },
             p2: {
-              x: otherBody.position.x,
+              x: otherBody.position.x + otherBody.size.x,
               y: otherBody.position.y  + otherBody.size.y
             }
           };
@@ -171,11 +208,14 @@ var Builder = Class.extend({
               //console.log(face.p2.y, matchingFace.p1.y);
               //console.log(face.p1.y, matchingFace.p2.y);
               console.log('match!!!');
+              mainBody.connectedBodies.push(otherBody);
             }
             //console.log(mainBody.name, otherBody.name);
           }
         }
       }
     }
+
+    this.buildConnectedClusters(bodies);
   }
 });
