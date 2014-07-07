@@ -39,24 +39,8 @@ window.BaseLevel = Class.extend({
         for (var i = 0; i < data.entities.length; i++) {
             var entityObject = data.entities[i];
             // TODO: this will break as soon as we namespace. Possibly we can store the whole namespace inside localStorage and split it to separate components?
-            // Dirty check to see what kind of graphics we had (sprite or graphic)
-            var graphic;
-            if (entityObject._graphics.texture !== undefined) {
-                graphic = PIXI.Sprite.fromJso(entityObject._graphics);
-            }
-            else {
-                graphic = PIXI.Graphics.fromJso(entityObject._graphics);
-            }
-          console.log(graphic);
-            var entity = new window[entityObject._className](entityObject.name, graphic);
-
-            entity._physics = new window[entityObject._physics._className]();
-            for (var j in entityObject) {
-                if (entity.hasOwnProperty(j) && j !== '_graphics' && j !== '_physics') {
-                    entity[j] = entityObject[j];
-                }
-            }
-          console.log(entity);
+            var entity = Helpers.buildObjectFromProperties(entityObject);
+            //entity._physics = new window[entityObject._physics._className]();
             this.entities.push(entity);
         }
 

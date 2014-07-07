@@ -27,6 +27,7 @@ window.LevelManager = Class.extend({
         this.currentLevel = level;
         Container.getGame().getEntityManager().clearEntities();
         for (var x = 0; x < level.entities.length; x++) {
+          console.log(level.entities[x]);
             Container.getGame().getEntityManager().addEntity(level.entities[x]);
         }
     },

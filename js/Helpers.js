@@ -41,5 +41,24 @@ window.Helpers = {
             }
             return c;
         }
+    },
+    buildObjectFromProperties: function(jso) {
+        if (jso._className !== undefined) {
+            console.log(jso._className);
+            var entity = Object.create(window[jso._className].prototype);
+            for (var x in jso) {
+                var prop = jso[x];
+                if (prop._className !== undefined) {
+                    prop = this.buildObjectFromProperties(prop);
+                }
+              else {
+                  console.info('No classname found on ', x);
+                }
+                entity[x] = prop;
+            }
+            console.log(entity);
+            return entity;
+        }
+        return jso;
     }
 };
