@@ -20,6 +20,7 @@ var BaseEntity = Class.extend({
         y: 64
     },
     connectedBodies: [],
+    connectionPoint: {},
     connected: false,
     _graphics: {},
     _physics: {},
@@ -30,6 +31,7 @@ var BaseEntity = Class.extend({
      */
     init: function(name, graphics) {
         this.connectedBodies = [];
+        this.connectionPoint = {};
         this.name = name;
         if (typeof graphics === 'string') {
             this._graphics = this.buildSprite(graphics);

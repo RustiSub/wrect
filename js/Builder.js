@@ -2,6 +2,36 @@ var Builder = Class.extend({
 
   connectedClusters: [],
 
+  createLine: function (points) {
+    var graphics = new PIXI.Graphics();
+
+// begin a green fill...
+    graphics.beginFill(0x00FF00);
+
+// draw a triangle using lines
+    var startPoint;
+    for (var x = 0; x < points.length; x++) {
+      var point = points[x];
+      if (x === 0) {
+        console.log('moveTo', point.x, point.y);
+        graphics.moveTo(point.x, point.y);
+        startPoint = point;
+      }
+      else {
+        console.log('lineTo', point.x, point.y);
+        graphics.lineTo(point.x, point.y);
+      }
+    }
+
+    console.log('lineTo start', startPoint.x, startPoint.y);
+    graphics.lineTo(startPoint.x, startPoint.y);
+
+// end the fill
+    graphics.endFill();
+
+// add it the stage so we see it on our screens..
+    game.getEntityManager()._stage.addChild(graphics);
+  },
   createBorder: function (name, coords) {
     var width = coords.width;
     var height = coords.height;
@@ -141,6 +171,23 @@ var Builder = Class.extend({
       }
     }
 
+    for (var b = 0; b < this.connectedClusters.length; b++) {
+      var points = [];
+      var clusterBodies = this.connectedClusters[b].bodies;
+      for (var cp = 0; cp < clusterBodies.length; cp++) {
+        var connectionPoint = clusterBodies[cp].connectionPoint;
+        console.log(clusterBodies[cp].name);
+        var point = {
+          x: connectionPoint.x,
+          y: connectionPoint.y
+        };
+        console.log(point);
+        points.push(point);
+      }
+
+      this.createLine(points);
+    }
+
     console.log(this.connectedClusters);
   },
   getConnectedBodies: function(body, connectedBodies) {
@@ -158,19 +205,6 @@ var Builder = Class.extend({
     return connectedBodies;
   },
   buildConnections: function(bodies) {
-    //Check every entity for neighbouring entities
-    //This means they share pixels
-    //How do we check for shared pixels, given x,y, width, height
-    //-top left: x, y
-    //-top right: x + width, y
-    //-bottom right: x + width, y + height
-    //-bottom left: x + y + height
-    //Check each face of the block and intelligently ask other bodies if they have a face that contains these points
-
-    //When they share pixels, apply a connection drawing to mark them
-    //If there is a chain of connected entities, calculate the enclosing space
-    //Make a new entity of the enclosing space and give it special fill
-    var connectionCounter = 0;
     for (var x = 0; x < bodies.length; x++) {
       var mainBody = bodies[x];
 
@@ -202,20 +236,111 @@ var Builder = Class.extend({
           };
 
           if (face.p2.x >= matchingFace.p1.x && face.p1.x <= matchingFace.p2.x) {
-            //console.log(face.p2.x, matchingFace.p1.x);
-            //console.log(face.p1.x, matchingFace.p2.x);
             if (face.p2.y >= matchingFace.p1.y && face.p1.y <= matchingFace.p2.y) {
-              //console.log(face.p2.y, matchingFace.p1.y);
-              //console.log(face.p1.y, matchingFace.p2.y);
-              console.log('match!!!');
-              mainBody.connectedBodies.push(otherBody);
+
+              var connectingFace = {
+                first: {
+                  x: 0,
+                  y: 0
+                },
+                second: {
+                  x: 0,
+                  y: 0
+                }
+              };
+
+              var x1 = null;
+              var x2 = null;
+
+              //CALCULATE X
+              //P1-right <=> P2-left
+              if (face.p2.x === matchingFace.p1.x) {
+                x1 = face.p2.x;
+                x2 = face.p2.x;
+              }
+
+              //P1-left <=> P2-right
+              if (face.p1.x === matchingFace.p2.x) {
+                x1 = face.p1.x;
+                x2 = face.p1.x;
+              }
+
+              //P1-top <=> P2-bottom
+              if (face.p1.x <= matchingFace.p1.x) {
+                x1 = matchingFace.p1.x;
+              } else if (face.p1.x > matchingFace.p1.x) {
+                x1 = face.p1.x;
+              }
+
+              if (face.p2.x <= matchingFace.p2.x) {
+                x2 = face.p2.x;
+              } else if (face.p2.x > matchingFace.p2.x) {
+                x2 = matchingFace.p2.x;
+              }
+
+              //CALCULATE Y
+              var y1 = null;
+              var y2 = null;
+              //P1-right <=> P2-left
+              if (face.p2.y === matchingFace.p1.y) {
+                y1 = face.p2.y;
+                y2 = face.p2.y;
+              }
+
+              //P1-left <=> P2-right
+              if (face.p1.y === matchingFace.p2.y) {
+                y1 = face.p1.y;
+                y2 = face.p1.y;
+              }
+
+              //P1-top <=> P2-bottom
+              if (face.p1.y <= matchingFace.p1.y) {
+                y1 = matchingFace.p1.y;
+              } else if (face.p1.y > matchingFace.p1.y) {
+                y1 = face.p1.y;
+              }
+
+              if (face.p2.y <= matchingFace.p2.y) {
+                y2 = face.p2.y;
+              } else if (face.p2.y > matchingFace.p2.y) {
+                y2 = matchingFace.p2.y;
+              }
+
+              /*              mainBody.connectedBodies.push(otherBody);
+               mainBody.connectionPoint = {
+               x: face.x2.x,
+               y: face.x2.y
+               };
+               */
+
+              if (x1 !== null && x2 !== null) {
+                this.createLine(
+                    [
+                      {
+                        x: x1,
+                        y: y1
+                      },
+                      {
+                        x: x2,
+                        y: y2
+                      },
+                      {
+                        x: x2,
+                        y: y2 + 5
+                      },
+                      {
+                        x: x1,
+                        y: y1 + 5
+                      },
+                    ]
+                );
+              }
             }
-            //console.log(mainBody.name, otherBody.name);
           }
         }
       }
     }
 
-    this.buildConnectedClusters(bodies);
+    //this.buildConnectedClusters(bodies);
   }
 });
