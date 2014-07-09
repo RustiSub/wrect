@@ -2,6 +2,8 @@
  * @type {void|*}
  */
 var BaseEntity = Class.extend({
+    GRAPHICS_TYPE_GRAPHIC: 0,
+    GRAPHICS_TYPE_SPRITE: 1,
     /**
      * Whether or not to collide with other entities
      * @type Boolean
@@ -22,6 +24,7 @@ var BaseEntity = Class.extend({
     _graphics: {},
     _physics: {},
     _className: 'BaseEntity',
+    graphicsType: null,
 
     /**
      * @param {String} name Name of the entity. Used for identification purposes.
@@ -35,6 +38,13 @@ var BaseEntity = Class.extend({
         else {
             this._graphics = graphics;
             this._physics = new Physics();
+        }
+
+        if (this._graphics instanceof PIXI.Graphics) {
+            this.graphicsType = this.GRAPHICS_TYPE_GRAPHIC;
+        }
+        else if (this._graphics instanceof PIXI.Sprite) {
+            this.graphicsType = this.GRAPHICS_TYPE_SPRITE;
         }
     },
 
@@ -76,13 +86,26 @@ var BaseEntity = Class.extend({
     },
     toJSON: function() {
         var o = {};
+        o.specialParams = ['_graphics'];
+        o._graphics = {};
+        o._graphics.constructorParams = [];
+
+      // Build chain of stuff required to reconstruct a sprite
+        switch (this.graphicsType) {
+          case this.GRAPHICS_TYPE_GRAPHIC:
+            o._graphics.className = 'PIXI.Graphics'
+            break;
+          case this.GRAPHICS_TYPE_SPRITE:
+            o._graphics.className = 'PIXI.Sprite';
+            o._graphics.constructorParams.push(this._graphics.Sprite);
+            break;
+        }
         for (var x in this) {
-            if (typeof(this[x]) !== 'function') {
+            if (typeof(this[x]) !== 'function' && o.specialParams.indexOf(x) === -1) {
                 o[x] = this[x];
             }
         }
-console.log(o);
-      console.log(this._physics, o._physics);
+
         return (o);
     }
 });
