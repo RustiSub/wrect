@@ -93,11 +93,17 @@ var BaseEntity = Class.extend({
       // Build chain of stuff required to reconstruct a sprite
         switch (this.graphicsType) {
           case this.GRAPHICS_TYPE_GRAPHIC:
-            o._graphics.className = 'PIXI.Graphics'
+            o._graphics.className = 'PIXI.Graphics';
+            o._graphics.callbacks = {
+              beginFill: [this._graphics.currentPath.fillColor],
+              drawRect: this._graphics.currentPath.points,
+              endFill: []
+            };
             break;
           case this.GRAPHICS_TYPE_SPRITE:
             o._graphics.className = 'PIXI.Sprite';
-            o._graphics.constructorParams.push(this._graphics.Sprite);
+            o._graphics.constructorParams.push(this._graphics.texture);
+            o._graphics.callbacks = {};
             break;
         }
         for (var x in this) {
