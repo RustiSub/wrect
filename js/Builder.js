@@ -1,31 +1,43 @@
 var Builder = Class.extend({
-
-  connectedClusters: [],
   connectionFaces: [],
+  rooms: [],
 
-  createLine: function (points) {
-    var graphics = new PIXI.Graphics();
-
-// begin a green fill...
-    graphics.beginFill(0x00FF00, 0.5);
-
-// draw a triangle using lines
-    var startPoint;
-    for (var x = 0; x < points.length; x++) {
-      var point = points[x];
-      if (x === 0) {
-        graphics.moveTo(point.x, point.y);
-        startPoint = point;
-      }
-      else {
-        graphics.lineTo(point.x, point.y);
-      }
+  clearRooms: function() {
+    for (var x = 0; x < this.rooms.length; x++) {
+      this.rooms[x].clear();
+      game.getEntityManager()._stage.removeChild(this.rooms[x]);
     }
+    this.rooms = [];
+    this.connectionFaces = [];
+  },
+  createLine: function (points) {
+    if (points.length > 0) {
+      var graphics = new PIXI.Graphics();
 
-    graphics.lineTo(startPoint.x, startPoint.y);
-    graphics.endFill();
+  // begin a green fill...
+      graphics.beginFill(0x00FF00, 0.5);
 
-    game.getEntityManager()._stage.addChild(graphics);
+  // draw a triangle using lines
+      var startPoint;
+      for (var x = 0; x < points.length; x++) {
+        var point = points[x];
+        if (x === 0) {
+          graphics.moveTo(point.x, point.y);
+          startPoint = point;
+        }
+        else {
+          graphics.lineTo(point.x, point.y);
+        }
+      }
+
+
+      graphics.lineTo(startPoint.x, startPoint.y);
+      graphics.endFill();
+
+      game.getEntityManager()._stage.addChild(graphics);
+
+      this.rooms.push(graphics);
+    }
   },
   createBorder: function (name, coords) {
     var width = coords.width;
@@ -146,11 +158,14 @@ var Builder = Class.extend({
     return triangle;
   },
   drawConnectionFaces: function() {
-    var points = [];
-    var chain = [];
-    this.sortFaces(this.connectionFaces[0], chain, points);
-
-    this.createLine(points);
+    for (var f = 0; f < this.connectionFaces.length; f++) {
+      var points = [];
+      var chain = [];
+      if (!this.connectionFaces[f].chained) {
+        this.sortFaces(this.connectionFaces[f], chain, points);
+        this.createLine(points);
+      }
+    }
   },
   sortFaces: function(originFace, chain, points) {
     for (var f = 0; f < this.connectionFaces.length; f++) {
@@ -210,6 +225,7 @@ var Builder = Class.extend({
         points.push({x: closestPointX1, y:closestPointY1});
 
         chain.push(originFace);
+        originFace.chained = true;
         this.sortFaces(this.connectionFaces[f], chain, points);
         break;
       }
@@ -340,7 +356,8 @@ var Builder = Class.extend({
                   this.connectionFaces.push(
                       {
                         face: connectionFace,
-                        bodies: [mainBody.name, otherBody.name]
+                        bodies: [mainBody.name, otherBody.name],
+                        chained: false
                       }
                   )
                   ;
@@ -351,8 +368,6 @@ var Builder = Class.extend({
         }
       }
     }
-
-    //this.buildConnectedClusters(bodies);
     this.drawConnectionFaces();
   }
 });

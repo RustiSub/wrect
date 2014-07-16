@@ -55,6 +55,5 @@ var MovableEntity = BaseEntity.extend({
       }
 
       this.selected = !this.selected;
-      console.log(this.selected);
     }
 });
