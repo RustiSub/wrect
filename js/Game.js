@@ -92,9 +92,6 @@
                 if (inputHandler.key('a')) {
                   self.selectEntity('b1');
                 }
-                if (inputHandler.key('z')) {
-                  self.selectEntity('c1');
-                }
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
 

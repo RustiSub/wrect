@@ -21,6 +21,7 @@ var BaseEntity = Class.extend({
     },
     connectedBodies: [],
     connectionPoint: {},
+    connectionFaces: [],
     connected: false,
     _graphics: {},
     _physics: {},

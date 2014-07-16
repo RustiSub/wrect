@@ -1,26 +1,4 @@
-var collision = {
-  x: false,
-  y: false,
-  direction: {
-    x: 0,
-    y: 0
-  },
-  rest: {
-    x: false,
-    y: false
-  },
-};var collision2 = {
-  x: false,
-  y: false,
-  direction: {
-    x: 0,
-    y: 0
-  },
-  rest: {
-    x: false,
-    y: false
-  }
-};/**
+/**
  * @augments BaseEntity
  * @type {void|*}
  */
@@ -76,6 +54,7 @@ var MovableEntity = BaseEntity.extend({
         this.selectedGraphicsCallback();
       }
 
-      this.selected = true; //!this.selected;
+      this.selected = !this.selected;
+      console.log(this.selected);
     }
 });

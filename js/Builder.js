@@ -1,35 +1,30 @@
 var Builder = Class.extend({
 
   connectedClusters: [],
+  connectionFaces: [],
 
   createLine: function (points) {
     var graphics = new PIXI.Graphics();
 
 // begin a green fill...
-    graphics.beginFill(0x00FF00);
+    graphics.beginFill(0x00FF00, 0.5);
 
 // draw a triangle using lines
     var startPoint;
     for (var x = 0; x < points.length; x++) {
       var point = points[x];
       if (x === 0) {
-        console.log('moveTo', point.x, point.y);
         graphics.moveTo(point.x, point.y);
         startPoint = point;
       }
       else {
-        console.log('lineTo', point.x, point.y);
         graphics.lineTo(point.x, point.y);
       }
     }
 
-    console.log('lineTo start', startPoint.x, startPoint.y);
     graphics.lineTo(startPoint.x, startPoint.y);
-
-// end the fill
     graphics.endFill();
 
-// add it the stage so we see it on our screens..
     game.getEntityManager()._stage.addChild(graphics);
   },
   createBorder: function (name, coords) {
@@ -150,59 +145,75 @@ var Builder = Class.extend({
 
     return triangle;
   },
+  drawConnectionFaces: function() {
+    var points = [];
+    var chain = [];
+    this.sortFaces(this.connectionFaces[0], chain, points);
 
-  buildConnectedClusters: function(bodies) {
-    var clusterCounter = 0;
-    for (var x = 0; x < bodies.length; x++) {
-      var mainBody = bodies[x];
-      if (mainBody.connected) {
+    this.createLine(points);
+  },
+  sortFaces: function(originFace, chain, points) {
+    for (var f = 0; f < this.connectionFaces.length; f++) {
+      if (originFace === this.connectionFaces[f]) {
+        continue;
+      }
+      //No faces match
+      if (this.connectionFaces[f].bodies[0] !== originFace.bodies[1] && this.connectionFaces[f].bodies[1] !== originFace.bodies[1]) {
         continue;
       }
 
-      var connectedBodies = [];
-      connectedBodies = this.getConnectedBodies(mainBody, connectedBodies);
-      if (connectedBodies.length > 0) {
-        connectedBodies.push(mainBody);
-        clusterCounter += 1;
-        this.connectedClusters.push({
-          id: clusterCounter,
-          bodies: connectedBodies
-        });
-      }
-    }
+      if (chain.indexOf(originFace) === -1) {
+        var face = originFace.face;
+        var matchFace = this.connectionFaces[f].face;
 
-    for (var b = 0; b < this.connectedClusters.length; b++) {
-      var points = [];
-      var clusterBodies = this.connectedClusters[b].bodies;
-      for (var cp = 0; cp < clusterBodies.length; cp++) {
-        var connectionPoint = clusterBodies[cp].connectionPoint;
-        console.log(clusterBodies[cp].name);
-        var point = {
-          x: connectionPoint.x,
-          y: connectionPoint.y
-        };
-        console.log(point);
-        points.push(point);
-      }
+        //Check if first or second point is closer
+        var x1x1 = Math.abs(face.first.x - matchFace.first.x);
+        var x2x1 = Math.abs(face.second.x - matchFace.first.x);
 
-      this.createLine(points);
-    }
-
-    console.log(this.connectedClusters);
-  },
-  getConnectedBodies: function(body, connectedBodies) {
-    body.connected = true;
-    if (body.connectedBodies.length > 0) {
-      for (var x = 0; x < body.connectedBodies.length; x++) {
-        var connectedBody = body.connectedBodies[x];
-        if (!connectedBody.connected) {
-          connectedBodies.push(connectedBody);
-          this.getConnectedBodies(connectedBody, connectedBodies);
+        var closestPointX1;
+        if (x1x1 <= x2x1) {
+          closestPointX1 = face.first.x;
+        } else {
+          closestPointX1 = face.second.x;
         }
+
+        var xCx1 = closestPointX1 - matchFace.first.x;
+        var xCx2 = closestPointX1 - matchFace.second.x;
+
+        var closestPointX2;
+        if (xCx1 <= xCx2) {
+          closestPointX2 = matchFace.first.x;
+        } else {
+          closestPointX2 = matchFace.second.x;
+        }
+
+        var y1y1 = Math.abs(face.first.y - matchFace.first.y);
+        var y2y1 = Math.abs(face.second.y - matchFace.first.y);
+
+        var closestPointY1;
+        if (y1y1 <= y2y1) {
+          closestPointY1 = face.first.y;
+        } else {
+          closestPointY1 = face.second.y;
+        }
+
+        var yCy1 = closestPointY1 - matchFace.first.y;
+        var yCy2 = closestPointY1 - matchFace.second.y;
+
+        var closestPointY2;
+        if (yCy1 <= yCy2) {
+          closestPointY2 = matchFace.first.y;
+        } else {
+          closestPointY2 = matchFace.second.y;
+        }
+
+        points.push({x: closestPointX1, y:closestPointY1});
+
+        chain.push(originFace);
+        this.sortFaces(this.connectionFaces[f], chain, points);
+        break;
       }
     }
-
-    return connectedBodies;
   },
   buildConnections: function(bodies) {
     for (var x = 0; x < bodies.length; x++) {
@@ -237,17 +248,6 @@ var Builder = Class.extend({
 
           if (face.p2.x >= matchingFace.p1.x && face.p1.x <= matchingFace.p2.x) {
             if (face.p2.y >= matchingFace.p1.y && face.p1.y <= matchingFace.p2.y) {
-
-              var connectingFace = {
-                first: {
-                  x: 0,
-                  y: 0
-                },
-                second: {
-                  x: 0,
-                  y: 0
-                }
-              };
 
               var x1 = null;
               var x2 = null;
@@ -306,34 +306,45 @@ var Builder = Class.extend({
                 y2 = matchingFace.p2.y;
               }
 
-              /*              mainBody.connectedBodies.push(otherBody);
-               mainBody.connectionPoint = {
-               x: face.x2.x,
-               y: face.x2.y
-               };
-               */
+              var connectionFace = {
+                first: {
+                  x: x1,
+                  y: y1
+                },
+                second: {
+                  x: x2,
+                  y: y2
+                }
+              };
 
-              if (x1 !== null && x2 !== null) {
-                this.createLine(
-                    [
+              mainBody.connectedBodies.push({
+                body: otherBody,
+                face: connectionFace
+              });
+
+              if (this.connectionFaces.indexOf(connectionFace) === -1) {
+                var found = false;
+                for (var f = 0; f < this.connectionFaces.length; f++) {
+                  var existingFace = this.connectionFaces[f].face;
+
+                  found = existingFace.first.x === connectionFace.first.x;
+                  found = existingFace.first.y === connectionFace.first.y && found;
+                  found = existingFace.second.x === connectionFace.second.x && found;
+                  found = existingFace.second.y === connectionFace.second.y && found;
+                  if (found) {
+                    break;
+                  }
+                }
+
+                if (!found) {
+                  this.connectionFaces.push(
                       {
-                        x: x1,
-                        y: y1
-                      },
-                      {
-                        x: x2,
-                        y: y2
-                      },
-                      {
-                        x: x2,
-                        y: y2 + 5
-                      },
-                      {
-                        x: x1,
-                        y: y1 + 5
-                      },
-                    ]
-                );
+                        face: connectionFace,
+                        bodies: [mainBody.name, otherBody.name]
+                      }
+                  )
+                  ;
+                }
               }
             }
           }
@@ -342,5 +353,6 @@ var Builder = Class.extend({
     }
 
     //this.buildConnectedClusters(bodies);
+    this.drawConnectionFaces();
   }
 });
