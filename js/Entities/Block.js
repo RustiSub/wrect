@@ -15,16 +15,16 @@ var Block = MovableEntity.extend({
   move: function () {
     var inputHandler = Container.getComponent('InputHandler');
     if (inputHandler.key('left')) {
-      this.position.x -= 5;
+      this._physics.increaseSpeedX(-1);
     }
     if (inputHandler.key('right')) {
-      this.position.x += 5;
+      this._physics.increaseSpeedX(1);
     }
     if (inputHandler.key('up')) {
-      this.position.y -= 5;
+      this._physics.increaseSpeedY(-1);
     }
     if (inputHandler.key('down')) {
-      this.position.y += 5;
+      this._physics.increaseSpeedY(1);
     }
 
     //this._physics.applyFriction(this._graphics.position.y, this.height);

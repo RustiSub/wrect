@@ -15,7 +15,7 @@ var Builder = Class.extend({
       var graphics = new PIXI.Graphics();
 
   // begin a green fill...
-      graphics.beginFill(0x00FF00, 0.5);
+      graphics.beginFill(0x0000FF, 0.2);
 
   // draw a triangle using lines
       var startPoint;
@@ -163,7 +163,9 @@ var Builder = Class.extend({
       var chain = [];
       if (!this.connectionFaces[f].chained) {
         this.sortFaces(this.connectionFaces[f], chain, points);
-        this.createLine(points);
+        if (points.length >= 4) {
+          this.createLine(points);
+        }
       }
     }
   },
