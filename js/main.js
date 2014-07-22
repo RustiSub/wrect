@@ -200,7 +200,7 @@ function testRooms3Closed() {
 }
 
 function testRooms4Closed() {
-  var staticBlock1 = game._builder.createBlock('1', 55, 50, 500, 5, 0xFFFFFF);
+  var staticBlock1 = game._builder.createBlock('1', 55, 20, 500, 35, 0xFFFFFF);
   staticBlock1.frozen = true;
   game.addEntity(staticBlock1);
 
@@ -208,7 +208,7 @@ function testRooms4Closed() {
   staticBlock2.frozen = true;
   game.addEntity(staticBlock2);
 
-  var staticBlock5 = game._builder.createBlock('5', 600, 50, 200, 5, 0xFFFFFF);
+  var staticBlock5 = game._builder.createBlock('5', 600, 30, 200, 25, 0xFFFFFF);
   staticBlock5.frozen = true;
   game.addEntity(staticBlock5);
 
@@ -225,23 +225,36 @@ function testRooms4Closed() {
   game.addEntity(staticBlock8);
 }
 
+function testSpliceFaces1() {
+  var staticBlock3 = game._builder.createBlock('wall_bottom', 70, 500, 460, 20, 0xFFFFFF);
+  staticBlock3.frozen = true;
+  game.addEntity(staticBlock3);
+
+  var staticBlock4 = game._builder.createBlock('wall_right', 500, 70, 20, 500, 0xFFFFFF);
+  staticBlock4.frozen = true;
+  game.addEntity(staticBlock4);
+
+}
+
 window.onload = function() {
   game = new Game();
   //entity.applyGlue();
 
   //createFrame();
   //test1();
-  test2();
+  //test2();
   //test3();
   //testCollide1();
   //testCollide2();
   //testRooms1();
   //testRooms1();
   //testRooms2Closed();
-  testRooms3Closed();
+  //testRooms3Closed();
   //testRooms4Closed();
   //builderTest1();
+  testSpliceFaces1();
 
   game._builder.clearRooms();
   game._builder.buildConnections(game.getEntityManager().getAllEntities());
+  console.log(game._builder.connectionFaces);
 };

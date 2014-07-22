@@ -1,4 +1,5 @@
 var Builder = Class.extend({
+  connectionPoints: [],
   connectionFaces: [],
   rooms: [],
 
@@ -13,11 +14,8 @@ var Builder = Class.extend({
   createLine: function (points) {
     if (points.length > 0) {
       var graphics = new PIXI.Graphics();
+      graphics.beginFill(0xFF0000);
 
-  // begin a green fill...
-      graphics.beginFill(0x0000FF, 0.2);
-
-  // draw a triangle using lines
       var startPoint;
       for (var x = 0; x < points.length; x++) {
         var point = points[x];
@@ -99,36 +97,15 @@ var Builder = Class.extend({
     return block;
   },
 
-  createCircle: function (name) {
-    var radius = 20;
-    var circleGraphics = new PIXI.Graphics();
+  createCircle: function (point) {
+    var graphics = new PIXI.Graphics();
+    graphics.beginFill(0xFF0000, 1);
+    graphics.drawCircle(point.x, point.y, 2);
+    graphics.endFill();
 
-    var circle = new Block(name, circleGraphics);
-    circle.name = name;
-    circle.position = circleGraphics.position;
+    game.getEntityManager()._stage.addChild(graphics);
 
-    circle.baseGraphicsCallback = function() {
-      circleGraphics.beginFill(0x00FF00);
-      circleGraphics.drawCircle(0, 0, radius);
-      circleGraphics.endFill();
-    };
-
-    circle.selectedGraphicsCallback = function() {
-      circle._graphics.beginFill(0xFF0000, 90);
-      circle._graphics.drawCircle(0,0, radius + 1);
-      circle._graphics.endFill();
-
-      circle.baseGraphicsCallback();
-    };
-
-    circle.baseGraphicsCallback();
-
-    circle.size = {x: radius, y:radius};
-
-    circleGraphics.position.x = 120;
-    circleGraphics.position.y = 50;
-
-    return circle;
+    this.rooms.push(graphics);
   },
 
   createTriangle: function(name) {
@@ -233,7 +210,43 @@ var Builder = Class.extend({
       }
     }
   },
-  buildConnections: function(bodies) {
+  mapFace: function (mainBody, otherBody, connectionFace) {
+    mainBody.connectedBodies.push({
+      body: otherBody,
+      face: connectionFace
+    });
+
+    this.connectionPoints.push(connectionFace.first);
+    this.connectionPoints.push(connectionFace.second);
+
+    if (this.connectionFaces.indexOf(connectionFace) === -1) {
+      var found = false;
+      for (var f = 0; f < this.connectionFaces.length; f++) {
+        var existingFace = this.connectionFaces[f].face;
+
+        found = existingFace.first.x === connectionFace.first.x;
+        found = existingFace.first.y === connectionFace.first.y && found;
+        found = existingFace.second.x === connectionFace.second.x && found;
+        found = existingFace.second.y === connectionFace.second.y && found;
+        if (found) {
+          break;
+        }
+      }
+
+      if (!found) {
+        this.createCircle(connectionFace.first);
+        this.createCircle(connectionFace.second);
+
+        this.connectionFaces.push(
+            {
+              face: connectionFace,
+              bodies: [mainBody.name, otherBody.name],
+              chained: false
+            }
+        );
+      }
+    }
+  }, buildConnections: function(bodies) {
     for (var x = 0; x < bodies.length; x++) {
       var mainBody = bodies[x];
 
@@ -284,6 +297,7 @@ var Builder = Class.extend({
               }
 
               //P1-top <=> P2-bottom
+              var intersectsX = false;
               if (face.p1.x <= matchingFace.p1.x) {
                 x1 = matchingFace.p1.x;
               } else if (face.p1.x > matchingFace.p1.x) {
@@ -293,7 +307,12 @@ var Builder = Class.extend({
               if (face.p2.x <= matchingFace.p2.x) {
                 x2 = face.p2.x;
               } else if (face.p2.x > matchingFace.p2.x) {
-                x2 = matchingFace.p2.x;
+                if (face.p1.x <= matchingFace.p1.x) {
+                  intersectsX = true;
+                  x2 = matchingFace.p1.x;
+                } else {
+                  x2 = matchingFace.p2.x;
+                }
               }
 
               //CALCULATE Y
@@ -312,6 +331,7 @@ var Builder = Class.extend({
               }
 
               //P1-top <=> P2-bottom
+              var intersectsY = false;
               if (face.p1.y <= matchingFace.p1.y) {
                 y1 = matchingFace.p1.y;
               } else if (face.p1.y > matchingFace.p1.y) {
@@ -321,7 +341,12 @@ var Builder = Class.extend({
               if (face.p2.y <= matchingFace.p2.y) {
                 y2 = face.p2.y;
               } else if (face.p2.y > matchingFace.p2.y) {
-                y2 = matchingFace.p2.y;
+                if (face.p1.y <= matchingFace.p1.y) {
+                  intersectsY = true;
+                  y2 = matchingFace.p1.y;
+                } else {
+                  y2 = matchingFace.p2.y;
+                }
               }
 
               var connectionFace = {
@@ -335,41 +360,44 @@ var Builder = Class.extend({
                 }
               };
 
-              mainBody.connectedBodies.push({
-                body: otherBody,
-                face: connectionFace
-              });
+              if (intersectsY || intersectsX) {
+                this.mapFace(mainBody, otherBody, connectionFace);
+              }
 
-              if (this.connectionFaces.indexOf(connectionFace) === -1) {
-                var found = false;
-                for (var f = 0; f < this.connectionFaces.length; f++) {
-                  var existingFace = this.connectionFaces[f].face;
-
-                  found = existingFace.first.x === connectionFace.first.x;
-                  found = existingFace.first.y === connectionFace.first.y && found;
-                  found = existingFace.second.x === connectionFace.second.x && found;
-                  found = existingFace.second.y === connectionFace.second.y && found;
-                  if (found) {
-                    break;
+              if (intersectsY) {
+                var connectionFaceIntersectionY = {
+                  first: {
+                    x: x1,
+                    y: y1 + otherBody.size.y
+                  },
+                  second: {
+                    x: x2,
+                    y: y2 + otherBody.size.y
                   }
-                }
+                };
 
-                if (!found) {
-                  this.connectionFaces.push(
-                      {
-                        face: connectionFace,
-                        bodies: [mainBody.name, otherBody.name],
-                        chained: false
-                      }
-                  )
-                  ;
-                }
+//                this.mapFace(mainBody, otherBody, connectionFaceIntersectionY);
+              }
+
+              if (intersectsX) {
+                var connectionFaceIntersectionX = {
+                  first: {
+                    x: x1 + otherBody.size.x,
+                    y: y1
+                  },
+                  second: {
+                    x: x2 + otherBody.size.X,
+                    y: y2
+                  }
+                };
+
+//                this.mapFace(mainBody, otherBody, connectionFaceIntersectionX);
               }
             }
           }
         }
       }
     }
-    this.drawConnectionFaces();
+//    this.drawConnectionFaces();
   }
 });
