@@ -34,7 +34,7 @@ var Builder = Class.extend({
       graphics.lineTo(startPoint.x, startPoint.y);
       graphics.endFill();
 
-      game.getEntityManager()._stage.addChild(graphics);
+      game.getEntityManager()._stage.addChildAt(graphics, 0);
 
       this.rooms.push(graphics);
     }

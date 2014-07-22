@@ -231,17 +231,17 @@ window.onload = function() {
 
   //createFrame();
   //test1();
-  test2();
+  //test2();
   //test3();
   //testCollide1();
   //testCollide2();
   //testRooms1();
   //testRooms1();
   //testRooms2Closed();
-  testRooms3Closed();
-  //testRooms4Closed();
+  //testRooms3Closed();
+  testRooms4Closed();
   //builderTest1();
 
-  game._builder.clearRooms();
-  game._builder.buildConnections(game.getEntityManager().getAllEntities());
+  //game._builder.clearRooms();
+  //game._builder.buildConnections(game.getEntityManager().getAllEntities());
 };

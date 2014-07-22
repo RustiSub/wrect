@@ -92,8 +92,8 @@
                 if (inputHandler.key('a')) {
                   self.selectEntity('b1');
                 }
-//                self._builder.clearRooms();
-//                self._builder.buildConnections(game.getEntityManager().getAllEntities());
+                self._builder.clearRooms();
+                self._builder.buildConnections(game.getEntityManager().getAllEntities());
 
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
