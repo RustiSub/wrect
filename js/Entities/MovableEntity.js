@@ -6,6 +6,7 @@ var MovableEntity = BaseEntity.extend({
     selected: false,
     baseGraphicsCallback: {},
     selectedGraphicsCallback : {},
+    deselectGraphicsCallback: {},
     position: {},
     stats: {},
     frozen: true,
@@ -49,11 +50,19 @@ var MovableEntity = BaseEntity.extend({
         speed: 1
       }
     },
+    deselect: function() {
+      this.deselectGraphicsCallback();
+      this.selected = false;
+    },
+    select: function() {
+      this.selectedGraphicsCallback();
+      this.selected = true;
+    },
     toggleSelect: function()  {
-      if (!this.selected) {
-        this.selectedGraphicsCallback();
+      if (this.selected) {
+        this.deselect();
+      } else {
+        this.select();
       }
-
-      this.selected = !this.selected;
     }
 });

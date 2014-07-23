@@ -90,7 +90,7 @@
                 requestAnimationFrame(run);
                 var inputHandler = Container.getComponent('InputHandler');
                 if (inputHandler.key('a')) {
-                  self.selectEntity('b1');
+                  self.selectEntity();
                 }
                 self._builder.clearRooms();
                 self._builder.buildConnections(game.getEntityManager().getAllEntities());
@@ -119,8 +119,20 @@
             };
         },
 
-        selectEntity: function(name) {
-          this._entityManager.getEntityByName(name).toggleSelect();
+        selectEntity: function() {
+          var entities = this.getEntityManager().getAllEntities();
+          if (entities.length === 0) {
+            return false;
+          }
+          if (this._builder.selectedEntityIndex >= entities.length - 1) {
+            this._builder.selectedEntityIndex = -1;
+          }
+          this._builder.selectedEntityIndex += 1;
+
+          var entity = entities[this._builder.selectedEntityIndex];
+
+          this.getEntityManager().deselectAll()
+          entity.select();
         },
 
         applyForce: function(multiplier) {

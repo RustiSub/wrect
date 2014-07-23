@@ -1,6 +1,23 @@
 var Builder = Class.extend({
   connectionFaces: [],
   rooms: [],
+  selectedEntityIndex: -1,
+
+  moveBuilderBlock: function(builderBlock) {
+    var inputHandler = Container.getComponent('InputHandler');
+    if (inputHandler.key('left')) {
+      builderBlock.position.x -= 2;
+    }
+    if (inputHandler.key('right')) {
+      builderBlock.position.x += 2;
+    }
+    if (inputHandler.key('up')) {
+      builderBlock.position.y -= 2;
+    }
+    if (inputHandler.key('down')) {
+      builderBlock.position.y += 2;
+    }
+  },
 
   clearRooms: function() {
     for (var x = 0; x < this.rooms.length; x++) {
@@ -84,6 +101,11 @@ var Builder = Class.extend({
       block._graphics.drawRect(0 - 1, 0- 1, width + 2, height + 2);
       block._graphics.endFill();
 
+      block.baseGraphicsCallback();
+    };
+
+    block.deselectGraphicsCallback = function() {
+      block._graphics.clear();
       block.baseGraphicsCallback();
     };
 

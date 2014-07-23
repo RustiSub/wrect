@@ -1,6 +1,6 @@
 var InputHandler = Class.extend({
   _pressed: [],
-  _pressedDown: [],
+  _registeredPressed: [],
   _keys: {
     BACKSPACE: 8,
     TAB:       9,
@@ -21,6 +21,9 @@ var InputHandler = Class.extend({
     A:        65, B: 66, C: 67, D: 68, E: 69, F: 70, G: 71, H: 72, I: 73, J: 74, K: 75, L: 76, M: 77, N: 78, O: 79, P: 80, Q: 81, R: 82, S: 83, T: 84, U: 85, V: 86, W: 87, X: 88, Y: 89, Z: 90,
     TILDA:    192
   },
+  _singleInputKeys: [
+    65
+  ],
   _keysToCapture: [],
   init: function(containerId){
     var captureScope = window;
@@ -41,10 +44,6 @@ var InputHandler = Class.extend({
         && this._pressed.indexOf(event.keyCode) === -1) {
       this._pressed.push(event.keyCode);
 
-      if (this._pressedDown.indexOf(event.keyCode) === -1) {
-        this._pressedDown.push(event.keyCode);
-      }
-
       event.preventDefault();
     }
   },
@@ -53,14 +52,26 @@ var InputHandler = Class.extend({
     if ((index = this._pressed.indexOf(event.keyCode)) !== -1) {
       this._pressed.splice(index, 1);
 
-      if ((index = this._pressedDown.indexOf(event.keyCode)) !== -1) {
-        this._pressedDown.splice(index, 1);
+      if ((this._singleInputKeys.indexOf(event.keyCode) !== -1) && (index = this._registeredPressed.indexOf(event.keyCode)) !== -1) {
+        this._registeredPressed.splice(index, 1);
       }
+
       event.preventDefault();
     }
   },
   key: function(keyName) {
     var keyCode = this._keys[keyName.toUpperCase()];
-    return this._pressed.indexOf(keyCode) != -1;
+    var keyFound = this._pressed.indexOf(keyCode) != -1;
+
+    if (this._singleInputKeys.indexOf(keyCode) === -1) {
+      return keyFound;
+    }
+
+    if (keyFound && this._registeredPressed.indexOf(keyCode) === -1) {
+      this._registeredPressed.push(keyCode);
+      return keyFound;
+    }
+
+    return false;
   }
 });

@@ -85,5 +85,10 @@ var EntityManager = Class.extend({
         for (var i = 0; i < this._entities.length; i++) {
             this._entities[i].update();
         }
+    },
+    deselectAll: function() {
+      for (var i = 0; i < this._entities.length; i++) {
+        this._entities[i].deselect();
+      }
     }
 });

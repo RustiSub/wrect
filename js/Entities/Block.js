@@ -13,20 +13,6 @@ var Block = MovableEntity.extend({
     this.setGraphics(graphics);
   },
   move: function () {
-    var inputHandler = Container.getComponent('InputHandler');
-    if (inputHandler.key('left')) {
-      this._physics.increaseSpeedX(-1);
-    }
-    if (inputHandler.key('right')) {
-      this._physics.increaseSpeedX(1);
-    }
-    if (inputHandler.key('up')) {
-      this._physics.increaseSpeedY(-1);
-    }
-    if (inputHandler.key('down')) {
-      this._physics.increaseSpeedY(1);
-    }
-
     //this._physics.applyFriction(this._graphics.position.y, this.height);
   }, update: function(){
     this._super();
@@ -35,7 +21,8 @@ var Block = MovableEntity.extend({
     this._graphics.position.y += this._physics.calculateSpeedY();
 
     if (this.selected) {
-      this.move();
+      //console.log(this);
+      game._builder.moveBuilderBlock(this);
     }
   },
   applyGlue: function() {
