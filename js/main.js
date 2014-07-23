@@ -6,8 +6,8 @@ function test1() {
   var block = game._builder.createBlock('b1', 350, 60, 20, 20);
   block.frozen = false;
   game.addEntity(block);
-  block._physics.xSpeed = 0;
-  block._physics.ySpeed = 5;
+  block._physics.xSpeed = 5;
+  block._physics.ySpeed = 10;
 }
 
 function test2() {
@@ -215,6 +215,7 @@ function testRooms4Closed() {
 
 function builderTest1() {
   testRooms3Closed();
+  test1();
 }
 
 window.onload = function() {
