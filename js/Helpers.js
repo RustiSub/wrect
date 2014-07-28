@@ -55,7 +55,7 @@
               var specialParam = new constr();
               for (var y in jso.callbacks) {
                 if (specialParam[y] !== undefined && typeof specialParam[y] === 'function') {
-                  specialParam[y](jso.callbacks[y])
+                  specialParam[y].apply(specialParam, jso[y].callbacks);
                 }
               }
             }
