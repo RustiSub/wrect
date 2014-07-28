@@ -90,21 +90,21 @@ var BaseEntity = Class.extend({
         o._graphics = {};
         o._graphics.constructorParams = [];
 
-      // Build chain of stuff required to reconstruct a sprite
+        // Build chain of stuff required to reconstruct a sprite
         switch (this.graphicsType) {
-          case this.GRAPHICS_TYPE_GRAPHIC:
-            o._graphics.className = 'PIXI.Graphics';
-            o._graphics.callbacks = {
-              beginFill: [this._graphics.currentPath.fillColor],
-              drawRect: this._graphics.currentPath.points,
-              endFill: []
-            };
-            break;
-          case this.GRAPHICS_TYPE_SPRITE:
-            o._graphics.className = 'PIXI.Sprite';
-            o._graphics.constructorParams.push(this._graphics.texture);
-            o._graphics.callbacks = {};
-            break;
+            case this.GRAPHICS_TYPE_GRAPHIC:
+                o._graphics.className = 'PIXI.Graphics';
+                o._graphics.callbacks = {
+                  beginFill: [this._graphics.currentPath.fillColor],
+                  drawRect: this._graphics.currentPath.points,
+                  endFill: []
+                };
+                break;
+                case this.GRAPHICS_TYPE_SPRITE:
+                  o._graphics.className = 'PIXI.Sprite';
+                  o._graphics.constructorParams.push(this._graphics.texture);
+                  o._graphics.callbacks = {};
+                  break;
         }
         for (var x in this) {
             if (typeof(this[x]) !== 'function' && o.specialParams.indexOf(x) === -1) {
@@ -112,6 +112,6 @@ var BaseEntity = Class.extend({
             }
         }
 
-        return (o);
+        return o;
     }
 });
