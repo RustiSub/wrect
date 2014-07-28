@@ -14,7 +14,7 @@ window.BaseLevel = Class.extend({
         var a = document.createElement('a');
         a.href = window.URL.createObjectURL(blob);
         a.download = this.getFullLevelName();
-        console.log(a);
+        //console.log(a);
     },
     getFullLevelName: function() {
         return 'Level' + this.name;
@@ -39,7 +39,8 @@ window.BaseLevel = Class.extend({
         for (var i = 0; i < data.entities.length; i++) {
             var entityObject = data.entities[i];
             // TODO: this will break as soon as we namespace. Possibly we can store the whole namespace inside localStorage and split it to separate components?
-            var entity = Helpers.buildObjectFromJso(entityObject);
+            var entity = window.Helpers.buildObjectFromJso(entityObject);
+            //console.log(entity);
             //entity._physics = new window[entityObject._physics._className]();
             this.entities.push(entity);
         }

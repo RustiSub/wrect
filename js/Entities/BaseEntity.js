@@ -31,21 +31,16 @@ var BaseEntity = Class.extend({
      * @param {PIXI.Sprite|PIXI.Graphics|String} graphics. Object or path to sprite to use for graphical representation.
      */
     init: function(name, graphics) {
-        this.name = name;
-        if (typeof graphics === 'string') {
-            this._graphics = this.buildSprite(graphics);
+        if (name) {
+            this.setName(name);
         }
-        else {
-            this._graphics = graphics;
-            this._physics = new Physics();
+        if (graphics) {
+            this.setGraphics(graphics);
         }
+    },
 
-        if (this._graphics instanceof PIXI.Graphics) {
-            this.graphicsType = this.GRAPHICS_TYPE_GRAPHIC;
-        }
-        else if (this._graphics instanceof PIXI.Sprite) {
-            this.graphicsType = this.GRAPHICS_TYPE_SPRITE;
-        }
+    setName: function(name) {
+        this.name = name;
     },
 
     /**
@@ -73,8 +68,20 @@ var BaseEntity = Class.extend({
     },
 
     setGraphics: function(graphics) {
-      this._physics = new Physics();
-      this._graphics = graphics;
+        if (typeof graphics === 'string') {
+            this._graphics = this.buildSprite(graphics);
+        }
+        else {
+            this._graphics = graphics;
+            this._physics = new Physics();
+        }
+
+        if (this._graphics instanceof PIXI.Graphics) {
+            this.graphicsType = this.GRAPHICS_TYPE_GRAPHIC;
+        }
+        else if (this._graphics instanceof PIXI.Sprite) {
+            this.graphicsType = this.GRAPHICS_TYPE_SPRITE;
+        }
     },
 
     getGraphics: function() {
@@ -86,11 +93,11 @@ var BaseEntity = Class.extend({
     },
     toJSON: function() {
         var o = {};
-        o.specialParams = ['_graphics'];
+        o.specialParams = ['_graphics', '_physics'];
         o._graphics = {};
         o._graphics.constructorParams = [];
 
-        // Build chain of stuff required to reconstruct a sprite
+        // TODO: Build chain of stuff required to reconstruct a sprite (callbacks)
         switch (this.graphicsType) {
             case this.GRAPHICS_TYPE_GRAPHIC:
                 o._graphics.className = 'PIXI.Graphics';
@@ -106,6 +113,10 @@ var BaseEntity = Class.extend({
                   o._graphics.callbacks = {};
                   break;
         }
+        o._physics = {};
+        o._physics.constructorParams = [];
+        o._physics.callbacks = {};
+        o._physics.className = 'Physics';
         for (var x in this) {
             if (typeof(this[x]) !== 'function' && o.specialParams.indexOf(x) === -1) {
                 o[x] = this[x];

@@ -10,7 +10,7 @@ var Block = MovableEntity.extend({
 
   init: function(name, graphics) {
     this._super(name, graphics);
-    this.setGraphics(graphics);
+    //this.setGraphics(graphics);
   },
   move: function () {
     var inputHandler = Container.getComponent('InputHandler');
@@ -34,7 +34,6 @@ var Block = MovableEntity.extend({
     if (this.selected) {
       this.move();
     }
-
     this._graphics.position.x += this._physics.calculateSpeedX();
     this._graphics.position.y += this._physics.calculateSpeedY();
   },
