@@ -90,7 +90,10 @@
                 requestAnimationFrame(run);
                 var inputHandler = Container.getComponent('InputHandler');
                 if (inputHandler.key('a')) {
-                  self.selectEntity();
+                  self.selectEntity(-1);
+                }
+                if (inputHandler.key('z')) {
+                  self.selectEntity(1);
                 }
                 self._builder.clearRooms();
                 self._builder.buildConnections(game.getEntityManager().getAllEntities());
@@ -119,20 +122,24 @@
             };
         },
 
-        selectEntity: function() {
+        selectEntity: function(direction) {
           var entities = this.getEntityManager().getAllEntities();
           if (entities.length === 0) {
             return false;
           }
-          if (this._builder.selectedEntityIndex >= entities.length - 1) {
+          if (direction === 1 && this._builder.selectedEntityIndex >= entities.length - 1) {
             this._builder.selectedEntityIndex = -1;
           }
-          this._builder.selectedEntityIndex += 1;
+          if (direction === -1 && this._builder.selectedEntityIndex <= 0) {
+            this._builder.selectedEntityIndex = entities.length;
+          }
+          this._builder.selectedEntityIndex += direction;
 
           var entity = entities[this._builder.selectedEntityIndex];
 
           this.getEntityManager().deselectAll()
           entity.select();
+          return true;
         },
 
         applyForce: function(multiplier) {

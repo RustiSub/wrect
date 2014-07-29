@@ -98,24 +98,24 @@ function testCollide2() {
 }
 
 function testRooms1() {
-  var staticBlock1 = game._builder.createBlock('wall_left', 300, 100, 20, 100, 0xFFFFFF);
+  var staticBlock1 = game._builder.createBlock('wall_left', 300, 300, 20, 100, 0xFFFFFF);
   staticBlock1.frozen = true;
   game.addEntity(staticBlock1);
 
-  var staticBlock2 = game._builder.createBlock('wall_top', 300, 200, 400, 20, 0xFFFFFF);
+  var staticBlock2 = game._builder.createBlock('wall_top', 300, 280, 400, 20, 0xFFFFFF);
   staticBlock2.frozen = true;
   game.addEntity(staticBlock2);
 
-  var staticBlock4 = game._builder.createBlock('wall_bottom', 320, 350, 400, 20, 0xFFFFFF);
+  var staticBlock4 = game._builder.createBlock('wall_bottom', 320, 360, 400, 20, 0xFFFFFF);
   staticBlock4.frozen = true;
   game.addEntity(staticBlock4);
 
-  var staticBlock5 = game._builder.createBlock('wall_bottom2', 720, 350, 20, 60, 0xFFFFFF);
+  var staticBlock5 = game._builder.createBlock('wall_right', 680, 300, 20, 60, 0xFFFFFF);
   staticBlock4.frozen = true;
   game.addEntity(staticBlock5);
 
-  var staticBlock6 = game._builder.createBlock('wall_bottom3', 740, 380, 80, 20, 0xFFFFFF);
-  staticBlock4.frozen = true;
+  var staticBlock6 = game._builder.createBlock('wall_left2', 500, 300, 20, 100, 0xFFFFFF);
+  staticBlock6.frozen = true;
   game.addEntity(staticBlock6);
 }
 
@@ -229,11 +229,12 @@ window.onload = function() {
   //testCollide1();
   //testCollide2();
   //testRooms1();
-  //testRooms1();
+  testRooms1();
   //testRooms2Closed();
   //testRooms3Closed();
   //testRooms4Closed();
-  builderTest1();
+  //builderTest1();
+  //testRooms1();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());

@@ -22,7 +22,8 @@ var InputHandler = Class.extend({
     TILDA:    192
   },
   _singleInputKeys: [
-    65
+    65,
+    90
   ],
   _keysToCapture: [],
   init: function(containerId){

@@ -4,18 +4,20 @@ var Builder = Class.extend({
   selectedEntityIndex: -1,
 
   moveBuilderBlock: function(builderBlock) {
+    builderBlock._physics.xSpeed = 0;
+    builderBlock._physics.ySpeed = 0;
     var inputHandler = Container.getComponent('InputHandler');
     if (inputHandler.key('left')) {
-      builderBlock.position.x -= 2;
+      builderBlock._physics.xSpeed -= 1;
     }
     if (inputHandler.key('right')) {
-      builderBlock.position.x += 2;
+      builderBlock._physics.xSpeed += 1;
     }
     if (inputHandler.key('up')) {
-      builderBlock.position.y -= 2;
+      builderBlock._physics.ySpeed -= 1;
     }
     if (inputHandler.key('down')) {
-      builderBlock.position.y += 2;
+      builderBlock._physics.ySpeed += 1;
     }
   },
 
@@ -30,11 +32,8 @@ var Builder = Class.extend({
   createLine: function (points) {
     if (points.length > 0) {
       var graphics = new PIXI.Graphics();
-
-  // begin a green fill...
       graphics.beginFill(0x0000FF, 0.2);
 
-  // draw a triangle using lines
       var startPoint;
       for (var x = 0; x < points.length; x++) {
         var point = points[x];
@@ -97,11 +96,11 @@ var Builder = Class.extend({
     };
 
     block.selectedGraphicsCallback = function() {
-      block._graphics.beginFill(0xFF0000);
+      block.baseGraphicsCallback();
+
+      block._graphics.beginFill(0x00FF00);
       block._graphics.drawRect(0 - 1, 0- 1, width + 2, height + 2);
       block._graphics.endFill();
-
-      block.baseGraphicsCallback();
     };
 
     block.deselectGraphicsCallback = function() {
@@ -121,87 +120,62 @@ var Builder = Class.extend({
     return block;
   },
 
-  createCircle: function (name) {
-    var radius = 20;
-    var circleGraphics = new PIXI.Graphics();
+  createCircle: function (point) {
+      var graphics = new PIXI.Graphics();
+      graphics.beginFill(0xFF0000, 1);
 
-    var circle = new Block(name, circleGraphics);
-    circle.name = name;
-    circle.position = circleGraphics.position;
+      graphics.drawCircle(point.x, point.y, 2);
+      graphics.endFill();
 
-    circle.baseGraphicsCallback = function() {
-      circleGraphics.beginFill(0x00FF00);
-      circleGraphics.drawCircle(0, 0, radius);
-      circleGraphics.endFill();
-    };
+      game.getEntityManager()._stage.addChildAt(graphics, game.getEntityManager()._stage.children.length);
 
-    circle.selectedGraphicsCallback = function() {
-      circle._graphics.beginFill(0xFF0000, 90);
-      circle._graphics.drawCircle(0,0, radius + 1);
-      circle._graphics.endFill();
-
-      circle.baseGraphicsCallback();
-    };
-
-    circle.baseGraphicsCallback();
-
-    circle.size = {x: radius, y:radius};
-
-    circleGraphics.position.x = 120;
-    circleGraphics.position.y = 50;
-
-    return circle;
-  },
-
-  createTriangle: function(name) {
-    var color = typeof color !== 'undefined' ? color : 0xFFFFFF;
-
-    var graphics = new PIXI.Graphics();
-
-    var triangle = new Triangle(name, graphics);
-    triangle.name = name;
-    triangle.position = graphics.position;
-
-    triangle.baseGraphicsCallback = function() {
-      triangle._graphics.beginFill(color);
-      triangle._graphics.lineTo(20,20);
-      triangle._graphics.endFill();
-    };
-
-    triangle.baseGraphicsCallback();
-
-    triangle.size = {x: width, y: height};
-
-    graphics.position.x = x;
-    graphics.position.y = y;
-
-    triangle.frozen = false;
-
-    return triangle;
+      this.rooms.push(graphics);
   },
   drawConnectionFaces: function() {
     for (var f = 0; f < this.connectionFaces.length; f++) {
       var points = [];
       var chain = [];
       if (!this.connectionFaces[f].chained) {
-        this.sortFaces(this.connectionFaces[f], chain, points);
+        this.sortFaces(null, this.connectionFaces[f], chain, points);
         if (points.length >= 4) {
           this.createLine(points);
         }
       }
+      break;
     }
   },
-  sortFaces: function(originFace, chain, points) {
+  sortFaces: function(previousFace, originFace, chain, points) {
+
     for (var f = 0; f < this.connectionFaces.length; f++) {
+      if (previousFace != null && previousFace === this.connectionFaces[f]) {
+        continue;
+      }
+      if (chain.indexOf(originFace) !== -1) {
+        continue;
+      }
       if (originFace === this.connectionFaces[f]) {
         continue;
       }
+      var matchIndexFirst = -1;
+      var matchIndexSecond = -1;
       //No faces match
-      if (this.connectionFaces[f].bodies[0] !== originFace.bodies[1] && this.connectionFaces[f].bodies[1] !== originFace.bodies[1]) {
-        continue;
+      if (originFace.bodies[1] === this.connectionFaces[f].bodies[0] ) {
+        matchIndexFirst = 0;
+      }
+      if (originFace.bodies[1] === this.connectionFaces[f].bodies[1] ) {
+        matchIndexFirst = 1;
+      }
+      if (originFace.bodies[0] === this.connectionFaces[f].bodies[0] ) {
+        matchIndexSecond = 0;
+      }
+      if (originFace.bodies[0] === this.connectionFaces[f].bodies[1] ) {
+        matchIndexSecond = 1;
       }
 
-      if (chain.indexOf(originFace) === -1) {
+      if (matchIndexFirst === -1 && matchIndexSecond === -1) {
+        continue;
+      }
+      if (chain.indexOf(originFace) === -1 && chain.indexOf(this.connectionFaces[f] === -1)) {
         var face = originFace.face;
         var matchFace = this.connectionFaces[f].face;
 
@@ -250,7 +224,11 @@ var Builder = Class.extend({
 
         chain.push(originFace);
         originFace.chained = true;
-        this.sortFaces(this.connectionFaces[f], chain, points);
+        originFace.chainCount += 1;
+
+        this.connectionFaces[f].chainCount += 1;
+
+        this.sortFaces(originFace, this.connectionFaces[f], chain, points);
         break;
       }
     }
@@ -377,11 +355,14 @@ var Builder = Class.extend({
                 }
 
                 if (!found) {
+                  this.createCircle(connectionFace.first);
+                  this.createCircle(connectionFace.second);
                   this.connectionFaces.push(
                       {
                         face: connectionFace,
                         bodies: [mainBody.name, otherBody.name],
-                        chained: false
+                        chained: false,
+                        chainCount: 0
                       }
                   )
                   ;
