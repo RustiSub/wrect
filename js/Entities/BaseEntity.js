@@ -93,7 +93,7 @@ var BaseEntity = Class.extend({
     },
     toJSON: function() {
         var o = {};
-        o.specialParams = ['_graphics', '_physics'];
+        o.specialParams = ['_graphics'];
         o._graphics = {};
         o._graphics.constructorParams = [];
 
@@ -113,10 +113,7 @@ var BaseEntity = Class.extend({
                   o._graphics.callbacks = {};
                   break;
         }
-        o._physics = {};
-        o._physics.constructorParams = [];
-        o._physics.callbacks = {};
-        o._physics.className = 'Physics';
+
         for (var x in this) {
             if (typeof(this[x]) !== 'function' && o.specialParams.indexOf(x) === -1) {
                 o[x] = this[x];

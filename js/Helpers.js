@@ -46,55 +46,39 @@
         },
 
         buildObjectFromJso: function(jso) {
-            if (jso._className !== undefined) {
-                //if (jso.specialParams !== undefined) {
-                var constructorFunction = this.getFunctionFromString(jso._className);
-                //console.log(constructorFunction);
+            if (jso.className !== undefined) {
+                var constructorFunction = this.getFunctionFromString(jso.className);
+                // TODO: implement constructor params from jso
                 var classInstance = new constructorFunction();
-                for (var x in jso) {
-                    if (jso[x] !== undefined) {
-                        if (jso.specialParams !== undefined && jso.specialParams.indexOf(x) !== -1) {
-                            var specialProp = jso[x];
-                            var specialPropConstrFunction = this.getFunctionFromString(specialProp.className);
-                            // TODO: implement constructor params from jso
-                            var specialPropInstance = new specialPropConstrFunction();
-                            for (var y in specialProp.callbacks) {
-                                if (typeof specialProp[y] === 'function') {
-                                    specialPropInstance[y].apply(specialPropInstance, specialProp[y].callbacks[y]);
-                                }
-                            }
-                            classInstance[x] = specialPropInstance;
-                            console.log(specialPropInstance, x);
-                        }
-                        else if (x !== 'specialParams') {
-                            classInstance[x] = jso[x];
-                        }
+                for (var y in jso.callbacks) {
+                    if (typeof classInstance[y] === 'function') {
+                      classInstance[y].apply(classInstance, jso.callbacks[y]);
                     }
                 }
-                console.log(classInstance instanceof window.Block);
 
                 return classInstance;
             }
 
             return null;
-            /*if (jso._className !== undefined) {
-             console.log(jso._className);
-             var entity = Object.create(window[jso._className].prototype);
-             for (var x in jso) {
-             var prop = jso[x];
-             if (prop._className !== undefined) {
-             prop = this.buildObjectFromProperties(prop);
-             }
-             else {
-             console.info('No classname found on ', x);
-             }
-             entity[x] = prop;
-             }
-             console.log(entity);
-             return entity;
-             }*/
+        },
 
-
+        buildEntityFromJso: function(jso) {
+          if (jso._className !== undefined) {
+            var constrFunc = this.getFunctionFromString(jso._className);
+            var entity = Object.create(constrFunc.prototype);
+            for (var x in jso) {
+              var prop = jso[x];
+              console.log(jso.specialParams, x, jso.specialParams.indexOf(x));
+              if (jso.specialParams.indexOf(x) !== -1) {
+                entity[x] = this.buildObjectFromJso(prop);
+              }
+              else {
+                entity[x] = prop;
+              }
+            }
+            console.log(entity);
+            return entity;
+          }
         },
 
         getFunctionFromString: function (ns, o) {
