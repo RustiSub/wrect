@@ -97,8 +97,8 @@
                 }
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
+                self._inputHandler.update();
 
-              
                 renderer.render(stage);
             }
         },
