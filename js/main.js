@@ -106,6 +106,48 @@ function testCollide2() {
   game.addEntity(block2);
   block2._physics.xSpeed = 4;
 }
+
+function addGui() {
+    var htmlBtn = document.createElement("button");
+    htmlBtn.id = 'fullscreen';
+    var fullscreenButton = new window.BaseGui();
+    var container = document.querySelector('.canvasContainer');
+    fullscreenButton.setHtmlElement(htmlBtn);
+    fullscreenButton.setCss({
+        display: 'block',
+        "background": "url('resources/gui/maximize.png') no-repeat",
+        height: '24px',
+        width: '24px',
+        bottom: '0',
+        right: '0',
+        position: 'absolute'
+    });
+    fullscreenButton.addEvent('click', function() {
+        DoFullScreen(container);
+    });
+    game.getGuiManager().addElement(fullscreenButton, container);
+
+}
+
+function DoFullScreen(element) {
+    var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !==     null) ||    // alternative standard method
+        (document.mozFullScreen || document.webkitIsFullScreen);
+
+    var docElm = element ? element : document.documentElement;
+    if (!isInFullScreen) {
+
+        if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+        }
+        else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+        }
+        else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+        }
+    }
+}
+
 window.onload = function() {
   game = new Game();
 //  entity.applyGlue();
@@ -116,4 +158,6 @@ window.onload = function() {
   test3();
   //testCollide1();
   //testCollide2();
+
+  addGui();
 };

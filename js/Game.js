@@ -9,6 +9,7 @@
             helpersClass: Helpers,
             entityManagerClass: EntityManager,
             collisionManagerClass: CollisionManager,
+            guiManagerClass: window.GuiManager,
             gravityManagerClass: GravityManager,
             builder: Builder,
             width: 1280,
@@ -32,7 +33,10 @@
             return this._entityManager;
         },
         getCollisionManager: function() {
-          return this._collisionManager;
+            return this._collisionManager;
+        },
+        getGuiManager: function() {
+            return this._guiManager;
         },
 
         /**
@@ -58,6 +62,7 @@
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
+            this._guiManager = new this._options.guiManagerClass();
             this._gravityManager = new this._options.gravityManagerClass();
             this._builder = new this._options.builder();
 
@@ -83,7 +88,7 @@
             var renderer = this.getRenderer();
             var self = this;
 
-            global.document.body.appendChild(renderer.view);
+            global.document.body.querySelector('.canvasContainer').appendChild(renderer.view);
             requestAnimationFrame(run);
 
             function run() {
@@ -98,7 +103,7 @@
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
 
-              
+
                 renderer.render(stage);
             }
         },

@@ -12,3 +12,19 @@ canvas {
 	background-color: transparent;
 	position: absolute;
 }
+.canvasContainer:-moz-full-screen .canvas {
+	width: 100%;
+	height: 100%;
+}
+
+.canvasContainer {
+	position: relative;
+	width: 1280px;
+	height: 720px;
+}
+
+button {
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
