@@ -123,7 +123,7 @@
                     }
                 }
                 else {
-                    console.info('Player at index ' + playerIndex + ' does not exist.');
+                    //console.info('Player at index ' + playerIndex + ' does not exist.');
                 }
             }
             return false;
@@ -136,14 +136,14 @@
                 if (this.currentGamepadState[playerIndex] !== undefined) {
                     var axisCode = this._gamepadAxisMap[axisName.toUpperCase()];
                     if (this._gamepadAxisMap[axisName.toUpperCase()] !== undefined) {
-                        return this.currentGamepadState[playerIndex].axes[axisCode].toFixed(4);
+                        return parseFloat(this.currentGamepadState[playerIndex].axes[axisCode].toFixed(4));
                     }
                     else {
                         console.info('Axis "' + axisName + '" Is not mapped. Did you make a typo?');
                     }
                 }
                 else {
-                    console.info('Player at index ' + playerIndex + ' does not exist.');
+                    //console.info('Player at index ' + playerIndex + ' does not exist.');
                 }
             }
             return false;

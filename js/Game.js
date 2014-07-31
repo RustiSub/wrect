@@ -89,10 +89,10 @@
             function run() {
                 requestAnimationFrame(run);
                 var inputHandler = Container.getComponent('InputHandler');
-                if (inputHandler.key('a')) {
+                if (inputHandler.key('a') || inputHandler.gamepadButton('A')) {
                   self.selectEntity('b1');
                 }
-                if (inputHandler.key('z')) {
+                if (inputHandler.key('z') || inputHandler.gamepadButton('B')) {
                   self.selectEntity('c1');
                 }
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
