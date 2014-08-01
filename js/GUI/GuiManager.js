@@ -6,10 +6,10 @@
 
         },
         addElement: function(guiElement, container) {
-            if (guiElement instanceof BaseGui) {
+            if (guiElement instanceof window.BaseGui) {
                 this.elements.push(guiElement);
                 if (container === undefined) {
-                    container = document.body;
+                    container = window.Container.getComponent('Renderer').view.parentNode;
                 }
                 container.appendChild(guiElement.htmlElement);
             }

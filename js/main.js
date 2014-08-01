@@ -108,44 +108,9 @@ function testCollide2() {
 }
 
 function addGui() {
-    var htmlBtn = document.createElement("button");
-    htmlBtn.id = 'fullscreen';
-    var fullscreenButton = new window.BaseGui();
-    var container = document.querySelector('.canvasContainer');
-    fullscreenButton.setHtmlElement(htmlBtn);
-    fullscreenButton.setCss({
-        display: 'block',
-        "background": "url('resources/gui/maximize.png') no-repeat",
-        height: '24px',
-        width: '24px',
-        bottom: '0',
-        right: '0',
-        position: 'absolute'
-    });
-    fullscreenButton.addEvent('click', function() {
-        DoFullScreen(container);
-    });
-    game.getGuiManager().addElement(fullscreenButton, container);
-
-}
-
-function DoFullScreen(element) {
-    var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !==     null) ||    // alternative standard method
-        (document.mozFullScreen || document.webkitIsFullScreen);
-
-    var docElm = element ? element : document.documentElement;
-    if (!isInFullScreen) {
-
-        if (docElm.requestFullscreen) {
-            docElm.requestFullscreen();
-        }
-        else if (docElm.mozRequestFullScreen) {
-            docElm.mozRequestFullScreen();
-        }
-        else if (docElm.webkitRequestFullScreen) {
-            docElm.webkitRequestFullScreen();
-        }
-    }
+    var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
+    fullscreenButton.addEvent('click', function(){game.goFullscreen()});
+    game.getGuiManager().addElement(fullscreenButton);
 }
 
 window.onload = function() {

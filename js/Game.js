@@ -116,6 +116,7 @@
                     if (typeof self[propertyName] === 'function') {
                         return self[propertyName]();
                     }
+                    console.error('Component "' + componentName + '" not found');
                     return null;
                 },
                 getGame: function() {
@@ -171,6 +172,25 @@
 
         addEntity: function(entity) {
           this.getEntityManager().addEntity(entity);
+        },
+
+        goFullscreen: function(element) {
+            var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
+                (document.mozFullScreen || document.webkitIsFullScreen);
+
+            var docElm = element ? element : document.body;
+            if (!isInFullScreen) {
+
+                if (docElm.requestFullscreen) {
+                    docElm.requestFullscreen();
+                }
+                else if (docElm.mozRequestFullScreen) {
+                    docElm.mozRequestFullScreen();
+                }
+                else if (docElm.webkitRequestFullScreen) {
+                    docElm.webkitRequestFullScreen();
+                }
+            }
         }
     });
 })(this);

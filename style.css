@@ -12,19 +12,45 @@ canvas {
 	background-color: transparent;
 	position: absolute;
 }
-.canvasContainer:-moz-full-screen .canvas {
-	width: 100%;
+
+body:-webkit-full-screen canvas {
 	height: 100%;
 }
 
-.canvasContainer {
-	position: relative;
-	width: 1280px;
-	height: 720px;
+body:fullscreen canvas {
+	height: 100%;
 }
 
-button {
-	padding: 0;
-	border: 0;
+body:-moz-full-screen canvas {
+	height: 100%;
+}
+
+body:-webkit-full-screen .canvasContainer{
+	height: 100%;
+	width: 100%;
+}
+
+body:-moz-full-screen .canvasContainer{
+	height: 100%;
+	width: 100%;
+}
+
+body:fullscreen .canvasContainer{
+	height: 100%;
+	width: 100%;
+}
+
+.canvasContainer {
+	height: 720px;
+	position: relative;
+	width: 1280px;
+}
+
+
+/* GUI element styling */
+button.gui {
+	background: none;
+	border: none;
 	margin: 0;
+	padding: 0;
 }
