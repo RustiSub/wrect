@@ -2,8 +2,6 @@ window.LevelManager = Class.extend({
     currentLevel: {},
     _stage: {},
     _currentOpacity: 1,
-    fading: 'none',
-    _fadeReady: false,
 
     /**
      * @param stage
@@ -17,8 +15,8 @@ window.LevelManager = Class.extend({
      * @param levelJso
      */
     initLevel: function(levelJso) {
-      // TODO: this will break as soon as we namespace. Possibly we can store the whole namespace inside localStorage and split it to separate components?
-      var level = new window[levelJso._className]();
+      var level = new window.BaseLevel();
+        console.log(levelJso);
       level.fromJSON(levelJso);
       this.switchLevel(level);
     },
@@ -27,8 +25,7 @@ window.LevelManager = Class.extend({
         this.currentLevel = level;
         Container.getGame().getEntityManager().clearEntities();
         for (var x = 0; x < level.entities.length; x++) {
-          //console.log(level.entities[x]);
-          Container.getGame().getEntityManager().addEntity(level.entities[x]);
+          game.getEntityManager().addEntity(level.entities[x]);
         }
     },
 
@@ -38,28 +35,64 @@ window.LevelManager = Class.extend({
     /**
      * Loads the level with the given name
      * @param name
+     * @param fromFile
      */
-    loadLevel: function(name) {
-      this.startFadeOut();
-      this.loadData(name, this.initLevel);
+    loadLevel: function(name, fromFile) {
+      var self = this;
+      var loadCallback = function(levelData) {
+          game.fadeIn(self.initLevel, self, [levelData]);
+      };
+      game.fadeOut(function() {
+          this.clearLevel();
+          this.loadData(name, fromFile, loadCallback);
+      }, this);
+    },
+
+    clearLevel: function() {
+      game.getEntityManager().clearEntities(true);
     },
 
     /**
      * creates a level of the current entities when none is present in the local storage yet.
+     * !!ONLY BLOCKS ARE CURRENTLY SAVED!!
      */
-    createInitialLevel: function() {
+    saveCurrentState: function(levelName, asFile) {
         this.currentLevel = new BaseLevel();
-        this.currentLevel.name = 'Base';
-        this.currentLevel.entities = Container.getComponent('EntityManager').getAllEntities();
-        this.saveLevel();
+        this.currentLevel.name = levelName;
+        var entities = Container.getComponent('EntityManager').getAllEntities();
+        var blocks = [];
+        for (var x = 0; x < entities.length; x++) {
+            if (entities[x] instanceof Block) {
+                blocks.push(entities[x]);
+            }
+        }
+        this.currentLevel.entities = blocks;
+        this.saveLevel(asFile);
     },
 
     /**
      * Saves the current level in it's current state to localStorage
      */
-    saveLevel: function() {
+    saveLevel: function(asFile) {
+      asFile = asFile !== undefined ? asFile : false;
       if (this.currentLevel) {
-        store.set(this.getCurrentLevelName(), this.currentLevel);
+          if (!asFile) {
+              store.set(this.getCurrentLevelName(), this.currentLevel);
+          }
+          else {
+              // Hackity hack hack
+              var a = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
+              var json = JSON.stringify(this.currentLevel),
+                  blob = new Blob([json], {type: "text/plain;charset=utf-8"}),
+                  url = window.URL.createObjectURL(blob);
+              a.href = url;
+              a.download = this.getCurrentLevelName() + '.js';
+
+              var ce = new Event('click');
+              a.dispatchEvent(ce);
+              window.URL.revokeObjectURL(url);
+
+          }
       }
     },
 
@@ -75,9 +108,23 @@ window.LevelManager = Class.extend({
      * Load level data from either localStorage or filesystem/server
      * @param levelName
      * @param successCallback
+     * @param fromFile
      */
-    loadData: function(levelName, successCallback) {
-      successCallback.call(this, store.get('Level' + levelName));
+    loadData: function(levelName, fromFile, successCallback) {
+      var levelData;
+      if (!fromFile) {
+          levelData = store.get('Level' + levelName);
+          successCallback.call(this, levelData);
+      }
+      else {
+          ajax({
+            url: 'resources/levels/Level' + levelName + '.js',
+            dataType: 'json',
+            success: function(response) {
+                successCallback.call(this, response);
+            }
+          });
+      }
       /*ajax({
         url: path,
         success: function(response) {
@@ -88,62 +135,5 @@ window.LevelManager = Class.extend({
           console.info('ResponseText: ', response.responseText);
         }
       });*/
-    },
-
-     /////
-     //Transition logic
-     /////
-    _fadeOut: function() {
-      if (this._currentOpacity > 0) {
-        var i;
-        this._currentOpacity -= 0.01;
-        for (i = 0; i < this._stage.children.length; i++) {
-          this._stage.children[i].opacity = this._currentOpacity;
-        }
-      }
-      else {
-        this._fadeReady = true;
-        this.fading = 'none';
-      }
-    },
-    _fadeIn: function() {
-      if (this._currentOpacity < 1) {
-        var i;
-        this._currentOpacity += 0.01;
-        for (i = 0; i < this._stage.children.length; i++) {
-          this._stage.children[i].opacity = this._currentOpacity;
-        }
-      }
-      else {
-        this._fadeReady = true;
-        this.fading = 'none';
-      }
-    },
-    startFadeIn: function() {
-      this._fadeReady = false;
-      this.fading = 'in';
-    },
-    startFadeOut: function() {
-      this._fadeReady = false;
-      this.fading = 'out';
-    },
-
-    /////
-    // Update logic
-    /////
-    update: function() {
-      this.updateFades();
-    },
-    updateFades: function() {
-      if (this.fading !== 'none') {
-        switch (this.fading) {
-          case 'in':
-            this._fadeIn();
-            break;
-          case 'out':
-            this._fadeOut();
-            break;
-        }
-      }
     }
 });

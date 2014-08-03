@@ -1,5 +1,5 @@
 (function() {
-    window.Helpers = {
+    window.Helpers = Class.extend({
         merge: function( original, extended ) {
             for( var key in extended ) {
                 var ext = extended[key];
@@ -45,6 +45,7 @@
             }
         },
 
+        // DO NOT USE, only kept just in case it proves to be useful for the future.
         buildObjectFromJso: function(jso) {
             if (jso.className !== undefined) {
                 var constructorFunction = this.getFunctionFromString(jso.className);
@@ -62,6 +63,7 @@
             return null;
         },
 
+        // DO NOT USE, only kept just in case it proves to be useful for the future.
         buildEntityFromJso: function(jso) {
           if (jso._className !== undefined) {
             var constrFunc = this.getFunctionFromString(jso._className);
@@ -85,7 +87,7 @@
             o = (o === undefined) ? window : o;
             return ns.split('.').reduce(index, o);
         }
-    };
+    });
 
     ////
     // Private functions

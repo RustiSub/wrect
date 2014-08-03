@@ -10,11 +10,14 @@ window.BaseLevel = Class.extend({
         this.name = name;
     },
     saveToFile: function(){
-        var blob = new Blob(this.getSerializableObject());
+        var blob = new Blob([JSON.stringify(this)]);
+        // Hackity hack hack
         var a = document.createElement('a');
         a.href = window.URL.createObjectURL(blob);
         a.download = this.getFullLevelName();
-        //console.log(a);
+        var ce = new Event('click');
+        a.dispatchEvent(ce);
+        window.URL.revokeObjectURL(a.href);
     },
     getFullLevelName: function() {
         return 'Level' + this.name;
@@ -37,11 +40,8 @@ window.BaseLevel = Class.extend({
     fromJSON: function(data) {
         // EntityData
         for (var i = 0; i < data.entities.length; i++) {
-            var entityObject = data.entities[i];
-            // TODO: this will break as soon as we namespace. Possibly we can store the whole namespace inside localStorage and split it to separate components?
-            var entity = window.Helpers.buildEntityFromJso(entityObject);
-            //console.log(entity);
-            //entity._physics = new window[entityObject._physics._className]();
+            var dataObject = data.entities[i];
+            var entity = game._builder.createBlock(dataObject.name, dataObject.x, dataObject.y, dataObject.width, dataObject.height, dataObject.color);
             this.entities.push(entity);
         }
 

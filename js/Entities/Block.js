@@ -26,6 +26,16 @@ var Block = MovableEntity.extend({
   },
   applyGlue: function() {
     this.hasGlue = true;
+  },
+  toJSON: function() {
+      return {
+          name: this.name,
+          x: this._graphics.position.x,
+          y: this._graphics.position.y,
+          width: this.size.x,
+          height: this.size.y,
+          color: this._graphics.currentPath.fillColor
+      };
   }
 });
 
