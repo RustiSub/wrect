@@ -69,7 +69,7 @@
                 this.initGamepad(captureScope);
             }
             else {
-                console.info('Gamepad not supported in this browser');
+                console.info('Gamepad API not supported in this browser');
             }
         },
         initGamepad: function(captureScope) {
@@ -119,11 +119,11 @@
                         return this.currentGamepadState[playerIndex].buttons[buttonCode].pressed;
                     }
                     else {
-                        console.info('Button "' + buttonName + '" Is not mapped. Did you make a typo?');
+                        console.info('Unknown key "' + buttonName + '".');
                     }
                 }
                 else {
-                    //console.info('Player at index ' + playerIndex + ' does not exist.');
+                    console.info('Player at index ' + playerIndex + ' does not exist.');
                 }
             }
             return false;
@@ -139,11 +139,11 @@
                         return parseFloat(this.currentGamepadState[playerIndex].axes[axisCode].toFixed(4));
                     }
                     else {
-                        console.info('Axis "' + axisName + '" Is not mapped. Did you make a typo?');
+                        console.info('Unknown axis "' + axisName + '".');
                     }
                 }
                 else {
-                    //console.info('Player at index ' + playerIndex + ' does not exist.');
+                    console.info('Player at index ' + playerIndex + ' does not exist.');
                 }
             }
             return false;

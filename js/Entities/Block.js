@@ -26,14 +26,6 @@ var Block = MovableEntity.extend({
     if (inputHandler.key('down')) {
       this._physics.increaseSpeedY(1);
     }
-    //if (inputHandler.gamepadAxisDigital('LX', 1) != 0) {
-      console.log(inputHandler.gamepadAxis('LX'));
-      this._physics.xSpeed = inputHandler.gamepadAxis('LX');
-    //}
-    //if (inputHandler.gamepadAxisDigital('LY', 1) < 0) {
-      console.log('LY');
-      this._physics.ySpeed = inputHandler.gamepadAxis('LY');
-    //}
 
     //this._physics.applyFriction(this._graphics.position.y, this.height);
   }, update: function(){
