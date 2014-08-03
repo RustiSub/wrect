@@ -78,6 +78,11 @@ var EntityManager = Class.extend({
         return found;
     },
 
+    clearEntities: function() {
+        this._entities = [];
+        this._entitiesByName = {};
+    },
+
     /**
      * Update all entities, called in Game.run();
      */

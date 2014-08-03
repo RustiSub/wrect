@@ -4,6 +4,7 @@
         _renderer: null,
         _inputHandler: null,
         _entityManager: null,
+        _levelManager: null,
         _defaults: {
             inputHandlerClass: InputHandler,
             helpersClass: Helpers,
@@ -11,6 +12,7 @@
             collisionManagerClass: CollisionManager,
             gravityManagerClass: GravityManager,
             builder: Builder,
+            levelManagerClass: LevelManager,
             width: 1280,
             height: 720
         },
@@ -33,6 +35,9 @@
         },
         getCollisionManager: function() {
           return this._collisionManager;
+        },
+        getLevelManager: function() {
+          return this._levelManager;
         },
 
         /**
@@ -60,6 +65,7 @@
             this._collisionManager = new this._options.collisionManagerClass();
             this._gravityManager = new this._options.gravityManagerClass();
             this._builder = new this._options.builder();
+            this._levelManager = new this._options.levelManagerClass(this._stage);
 
             this.bootstrap();
         },
@@ -101,7 +107,6 @@
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
 
-              
                 renderer.render(stage);
             }
         },

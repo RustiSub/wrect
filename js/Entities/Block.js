@@ -7,10 +7,11 @@ var Block = MovableEntity.extend({
   hasGlue: false,
   width: 400,
   height: 400,
+  _className: 'Block',
 
   init: function(name, graphics) {
     this._super(name, graphics);
-    this.setGraphics(graphics);
+    //this.setGraphics(graphics);
   },
   move: function () {
     //this._physics.applyFriction(this._graphics.position.y, this.height);
@@ -20,7 +21,6 @@ var Block = MovableEntity.extend({
     if (this.selected) {
       game._builder.moveBuilderBlock(this);
     }
-
     this._graphics.position.x += this._physics.calculateSpeedX();
     this._graphics.position.y += this._physics.calculateSpeedY();
   },

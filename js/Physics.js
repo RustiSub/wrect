@@ -7,6 +7,9 @@ var Physics = Class.extend({
   xSpeed: 0,
   ySpeed: 0,
 
+  init: function() {
+
+  },
   increaseSpeedX: function(increase) {
     this.xSpeed += increase;
   },
@@ -56,6 +59,7 @@ var Physics = Class.extend({
       this.ySpeed = 0.6;
     }
   },
+
   applyGravity: function(collision) {
 
     if (collision.rest.y && collision.rest.x) {
