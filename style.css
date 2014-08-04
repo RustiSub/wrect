@@ -13,15 +13,31 @@ canvas {
 	position: absolute;
 }
 
+/* Fullscreen */
+body:-webkit-full-screen {
+  height: 100%;
+  width: 100%;
+}
+
+body:-moz-full-screen {
+  height: 100%;
+  width: 100%;
+}
+
+body:fullscreen {
+  height: 100%;
+  width: 100%;
+}
+
 body:-webkit-full-screen canvas {
 	height: 100%;
 }
 
-body:fullscreen canvas {
+body:-moz-full-screen canvas {
 	height: 100%;
 }
 
-body:-moz-full-screen canvas {
+body:fullscreen canvas {
 	height: 100%;
 }
 
