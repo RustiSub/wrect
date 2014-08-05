@@ -6,18 +6,61 @@ var Builder = Class.extend({
   moveBuilderBlock: function(builderBlock) {
     builderBlock._physics.xSpeed = 0;
     builderBlock._physics.ySpeed = 0;
+
+    var collisionDirections = {
+      up: false,
+      right: false,
+      down: false,
+      left: false
+    };
+
+    if (builderBlock.connectedBodies.length > 0) {
+      var minX = builderBlock.position.x;
+      var minY = builderBlock.position.y;
+
+      var maxX = builderBlock.position.x + builderBlock.size.x;
+      var maxY = builderBlock.position.y + builderBlock.size.y;
+
+
+        for (var x = 0; x < builderBlock.connectedBodies.length; x++) {
+          var face = builderBlock.connectedBodies[x].face;
+//          console.log(face);
+          if (face.first.x == face.second.x && face.first.y == face.second.y) {
+            continue;
+          }
+
+          if (face.first.y >= maxY && face.second.y >= maxY) {
+            collisionDirections.down = true;
+          }
+
+          if (face.first.y <= minY && face.second.y <= minY) {
+            collisionDirections.up = true;
+          }
+
+          if (face.first.x >= maxX && face.second.x >= maxX) {
+            collisionDirections.right = true;
+          }
+
+          if (face.first.x <= minX && face.second.x <= minX) {
+            collisionDirections.left = true;
+          }
+        }
+
+    }
+
     var inputHandler = Container.getComponent('InputHandler');
-    if (inputHandler.key('left')) {
-      builderBlock._physics.xSpeed -= 1;
+    var speed = 1;
+    if (inputHandler.key('left') && !collisionDirections.left) {
+      builderBlock._physics.xSpeed -=speed;
     }
-    if (inputHandler.key('right')) {
-      builderBlock._physics.xSpeed += 1;
+    if (inputHandler.key('right') && !collisionDirections.right) {
+      builderBlock._physics.xSpeed += speed;
     }
-    if (inputHandler.key('up')) {
-      builderBlock._physics.ySpeed -= 1;
+    if (inputHandler.key('up') && !collisionDirections.up) {
+      builderBlock._physics.ySpeed -= speed;
     }
-    if (inputHandler.key('down')) {
-      builderBlock._physics.ySpeed += 1;
+    if (inputHandler.key('down') && !collisionDirections.down) {
+      builderBlock._physics.ySpeed += speed;
     }
   },
 
@@ -236,6 +279,7 @@ var Builder = Class.extend({
   buildConnections: function(bodies) {
     for (var x = 0; x < bodies.length; x++) {
       var mainBody = bodies[x];
+      mainBody.connectedBodies = [];
 
       var face = {
         p1: {
@@ -373,6 +417,6 @@ var Builder = Class.extend({
         }
       }
     }
-    this.drawConnectionFaces();
+//    this.drawConnectionFaces();
   }
 });
