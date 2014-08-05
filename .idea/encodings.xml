@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/composer.json" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/parameters.yml" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/vendor/ego/advalvas-module/src/Core/Modules/Advalvas/Install/Database.sql" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/vendor/ego/block-module/src/Core/Modules/Block/Install/Database.sql" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/vendor/ego/contact-module/src/Core/Modules/Contact/Install/Database.sql" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/vendor/ego/core/composer.json" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/vendor/ego/core/src/EgoCore/Routing/Router.php" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/vendor/ego/image-module/src/Core/Modules/Image/Install/Database.sql" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../ego-standard-project/README.md" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../ego-standard-project/scripts.md" charset="UTF-8" />
-  </component>
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
 </project>
 

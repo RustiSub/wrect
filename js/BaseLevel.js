@@ -7,6 +7,9 @@ window.BaseLevel = Class.extend({
     _ready: false,
     _className: 'BaseLevel',
     init: function(name) {
+        this.entities = [];
+        this.backgroundData = {};
+        this.levelData = {};
         this.name = name;
     },
     saveToFile: function(){
