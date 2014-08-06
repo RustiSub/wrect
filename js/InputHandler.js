@@ -1,6 +1,12 @@
+/**
+ * Inputhandler, handles input from both keyboard and connected gamepads.
+ */
 (function(){
     "use strict";
     window.InputHandler = window.Class.extend({
+        /**
+         *
+         */
         _pressed: [],
         _keys: {
             BACKSPACE: 8,
@@ -47,6 +53,7 @@
             RX: 2,
             RY: 3
         },
+        _gamepadDigitalAxisDeadzones: {},
         _keysToCapture: [],
         gamepadsConnected: [],
         gamepadSupported: false,
@@ -75,6 +82,19 @@
         initGamepad: function(captureScope) {
             var self = this;
             this.gamepadSupported = true;
+            var currentGamepads = window.navigator.getGamepads();
+            this._gamepadDigitalAxisDeadzones = {
+                LX: 0.6,
+                LY: 0.6,
+                RX: 0.6,
+                RY: 0.6
+            };
+            for (var i = 0; i < currentGamepads.length; i++) {
+                if (currentGamepads[i] !== undefined) {
+                    this.gamepadsConnected[currentGamepads[i].index] = currentGamepads[i].id;
+                }
+            }
+            this.currentGamepadState = [];
             window.addEventListener('gamepadconnected', function(e){
                 self.gamepadsConnected[e.gamepad.index] = e.gamepad.id;
             });
@@ -102,7 +122,12 @@
         },
         updateGamepad: function() {
             if (this.gamepadSupported) {
-                this.currentGamepadState = window.navigator.getGamepads();
+                var gamepads = window.navigator.getGamepads();
+                for (var i = 0; i < this.gamepadsConnected.length; i++) {
+                    if (gamepads[i] !== undefined) {
+                        this.currentGamepadState[i] = gamepads[i];
+                    }
+                }
             }
         },
         update: function() {
@@ -151,7 +176,7 @@
         gamepadAxisDigital: function(axisName, playerIndex) {
             var state = this.gamepadAxis(axisName, playerIndex);
             if (state !== false) {
-                if (Math.abs(state) > 0.1) {
+                if (Math.abs(state) > this._gamepadDigitalAxisDeadzones[axisName]) {
                     if (state > 0) {
                         return 1;
                     }
@@ -164,6 +189,12 @@
                 }
             }
             return false;
+        },
+        setgamepadDigitalAxisDeadzone: function(axisName, deadzone) {
+            this._gamepadDigitalAxisDeadzones[axisName] = deadzone;
+        },
+        getgamepadDigitalAxisDeadzone: function(axisName) {
+            return this._gamepadDigitalAxisDeadzones[axisName];
         }
     });
 })();
