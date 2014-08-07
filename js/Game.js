@@ -4,6 +4,7 @@
         _renderer: null,
         _inputHandler: null,
         _entityManager: null,
+        _levelManager: null,
         _defaults: {
             inputHandlerClass: InputHandler,
             helpersClass: Helpers,
@@ -11,6 +12,7 @@
             collisionManagerClass: CollisionManager,
             gravityManagerClass: GravityManager,
             builder: Builder,
+            levelManagerClass: LevelManager,
             width: 1280,
             height: 720
         },
@@ -34,6 +36,9 @@
         getCollisionManager: function() {
           return this._collisionManager;
         },
+        getLevelManager: function() {
+          return this._levelManager;
+        },
 
         /**
          * @param options
@@ -54,12 +59,15 @@
         buildComponents: function() {
             this._stage = new PIXI.Stage(0x5E5E5E);
             this._renderer = new PIXI.autoDetectRenderer(this._options.width, this._options.height);
+            // Required for fading
+            this._renderer.view.style.opacity = 1;
 
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
             this._gravityManager = new this._options.gravityManagerClass();
             this._builder = new this._options.builder();
+            this._levelManager = new this._options.levelManagerClass(this._stage);
 
             this.bootstrap();
         },
@@ -101,7 +109,6 @@
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
 
-              
                 renderer.render(stage);
             }
         },
@@ -185,6 +192,34 @@
 
         addEntity: function(entity) {
           this.getEntityManager().addEntity(entity);
+        },
+
+        fadeOut: function(callback, thisArg, args) {
+            if (this._renderer.view.style.opacity !== "0") {
+                this._renderer.view.style.opacity = 0;
+                if (typeof callback === 'function') {
+                    var self = this;
+                    this._renderer.view.addEventListener("transitionend", function realCallback() {
+                            self._renderer.view.removeEventListener('transitionend', realCallback, true);
+                            callback.apply(thisArg, args);
+                        },
+                        true);
+                }
+            }
+        },
+
+        fadeIn: function(callback, thisArg, args) {
+            if (this._renderer.view.style.opacity !== "1") {
+                this._renderer.view.style.opacity = 1;
+                if (typeof callback === 'function') {
+                    var self = this;
+                    this._renderer.view.addEventListener("transitionend", function realCallback() {
+                            self._renderer.view.removeEventListener('transitionend', realCallback, true);
+                            callback.apply(thisArg, args);
+                        },
+                        true);
+                }
+            }
         }
-    });
+});
 })(this);
