@@ -48,7 +48,7 @@ var MovableEntity = BaseEntity.extend({
       return {
         health: 10,
         speed: 1
-      }
+      };
     },
     deselect: function() {
       this.deselectGraphicsCallback();

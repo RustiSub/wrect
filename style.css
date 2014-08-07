@@ -11,4 +11,5 @@ body {
 canvas {
 	background-color: transparent;
 	position: absolute;
+	transition: opacity 1s ease;
 }

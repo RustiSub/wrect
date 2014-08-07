@@ -3,8 +3,9 @@
  * @type {void|*}
  */
 var Player = MovableEntity.extend({
-    init: function(name, position, spritePath, collide, stats) {
-        this._super(name, position, spritePath, collide, stats);
+    _className: 'Player',
+    init: function(){
+      this._super();
     },
     update: function(){
         this._super();
