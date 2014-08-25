@@ -5,16 +5,13 @@
 var Block = MovableEntity.extend({
 
   hasGlue: false,
+  glueSource: false,
   width: 400,
   height: 400,
   _className: 'Block',
 
   init: function(name, graphics) {
     this._super(name, graphics);
-    //this.setGraphics(graphics);
-  },
-  move: function () {
-    //this._physics.applyFriction(this._graphics.position.y, this.height);
   }, update: function(){
     this._super();
 
@@ -26,6 +23,15 @@ var Block = MovableEntity.extend({
   },
   applyGlue: function() {
     this.hasGlue = true;
+
+    this._graphics.beginFill(0xB231EB);
+    var mark = 4;
+    this._graphics.drawRect(0 + mark , 0 + mark , this.size.x - (mark  * 2), this.size.y - (mark  * 2));
+    this._graphics.endFill();
+  },
+  removeGlue: function() {
+    this._graphics.clear();
+    this.baseGraphicsCallback();
   },
   toJSON: function() {
       return {

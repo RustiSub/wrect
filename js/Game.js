@@ -103,7 +103,7 @@
                 if (inputHandler.key('z')) {
                   self.selectEntity(1);
                 }
-                self._builder.clearRooms();
+                self._builder.clearRooms(game.getEntityManager().getAllEntities());
                 self._builder.buildConnections(game.getEntityManager().getAllEntities());
 
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());

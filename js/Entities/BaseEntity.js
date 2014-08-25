@@ -22,6 +22,7 @@ var BaseEntity = Class.extend({
     connectedBodies: [],
     connectionPoint: {},
     connectionFaces: [],
+    inClusters: [],
     connected: false,
     _graphics: {},
     _physics: {},
@@ -33,6 +34,7 @@ var BaseEntity = Class.extend({
     init: function(name, graphics) {
         this.connectedBodies = [];
         this.connectionPoint = {};
+        this.inClusters = [];
         this.name = name;
         if (typeof graphics === 'string') {
             this._graphics = this.buildSprite(graphics);

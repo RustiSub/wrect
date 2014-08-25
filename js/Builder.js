@@ -2,6 +2,7 @@ var Builder = Class.extend({
   connectionFaces: [],
   rooms: [],
   selectedEntityIndex: -1,
+  clusters: [],
 
   moveBuilderBlock: function(builderBlock) {
     builderBlock._physics.xSpeed = 0;
@@ -24,7 +25,6 @@ var Builder = Class.extend({
 
         for (var x = 0; x < builderBlock.connectedBodies.length; x++) {
           var face = builderBlock.connectedBodies[x].face;
-//          console.log(face);
           if (face.first.x == face.second.x && face.first.y == face.second.y) {
             continue;
           }
@@ -64,13 +64,19 @@ var Builder = Class.extend({
     }
   },
 
-  clearRooms: function() {
+  clearRooms: function(bodies) {
+    for (var b = 0; b < bodies.length; b++) {
+      var body = bodies[b];
+      body.inClusters = [];
+      body.connectedBodies = [];
+    }
     for (var x = 0; x < this.rooms.length; x++) {
       this.rooms[x].clear();
       game.getEntityManager()._stage.removeChild(this.rooms[x]);
     }
     this.rooms = [];
     this.connectionFaces = [];
+    this.clusters = [];
   },
   createLine: function (points) {
     if (points.length > 0) {
@@ -173,6 +179,9 @@ var Builder = Class.extend({
       game.getEntityManager()._stage.addChildAt(graphics, game.getEntityManager()._stage.children.length);
 
       this.rooms.push(graphics);
+  },
+  connectGlue: function(bodies) {
+
   },
   drawConnectionFaces: function() {
     for (var f = 0; f < this.connectionFaces.length; f++) {
@@ -279,7 +288,7 @@ var Builder = Class.extend({
   buildConnections: function(bodies) {
     for (var x = 0; x < bodies.length; x++) {
       var mainBody = bodies[x];
-      mainBody.connectedBodies = [];
+      var mainBodyGlued = false;
 
       var face = {
         p1: {
@@ -291,7 +300,6 @@ var Builder = Class.extend({
           y: mainBody.position.y + mainBody.size.y
         }
       };
-
 
       for (var y = 0; y < bodies.length; y++) {
         if (x !== y) {
@@ -384,6 +392,39 @@ var Builder = Class.extend({
                 face: connectionFace
               });
 
+              //If neither body is currently in a cluster, push them both in a new cluster
+              if (mainBody.inClusters.length == 0 && otherBody.inClusters.length == 0) {
+                var cluster = [];
+                cluster.push(mainBody.name);
+                cluster.push(otherBody.name);
+                var clusterId = this.clusters.push(cluster) - 1;
+                mainBody.inClusters.push(clusterId);
+                otherBody.inClusters.push(clusterId);
+              }
+              else if (otherBody.inClusters.length > 0) {
+
+                for (var otherClusterIndex = 0; otherClusterIndex < otherBody.inClusters.length; otherClusterIndex++) {
+                  var inOtherClusterIndex = otherBody.inClusters[otherClusterIndex];
+
+                  if (this.clusters[inOtherClusterIndex].indexOf(mainBody.name) === -1) {
+                    this.clusters[inOtherClusterIndex].push(mainBody.name);
+                    mainBody.inClusters.push(inOtherClusterIndex);
+                  }
+                }
+              } else if (mainBody.inClusters.length > 0) {
+
+                for (var mainClusterIndex = 0; mainClusterIndex < mainBody.inClusters.length; mainClusterIndex++) {
+                  var inMainClusterIndex = mainBody.inClusters[mainClusterIndex];
+
+                  if (this.clusters[inMainClusterIndex].indexOf(otherBody.name) === -1) {
+                    this.clusters[inMainClusterIndex].push(otherBody.name);
+                    otherBody.inClusters.push(inMainClusterIndex);
+                  }
+                }
+              }
+
+
+
               if (this.connectionFaces.indexOf(connectionFace) === -1) {
                 var found = false;
                 for (var f = 0; f < this.connectionFaces.length; f++) {
@@ -416,6 +457,18 @@ var Builder = Class.extend({
           }
         }
       }
+
+
+//      for (var b = 0; b < mainBody.connectedBodies.length; b++) {
+//        var glueBody = mainBody.connectedBodies[b].body;
+//
+//        if (mainBodyGlued) {
+//          glueBody.applyGlue();
+//        } else {
+//          glueBody.removeGlue();
+//        }
+//      }
+
     }
 //    this.drawConnectionFaces();
   }
