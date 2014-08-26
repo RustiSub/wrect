@@ -67,7 +67,7 @@ var Builder = Class.extend({
   clearRooms: function(bodies) {
     for (var b = 0; b < bodies.length; b++) {
       var body = bodies[b];
-      body.inClusters = [];
+      body.inClusters = -1;
       body.connectedBodies = [];
     }
     for (var x = 0; x < this.rooms.length; x++) {
@@ -139,21 +139,38 @@ var Builder = Class.extend({
     block.position = blockGraphics.position;
 
     block.baseGraphicsCallback = function() {
+      block._graphics.clear();
       block._graphics.beginFill(color);
       block._graphics.drawRect(0, 0, width, height);
       block._graphics.endFill();
     };
 
-    block.selectedGraphicsCallback = function() {
-      block.baseGraphicsCallback();
+    block.originalBaseGraphicsCallback = block.baseGraphicsCallback;
 
-      block._graphics.beginFill(0x00FF00);
-      block._graphics.drawRect(0 - 1, 0- 1, width + 2, height + 2);
-      block._graphics.endFill();
+    block.selectedGraphicsCallback = function() {
+//      block.baseGraphicsCallback();
+//
+//      block._graphics.beginFill(0x00FF00);
+//      block._graphics.drawRect(0 - 1, 0- 1, width + 2, height + 2);
+//      block._graphics.endFill();
     };
 
     block.deselectGraphicsCallback = function() {
+//      block._graphics.clear();
+//      block.baseGraphicsCallback();
+    };
+
+    block.gluedGraphicsCallback = function() {
       block._graphics.clear();
+
+      block.baseGraphicsCallback = function() {
+        this.originalBaseGraphicsCallback();
+        this._graphics.beginFill(0xB231EB);
+        var mark = 4;
+        this._graphics.drawRect(0 + mark , 0 + mark , this.size.x - (mark  * 2), this.size.y - (mark  * 2));
+        this._graphics.endFill();
+      };
+
       block.baseGraphicsCallback();
     };
 
@@ -288,7 +305,6 @@ var Builder = Class.extend({
   buildConnections: function(bodies) {
     for (var x = 0; x < bodies.length; x++) {
       var mainBody = bodies[x];
-      var mainBodyGlued = false;
 
       var face = {
         p1: {
@@ -393,37 +409,44 @@ var Builder = Class.extend({
               });
 
               //If neither body is currently in a cluster, push them both in a new cluster
-              if (mainBody.inClusters.length == 0 && otherBody.inClusters.length == 0) {
+              if (mainBody.inClusters === -1 && otherBody.inClusters === -1) {
                 var cluster = [];
                 cluster.push(mainBody.name);
                 cluster.push(otherBody.name);
                 var clusterId = this.clusters.push(cluster) - 1;
-                mainBody.inClusters.push(clusterId);
-                otherBody.inClusters.push(clusterId);
+                mainBody.inClusters = clusterId;
+                otherBody.inClusters = clusterId;
               }
-              else if (otherBody.inClusters.length > 0) {
+              else if (otherBody.inClusters !== -1 && mainBody.inClusters !== -1 && mainBody.inClusters !== otherBody.inClusters) {
+                var cluster = [];
+                var clusterId = this.clusters.push(cluster) - 1;
+                for (var ce = 0; ce < this.clusters[otherBody.inClusters].length; ce++) {
+                  var mergingEntity = game.getEntityManager().getEntityByName(this.clusters[otherBody.inClusters][ce]);
 
-                for (var otherClusterIndex = 0; otherClusterIndex < otherBody.inClusters.length; otherClusterIndex++) {
-                  var inOtherClusterIndex = otherBody.inClusters[otherClusterIndex];
-
-                  if (this.clusters[inOtherClusterIndex].indexOf(mainBody.name) === -1) {
-                    this.clusters[inOtherClusterIndex].push(mainBody.name);
-                    mainBody.inClusters.push(inOtherClusterIndex);
+                  if (this.clusters[clusterId].indexOf(mergingEntity.name) === -1) {
+                    this.clusters[clusterId].push(mergingEntity.name);
                   }
+
+                  mergingEntity.inClusters = clusterId;
                 }
-              } else if (mainBody.inClusters.length > 0) {
 
-                for (var mainClusterIndex = 0; mainClusterIndex < mainBody.inClusters.length; mainClusterIndex++) {
-                  var inMainClusterIndex = mainBody.inClusters[mainClusterIndex];
+                for (var ce = 0; ce < this.clusters[mainBody.inClusters].length; ce++) {
+                  var mergingEntity = game.getEntityManager().getEntityByName(this.clusters[mainBody.inClusters][ce]);
 
-                  if (this.clusters[inMainClusterIndex].indexOf(otherBody.name) === -1) {
-                    this.clusters[inMainClusterIndex].push(otherBody.name);
-                    otherBody.inClusters.push(inMainClusterIndex);
+                  if (this.clusters[clusterId].indexOf(mergingEntity.name) === -1) {
+                    this.clusters[clusterId].push(mergingEntity.name);
                   }
+
+                  mergingEntity.inClusters = clusterId;
                 }
               }
-
-
+              else if (otherBody.inClusters !== -1 && mainBody.inClusters === -1) {
+                mainBody.inClusters = otherBody.inClusters;
+                this.clusters[otherBody.inClusters].push(mainBody.name);
+              } else if (mainBody.inClusters !== -1 && otherBody.inClusters === -1) {
+                otherBody.inClusters = mainBody.inClusters;
+                this.clusters[mainBody.inClusters].push(otherBody.name);
+              }
 
               if (this.connectionFaces.indexOf(connectionFace) === -1) {
                 var found = false;
@@ -458,17 +481,33 @@ var Builder = Class.extend({
         }
       }
 
+      if (mainBody.inClusters === -1 && mainBody.hasGlue) {
+        mainBody.removeGlue();
+      }
+    }
 
-//      for (var b = 0; b < mainBody.connectedBodies.length; b++) {
-//        var glueBody = mainBody.connectedBodies[b].body;
-//
-//        if (mainBodyGlued) {
-//          glueBody.applyGlue();
-//        } else {
-//          glueBody.removeGlue();
-//        }
-//      }
+    for (var c = 0; c < this.clusters.length; c++) {
+      var clusterGlued = false;
+      for (var cb = 0; cb < this.clusters[c].length; cb++) {
+        var entity = game.getEntityManager().getEntityByName(this.clusters[c][cb]);
 
+        if (entity.glueSource) {
+          clusterGlued = true;
+          break;
+        }
+      }
+
+      for (var cb = 0; cb < this.clusters[c].length; cb++) {
+        var entity = game.getEntityManager().getEntityByName(this.clusters[c][cb]);
+        entity.changed = true;
+
+        if (clusterGlued) {
+          entity.applyGlue();
+        } else {
+//          console.log(mainBody.name, 'no more glue!');
+          entity.removeGlue();
+        }
+      }
     }
 //    this.drawConnectionFaces();
   }

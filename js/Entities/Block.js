@@ -5,6 +5,7 @@
 var Block = MovableEntity.extend({
 
   hasGlue: false,
+  changed: false,
   glueSource: false,
   width: 400,
   height: 400,
@@ -22,16 +23,20 @@ var Block = MovableEntity.extend({
     this._graphics.position.y += this._physics.calculateSpeedY();
   },
   applyGlue: function() {
-    this.hasGlue = true;
+    if (!this.hasGlue && this.changed) {
+      this.hasGlue = true;
 
-    this._graphics.beginFill(0xB231EB);
-    var mark = 4;
-    this._graphics.drawRect(0 + mark , 0 + mark , this.size.x - (mark  * 2), this.size.y - (mark  * 2));
-    this._graphics.endFill();
+      this.gluedGraphicsCallback();
+    }
+
+    this.changed = false;
   },
   removeGlue: function() {
-    this._graphics.clear();
-    this.baseGraphicsCallback();
+    if (this.hasGlue) {
+      this.hasGlue = false;
+
+      this.originalBaseGraphicsCallback();
+    }
   },
   toJSON: function() {
       return {

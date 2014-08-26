@@ -5,8 +5,11 @@
 var MovableEntity = BaseEntity.extend({
     selected: false,
     baseGraphicsCallback: {},
+    originalBaseGraphicsCallback: {},
     selectedGraphicsCallback : {},
     deselectGraphicsCallback: {},
+    gluedGraphicsCallback: {},
+    unGluedGraphicsCallback: {},
     position: {},
     stats: {},
     frozen: true,
