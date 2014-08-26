@@ -4,6 +4,7 @@
  */
 var MovableEntity = BaseEntity.extend({
     selected: false,
+    graphicsCallbacks: {},
     baseGraphicsCallback: {},
     originalBaseGraphicsCallback: {},
     selectedGraphicsCallback : {},
@@ -54,12 +55,24 @@ var MovableEntity = BaseEntity.extend({
       };
     },
     deselect: function() {
-      this.deselectGraphicsCallback();
       this.selected = false;
+      this.baseGraphicsCallback();
     },
     select: function() {
-      this.selectedGraphicsCallback();
       this.selected = true;
+      this.baseGraphicsCallback();
+    },
+    applyGlue: function() {
+      if (!this.hasGlue) {
+        this.hasGlue = true;
+        this.baseGraphicsCallback();
+      }
+    },
+    removeGlue: function() {
+      if (this.hasGlue) {
+        this.hasGlue = false;
+        this.baseGraphicsCallback();
+      }
     },
     toggleSelect: function()  {
       if (this.selected) {

@@ -139,39 +139,33 @@ var Builder = Class.extend({
     block.position = blockGraphics.position;
 
     block.baseGraphicsCallback = function() {
-      block._graphics.clear();
-      block._graphics.beginFill(color);
-      block._graphics.drawRect(0, 0, width, height);
-      block._graphics.endFill();
+      this._graphics.clear();
+      this.selectCallback();
+      this.baseCallback();
+      this.glueCallback();
     };
 
-    block.originalBaseGraphicsCallback = block.baseGraphicsCallback;
-
-    block.selectedGraphicsCallback = function() {
-//      block.baseGraphicsCallback();
-//
-//      block._graphics.beginFill(0x00FF00);
-//      block._graphics.drawRect(0 - 1, 0- 1, width + 2, height + 2);
-//      block._graphics.endFill();
+    block.baseCallback  = function() {
+      this._graphics.beginFill(color);
+      this._graphics.drawRect(0, 0, width, height);
+      this._graphics.endFill();
     };
 
-    block.deselectGraphicsCallback = function() {
-//      block._graphics.clear();
-//      block.baseGraphicsCallback();
-    };
-
-    block.gluedGraphicsCallback = function() {
-      block._graphics.clear();
-
-      block.baseGraphicsCallback = function() {
-        this.originalBaseGraphicsCallback();
-        this._graphics.beginFill(0xB231EB);
+    block.glueCallback = function() {
+      if (block.hasGlue) {
         var mark = 4;
+        this._graphics.beginFill(0xB231EB);
         this._graphics.drawRect(0 + mark , 0 + mark , this.size.x - (mark  * 2), this.size.y - (mark  * 2));
         this._graphics.endFill();
-      };
+      }
+    };
 
-      block.baseGraphicsCallback();
+    block.selectCallback = function() {
+      if (this.selected) {
+        this._graphics.beginFill(0x00FF00);
+        this._graphics.drawRect(0 - 1, 0- 1, width + 2, height + 2);
+        this._graphics.endFill();
+      }
     };
 
     block.baseGraphicsCallback();
@@ -504,7 +498,6 @@ var Builder = Class.extend({
         if (clusterGlued) {
           entity.applyGlue();
         } else {
-//          console.log(mainBody.name, 'no more glue!');
           entity.removeGlue();
         }
       }

@@ -144,7 +144,7 @@
 
           var entity = entities[this._builder.selectedEntityIndex];
 
-          this.getEntityManager().deselectAll()
+          this.getEntityManager().deselectAll();
           entity.select();
           return true;
         },

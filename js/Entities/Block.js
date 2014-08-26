@@ -22,22 +22,6 @@ var Block = MovableEntity.extend({
     this._graphics.position.x += this._physics.calculateSpeedX();
     this._graphics.position.y += this._physics.calculateSpeedY();
   },
-  applyGlue: function() {
-    if (!this.hasGlue && this.changed) {
-      this.hasGlue = true;
-
-      this.gluedGraphicsCallback();
-    }
-
-    this.changed = false;
-  },
-  removeGlue: function() {
-    if (this.hasGlue) {
-      this.hasGlue = false;
-
-      this.originalBaseGraphicsCallback();
-    }
-  },
   toJSON: function() {
       return {
           name: this.name,
