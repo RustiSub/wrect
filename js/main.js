@@ -234,6 +234,7 @@ function builderTest1() {
 
   var staticBlock6 = game._builder.createBlock('wall_left2', 500, 300, 20, 100, 0xFFFFFF);
   staticBlock6.frozen = true;
+  staticBlock6.glueSource = true;
   game.addEntity(staticBlock6);
 }
 

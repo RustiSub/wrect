@@ -163,7 +163,7 @@ var Builder = Class.extend({
     block.selectCallback = function() {
       if (this.selected) {
         this._graphics.beginFill(0x00FF00);
-        this._graphics.drawRect(0 - 1, 0- 1, width + 2, height + 2);
+        this._graphics.drawRect(0 - 2, 0 - 2, width + 4, height + 4);
         this._graphics.endFill();
       }
     };
@@ -478,6 +478,12 @@ var Builder = Class.extend({
       if (mainBody.inClusters === -1 && mainBody.hasGlue) {
         mainBody.removeGlue();
       }
+
+      if (mainBody.glueSource) {
+//        console.log(mainBody.name);
+        mainBody.changed = true;
+        mainBody.applyGlue();
+      }
     }
 
     for (var c = 0; c < this.clusters.length; c++) {
@@ -493,6 +499,11 @@ var Builder = Class.extend({
 
       for (var cb = 0; cb < this.clusters[c].length; cb++) {
         var entity = game.getEntityManager().getEntityByName(this.clusters[c][cb]);
+
+        if (entity.glueSource) {
+          continue;
+        }
+
         entity.changed = true;
 
         if (clusterGlued) {
