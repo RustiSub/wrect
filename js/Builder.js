@@ -4,6 +4,13 @@ var Builder = Class.extend({
   selectedEntityIndex: -1,
   clusters: [],
 
+  createObject: function(glueSource) {
+    var uniqueId = game.getEntityManager().getAllEntities().length;
+    var createdBlock = game._builder.createBlock('created_block_' + uniqueId, 0, 0, 80, 25, 0xFFFFFF);
+    createdBlock.glueSource = glueSource;
+    game.addEntity(createdBlock);
+  },
+
   moveBuilderBlock: function(builderBlock) {
     builderBlock._physics.xSpeed = 0;
     builderBlock._physics.ySpeed = 0;
@@ -49,7 +56,7 @@ var Builder = Class.extend({
     }
 
     var inputHandler = Container.getComponent('InputHandler');
-    var speed = 1;
+    var speed = 5;
     if (inputHandler.key('left') && !collisionDirections.left) {
       builderBlock._physics.xSpeed -=speed;
     }
@@ -61,6 +68,9 @@ var Builder = Class.extend({
     }
     if (inputHandler.key('down') && !collisionDirections.down) {
       builderBlock._physics.ySpeed += speed;
+    }
+    if (inputHandler.key('K_NINE')) {
+      builderBlock.rotate();
     }
   },
 
@@ -136,7 +146,12 @@ var Builder = Class.extend({
 
     var block = new Block(name, blockGraphics);
     block.name = name;
+    block.size = {x: width, y: height};
+
+    blockGraphics.position.x = x;
+    blockGraphics.position.y = y;
     block.position = blockGraphics.position;
+
 
     block.baseGraphicsCallback = function() {
       this._graphics.clear();
@@ -147,7 +162,7 @@ var Builder = Class.extend({
 
     block.baseCallback  = function() {
       this._graphics.beginFill(color);
-      this._graphics.drawRect(0, 0, width, height);
+      this._graphics.drawRect(0, 0, this.size.x, this.size.y);
       this._graphics.endFill();
     };
 
@@ -163,17 +178,12 @@ var Builder = Class.extend({
     block.selectCallback = function() {
       if (this.selected) {
         this._graphics.beginFill(0x00FF00);
-        this._graphics.drawRect(0 - 2, 0 - 2, width + 4, height + 4);
+        this._graphics.drawRect(0 - 2, 0 - 2, this.size.x + 4, this.size.y + 4);
         this._graphics.endFill();
       }
     };
 
     block.baseGraphicsCallback();
-
-    block.size = {x: width, y: height};
-
-    blockGraphics.position.x = x;
-    blockGraphics.position.y = y;
 
     block.frozen = false;
 

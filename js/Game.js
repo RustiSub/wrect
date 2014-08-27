@@ -103,6 +103,17 @@
                 if (inputHandler.key('z')) {
                   self.selectEntity(1);
                 }
+
+                var glueSource = false;
+
+                if (inputHandler.key('K_TWO')) {
+                  glueSource = true;
+                }
+
+                if (inputHandler.key('K_ZERO')) {
+                  self._builder.createObject(glueSource);
+                }
+
                 self._builder.clearRooms(game.getEntityManager().getAllEntities());
                 self._builder.buildConnections(game.getEntityManager().getAllEntities());
 

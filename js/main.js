@@ -238,6 +238,14 @@ function builderTest1() {
   game.addEntity(staticBlock6);
 }
 
+function builderTest2() {
+  var staticBlock1 = game._builder.createBlock('wall_left', 300, 310, 20, 200, 0xFFFFFF);
+  staticBlock1.frozen = true;
+  staticBlock1.glueSource = true;
+  staticBlock1.baseGraphicsCallback();
+  game.addEntity(staticBlock1);
+}
+
 window.onload = function() {
   game = new Game();
   //entity.applyGlue();
@@ -253,7 +261,8 @@ window.onload = function() {
   //testRooms2Closed();
   //testRooms3Closed();
   //testRooms4Closed();
-  builderTest1();
+//  builderTest1();
+  builderTest2();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
