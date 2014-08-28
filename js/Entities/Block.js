@@ -24,9 +24,10 @@ var Block = MovableEntity.extend({
   },
 //  transformations: {
     rotate: function() {
-//      var t_x = this._graphics.position.x;
-//      this._graphics.position.x += this.size.x / 2 - (this.size.y / 2);
-//      this._graphics.position.y = t_x;
+      this.position.x -= Math.round(this.size.y / 2 - this.size.x / 2);
+      this.position.y += Math.round(this.size.y / 2 - this.size.x / 2);
+      this._graphics.x = this.position.x;
+      this._graphics.y = this.position.y;
 
       var t_width = this.size.x;
       this.size.x = this.size.y;

@@ -246,6 +246,24 @@ function builderTest2() {
   game.addEntity(staticBlock1);
 }
 
+function builderTest3() {
+  var staticBlock1 = game._builder.createBlock('wall_left', 300, 310, 20, 200, 0xFFFFFF);
+  staticBlock1.frozen = true;
+  staticBlock1.baseGraphicsCallback();
+  game.addEntity(staticBlock1);
+
+  var staticBlock2 = game._builder.createBlock('wall_left2', 350, 310, 20, 200, 0xFFFFFF);
+  var staticBlock2 = game._builder.createBlock('wall_left2', 250, 310, 20, 200, 0xFFFFFF);
+  staticBlock2.frozen = true;
+  staticBlock2.baseGraphicsCallback();
+  game.addEntity(staticBlock2);
+
+  var staticBlock3 = game._builder.createBlock('wall_left3', 300, 81, 20, 200, 0xFFFFFF);
+  staticBlock3.frozen = true;
+  staticBlock3.baseGraphicsCallback();
+  game.addEntity(staticBlock3);
+}
+
 window.onload = function() {
   game = new Game();
   //entity.applyGlue();
@@ -262,7 +280,8 @@ window.onload = function() {
   //testRooms3Closed();
   //testRooms4Closed();
 //  builderTest1();
-  builderTest2();
+  //builderTest2();
+  builderTest3();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());

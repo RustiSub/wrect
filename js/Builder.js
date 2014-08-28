@@ -15,6 +15,8 @@ var Builder = Class.extend({
     builderBlock._physics.xSpeed = 0;
     builderBlock._physics.ySpeed = 0;
 
+    var speed = 2;
+    var collision = false;
     var collisionDirections = {
       up: false,
       right: false,
@@ -36,27 +38,35 @@ var Builder = Class.extend({
             continue;
           }
 
-          if (face.first.y >= maxY && face.second.y >= maxY) {
+          if (face.first.y + speed >= maxY && face.second.y >= maxY) {
             collisionDirections.down = true;
+            collision = true;
           }
 
-          if (face.first.y <= minY && face.second.y <= minY) {
+          if (face.first.y <= minY && face.second.y - speed <= minY) {
             collisionDirections.up = true;
+            collision = true;
           }
 
-          if (face.first.x >= maxX && face.second.x >= maxX) {
+          if (face.first.x + speed >= maxX && face.second.x >= maxX) {
             collisionDirections.right = true;
+            collision = true;
           }
 
-          if (face.first.x <= minX && face.second.x <= minX) {
+          if (face.first.x <= minX && face.second.x - speed <= minX) {
             collisionDirections.left = true;
+            collision = true;
           }
         }
 
     }
 
+    if (collision) {
+//console.log(collisionDirections);
+    }
+
     var inputHandler = Container.getComponent('InputHandler');
-    var speed = 5;
+
     if (inputHandler.key('left') && !collisionDirections.left) {
       builderBlock._physics.xSpeed -=speed;
     }
@@ -158,6 +168,10 @@ var Builder = Class.extend({
       this.selectCallback();
       this.baseCallback();
       this.glueCallback();
+
+      this._graphics.beginFill(0x0080FF);
+      this._graphics.drawCircle(this.size.x / 2, this.size.y / 2, 2);
+      this._graphics.endFill();
     };
 
     block.baseCallback  = function() {
