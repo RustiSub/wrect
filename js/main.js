@@ -253,7 +253,6 @@ function builderTest3() {
   game.addEntity(staticBlock1);
 
   var staticBlock2 = game._builder.createBlock('wall_left2', 350, 310, 20, 200, 0xFFFFFF);
-  var staticBlock2 = game._builder.createBlock('wall_left2', 250, 310, 20, 200, 0xFFFFFF);
   staticBlock2.frozen = true;
   staticBlock2.baseGraphicsCallback();
   game.addEntity(staticBlock2);
