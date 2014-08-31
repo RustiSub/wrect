@@ -43,21 +43,16 @@ var Physics = Class.extend({
     return (this.xSpeed !== 0 || this.ySpeed !== 0);
   },
 
-  applyFriction: function(yPosition, height) {
-    this.fallTime += 1;
-
-    this.xSpeed = this.xSpeed * 0.90;
-
-    if (yPosition <= height && this.ySpeed < 0) {
-      this.ySpeed = this.ySpeed * 0.90;
-    }
-    else if (yPosition <= height && this.ySpeed > 0) {
-      this.ySpeed = this.ySpeed * 1.10;
-    }
-
-    if (yPosition <= height && (this.ySpeed >= -0.5 && this.ySpeed <= 0.5)) {
-      this.ySpeed = 0.6;
-    }
+  applyFriction: function(friction) {
+      var reduceSpeed = function(speed, friction) {
+          var zeroBarrier = 0.5;
+          if ((speed > - zeroBarrier && speed < 0) || (speed > 0 && speed < zeroBarrier)) {
+              return 0;
+          }
+          return speed * (1 - (friction / 100));
+      };
+      this.xSpeed = reduceSpeed(this.xSpeed, friction);
+      this.ySpeed = reduceSpeed(this.ySpeed, friction);
   },
 
   applyGravity: function(collision) {

@@ -115,8 +115,7 @@
                 }
 
                 if (inputHandler.key('RETURN')) {
-                  console.log('test');
-                  self._gravityManager.applyForce(2, self.getEntityManager().getEntityByName('wall_1'));
+                  self._gravityManager.applyForce(1, self.getEntityManager().getEntityByName('wall_1'));
                 }
 
                 self._builder.clearRooms(game.getEntityManager().getAllEntities());

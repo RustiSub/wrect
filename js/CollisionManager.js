@@ -64,6 +64,7 @@ var CollisionManager = Class.extend({
   }, updateAllCollisions: function(bodies) {
     for (var x = 0; x < bodies.length; x++) {
       var mainBody = bodies[x];
+      mainBody._physics.applyFriction(1);
 
       mainBody.collisions = [];
 
