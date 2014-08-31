@@ -23,6 +23,7 @@ var InputHandler = Class.extend({
     TILDA:    192
   },
   _singleInputKeys: [
+    13,
     65,
     90,
     96,

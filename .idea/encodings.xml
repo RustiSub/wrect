@@ -4,18 +4,13 @@
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/BLL/BillingBLL.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Install/Database.sql" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Nex/FarysController.php" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Nex/FarysController.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Nex/Forms/BillingFormController.php" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Nex/Forms/BillingFormController.php" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Nex/Services/BillingServiceController.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Resources/config/services.bll.yml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Webform/Block/StepsBlockConfig.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Webform/Resources/config/services.yml" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Themes/Farys/modules/farys/templates/billing.html.twig" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Themes/Farys/modules/farys/templates/billingConfirmation.html.twig" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Themes/Farys/modules/farys/templates/billingOverview.html.twig" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Themes/Farys/modules/farys/templates/billingSteps.html.twig" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Themes/Farys/modules/farys/templates/viewStates/AsReport/billing.html.twig" charset="UTF-8" />
   </component>
 </project>
 

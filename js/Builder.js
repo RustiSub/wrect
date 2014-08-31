@@ -6,7 +6,7 @@ var Builder = Class.extend({
 
   createObject: function(glueSource) {
     var uniqueId = game.getEntityManager().getAllEntities().length;
-    var createdBlock = game._builder.createBlock('created_block_' + uniqueId, 0, 0, 80, 25, 0xFFFFFF);
+    var createdBlock = game._builder.createBlock('created_block_' + uniqueId, 0, 0, 150, 20, 0xFFFFFF);
     createdBlock.glueSource = glueSource;
     game.addEntity(createdBlock);
   },
@@ -15,7 +15,7 @@ var Builder = Class.extend({
     builderBlock._physics.xSpeed = 0;
     builderBlock._physics.ySpeed = 0;
 
-    var speed = 2;
+    var speed = 0.5;
     var collision = false;
     var collisionDirections = {
       up: false,
@@ -66,6 +66,10 @@ var Builder = Class.extend({
     }
 
     var inputHandler = Container.getComponent('InputHandler');
+
+    if (inputHandler.key('SPACE')) {
+      speed *= 10;
+    }
 
     if (inputHandler.key('left') && !collisionDirections.left) {
       builderBlock._physics.xSpeed -=speed;
@@ -160,8 +164,13 @@ var Builder = Class.extend({
 
     blockGraphics.position.x = x;
     blockGraphics.position.y = y;
+    blockGraphics.position.getAnchor = function() {
+      return {
+        x: block.position.x + (block.size.x / 2),
+        y: block.position.y + (block.size.y / 2)
+      }
+    };
     block.position = blockGraphics.position;
-
 
     block.baseGraphicsCallback = function() {
       this._graphics.clear();

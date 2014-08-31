@@ -114,6 +114,11 @@
                   self._builder.createObject(glueSource);
                 }
 
+                if (inputHandler.key('RETURN')) {
+                  console.log('test');
+                  self._gravityManager.applyForce(2, self.getEntityManager().getEntityByName('wall_1'));
+                }
+
                 self._builder.clearRooms(game.getEntityManager().getAllEntities());
                 self._builder.buildConnections(game.getEntityManager().getAllEntities());
 
@@ -158,47 +163,6 @@
           this.getEntityManager().deselectAll();
           entity.select();
           return true;
-        },
-
-        applyForce: function(multiplier) {
-          var maxDistance = 500;
-          var forcePoint = {
-            x: 500,
-            y: 200,
-            multiplier: multiplier,
-            gravity: 100
-          };
-          var entities = this.getEntityManager().getAllEntities();
-          for (var i = 0; i < entities.length; i++) {
-            var entity = entities[i];
-            if (entity.name.substr(0, 1) == 'b') {
-              if (entity.hasGlue) {
-                continue;
-              }
-              var xMultiplier = multiplier;
-              var yMultiplier = multiplier;
-              var xDist =  (entity._graphics.position.x - forcePoint.x);
-              var yDist =  (entity._graphics.position.y - forcePoint.y);
-
-              if (xDist < 0) {
-                xDist = -xDist;
-                xMultiplier = -multiplier;
-              }
-
-              if (xDist != 0) {
-                entity._physics.xSpeed = (1 - (xDist / maxDistance)) * xMultiplier;
-              }
-
-              if (yDist < 0) {
-                yDist = -yDist;
-                yMultiplier = -multiplier;
-              }
-
-              if (yDist != 0) {
-                entity._physics.ySpeed = (1 - (yDist / maxDistance)) * yMultiplier;
-              }
-            }
-          }
         },
 
         addEntity: function(entity) {
