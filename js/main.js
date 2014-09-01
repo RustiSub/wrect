@@ -314,8 +314,11 @@ function buildShip1() {
 
 function addGui() {
     var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
-    fullscreenButton.addEvent('click', function(){game.goFullscreen()});
+    fullscreenButton.addEvent('click', function(){game.goFullscreen();});
     game.getGuiManager().addElement(fullscreenButton);
+    var panel = new window.Panel('#ccc', 500, game.getHeight(), 'closed', 'left');
+    game.getGuiManager().addElement(panel);
+
 }
 
 window.onload = function() {

@@ -12,6 +12,8 @@
                     container = window.Container.getComponent('Renderer').view.parentNode;
                 }
                 container.appendChild(guiElement.htmlElement);
+                guiElement.inDom = true;
+                guiElement.toDomCallback();
             }
         }
     });

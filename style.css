@@ -61,6 +61,7 @@ body:fullscreen .canvasContainer{
 	height: 720px;
 	position: relative;
 	width: 1280px;
+	overflow: hidden;
 }
 
 
@@ -70,4 +71,13 @@ button.gui {
 	border: none;
 	margin: 0;
 	padding: 0;
+}
+
+.panel.gui {
+	opacity: 0.5;
+	-webkit-transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
+	-moz-transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
+	-ms-transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
+	-o-transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
+	transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
 }

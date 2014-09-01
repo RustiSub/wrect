@@ -202,24 +202,35 @@
                 }
             }
         },
-      
-				goFullscreen: function(element) {
-					var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
-						(document.mozFullScreen || document.webkitIsFullScreen);
-	
-					var docElm = element ? element : document.body;
-					if (!isInFullScreen) {
-	
-						if (docElm.requestFullscreen) {
-							docElm.requestFullscreen();
-						}
-						else if (docElm.mozRequestFullScreen) {
-							docElm.mozRequestFullScreen();
-						}
-						else if (docElm.webkitRequestFullScreen) {
-							docElm.webkitRequestFullScreen();
-						}
-					}
-				}
+
+        /**
+         * @param [element]
+         */
+        goFullscreen: function(element) {
+            var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
+                (document.mozFullScreen || document.webkitIsFullScreen);
+
+            var docElm = element ? element : document.body;
+            if (!isInFullScreen) {
+
+                if (docElm.requestFullscreen) {
+                    docElm.requestFullscreen();
+                }
+                else if (docElm.mozRequestFullScreen) {
+                    docElm.mozRequestFullScreen();
+                }
+                else if (docElm.webkitRequestFullScreen) {
+                    docElm.webkitRequestFullScreen();
+                }
+            }
+        },
+
+        getHeight: function() {
+            return this.getRenderer().view.height;
+        },
+
+        getWidth: function() {
+            return this.getRenderer().view.width;
+        }
 });
 })(this);

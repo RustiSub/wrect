@@ -6,6 +6,7 @@
      */
     window.BaseGui = window.Class.extend({
         htmlElement: null,
+        inDom: false,
         init: function(element){
             if (element) {
                 this.setHtmlElement(element);
@@ -26,6 +27,7 @@
         setCss: function(cssProperties) {
             if (this.htmlElement) {
                 for (var x in cssProperties) {
+                    console.log(x, this.htmlElement.style[x]);
                     this.htmlElement.style[x] = cssProperties[x];
                 }
             }
@@ -56,6 +58,8 @@
                 }
                 this.htmlElement.dispatchEvent(event);
             }
+        },
+        toDomCallback: function() {
         }
     });
 })();
