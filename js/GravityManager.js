@@ -14,8 +14,15 @@ var GravityManager = Class.extend({
         }
     },
     applyForce: function(multiplier, centerBlock) {
-        multiplier = 2;
-        var maxDistance = 500;
+        var inputHandler = Container.getComponent('InputHandler');
+
+        multiplier = 3;
+
+        if (inputHandler.key('SPACE')) {
+            multiplier *= -1;
+        }
+
+        var maxDistance = 250;
         var forcePoint = {
             x: centerBlock.position.getAnchor().x,
             y: centerBlock.position.getAnchor().y
@@ -27,18 +34,26 @@ var GravityManager = Class.extend({
             if (entity.hasGlue) {
                 continue;
             }
-            var xDist = (entity.position.getAnchor().x - forcePoint.x);
-            var yDist = (entity.position.getAnchor().y - forcePoint.y);
-            var totalDistance = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+            var xDist = entity.position.getAnchor().x - forcePoint.x;
+            var yDist = entity.position.getAnchor().y - forcePoint.y;
+            var totalDistance = Math.sqrt(Math.pow(Math.abs(xDist), 2) + Math.pow(Math.abs(yDist), 2));
+//            console.log(totalDistance, xDist, yDist);
             var force = (1 - (totalDistance / maxDistance));
 
             if (force > 0.1) {
-                var xDirection = xDist > 0 ? -1 : 1;
-                var yDirection = yDist > 0 ? -1 : 1;
+                if (xDist !== 0) {
+                    var xDirection = xDist < 0 ? -1 : 1;
+                    //entity._physics.xSpeed = (1 - Math.abs((xDist / maxDistance))) * multiplier * xDirection;
+                    entity._physics.xSpeed = (xDist / 100) * force * multiplier;
+                }
 
-                entity._physics.xSpeed = (xDirection + (xDist / maxDistance)) * multiplier;
-                entity._physics.ySpeed = (yDirection + (yDist / maxDistance)) * multiplier;
-
+                if (yDist !== 0) {
+                    var yDirection = yDist < 0 ? -1 : 1;
+                    //entity._physics.ySpeed = (1 - Math.abs((yDist / maxDistance))) * multiplier * yDirection;
+                    entity._physics.ySpeed = (yDist / 100) * force * multiplier;
+                }
+//alert(xDirection);
+//alert(entity._physics.xSpeed);
             }
         }
     }
