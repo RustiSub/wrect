@@ -10,8 +10,9 @@
          * @param width
          * @param height
          * @param positionCss
+         * @param [id]
          */
-        init: function(imagePath, width, height, positionCss) {
+        init: function(imagePath, width, height, positionCss, id) {
             var element = document.createElement('button');
             this._super(element);
             if (id) {
