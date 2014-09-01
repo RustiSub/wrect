@@ -296,6 +296,13 @@ function builderTest5() {
     game.addEntity(game._builder.createBlock('wall_d_8', 910, 515, 20, 20, 0xFFFFFF));
 }
 
+
+function addGui() {
+    var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
+    fullscreenButton.addEvent('click', function(){game.goFullscreen()});
+    game.getGuiManager().addElement(fullscreenButton);
+}
+
 window.onload = function() {
   game = new Game();
   //entity.applyGlue();
@@ -306,6 +313,8 @@ window.onload = function() {
   //test3();
   //testCollide1();
   //testCollide2();
+
+  addGui();
   //testRooms1();
   //testRooms1();
   //testRooms2Closed();

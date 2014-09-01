@@ -11,5 +11,63 @@ body {
 canvas {
 	background-color: transparent;
 	position: absolute;
-	transition: opacity 1s ease;
+  transition: opacity 1s ease;
+}
+
+/* Fullscreen */
+body:-webkit-full-screen {
+  height: 100%;
+  width: 100%;
+}
+
+body:-moz-full-screen {
+  height: 100%;
+  width: 100%;
+}
+
+body:fullscreen {
+  height: 100%;
+  width: 100%;
+}
+
+body:-webkit-full-screen canvas {
+	height: 100%;
+}
+
+body:-moz-full-screen canvas {
+	height: 100%;
+}
+
+body:fullscreen canvas {
+	height: 100%;
+}
+
+body:-webkit-full-screen .canvasContainer{
+	height: 100%;
+	width: 100%;
+}
+
+body:-moz-full-screen .canvasContainer{
+	height: 100%;
+	width: 100%;
+}
+
+body:fullscreen .canvasContainer{
+	height: 100%;
+	width: 100%;
+}
+
+.canvasContainer {
+	height: 720px;
+	position: relative;
+	width: 1280px;
+}
+
+
+/* GUI element styling */
+button.gui {
+	background: none;
+	border: none;
+	margin: 0;
+	padding: 0;
 }
