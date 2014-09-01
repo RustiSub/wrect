@@ -279,21 +279,36 @@ function builderTest5() {
     staticBlock2.glueSource = true;
     game.addEntity(staticBlock2);
 
-    game.addEntity(game._builder.createBlock('wall_2', 310, 315, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_3', 410, 315, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_2', 510, 410, 20, 20, 0xFFFFFF));
     game.addEntity(game._builder.createBlock('wall_4', 510, 315, 20, 20, 0xFFFFFF));
     game.addEntity(game._builder.createBlock('wall_5', 610, 315, 20, 20, 0xFFFFFF));
     game.addEntity(game._builder.createBlock('wall_6', 710, 315, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_7', 810, 315, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_8', 910, 315, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_7', 710, 415, 20, 20, 0xFFFFFF));
 
-    game.addEntity(game._builder.createBlock('wall_d_2', 310, 515, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_d_3', 410, 515, 20, 20, 0xFFFFFF));
     game.addEntity(game._builder.createBlock('wall_d_4', 510, 515, 20, 20, 0xFFFFFF));
     game.addEntity(game._builder.createBlock('wall_d_5', 610, 515, 20, 20, 0xFFFFFF));
     game.addEntity(game._builder.createBlock('wall_d_6', 710, 515, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_d_7', 810, 515, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_d_8', 910, 515, 20, 20, 0xFFFFFF));
+}
+
+function buildShip1() {
+  var forceGenerator = game._builder.createBlock('wall_1', 600, 300, 20, 20, 0xFFFFFF);
+  forceGenerator.glueSource = true;
+  game.addEntity(forceGenerator);
+
+  game.addEntity(game._builder.createBlock('r', 620, 300, 200, 20, 0xFFFFFF));
+  game.addEntity(game._builder.createBlock('l', 400, 300, 200, 20, 0xFFFFFF));
+
+  game.addEntity(game._builder.createBlock("created_block_3",380, 208, 20, 200, 0xFFFFFF));
+  game.addEntity(game._builder.createBlock("created_block_4",382, 188, 200, 20, 0xFFFFFF));
+  game.addEntity(game._builder.createBlock("created_block_5",582, 186.5, 200, 20, 0xFFFFFF));
+  game.addEntity(game._builder.createBlock("created_block_6",782, 187, 200, 20, 0xFFFFFF));
+  game.addEntity(game._builder.createBlock("created_block_7",400, 385.5, 200, 20, 0xFFFFFF));
+  game.addEntity(game._builder.createBlock("created_block_8",600, 384.5, 200, 20, 0xFFFFFF));
+  game.addEntity(game._builder.createBlock("created_block_9",800, 384.5, 200, 20, 0xFFFFFF));
+  game.addEntity(game._builder.createBlock("created_block_10",982, 184.5, 20, 200, 0xFFFFFF));
+
+  game.addEntity(game._builder.createBlock('wall_5', 690, 345, 20, 20, 0xFFFFFF));
+  game.addEntity(game._builder.createBlock('wall_6', 750, 250, 20, 20, 0xFFFFFF));
 }
 
 window.onload = function() {
@@ -311,10 +326,11 @@ window.onload = function() {
   //testRooms2Closed();
   //testRooms3Closed();
   //testRooms4Closed();
-//  builderTest1();
+  //builderTest1();
   //builderTest2();
   //builderTest3();
-  builderTest5();
+  //builderTest5();
+  buildShip1();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());

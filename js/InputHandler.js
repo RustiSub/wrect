@@ -27,6 +27,7 @@ var InputHandler = Class.extend({
     65,
     90,
     96,
+    101,
     105
   ],
   _keysToCapture: [],

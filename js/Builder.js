@@ -6,7 +6,7 @@ var Builder = Class.extend({
 
   createObject: function(glueSource) {
     var uniqueId = game.getEntityManager().getAllEntities().length;
-    var createdBlock = game._builder.createBlock('created_block_' + uniqueId, 0, 0, 150, 20, 0xFFFFFF);
+    var createdBlock = game._builder.createBlock('created_block_' + uniqueId, 0, 0, 200, 20, 0xFFFFFF);
     createdBlock.glueSource = glueSource;
     game.addEntity(createdBlock);
   },
@@ -85,6 +85,10 @@ var Builder = Class.extend({
     }
     if (inputHandler.key('K_NINE')) {
       builderBlock.rotate();
+    }
+
+    if (inputHandler.key('K_FIVE')) {
+      console.log('game.addEntity(game._builder.createBlock("' + builderBlock.name + '",' +  builderBlock.position.x + ', ' + builderBlock.position.y + ', ' + builderBlock.size.x + ', ' + builderBlock.size.y + ', ' + '0xFFFFFF));');
     }
   },
 
