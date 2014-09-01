@@ -10,6 +10,7 @@
             helpersClass: Helpers,
             entityManagerClass: EntityManager,
             collisionManagerClass: CollisionManager,
+            guiManagerClass: window.GuiManager,
             gravityManagerClass: GravityManager,
             builder: Builder,
             levelManagerClass: LevelManager,
@@ -34,10 +35,13 @@
             return this._entityManager;
         },
         getCollisionManager: function() {
-          return this._collisionManager;
+            return this._collisionManager;
         },
         getLevelManager: function() {
           return this._levelManager;
+        },
+        getGuiManager: function() {
+            return this._guiManager;
         },
 
         /**
@@ -65,6 +69,7 @@
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
+            this._guiManager = new this._options.guiManagerClass();
             this._gravityManager = new this._options.gravityManagerClass();
             this._builder = new this._options.builder();
             this._levelManager = new this._options.levelManagerClass(this._stage);
@@ -91,7 +96,7 @@
             var renderer = this.getRenderer();
             var self = this;
 
-            global.document.body.appendChild(renderer.view);
+            global.document.body.querySelector('.canvasContainer').appendChild(renderer.view);
             requestAnimationFrame(run);
 
             function run() {
@@ -124,6 +129,7 @@
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
 
+
                 renderer.render(stage);
             }
         },
@@ -136,6 +142,7 @@
                     if (typeof self[propertyName] === 'function') {
                         return self[propertyName]();
                     }
+                    console.error('Component "' + componentName + '" not found');
                     return null;
                 },
                 getGame: function() {
@@ -194,6 +201,25 @@
                         true);
                 }
             }
-        }
+        },
+      
+				goFullscreen: function(element) {
+					var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
+						(document.mozFullScreen || document.webkitIsFullScreen);
+	
+					var docElm = element ? element : document.body;
+					if (!isInFullScreen) {
+	
+						if (docElm.requestFullscreen) {
+							docElm.requestFullscreen();
+						}
+						else if (docElm.mozRequestFullScreen) {
+							docElm.mozRequestFullScreen();
+						}
+						else if (docElm.webkitRequestFullScreen) {
+							docElm.webkitRequestFullScreen();
+						}
+					}
+				}
 });
 })(this);
