@@ -14,7 +14,7 @@ var GravityManager = Class.extend({
     }
   },
   applyForce: function(multiplier, centerBlock) {
-      multiplier = 10;
+      multiplier = -10;
     var maxDistance = 500;
     var forcePoint = {
       x: centerBlock.position.getAnchor().x,

@@ -338,8 +338,8 @@ window.onload = function() {
   //builderTest1();
   //builderTest2();
   //builderTest3();
-  //builderTest5();
-  buildShip1();
+  builderTest5();
+  //buildShip1();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
