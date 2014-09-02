@@ -311,6 +311,24 @@ function buildShip1() {
   game.addEntity(game._builder.createBlock('wall_6', 750, 250, 20, 20, 0xFFFFFF));
 }
 
+function gravityStressTest1() {
+  var forceGenerator = game._builder.createBlock('wall_1', 600, 300, 20, 20, 0xFFFFFF);
+  forceGenerator.glueSource = true;
+  game.addEntity(forceGenerator);
+
+  for (var l= 0; l < 1; l++) {
+    for (var t= 0; t < 55; t++) {
+      game.addEntity(game._builder.createBlock('wall_spam_' + t, 10 + t * 21, 10 + l * 21, 20, 20, 0xFFFFFF));
+    }
+  }
+
+  for (var l= 0; l < 1; l++) {
+    for (var t= 0; t < 55; t++) {
+      game.addEntity(game._builder.createBlock('wall_spam_' + t, 10 + t * 21, 350 + l * 21, 20, 20, 0xFFFFFF));
+    }
+  }
+}
+
 
 function addGui() {
     var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
@@ -338,8 +356,9 @@ window.onload = function() {
   //builderTest1();
   //builderTest2();
   //builderTest3();
-  builderTest5();
+  //builderTest5();
   //buildShip1();
+  gravityStressTest1();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
