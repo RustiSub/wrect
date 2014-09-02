@@ -275,20 +275,53 @@ function builderTest4() {
 }
 
 function builderTest5() {
-    var staticBlock2 = game._builder.createBlock('wall_1', 610, 410, 20, 20, 0xFFFFFF);
+    var staticBlock2 = game._builder.createBlock('wall_1', 600, 400, 20, 20, 0xFFFFFF);
     staticBlock2.glueSource = true;
     game.addEntity(staticBlock2);
 
-    game.addEntity(game._builder.createBlock('wall_2', 510, 410, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_4', 510, 315, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_5', 610, 315, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_6', 710, 315, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_7', 710, 415, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_u_4', 500, 300, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_u_5', 600, 300, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_u_6', 700, 300, 20, 20, 0xFFFFFF));
 
-    game.addEntity(game._builder.createBlock('wall_d_4', 510, 515, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_d_5', 610, 515, 20, 20, 0xFFFFFF));
-    game.addEntity(game._builder.createBlock('wall_d_6', 710, 515, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_u2_4', 500, 250, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_u2_5', 600, 250, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_u2_6', 700, 250, 20, 20, 0xFFFFFF));
+
+    game.addEntity(game._builder.createBlock('wall_d_4', 500, 500, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_d_5', 600, 500, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_d_6', 700, 500, 20, 20, 0xFFFFFF));
+
+    game.addEntity(game._builder.createBlock('wall_d2_4', 500, 550, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_d2_5', 600, 550, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_d2_6', 700, 550, 20, 20, 0xFFFFFF));
+
+    game.addEntity(game._builder.createBlock('wall_l_4', 500, 350, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_l_5', 500, 400, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_l_6', 500, 450, 20, 20, 0xFFFFFF));
+
+    game.addEntity(game._builder.createBlock('wall_l1_4', 450, 350, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_l1_5', 450, 400, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_l1_6', 450, 450, 20, 20, 0xFFFFFF));
+
+    game.addEntity(game._builder.createBlock('wall_r_4', 700, 350, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_r_5', 700, 400, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_r_6', 700, 450, 20, 20, 0xFFFFFF));
+
+    game.addEntity(game._builder.createBlock('wall_r1_4', 750, 350, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_r1_5', 750, 400, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_r1_6', 750, 450, 20, 20, 0xFFFFFF));
 }
+
+function builderTest6() {
+    var staticBlock2 = game._builder.createBlock('wall_1', 600, 400, 20, 20, 0xFFFFFF);
+    staticBlock2.glueSource = true;
+    game.addEntity(staticBlock2);
+
+    game.addEntity(game._builder.createBlock('wall_u_3', 300, 300, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_u_4', 900, 300, 20, 20, 0xFFFFFF));
+
+}
+
 
 function buildShip1() {
   var forceGenerator = game._builder.createBlock('wall_1', 600, 300, 20, 20, 0xFFFFFF);
