@@ -290,6 +290,17 @@ function builderTest5() {
     game.addEntity(game._builder.createBlock('wall_d_6', 710, 515, 20, 20, 0xFFFFFF));
 }
 
+function builderTest6() {
+    var staticBlock2 = game._builder.createBlock('wall_1', 600, 400, 20, 20, 0xFFFFFF);
+    staticBlock2.glueSource = true;
+    game.addEntity(staticBlock2);
+
+    game.addEntity(game._builder.createBlock('wall_u_3', 300, 300, 20, 20, 0xFFFFFF));
+    game.addEntity(game._builder.createBlock('wall_u_4', 900, 300, 20, 20, 0xFFFFFF));
+
+}
+
+
 function buildShip1() {
   var forceGenerator = game._builder.createBlock('wall_1', 600, 300, 20, 20, 0xFFFFFF);
   forceGenerator.glueSource = true;
