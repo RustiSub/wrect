@@ -316,9 +316,21 @@ function addGui() {
     var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
     fullscreenButton.addEvent('click', function(){game.goFullscreen();});
     game.getGuiManager().addElement(fullscreenButton);
-    var panel = new window.Panel('#ccc', 500, game.getHeight(), 'closed', 'left');
+
+    var panel = new window.Panel({
+      backgroundColor: '#ccc',
+      width: 500,
+      height: game.getHeight(),
+      defaultState: 'closed',
+      panelPosition: 'left'
+    });
     game.getGuiManager().addElement(panel);
 
+    var secondButton = new window.ImageButton('resources/gui/plus.png', 24, 24, {top: "20px", left: "20px"});
+    secondButton.addEvent('click', function(){
+      window.game._builder.createObject(false);
+    });
+    panel.addChild(secondButton);
 }
 
 window.onload = function() {

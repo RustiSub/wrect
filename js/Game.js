@@ -223,6 +223,8 @@
                     docElm.webkitRequestFullScreen();
                 }
             }
+            this._renderer.view.style.width = element.width + 'px';
+            this._renderer.view.style.height = element.height + 'px';
         },
 
         getHeight: function() {

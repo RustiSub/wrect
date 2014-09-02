@@ -9,22 +9,29 @@
         height: 0,
         panelPosition: 'left',
         toggleButton: null,
+        defaultOptions: {
+            height: 0,
+            width: 0,
+            defaultState: 'closed'
+        },
         state: 'closed',
         width: 0,
+
         /**
-         * @param backgroundColor
-         * @param width
-         * @param height
-         * @param defaultState
-         * @param [panelPosition]
-         * @param [id]
+         * @param options.backgroundColor
+         * @param options.width
+         * @param options.height
+         * @param options.defaultState
+         * @param [options.panelPosition]
+         * @param [options.id]
          */
-        init: function(backgroundColor, width, height, defaultState, panelPosition, id) {
+        init: function(options) {
+            options = this.mergeDefaultOptions(options);
             // Init properties
             this.children = [];
-            this.width = width;
-            this.height = height;
-            this.panelPosition = panelPosition;
+            this.width = options.width;
+            this.height = options.height;
+            this.panelPosition = options.panelPosition;
 
             // Parent constructor
             var element = document.createElement('div');
@@ -32,21 +39,21 @@
             this._super(element);
 
             // Options
-            if (defaultState === 'open') {
+            if (options.defaultState === 'open') {
                 this.openPanel();
             }
             else {
                 this.closePanel();
             }
-            if (id) {
-                element.id = id;
+            if (options.id) {
+                element.id = options.id;
             }
             var cssProps = {
                 display: 'block',
-                height: height + 'px',
+                height: options.height + 'px',
                 position: 'absolute',
-                width: width + 'px',
-                background: backgroundColor
+                width: options.width + 'px',
+                background: options.backgroundColor
             };
 
             this.setCss(cssProps);
@@ -54,12 +61,11 @@
             var buttonCss;
             var buttonImagePath = 'resources/gui/arrow-';
             var borderToHide;
-            switch (panelPosition) {
+            switch (options.panelPosition) {
                 case 'top':
                     buttonCss = {
                         bottom: '-32px',
-                        left: '50%',
-                        'marginLeft': '-16px',
+                        left: '25%',
                         padding: '0 6px'
                     };
                     buttonImagePath += 'down';
@@ -68,8 +74,7 @@
                 case 'right':
                     buttonCss = {
                         left: '-32px',
-                        top: '50%',
-                        'marginTop': '-16px',
+                        top: '25%',
                         padding: '6px 0'
                     };
                     buttonImagePath += 'left';
@@ -78,8 +83,7 @@
                 case 'bottom':
                     buttonCss = {
                         top: '-32px',
-                        left: '50%',
-                        'marginLeft': '-16px',
+                        left: '25%',
                         padding: '0 6px'
                     };
                     buttonImagePath += 'up';
@@ -88,8 +92,7 @@
                 case 'left':
                     buttonCss = {
                         right: '-32px',
-                        top: '50%',
-                        'marginTop': '-16px',
+                        top: '25%',
                         padding: '6px 0'
                     };
                     buttonImagePath += 'right';
@@ -98,8 +101,7 @@
             }
             buttonCss.border = '1px solid #eee';
             buttonCss['border' + borderToHide] = 'none';
-            buttonCss['background-color'] = backgroundColor;
-            buttonCss.borderRadius = '5px';
+            buttonCss['background-color'] = options.backgroundColor;
             buttonImagePath += '.png';
             this.toggleButton = new window.ImageButton(buttonImagePath, 32, 32, buttonCss);
             var self = this;
@@ -107,6 +109,10 @@
                 self.togglePanel();
             });
             this.children.push(this.toggleButton);
+        },
+
+        mergeDefaultOptions: function(options) {
+            return window.game.getHelpers().merge(this.defaultOptions, options);
         },
 
         /**
