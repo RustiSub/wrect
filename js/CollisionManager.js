@@ -66,60 +66,60 @@ var CollisionManager = Class.extend({
       var mainBody = bodies[x];
       mainBody._physics.applyFriction(1);
 
-      mainBody.collisions = [];
-
-      for (var y = 0; y < bodies.length; y++) {
-        if (x !== y) {
-          var otherBody = bodies[y];
-
-          var debug = false;
-          if (mainBody.name == 'b1' && otherBody.name == 'b2') {
-            debug = false;
-          }
-
-          if (!mainBody._physics.isMoving() && !otherBody._physics.isMoving()) {
-            continue;
-          }
-
-          var xDist = this.checkAxisCollision(
-              {
-                position: mainBody.position.x,
-                size: mainBody.size.x,
-                speed: mainBody._physics.xSpeed
-              },
-              {
-                position: otherBody.position.x,
-                size: otherBody.size.x,
-                speed: otherBody._physics.xSpeed
-              },debug, 'x'
-          );
-
-          var yDist = this.checkAxisCollision(
-              {
-                position: mainBody.position.y,
-                size: mainBody.size.y,
-                speed: mainBody._physics.ySpeed
-              },
-              {
-                position: otherBody.position.y,
-                size: otherBody.size.y,
-                speed: otherBody._physics.ySpeed
-              }, false, 'y'
-          );
-          if ((xDist != null) && (yDist != null)) {
-            this.registerCollision(xDist, yDist, mainBody, otherBody);
-          }
-        }
-      }
+//      mainBody.collisions = [];
+//
+//      for (var y = 0; y < bodies.length; y++) {
+//        if (x !== y) {
+//          var otherBody = bodies[y];
+//
+//          var debug = false;
+//          if (mainBody.name == 'b1' && otherBody.name == 'b2') {
+//            debug = false;
+//          }
+//
+//          if (!mainBody._physics.isMoving() && !otherBody._physics.isMoving()) {
+//            continue;
+//          }
+//
+//          var xDist = this.checkAxisCollision(
+//              {
+//                position: mainBody.position.x,
+//                size: mainBody.size.x,
+//                speed: mainBody._physics.xSpeed
+//              },
+//              {
+//                position: otherBody.position.x,
+//                size: otherBody.size.x,
+//                speed: otherBody._physics.xSpeed
+//              },debug, 'x'
+//          );
+//
+//          var yDist = this.checkAxisCollision(
+//              {
+//                position: mainBody.position.y,
+//                size: mainBody.size.y,
+//                speed: mainBody._physics.ySpeed
+//              },
+//              {
+//                position: otherBody.position.y,
+//                size: otherBody.size.y,
+//                speed: otherBody._physics.ySpeed
+//              }, false, 'y'
+//          );
+//          if ((xDist != null) && (yDist != null)) {
+//            this.registerCollision(xDist, yDist, mainBody, otherBody);
+//          }
+//        }
+//      }
     }
 
-    for (var x = 0; x < bodies.length; x++) {
-      var body = bodies[x];
-      for (var c = 0; c < body.collisions.length; c++) {
-        var collision = body.collisions[c];
-        body._physics.applyCollision(collision);
-        //body._physics.applyGravity(collision);
-      }
-    }
+//    for (var x = 0; x < bodies.length; x++) {
+//      var body = bodies[x];
+//      for (var c = 0; c < body.collisions.length; c++) {
+//        var collision = body.collisions[c];
+//        body._physics.applyCollision(collision);
+//        //body._physics.applyGravity(collision);
+//      }
+//    }
   }
 });

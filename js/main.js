@@ -345,21 +345,49 @@ function buildShip1() {
 }
 
 function gravityStressTest1() {
-  var forceGenerator = game._builder.createBlock('wall_1', 600, 300, 20, 20, 0xFFFFFF);
+  var forceGenerator = game._builder.createBlock('wall_1', 650, 300, 20, 20, 0xFFFFFF);
   forceGenerator.glueSource = true;
   game.addEntity(forceGenerator);
 
   for (var l= 0; l < 1; l++) {
-    for (var t= 0; t < 55; t++) {
-      game.addEntity(game._builder.createBlock('wall_spam_' + t, 10 + t * 21, 10 + l * 21, 20, 20, 0xFFFFFF));
+    for (var t= 0; t < 20; t++) {
+      game.addEntity(game._builder.createBlock('wall_spam_' + t, 450 + t * 21, 100 + l * 50, 20, 20, 0xFFFFFF));
     }
   }
 
   for (var l= 0; l < 1; l++) {
-    for (var t= 0; t < 55; t++) {
-      game.addEntity(game._builder.createBlock('wall_spam_' + t, 10 + t * 21, 350 + l * 21, 20, 20, 0xFFFFFF));
+    for (var t= 0; t < 20; t++) {
+      game.addEntity(game._builder.createBlock('wall_spam_' + t, 450 + t * 21, 470 + l * 50, 20, 20, 0xFFFFFF));
     }
   }
+
+  for (var l= 0; l < 1; l++) {
+    for (var t= 0; t < 20; t++) {
+      game.addEntity(game._builder.createBlock('wall_spam_' + t, 400, 100 + t * 21, 20, 20, 0xFFFFFF));
+    }
+  }
+
+  for (var l= 0; l < 1; l++) {
+    for (var t= 0; t < 20; t++) {
+      game.addEntity(game._builder.createBlock('wall_spam_' + t, 900, 100 + t * 21, 20, 20, 0xFFFFFF));
+    }
+  }
+}
+
+function entityStressTest2() {
+  var forceGenerator = game._builder.createBlock('wall_1', 600, 350, 20, 20, 0xFFFFFF);
+  forceGenerator.glueSource = true;
+  game.addEntity(forceGenerator);
+
+  var blockSize = 5;
+
+  for (var l= 0; l < 50 ; l++) {
+    for (var t= 0; t < 11; t++) {
+      game.addEntity(game._builder.createBlock('wall_spam_' + t, 500 + t * (blockSize), 230 + l * (blockSize), blockSize, blockSize, 0xFFFFFF));
+    }
+  }
+
+  console.log(game.getEntityManager().getAllEntities().length);
 }
 
 
@@ -391,7 +419,8 @@ window.onload = function() {
   //builderTest3();
   //builderTest5();
   //buildShip1();
-  gravityStressTest1();
+  //gravityStressTest1();
+  entityStressTest2();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
