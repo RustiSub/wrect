@@ -319,8 +319,8 @@ function addGui() {
 
     var panel = new window.Panel({
       backgroundColor: '#ccc',
-      width: 500,
-      height: game.getHeight(),
+      width: 160,
+      height: 160,
       defaultState: 'closed',
       panelPosition: 'left'
     });

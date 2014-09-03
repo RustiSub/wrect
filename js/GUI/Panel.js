@@ -6,24 +6,38 @@
      */
     window.Panel = window.BaseGui.extend({
         children: [],
+        columns: 0,
+        rows: 0,
         height: 0,
         panelPosition: 'left',
         toggleButton: null,
         defaultOptions: {
+            columns: 5,
+            rows: 5,
             height: 0,
             width: 0,
-            defaultState: 'closed'
+            defaultState: 'closed',
+            outerPadding: 20,
+            showButton: true,
+            childMargin: 20
         },
+        outerPadding: 0,
         state: 'closed',
         width: 0,
+        rowSize: 0,
+        colSize: 0,
+        childMargin: 0,
 
         /**
          * @param options.backgroundColor
          * @param options.width
          * @param options.height
          * @param options.defaultState
+         * @param [options.columns]
+         * @param [options.rows]
          * @param [options.panelPosition]
          * @param [options.id]
+         * @param [options.showButton]
          */
         init: function(options) {
             options = this.mergeDefaultOptions(options);
@@ -32,6 +46,8 @@
             this.width = options.width;
             this.height = options.height;
             this.panelPosition = options.panelPosition;
+            this.rows = options.rows;
+            this.columns = options.columns;
 
             // Parent constructor
             var element = document.createElement('div');
@@ -53,15 +69,34 @@
                 height: options.height + 'px',
                 position: 'absolute',
                 width: options.width + 'px',
-                background: options.backgroundColor
+                background: options.backgroundColor,
+                padding: options.outerPadding + 'px'
             };
 
             this.setCss(cssProps);
 
+            if (options.showButton) {
+                this.createToggleButton();
+            }
+            this.calculateChildSizes();
+        },
+
+        mergeDefaultOptions: function(options) {
+            return window.game.getHelpers().merge(this.defaultOptions, options);
+        },
+
+        calculateChildSizes: function() {
+            var totalPadding = this.outerPadding * 2;
+            var totalChildMargin = this.childMargin * 2;
+            this.colSize = Math.round((this.width - totalPadding) / this.columns) - (totalChildMargin * this.cols);
+            this.rowSize = Math.round((this.height - totalPadding) / this.rows) - (totalChildMargin * this.rows);
+        },
+
+        createToggleButton: function() {
             var buttonCss;
-            var buttonImagePath = 'resources/gui/arrow-';
             var borderToHide;
-            switch (options.panelPosition) {
+            var buttonImagePath = 'resources/gui/arrow-';
+            switch (this.panelPosition) {
                 case 'top':
                     buttonCss = {
                         bottom: '-32px',
@@ -101,7 +136,7 @@
             }
             buttonCss.border = '1px solid #eee';
             buttonCss['border' + borderToHide] = 'none';
-            buttonCss['background-color'] = options.backgroundColor;
+            buttonCss['background-color'] = this.backgroundColor;
             buttonImagePath += '.png';
             this.toggleButton = new window.ImageButton(buttonImagePath, 32, 32, buttonCss);
             var self = this;
@@ -111,10 +146,6 @@
             this.children.push(this.toggleButton);
         },
 
-        mergeDefaultOptions: function(options) {
-            return window.game.getHelpers().merge(this.defaultOptions, options);
-        },
-
         /**
          * @param {BaseGui} guiElement
          */
@@ -122,7 +153,6 @@
             this.children.push(guiElement);
             window.game.getGuiManager().addElement(guiElement, this.htmlElement);
         },
-
         toDomCallback: function() {
             var l = this.children.length;
             var gm = window.game.getGuiManager();
@@ -130,7 +160,6 @@
                 gm.addElement(this.children[i], this.htmlElement);
             }
         },
-
         openPanel: function() {
             this.state = 'open';
             switch (this.panelPosition) {
@@ -151,7 +180,6 @@
                     break;
             }
         },
-
         closePanel: function() {
             this.state = 'closed';
             switch (this.panelPosition) {
@@ -179,6 +207,37 @@
             else {
                 this.closePanel();
             }
+        },
+        setWidth: function(width) {
+            this.width = width;
+            this.setCss({width: this.width + 'px'});
+            this.togglePanel();
+            this.togglePanel();
+        },
+        setHeight: function(height) {
+            this.height = height;
+            this.setCss({height: this.height + 'px'});
+            this.togglePanel();
+            this.togglePanel();
+        },
+        setRows: function(rows) {
+            this.rows = rows;
+        },
+        setColumns: function(columns) {
+            this.columns = columns;
+        },
+        setOuterPadding: function(padding) {
+            this.outerPadding = padding;
+            this.setCss({padding: padding + 'px'});
+        },
+        setPanelPosition: function(position) {
+            this.panelPosition = position;
+            var btnIndex = this.children.indexOf(this.toggleButton);
+            if (btnIndex !== -1) {
+                this.children.splice(btnIndex, 1);
+            }
+            this.toggleButton = null;
+            this.createToggleButton();
         }
     });
 })();
