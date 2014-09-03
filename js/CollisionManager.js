@@ -121,5 +121,58 @@ var CollisionManager = Class.extend({
         //body._physics.applyGravity(collision);
       }
     }
-  }
+  },
+    mapQuadTree: function (bodies, tree, range) {
+        console.log(range);
+//        for (var b = 0; b < bodies.length; b++) {
+//            var body = bodies[b];
+//
+//            var outOfRange = (body.position.x + body.size.x) < range.x || (body.position.y + body.size.y) < range.y
+//                || body.position.x > range.x + range.width || body.position.y > range.y + range.width;
+//
+//            if (!outOfRange) {
+//                tree.push(body.name);
+//            }
+//        }
+        if (range.level < 2) { //tree.length > 10) {
+            var quadWidth = range.width / 2;
+            var quadHeight = range.height / 2;
+            var range1 = {
+                x: range.x,
+                y: range.y,
+                width: quadWidth,
+                height: quadHeight,
+                level: range.level + 1,
+                quadLevel: 1
+            };
+            var range2 = {
+                x: range.x + quadWidth,
+                y: range.y,
+                width: quadWidth,
+                height: quadHeight,
+                level: range.level + 1,
+                quadLevel: 2
+            };
+            var range3 = {
+                x: range.x,
+                y: range.y + quadHeight,
+                width: quadWidth,
+                height: quadHeight,
+                level: range.level + 1,
+                quadLevel: 3
+            };
+            var range4 = {
+                x: range.x + quadWidth,
+                y: range.y + quadHeight,
+                width: quadWidth,
+                height: quadHeight,
+                level: range.level + 1,
+                quadLevel: 4
+            };
+            this.mapQuadTree(bodies, tree, range1);
+            this.mapQuadTree(bodies, tree, range2);
+            this.mapQuadTree(bodies, tree, range3);
+            this.mapQuadTree(bodies, tree, range4);
+        }
+    }
 });

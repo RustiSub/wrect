@@ -344,6 +344,13 @@ function buildShip1() {
   game.addEntity(game._builder.createBlock('wall_6', 750, 250, 20, 20, 0xFFFFFF));
 }
 
+function quadTreeTest1() {
+    for (var l= 0; l < 20; l++) {
+        for (var t= 0; t < 50; t++) {
+            game.addEntity(game._builder.createBlock('wall_spam_' + t, 50 + t * 21, 50 + l * 21, 20, 20, 0xFFFFFF));
+        }
+    }
+}
 
 function addGui() {
     var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
@@ -371,9 +378,21 @@ window.onload = function() {
   //builderTest1();
   //builderTest2();
   //builderTest3();
-  builderTest5();
+//  builderTest5();
   //buildShip1();
+    quadTreeTest1();
 
+    var range = {
+        x: 0,
+        y: 0,
+        width : 1280,
+        height: 720,
+        level: 0,
+        quadLevel : 0
+    };
+    console.log(game.getEntityManager().getAllEntities().length);
+    var tree = [];
+    game._collisionManager.mapQuadTree(game.getEntityManager().getAllEntities(), tree, range);
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
 };

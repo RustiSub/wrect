@@ -123,8 +123,8 @@
                   self._gravityManager.applyForce(1, self.getEntityManager().getEntityByName('wall_1'));
                 }
 
-                self._builder.clearRooms(game.getEntityManager().getAllEntities());
-                self._builder.buildConnections(game.getEntityManager().getAllEntities());
+//                self._builder.clearRooms(game.getEntityManager().getAllEntities());
+//                self._builder.buildConnections(game.getEntityManager().getAllEntities());
 
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
