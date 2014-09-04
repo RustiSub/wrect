@@ -346,8 +346,8 @@ function buildShip1() {
 
 function quadTreeTest1() {
   var blockSize = 30;
-  for (var l= 0; l < 10; l++) {
-    for (var t= 0; t < 1; t++) {
+  for (var l= 0; l < 1; l++) {
+    for (var t= 0; t < 10; t++) {
       game.addEntity(game._builder.createBlock(
           'wall_spam_left_' + t + '_' + l,
           50 + t * (blockSize + 5) + l * 50,
@@ -358,14 +358,16 @@ function quadTreeTest1() {
 }
 
 function quadTreeTest2() {
+  var forceGenerator = game._builder.createBlock('wall_1', 600, 300, 20, 20, 0xFFFFFF);
+  forceGenerator.glueSource = true;
+  game.addEntity(forceGenerator);
+
     for (var l= 0; l < 20; l++) {
         for (var t= 0; t < 50; t++) {
             game.addEntity(game._builder.createBlock('wall_spam_' + t + '_' + l, 50 + t * 21, 50 + l * 21, 20, 20, 0xFFFFFF));
         }
     }
 }
-
-
 
 function addGui() {
     var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});

@@ -16,7 +16,7 @@ var GravityManager = Class.extend({
     applyForce: function(multiplier, centerBlock) {
         var inputHandler = Container.getComponent('InputHandler');
 
-        multiplier = 3;
+        multiplier = 2;
 
         if (inputHandler.key('SPACE')) {
             multiplier *= -1;

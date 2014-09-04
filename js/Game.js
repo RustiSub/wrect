@@ -135,23 +135,9 @@
                   quadLevel : 0
                 };
 
-                var tree = [];
-                var entities = game.getEntityManager().getAllEntities();
-                for (var b = 0; b < entities.length; b++) {
-                  var entity = entities[b];
-
-                  tree[entity.name] = {
-                    x: entity.position.x,
-                    y: entity.position.y,
-                    width: entity.size.x,
-                    height: entity.size.y
-                  };
-
-                }
-
-                game._collisionManager.mapQuadTree(tree, range);
-
-                //self._collisionManager.updateAllCollisions();
+                game._collisionManager.mapQuadTree(game.getEntityManager().getAllEntities(), range);
+//console.log(game.completeTree);
+                self._collisionManager.updateAllCollisions();
                 self._entityManager.update();
 
 

@@ -61,131 +61,136 @@ var CollisionManager = Class.extend({
     collision.main = body.name;
     collision.other = otherBody.name;
     body.collisions.push(collision);
-  }, updateAllCollisions: function(bodies) {
-    for (var x = 0; x < bodies.length; x++) {
-      var mainBody = bodies[x];
-      mainBody._physics.applyFriction(1);
+  }, updateAllCollisions: function() {
 
-      mainBody.collisions = [];
+    for (var t = 0; t < game.completeTree.length; t++) {
+      var bodies = game.completeTree[t];
 
-      for (var y = 0; y < bodies.length; y++) {
-        if (x !== y) {
-          var otherBody = bodies[y];
+      for (var x = 0; x < bodies.length; x++) {
+        var mainBody = bodies[x];
+        mainBody._physics.applyFriction(0.1);
 
-          var debug = false;
-          if (mainBody.name == 'b1' && otherBody.name == 'b2') {
-            debug = false;
-          }
+        mainBody.collisions = [];
 
-          if (!mainBody._physics.isMoving() && !otherBody._physics.isMoving()) {
-            continue;
-          }
+        for (var y = 0; y < bodies.length; y++) {
+          if (x !== y) {
+            var otherBody = bodies[y];
 
-          var xDist = this.checkAxisCollision(
-              {
-                position: mainBody.position.x,
-                size: mainBody.size.x,
-                speed: mainBody._physics.xSpeed
-              },
-              {
-                position: otherBody.position.x,
-                size: otherBody.size.x,
-                speed: otherBody._physics.xSpeed
-              },debug, 'x'
-          );
+            var debug = false;
+            if (mainBody.name == 'b1' && otherBody.name == 'b2') {
+              debug = false;
+            }
 
-          var yDist = this.checkAxisCollision(
-              {
-                position: mainBody.position.y,
-                size: mainBody.size.y,
-                speed: mainBody._physics.ySpeed
-              },
-              {
-                position: otherBody.position.y,
-                size: otherBody.size.y,
-                speed: otherBody._physics.ySpeed
-              }, false, 'y'
-          );
-          if ((xDist != null) && (yDist != null)) {
-            this.registerCollision(xDist, yDist, mainBody, otherBody);
+            if (!mainBody._physics.isMoving() && !otherBody._physics.isMoving()) {
+              continue;
+            }
+
+            var xDist = this.checkAxisCollision(
+                {
+                  position: mainBody.position.x,
+                  size: mainBody.size.x,
+                  speed: mainBody._physics.xSpeed
+                },
+                {
+                  position: otherBody.position.x,
+                  size: otherBody.size.x,
+                  speed: otherBody._physics.xSpeed
+                },debug, 'x'
+            );
+
+            var yDist = this.checkAxisCollision(
+                {
+                  position: mainBody.position.y,
+                  size: mainBody.size.y,
+                  speed: mainBody._physics.ySpeed
+                },
+                {
+                  position: otherBody.position.y,
+                  size: otherBody.size.y,
+                  speed: otherBody._physics.ySpeed
+                }, false, 'y'
+            );
+            if ((xDist != null) && (yDist != null)) {
+              this.registerCollision(xDist, yDist, mainBody, otherBody);
+            }
           }
         }
       }
-    }
-
-    for (var x = 0; x < bodies.length; x++) {
-      var body = bodies[x];
-      for (var c = 0; c < body.collisions.length; c++) {
-        var collision = body.collisions[c];
-        body._physics.applyCollision(collision);
-        //body._physics.applyGravity(collision);
+      for (var x = 0; x < bodies.length; x++) {
+        var body = bodies[x];
+        for (var c = 0; c < body.collisions.length; c++) {
+          var collision = body.collisions[c];
+          body._physics.applyCollision(collision);
+          //body._physics.applyGravity(collision);
+        }
       }
     }
   },
   mapQuadTree: function (bodies, range) {
-    var localTree = {};
-    for (var bodyKey in bodies) {
-        var body = bodies[bodyKey];
+    var localTree = [];
+    for (var x = 0; x < bodies.length; x++) {
+      var body = bodies[x];
 
-      var outOfRange = (body.x + body.width) < range.x || (body.y + body.height) < range.y
-          || body.x > range.x + range.width || body.y > range.y + range.width;
+      var outOfRange = (body.position.x + body.size.x) < range.x || (body.position.y + body.size.y) < range.y
+          || body.position.x > range.x + range.width || body.position.y > range.y + range.width;
 
       if (!outOfRange) {
-        localTree[bodyKey] = body;
+        localTree.push(body);
       }
     }
 
-
-      if (Object.keys(localTree).length > 50) { //tree.length > 10) {
-          var quadWidth = range.width / 2;
-          var quadHeight = range.height / 2;
-          var range1 = {
-              x: range.x,
-              y: range.y,
-              width: quadWidth,
-              height: quadHeight,
-              level: range.level + 1,
-              quadLevel: 1
-          };
-          var range2 = {
-              x: range.x + quadWidth,
-              y: range.y,
-              width: quadWidth,
-              height: quadHeight,
-              level: range.level + 1,
-              quadLevel: 2
-          };
-          var range3 = {
-              x: range.x,
-              y: range.y + quadHeight,
-              width: quadWidth,
-              height: quadHeight,
-              level: range.level + 1,
-              quadLevel: 3
-          };
-          var range4 = {
-              x: range.x + quadWidth,
-              y: range.y + quadHeight,
-              width: quadWidth,
-              height: quadHeight,
-              level: range.level + 1,
-              quadLevel: 4
-          };
-          this.mapQuadTree(localTree, range1);
-          this.mapQuadTree(localTree, range2);
-          this.mapQuadTree(localTree, range3);
-          this.mapQuadTree(localTree, range4);
+    if (localTree.length > 10) {
+      var quadWidth = range.width / 2;
+      var quadHeight = range.height / 2;
+      var range1 = {
+        x: range.x,
+        y: range.y,
+        width: quadWidth,
+        height: quadHeight,
+        level: range.level + 1,
+        quadLevel: 1
+      };
+      var range2 = {
+        x: range.x + quadWidth,
+        y: range.y,
+        width: quadWidth,
+        height: quadHeight,
+        level: range.level + 1,
+        quadLevel: 2
+      };
+      var range3 = {
+        x: range.x,
+        y: range.y + quadHeight,
+        width: quadWidth,
+        height: quadHeight,
+        level: range.level + 1,
+        quadLevel: 3
+      };
+      var range4 = {
+        x: range.x + quadWidth,
+        y: range.y + quadHeight,
+        width: quadWidth,
+        height: quadHeight,
+        level: range.level + 1,
+        quadLevel: 4
+      };
+      this.mapQuadTree(localTree, range1);
+      this.mapQuadTree(localTree, range2);
+      this.mapQuadTree(localTree, range3);
+      this.mapQuadTree(localTree, range4);
+    }
+    else {
+      if (localTree.length > 1) {
+        //var color = (Math.random()*0xFFFFFF<<0);
+        //game.addEntity(game._builder.createBlock('tree', range.x, range.y, range.width, range.height, color, 0.5));
+        game.completeTree.push(localTree);
       }
-      else {
-        if (Object.keys(localTree).length > 0) {
-          game.completeTree.push(localTree);
-        }
-      }
-      //else {
-      //  if (Object.keys(localTree).length > 1) {
-      //    var level = range.level;
-      //    completeTree[level] = localTree;
-      //  }
-      //}
+    }
+    //else {
+    //  if (Object.keys(localTree).length > 1) {
+    //    var level = range.level;
+    //    completeTree[level] = localTree;
+    //  }
+    //}
   }
 });
