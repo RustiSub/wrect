@@ -1,10 +1,10 @@
 (function(){
     "use strict";
     /**
-     * @augments BaseGui
+     * @augments BaseGuiElement
      * @type {void|*}
      */
-    window.Panel = window.BaseGui.extend({
+    window.Panel = window.BaseGuiElement.extend({
         children: [],
         columns: 0,
         rows: 0,
@@ -147,7 +147,7 @@
         },
 
         /**
-         * @param {BaseGui} guiElement
+         * @param {BaseGuiElement} guiElement
          */
         addChild: function(guiElement) {
             this.children.push(guiElement);

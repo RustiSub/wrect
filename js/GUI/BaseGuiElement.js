@@ -4,15 +4,24 @@
      * @augments Class
      * @type {void|*}
      */
-    window.BaseGui = window.Class.extend({
+    window.BaseGuiElement = window.Class.extend({
         htmlElement: null,
         inDom: false,
-        init: function(element){
-            if (element) {
-                this.setHtmlElement(element);
+        cols: 1,
+        rows: 1,
+        guiPosition: [],
+
+       /**
+        * @param {Object} options
+        * @param {HTMLElement} options.element
+        * @param {Array} options.position
+        */
+        init: function(options){
+            this.guiPosition = options.position ? options.position : [0, 0];
+            if (options.element) {
+                this.setHtmlElement(options.element);
             }
         },
-
         setHtmlElement: function(htmlElement) {
             this.htmlElement = htmlElement;
             var className;

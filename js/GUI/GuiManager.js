@@ -6,7 +6,7 @@
 
         },
         addElement: function(guiElement, container) {
-            if (guiElement instanceof window.BaseGui) {
+            if (guiElement instanceof window.BaseGuiElement) {
                 this.elements.push(guiElement);
                 if (container === undefined) {
                     container = window.Container.getComponent('Renderer').view.parentNode;

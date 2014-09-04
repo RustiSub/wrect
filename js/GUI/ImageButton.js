@@ -1,10 +1,10 @@
 (function(){
     "use strict";
     /**
-     * @augments BaseGui
+     * @augments BaseGuiElement
      * @type {void|*}
      */
-    window.ImageButton = window.BaseGui.extend({
+    window.ImageButton = window.BaseGuiElement.extend({
         /**
          * @param imagePath
          * @param width
