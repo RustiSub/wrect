@@ -158,7 +158,7 @@ var Builder = Class.extend({
   },
 
   createBlock: function (name, x, y, width, height, color, alpha) {
-    alpha = typeof alpha !== 'undefined' ? alpha : 0;
+    alpha = typeof alpha !== 'undefined' ? alpha : 1;
     color = typeof color !== 'undefined' ? color : 0x00FF00;
 
     var blockGraphics = new PIXI.Graphics();

@@ -125,8 +125,33 @@
 
 //                self._builder.clearRooms(game.getEntityManager().getAllEntities());
 //                self._builder.buildConnections(game.getEntityManager().getAllEntities());
+                game.completeTree = [];
+                var range = {
+                  x: 0,
+                  y: 0,
+                  width : 1280,
+                  height: 720,
+                  level: 0,
+                  quadLevel : 0
+                };
 
-                self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
+                var tree = [];
+                var entities = game.getEntityManager().getAllEntities();
+                for (var b = 0; b < entities.length; b++) {
+                  var entity = entities[b];
+
+                  tree[entity.name] = {
+                    x: entity.position.x,
+                    y: entity.position.y,
+                    width: entity.size.x,
+                    height: entity.size.y
+                  };
+
+                }
+
+                game._collisionManager.mapQuadTree(tree, range);
+
+                //self._collisionManager.updateAllCollisions();
                 self._entityManager.update();
 
 
