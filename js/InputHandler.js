@@ -1,6 +1,6 @@
 (function(){
     "use strict";
-    var InputHandler = Class.extend({
+    window.InputHandler = Class.extend({
         _pressed: [],
         _registeredPressed: [],
         _keys: {
