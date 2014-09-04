@@ -358,8 +358,8 @@ function quadTreeTest1() {
 }
 
 function quadTreeTest2() {
-  var forceGenerator = game._builder.createBlock('wall_1', 600, 300, 20, 20, 0xFFFFFF);
-  forceGenerator.glueSource = true;
+  var forceGenerator = game._builder.createBlock('wall_1', 600, 250, 20, 20, 0xFFFFFF);
+//  forceGenerator.glueSource = true;
   game.addEntity(forceGenerator);
 
     for (var l= 0; l < 20; l++) {

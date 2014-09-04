@@ -124,7 +124,6 @@
                 }
 
 //                self._builder.clearRooms(game.getEntityManager().getAllEntities());
-//                self._builder.buildConnections(game.getEntityManager().getAllEntities());
                 game.completeTree = [];
                 var range = {
                   x: 0,
@@ -137,6 +136,7 @@
 
                 game._collisionManager.mapQuadTree(game.getEntityManager().getAllEntities(), range);
 //console.log(game.completeTree);
+//                self._builder.buildConnections(game.getEntityManager().getAllEntities());
                 self._collisionManager.updateAllCollisions();
                 self._entityManager.update();
 

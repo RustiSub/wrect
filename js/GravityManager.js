@@ -22,7 +22,7 @@ var GravityManager = Class.extend({
             multiplier *= -1;
         }
 
-        var maxDistance = 250;
+        var maxDistance = 200;
         var forcePoint = {
             x: centerBlock.position.getAnchor().x,
             y: centerBlock.position.getAnchor().y

@@ -68,7 +68,7 @@ var CollisionManager = Class.extend({
 
       for (var x = 0; x < bodies.length; x++) {
         var mainBody = bodies[x];
-        mainBody._physics.applyFriction(0.1);
+//        mainBody._physics.applyFriction(1);
 
         mainBody.collisions = [];
 
@@ -181,16 +181,8 @@ var CollisionManager = Class.extend({
     }
     else {
       if (localTree.length > 1) {
-        //var color = (Math.random()*0xFFFFFF<<0);
-        //game.addEntity(game._builder.createBlock('tree', range.x, range.y, range.width, range.height, color, 0.5));
         game.completeTree.push(localTree);
       }
     }
-    //else {
-    //  if (Object.keys(localTree).length > 1) {
-    //    var level = range.level;
-    //    completeTree[level] = localTree;
-    //  }
-    //}
   }
 });
