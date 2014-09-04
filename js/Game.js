@@ -150,7 +150,6 @@
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
 
-                self.previousTime = timestamp;
                 renderer.render(stage);
             }
         },
