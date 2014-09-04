@@ -5,6 +5,11 @@
         _inputHandler: null,
         _entityManager: null,
         _levelManager: null,
+        timeDelta: 0,
+        previousTime: 0,
+        debug: false,
+        fpsOutInterval: 10000,
+        debugStats: [],
         _defaults: {
             inputHandlerClass: InputHandler,
             helpersClass: Helpers,
@@ -43,6 +48,9 @@
         getGuiManager: function() {
             return this._guiManager;
         },
+        getDelta: function() {
+            return this.timeDelta;
+        },
 
         /**
          * @param options
@@ -50,6 +58,14 @@
          */
         init: function(options) {
             this.buildOptions(options);
+            if (options.debug) {
+                console.info('debug mode enabled');
+                this.debug = true;
+                this.debugStats = {};
+                if (options.fpsOutInterval) {
+                    this.fpsOutInterval = options.fpsOutInterval;
+                }
+            }
             this.buildComponents();
             if (this._options && typeof this._options.autoBoot !== 'undefined' && this._options.autoBoot) {
                 this.bootstrap(options);
@@ -99,8 +115,13 @@
             global.document.body.querySelector('.canvasContainer').appendChild(renderer.view);
             requestAnimationFrame(run);
 
-            function run() {
+            function run(timestamp) {
                 requestAnimationFrame(run);
+                self.updateTime(timestamp);
+                if (self.debug) {
+                    self.trackFps(timestamp);
+                }
+
                 var inputHandler = Container.getComponent('InputHandler');
                 if (inputHandler.key('a')) {
                   self.selectEntity(-1);
@@ -129,9 +150,14 @@
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
 
-
+                self.previousTime = timestamp;
                 renderer.render(stage);
             }
+        },
+
+        updateTime: function(timestamp) {
+            this.timeDelta = timestamp - this.previousTime;
+            this.previousTime = timestamp;
         },
 
         createGlobalContainer: function() {
@@ -202,14 +228,14 @@
                 }
             }
         },
-      
+
 				goFullscreen: function(element) {
 					var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
 						(document.mozFullScreen || document.webkitIsFullScreen);
-	
+
 					var docElm = element ? element : document.body;
 					if (!isInFullScreen) {
-	
+
 						if (docElm.requestFullscreen) {
 							docElm.requestFullscreen();
 						}
@@ -220,6 +246,25 @@
 							docElm.webkitRequestFullScreen();
 						}
 					}
-				}
+				},
+        trackFps: function(timestamp) {
+            if (!this.debugStats.previousFpsOut) {
+                this.debugStats.previousFpsOut = timestamp;
+            }
+            if (!this.debugStats.fps) {
+                this.debugStats.fps = [];
+            }
+            this.debugStats.fps.push((1/this.timeDelta) * 1000);
+
+            if (this.fpsOutInterval < (timestamp - this.debugStats.previousFpsOut)) {
+                var sum = this.debugStats.fps.reduce(function(a, b) {
+                    return a + b;
+                });
+
+                console.log('Past ' + this.fpsOutInterval + 'ms avg FPS: ' + (sum/this.debugStats.fps.length));
+                this.debugStats.fps = [];
+                this.debugStats.previousFpsOut = timestamp;
+            }
+        }
 });
 })(this);
