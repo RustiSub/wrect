@@ -124,10 +124,10 @@
 
                 var inputHandler = Container.getComponent('InputHandler');
                 if (inputHandler.key('a')) {
-                  self.selectEntity(-1);
+                  self.selectEntity('b1');
                 }
                 if (inputHandler.key('z')) {
-                  self.selectEntity(1);
+                  self.selectEntity('c1');
                 }
 
                 var glueSource = false;
@@ -149,6 +149,7 @@
 
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
+                self._inputHandler.update();
 
                 renderer.render(stage);
             }
