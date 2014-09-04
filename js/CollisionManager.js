@@ -123,18 +123,29 @@ var CollisionManager = Class.extend({
     }
   },
     mapQuadTree: function (bodies, tree, range) {
-        console.log(range);
-//        for (var b = 0; b < bodies.length; b++) {
-//            var body = bodies[b];
-//
-//            var outOfRange = (body.position.x + body.size.x) < range.x || (body.position.y + body.size.y) < range.y
-//                || body.position.x > range.x + range.width || body.position.y > range.y + range.width;
-//
-//            if (!outOfRange) {
-//                tree.push(body.name);
-//            }
-//        }
-        if (range.level < 2) { //tree.length > 10) {
+
+      var localTree = [];
+      for (var b = 0; b < bodies.length; b++) {
+        var body = bodies[b];
+
+        var outOfRange = (body.position.x + body.size.x) < range.x || (body.position.y + body.size.y) < range.y
+            || body.position.x > range.x + range.width || body.position.y > range.y + range.width;
+
+        if (!outOfRange) {
+          localTree.push(body);
+        }
+      }
+
+
+
+      if (localTree.length == 0) {
+        //var color = (Math.random()*0xFFFFFF<<0);
+        //game.addEntity(game._builder.createBlock('tree', range.x, range.y, range.width, range.height, color, 1));
+      } else {
+        //console.log(range.level, range.quadLevel, localTree.length);
+      }
+
+        if (range.level < 6) { //tree.length > 10) {
             var quadWidth = range.width / 2;
             var quadHeight = range.height / 2;
             var range1 = {
@@ -145,6 +156,7 @@ var CollisionManager = Class.extend({
                 level: range.level + 1,
                 quadLevel: 1
             };
+//alert();
             var range2 = {
                 x: range.x + quadWidth,
                 y: range.y,
@@ -169,10 +181,10 @@ var CollisionManager = Class.extend({
                 level: range.level + 1,
                 quadLevel: 4
             };
-            this.mapQuadTree(bodies, tree, range1);
-            this.mapQuadTree(bodies, tree, range2);
-            this.mapQuadTree(bodies, tree, range3);
-            this.mapQuadTree(bodies, tree, range4);
+            this.mapQuadTree(localTree, tree, range1);
+            this.mapQuadTree(localTree, tree, range2);
+            this.mapQuadTree(localTree, tree, range3);
+            this.mapQuadTree(localTree, tree, range4);
         }
     }
 });

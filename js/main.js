@@ -392,7 +392,7 @@ window.onload = function() {
     };
     console.log(game.getEntityManager().getAllEntities().length);
     var tree = [];
-    game._collisionManager.mapQuadTree(game.getEntityManager().getAllEntities(), tree, range);
+    //game._collisionManager.mapQuadTree(game.getEntityManager().getAllEntities(), tree, range);
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
 };

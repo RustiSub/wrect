@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/BLL/BillingBLL.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Install/Database.sql" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Nex/FarysController.php" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Nex/Forms/BillingFormController.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Farys/Resources/config/services.bll.yml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Webform/Block/StepsBlockConfig.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Modules/Webform/Resources/config/services.yml" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Themes/Farys/modules/farys/templates/billingConfirmation.html.twig" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Themes/Farys/modules/farys/templates/billingOverview.html.twig" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/../../Farys/eGo4/www.farys.be/src/Sites/Farys/Themes/Farys/modules/farys/templates/billingSteps.html.twig" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../houthalen-helchteren/vendor/ego/block-module/src/Core/Modules/Block/Block/BlockHandler.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../houthalen-helchteren/vendor/ego/datasource-module/src/Core/Modules/Datasource/Adm/Controllers/LinkController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../houthalen-helchteren/vendor/ego/homepage-module/src/Core/Modules/Homepage/Nex/HomepageController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../houthalen-helchteren/vendor/ego/organisation-module/src/Core/Modules/Organisation/Adm/Forms/DetailFormController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../houthalen-helchteren/vendor/ego/text-module/src/Core/Modules/Text/Block/DetailBlockConfig.php" charset="UTF-8" />
   </component>
 </project>
 
