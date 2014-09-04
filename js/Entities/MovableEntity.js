@@ -1,33 +1,16 @@
-var collision = {
-  x: false,
-  y: false,
-  direction: {
-    x: 0,
-    y: 0
-  },
-  rest: {
-    x: false,
-    y: false
-  },
-};var collision2 = {
-  x: false,
-  y: false,
-  direction: {
-    x: 0,
-    y: 0
-  },
-  rest: {
-    x: false,
-    y: false
-  }
-};/**
+/**
  * @augments BaseEntity
  * @type {void|*}
  */
 var MovableEntity = BaseEntity.extend({
     selected: false,
+    graphicsCallbacks: {},
     baseGraphicsCallback: {},
+    originalBaseGraphicsCallback: {},
     selectedGraphicsCallback : {},
+    deselectGraphicsCallback: {},
+    gluedGraphicsCallback: {},
+    unGluedGraphicsCallback: {},
     position: {},
     stats: {},
     frozen: true,
@@ -69,13 +52,33 @@ var MovableEntity = BaseEntity.extend({
       return {
         health: 10,
         speed: 1
+      };
+    },
+    deselect: function() {
+      this.selected = false;
+      this.baseGraphicsCallback();
+    },
+    select: function() {
+      this.selected = true;
+      this.baseGraphicsCallback();
+    },
+    applyGlue: function() {
+      if (!this.hasGlue) {
+        this.hasGlue = true;
+        this.baseGraphicsCallback();
+      }
+    },
+    removeGlue: function() {
+      if (this.hasGlue) {
+        this.hasGlue = false;
+        this.baseGraphicsCallback();
       }
     },
     toggleSelect: function()  {
-      if (!this.selected) {
-        this.selectedGraphicsCallback();
+      if (this.selected) {
+        this.deselect();
+      } else {
+        this.select();
       }
-
-      this.selected = true; //!this.selected;
     }
 });

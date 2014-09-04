@@ -4,13 +4,21 @@
         _renderer: null,
         _inputHandler: null,
         _entityManager: null,
+        _levelManager: null,
+        timeDelta: 0,
+        previousTime: 0,
+        debug: false,
+        fpsOutInterval: 10000,
+        debugStats: [],
         _defaults: {
             inputHandlerClass: InputHandler,
             helpersClass: Helpers,
             entityManagerClass: EntityManager,
             collisionManagerClass: CollisionManager,
+            guiManagerClass: window.GuiManager,
             gravityManagerClass: GravityManager,
             builder: Builder,
+            levelManagerClass: LevelManager,
             width: 1280,
             height: 720
         },
@@ -32,7 +40,16 @@
             return this._entityManager;
         },
         getCollisionManager: function() {
-          return this._collisionManager;
+            return this._collisionManager;
+        },
+        getLevelManager: function() {
+          return this._levelManager;
+        },
+        getGuiManager: function() {
+            return this._guiManager;
+        },
+        getDelta: function() {
+            return this.timeDelta;
         },
 
         /**
@@ -41,6 +58,14 @@
          */
         init: function(options) {
             this.buildOptions(options);
+            if (options.debug) {
+                console.info('debug mode enabled');
+                this.debug = true;
+                this.debugStats = {};
+                if (options.fpsOutInterval) {
+                    this.fpsOutInterval = options.fpsOutInterval;
+                }
+            }
             this.buildComponents();
             if (this._options && typeof this._options.autoBoot !== 'undefined' && this._options.autoBoot) {
                 this.bootstrap(options);
@@ -54,12 +79,16 @@
         buildComponents: function() {
             this._stage = new PIXI.Stage(0x5E5E5E);
             this._renderer = new PIXI.autoDetectRenderer(this._options.width, this._options.height);
+            // Required for fading
+            this._renderer.view.style.opacity = 1;
 
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
+            this._guiManager = new this._options.guiManagerClass();
             this._gravityManager = new this._options.gravityManagerClass();
             this._builder = new this._options.builder();
+            this._levelManager = new this._options.levelManagerClass(this._stage);
 
             this.bootstrap();
         },
@@ -83,24 +112,52 @@
             var renderer = this.getRenderer();
             var self = this;
 
-            global.document.body.appendChild(renderer.view);
+            global.document.body.querySelector('.canvasContainer').appendChild(renderer.view);
             requestAnimationFrame(run);
 
-            function run() {
+            function run(timestamp) {
                 requestAnimationFrame(run);
+                self.updateTime(timestamp);
+                if (self.debug) {
+                    self.trackFps(timestamp);
+                }
+
                 var inputHandler = Container.getComponent('InputHandler');
-                if (inputHandler.key('a') || inputHandler.gamepadButton('A')) {
+                if (inputHandler.key('a')) {
                   self.selectEntity('b1');
                 }
-                if (inputHandler.key('z') || inputHandler.gamepadButton('B')) {
+                if (inputHandler.key('z')) {
                   self.selectEntity('c1');
                 }
+
+                var glueSource = false;
+
+                if (inputHandler.key('K_TWO')) {
+                  glueSource = true;
+                }
+
+                if (inputHandler.key('K_ZERO')) {
+                  self._builder.createObject(glueSource);
+                }
+
+                if (inputHandler.key('RETURN')) {
+                  self._gravityManager.applyForce(1, self.getEntityManager().getEntityByName('wall_1'));
+                }
+
+                self._builder.clearRooms(game.getEntityManager().getAllEntities());
+                self._builder.buildConnections(game.getEntityManager().getAllEntities());
+
                 self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
                 self._inputHandler.update();
 
                 renderer.render(stage);
             }
+        },
+
+        updateTime: function(timestamp) {
+            this.timeDelta = timestamp - this.previousTime;
+            this.previousTime = timestamp;
         },
 
         createGlobalContainer: function() {
@@ -111,6 +168,7 @@
                     if (typeof self[propertyName] === 'function') {
                         return self[propertyName]();
                     }
+                    console.error('Component "' + componentName + '" not found');
                     return null;
                 },
                 getGame: function() {
@@ -119,53 +177,94 @@
             };
         },
 
-        selectEntity: function(name) {
-          this._entityManager.getEntityByName(name).toggleSelect();
-        },
-
-        applyForce: function(multiplier) {
-          var maxDistance = 500;
-          var forcePoint = {
-            x: 500,
-            y: 200,
-            multiplier: multiplier,
-            gravity: 100
-          };
+        selectEntity: function(direction) {
           var entities = this.getEntityManager().getAllEntities();
-          for (var i = 0; i < entities.length; i++) {
-            var entity = entities[i];
-            if (entity.name.substr(0, 1) == 'b') {
-              if (entity.hasGlue) {
-                continue;
-              }
-              var xMultiplier = multiplier;
-              var yMultiplier = multiplier;
-              var xDist =  (entity._graphics.position.x - forcePoint.x);
-              var yDist =  (entity._graphics.position.y - forcePoint.y);
-
-              if (xDist < 0) {
-                xDist = -xDist;
-                xMultiplier = -multiplier;
-              }
-
-              if (xDist != 0) {
-                entity._physics.xSpeed = (1 - (xDist / maxDistance)) * xMultiplier;
-              }
-
-              if (yDist < 0) {
-                yDist = -yDist;
-                yMultiplier = -multiplier;
-              }
-
-              if (yDist != 0) {
-                entity._physics.ySpeed = (1 - (yDist / maxDistance)) * yMultiplier;
-              }
-            }
+          if (entities.length === 0) {
+            return false;
           }
+          if (direction === 1 && this._builder.selectedEntityIndex >= entities.length - 1) {
+            this._builder.selectedEntityIndex = -1;
+          }
+          if (direction === -1 && this._builder.selectedEntityIndex <= 0) {
+            this._builder.selectedEntityIndex = entities.length;
+          }
+          this._builder.selectedEntityIndex += direction;
+
+          var entity = entities[this._builder.selectedEntityIndex];
+
+          this.getEntityManager().deselectAll();
+          entity.select();
+          return true;
         },
 
         addEntity: function(entity) {
           this.getEntityManager().addEntity(entity);
+        },
+
+        fadeOut: function(callback, thisArg, args) {
+            if (this._renderer.view.style.opacity !== "0") {
+                this._renderer.view.style.opacity = 0;
+                if (typeof callback === 'function') {
+                    var self = this;
+                    this._renderer.view.addEventListener("transitionend", function realCallback() {
+                            self._renderer.view.removeEventListener('transitionend', realCallback, true);
+                            callback.apply(thisArg, args);
+                        },
+                        true);
+                }
+            }
+        },
+
+        fadeIn: function(callback, thisArg, args) {
+            if (this._renderer.view.style.opacity !== "1") {
+                this._renderer.view.style.opacity = 1;
+                if (typeof callback === 'function') {
+                    var self = this;
+                    this._renderer.view.addEventListener("transitionend", function realCallback() {
+                            self._renderer.view.removeEventListener('transitionend', realCallback, true);
+                            callback.apply(thisArg, args);
+                        },
+                        true);
+                }
+            }
+        },
+
+				goFullscreen: function(element) {
+					var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
+						(document.mozFullScreen || document.webkitIsFullScreen);
+
+					var docElm = element ? element : document.body;
+					if (!isInFullScreen) {
+
+						if (docElm.requestFullscreen) {
+							docElm.requestFullscreen();
+						}
+						else if (docElm.mozRequestFullScreen) {
+							docElm.mozRequestFullScreen();
+						}
+						else if (docElm.webkitRequestFullScreen) {
+							docElm.webkitRequestFullScreen();
+						}
+					}
+				},
+        trackFps: function(timestamp) {
+            if (!this.debugStats.previousFpsOut) {
+                this.debugStats.previousFpsOut = timestamp;
+            }
+            if (!this.debugStats.fps) {
+                this.debugStats.fps = [];
+            }
+            this.debugStats.fps.push((1/this.timeDelta) * 1000);
+
+            if (this.fpsOutInterval < (timestamp - this.debugStats.previousFpsOut)) {
+                var sum = this.debugStats.fps.reduce(function(a, b) {
+                    return a + b;
+                });
+
+                console.log('Past ' + this.fpsOutInterval + 'ms avg FPS: ' + (sum/this.debugStats.fps.length));
+                this.debugStats.fps = [];
+                this.debugStats.previousFpsOut = timestamp;
+            }
         }
-    });
+});
 })(this);
