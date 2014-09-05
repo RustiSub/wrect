@@ -351,7 +351,7 @@ function quadTreeTest1() {
       game.addEntity(game._builder.createBlock(
           'wall_spam_left_' + t + '_' + l,
           50 + t * (blockSize + 5) + l * 50,
-          50 + l  * (blockSize + 5),
+          50 + l  * (blockSize + 5) + t * 50,
           blockSize, blockSize, 0xFFFFFF));
     }
   }
@@ -367,6 +367,28 @@ function quadTreeTest2() {
             game.addEntity(game._builder.createBlock('wall_spam_' + t + '_' + l, 50 + t * 21, 50 + l * 21, 20, 20, 0xFFFFFF));
         }
     }
+}
+
+function quadTreeTest3() {
+  createFrame();
+
+//  var forceGenerator = game._builder.createBlock('force_generator', 500, 200, 20, 20, 0xFFFFFF);
+////  forceGenerator.glueSource = true;
+//  game.addEntity(forceGenerator);
+
+  var blockSize = 30;
+  for (var l= 0; l < 4; l++) {
+    for (var t= 0; t < 15; t++) {
+      var entity = game._builder.createBlock(
+          'wall_spam_top_' + t + '_' + l,
+          55 + t * (blockSize + 25),
+          50 + l * (blockSize + 5) ,
+          blockSize, blockSize, (Math.random()*0xFFFFFF<<0), 0.7);
+      entity._physics.ySpeed = t;
+      entity._physics.xSpeed = t;
+      game.addEntity(entity);
+    }
+  }
 }
 
 function addGui() {
@@ -398,7 +420,20 @@ window.onload = function() {
 //  builderTest5();
   //buildShip1();
   //quadTreeTest1();
-  quadTreeTest2();
+  //quadTreeTest2();
+  quadTreeTest3();
+
+  //game.completeTree = [];
+  //var range = {
+  //  x: 0,
+  //  y: 0,
+  //  width : 1280,
+  //  height: 720,
+  //  level: 0,
+  //  quadLevel : 0
+  //};
+  //
+  //game._collisionManager.mapQuadTree(game.getEntityManager().getAllEntities(), range);
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());

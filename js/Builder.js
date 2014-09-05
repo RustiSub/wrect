@@ -154,6 +154,8 @@ var Builder = Class.extend({
     blockGraphics.position.x = coords.x;
     blockGraphics.position.y = coords.y;
 
+    block.frozen = true;
+
     return block;
   },
 

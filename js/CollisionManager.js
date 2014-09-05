@@ -68,7 +68,7 @@ var CollisionManager = Class.extend({
 
       for (var x = 0; x < bodies.length; x++) {
         var mainBody = bodies[x];
-//        mainBody._physics.applyFriction(1);
+        //mainBody._physics.applyFriction(1);
 
         mainBody.collisions = [];
 
@@ -134,7 +134,10 @@ var CollisionManager = Class.extend({
       var outOfRange = (body.position.x + body.size.x) < range.x || (body.position.y + body.size.y) < range.y
           || body.position.x > range.x + range.width || body.position.y > range.y + range.width;
 
-      if (!outOfRange) {
+      var outOfRangeSpeed = (body.position.x + body.size.x + body._physics.xSpeed) < range.x || (body.position.y + body.size.y + body._physics.ySpeed) < range.y
+          || body.position.x + body._physics.xSpeed > range.x + range.width || body.position.y + body._physics.ySpeed > range.y + range.width;
+
+      if (!outOfRange || !outOfRangeSpeed) {
         localTree.push(body);
       }
     }
@@ -181,6 +184,8 @@ var CollisionManager = Class.extend({
     }
     else {
       if (localTree.length > 1) {
+        //var color = (Math.random()*0xFFFFFF<<0);
+        //game.addEntity(game._builder.createBlock('tree', range.x, range.y, range.width, range.height, color, 0.5));
         game.completeTree.push(localTree);
       }
     }

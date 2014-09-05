@@ -120,7 +120,7 @@
                 }
 
                 if (inputHandler.key('RETURN')) {
-                  self._gravityManager.applyForce(1, self.getEntityManager().getEntityByName('wall_1'));
+                  self._gravityManager.applyForce(5, self.getEntityManager().getEntityByName('force_generator'));
                 }
 
 //                self._builder.clearRooms(game.getEntityManager().getAllEntities());
