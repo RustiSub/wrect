@@ -8,7 +8,7 @@
         timeDelta: 0,
         previousTime: 0,
         debug: false,
-        fpsOutInterval: 10000,
+        fpsOutInterval: 1000,
         debugStats: [],
         _defaults: {
             inputHandlerClass: InputHandler,
@@ -124,10 +124,10 @@
 
                 var inputHandler = Container.getComponent('InputHandler');
                 if (inputHandler.key('a')) {
-                  self.selectEntity('b1');
+                  self.selectEntity(-1);
                 }
                 if (inputHandler.key('z')) {
-                  self.selectEntity('c1');
+                  self.selectEntity(1);
                 }
 
                 var glueSource = false;
