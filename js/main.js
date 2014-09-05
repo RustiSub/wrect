@@ -391,6 +391,44 @@ function quadTreeTest3() {
   }
 }
 
+function quadTreeTest4() {
+  createFrame();
+
+  var blockSize = 20;
+  var xSpeed = 0;
+  var ySpeed = 10;
+  var stack = 10;
+
+  var colorLeft = (Math.random() * 0xFFFFFF << 0);
+  for (var l= 0; l < stack; l++) {
+    for (var t= 0; t < 1; t++) {
+
+      var entity = game._builder.createBlock(
+          'wall_spam_left_' + t + '_' + l,
+          55 + t * (blockSize),
+          50 + l * (blockSize  + 2),
+          blockSize, blockSize, colorLeft, 1);
+      entity._physics.ySpeed = ySpeed;
+      entity._physics.xSpeed = xSpeed;
+      game.addEntity(entity);
+    }
+  }
+  var colorRight = (Math.random() * 0xFFFFFF << 0);
+  for (var l= 0; l < stack; l++) {
+    for (var t= 0; t < 1; t++) {
+
+      var entity = game._builder.createBlock(
+          'wall_spam_right_' + t + '_' + l,
+          900 + t * (blockSize),
+          50 + l * (blockSize + 2),
+          blockSize, blockSize, colorRight, 1);
+      entity._physics.ySpeed = ySpeed;
+      entity._physics.xSpeed = -xSpeed;
+      game.addEntity(entity);
+    }
+  }
+}
+
 function addGui() {
     var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
     fullscreenButton.addEvent('click', function(){game.goFullscreen()});
@@ -421,7 +459,8 @@ window.onload = function() {
   //buildShip1();
   //quadTreeTest1();
   //quadTreeTest2();
-  quadTreeTest3();
+  //quadTreeTest3();
+  quadTreeTest4();
 
   //game.completeTree = [];
   //var range = {

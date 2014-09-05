@@ -142,7 +142,7 @@ var CollisionManager = Class.extend({
       }
     }
 
-    if (localTree.length > 10) {
+    if (localTree.length > 9) {
       var quadWidth = range.width / 2;
       var quadHeight = range.height / 2;
       var range1 = {

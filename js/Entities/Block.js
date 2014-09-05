@@ -14,28 +14,33 @@ var Block = MovableEntity.extend({
   init: function(name, graphics) {
     this._super(name, graphics);
   },
-//  move: function () {
-//    var inputHandler = Container.getComponent('InputHandler');
-//    if (inputHandler.key('left')) {
-//      this._physics.increaseSpeedX(-1);
-//    }
-//    if (inputHandler.key('right')) {
-//      this._physics.increaseSpeedX(1);
-//    }
-//    if (inputHandler.key('up')) {
-//      this._physics.increaseSpeedY(-1);
-//    }
-//    if (inputHandler.key('down')) {
-//      this._physics.increaseSpeedY(1);
-//    }
-//
-//    //this._physics.applyFriction(this._graphics.position.y, this.height);
-//  },
+  move: function () {
+    var inputHandler = Container.getComponent('InputHandler');
+    var speed = 1;
+    if (inputHandler.key('SPACE')) {
+      speed = 10;
+    }
+    if (inputHandler.key('left')) {
+      this._physics.increaseSpeedX(-1 * speed);
+    }
+    if (inputHandler.key('right')) {
+      this._physics.increaseSpeedX(speed);
+    }
+    if (inputHandler.key('up')) {
+      this._physics.increaseSpeedY(-1 * speed);
+    }
+    if (inputHandler.key('down')) {
+      this._physics.increaseSpeedY(speed);
+    }
+
+    //this._physics.applyFriction(this._graphics.position.y, this.height);
+  },
   update: function(){
     this._super();
 
     if (this.selected) {
-      game._builder.moveBuilderBlock(this);
+      //game._builder.moveBuilderBlock(this);
+      this.move();
     }
     this._graphics.position.x += this._physics.calculateSpeedX();
     this._graphics.position.y += this._physics.calculateSpeedY();

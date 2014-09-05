@@ -19,16 +19,21 @@ var InputHandler = Class.extend({
     DELETE:   46,
     ZERO:     48, ONE: 49, TWO: 50, THREE: 51, FOUR: 52, FIVE: 53, SIX: 54, SEVEN: 55, EIGHT: 56, NINE: 57,
     K_ZERO:   96, K_ONE: 97, K_TWO: 98, K_THREE: 99, K_FOUR: 100, K_FIVE: 101, K_SIX: 102, K_SEVEN: 103, K_EIGHT: 104, K_NINE: 105,
+    PLUS:     107,
+    MINUS:    108,
     A:        65, B: 66, C: 67, D: 68, E: 69, F: 70, G: 71, H: 72, I: 73, J: 74, K: 75, L: 76, M: 77, N: 78, O: 79, P: 80, Q: 81, R: 82, S: 83, T: 84, U: 85, V: 86, W: 87, X: 88, Y: 89, Z: 90,
     TILDA:    192
   },
   _singleInputKeys: [
+      37, 38, 39, 40,
     13,
     65,
     90,
     96,
     101,
-    105
+    105,
+    108,
+    45
   ],
   _keysToCapture: [],
   init: function(containerId){
