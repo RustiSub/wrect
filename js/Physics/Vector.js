@@ -1,155 +1,131 @@
 (function() {
+    "use strict";
+
     /**
      * Vector constructor
+     * @param {Number} x
+     * @param {Number} y
+     * @returns {Vector}
      * @constructor
      */
     window.Vector = function(x, y) {
         this.x = x;
         this.y = y;
+        return this;
     };
+
     var Vector = window.Vector;
 
-    Vector.prototype.distance = function (a, b) {
-        return len(substract(a, b));
+    /**
+     * Calculates the distance between 2 vectors.
+     * @param {Vector} v
+     * @returns {Number}
+     */
+    Vector.prototype.distance = function (v) {
+        var resultVector = this.substract(v);
+        return resultVector.len();
     };
 
-    Vector.prototype.substract = function(a, b) {
-        return [a.x - b.x, a.y - b.y];
+    /**
+     * subtracts vectors
+     * @param {Vector} v vector
+     * @returns {Vector} vector
+     */
+    Vector.prototype.substract = function(v) {
+        return new Vector(this.x - v.x, this.y - v.y);
     };
 
-//
-//    /**
-//     * subtracts vectors [a0, a1] - [a0, a1]
-//     * @param {Array} a
-//     * @param {Array} b
-//     * @returns {Array} vector
-//     */
-//    var subtract = exports.subtract = function(a, b) {
-//        return [a[0] - b[0], a[1] - b[1]];
-//    };
-//
-//    /**
-//     * adds vectors [a0, a1] - [a0, a1]
-//     * @param {Array} a vector
-//     * @param {Array} b vector
-//     * @returns {Array} vector
-//     */
-//    var add = exports.add = function(a, b) {
-//        return [a[0] + b[0], a[1] + b[1]];
-//    };
-//
-//    /**
-//     * multiply vector with scalar or other vector
-//     * @param {Array} vector [v0, v1]
-//     * @param {Number|Array} vector or number
-//     * @returns {Number|Array} result
-//     */
-//    var multiply = exports.multiply = function(a, s) {
-//        if (typeof s === 'number') {
-//            return [a[0] * s, a[1] * s];
-//        }
-//
-//        return [a[0] * s[0], a[1] * s[1]];
-//    };
-//
-//    /**
-//     * @param {Array} a vector
-//     * @param {Number} s
-//     */
-//    exports.divide = function(a, s) {
-//        if (typeof s === 'number') {
-//            return [a[0] / s, a[1] / s];
-//        }
-//        throw new Error('only divide by scalar supported');
-//    };
-//
-//    /**
-//     * @param {Array} vector [v0, v1]
-//     * @returns {Number} length of vector
-//     */
-//    var len = exports.len = function(v) {
-//        return Math.sqrt(v[0]*v[0] + v[1]*v[1]);
-//    };
-//
-//    /**
-//     *
-//     * normalize vector to unit vector
-//     * @param {Array} vector [v0, v1]
-//     * @returns {Array} unit vector [v0, v1]
-//     */
-//    var unit = exports.unit = function(v) {
-//        var l = len(v);
-//        if(l) {
-//            return [v[0] / l, v[1] / l];
-//        }
-//        return [0, 0];
-//    };
-//
-//    /**
-//     *
-//     * rotate vector
-//     * @param {Array} vector [v0, v1]
-//     * @param {Number} angle to rotate vector by, radians. can be negative
-//     * @returns {Array} rotated vector [v0, v1]
-//     */
-//    exports.rotate=function(v, angle){
-//        angle=angles.normaliseRadians(angle);
-//        return [v[0]* Math.cos(angle)-v[1]*Math.sin(angle),
-//            v[0]* Math.sin(angle)+v[1]*Math.cos(angle)];
-//
-//    };
-//
-//    /**
-//     *
-//     * calculate vector dot product
-//     * @param {Array} vector [v0, v1]
-//     * @param {Array} vector [v0, v1]
-//     * @returns {Number} dot product of v1 and v2
-//     */
-//    var dot = exports.dot=function(v1, v2){
-//        return (v1[0] * v2[0]) + (v1[1] * v2[1]);
-//    };
-//
-//    /**
-//     *
-//     * calculate angle between vectors
-//     * @param {Array} vector [v0, v1]
-//     * @param {Array} vector [v0, v1]
-//     * @returns {Number} angle between v1 and v2 in radians
-//     */
-//    exports.angle=function(v1, v2){
-//        var perpDot = v1[0] * v2[1] - v1[1] * v2[0];
-//        return Math.atan2(perpDot, dot(v1,v2));
-//    };
-//
-//    /**
-//     * @returns {Array} vector with max length as specified.
-//     */
-//    exports.truncate = function(v, maxLength) {
-//        if (len(v) > maxLength) {
-//            return multiply(unit(v), maxLength);
-//        }
-//        return v;
-//    };
-//
-//
-//    /**
-//     * @returns the center of multipled 2d points
-//     * @param {Array} first point
-//     * @param {Array} second point
-//     * @param {Array} ...
-//     */
-//    exports.centroid = function() {
-//        var args = Array.prototype.slice.apply(arguments, [0]);
-//        var c = [0,0];
-//        args.forEach(function(p) {
-//            c[0] += parseInt(p[0], 10);
-//            c[1] += parseInt(p[1], 10);
-//        });
-//        var len = args.length;
-//        return [
-//            c[0] / len,
-//            c[1] / len
-//        ];
-//    };
+    /**
+     * adds vectors
+     * @param {Vector} v vector
+     * @returns {Vector} vector
+     */
+    Vector.prototype.add = function(v) {
+        return new Vector(this.x + v.x, this.y + v.y);
+    };
+
+    /**
+     * multiply vector with scalar or other vector
+     * @param {Number|Vector} v vector or number
+     * @returns {Number|Vector} result
+     */
+    Vector.prototype.multiply = function(v) {
+        if (typeof v === 'number') {
+            return new Vector(this.x * v, this.y * v);
+        }
+
+        return new Vector(this.x * v.x, this.y * v.y);
+    };
+
+    /**
+     * @param {Number} v
+     */
+    Vector.prototype.divide = function(v) {
+        if (typeof v === 'number') {
+            return new Vector(this.x / v, this.y / v);
+        }
+        throw new Error('only divide by scalar supported');
+    };
+
+    /**
+     * @returns {Number} length of vector
+     */
+    Vector.prototype.len = function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    };
+
+    /**
+     * normalize vector to unit vector
+     * @returns {Vector} unit vector [v0, v1]
+     */
+    Vector.prototype.unit = function() {
+        var l = this.len();
+        if(l) {
+            return new Vector(this.x / l, this.y / l);
+        }
+        return new Vector(0, 0);
+    };
+
+    /**
+     * rotate vector
+     * @param {Number} angle to rotate vector by, radians. can be negative
+     * @returns {Vector} rotated vector
+     */
+    Vector.prototype.rotate = function(angle){
+        angle = window.game.getHelpers().math.normaliseRadians(angle);
+        return new Vector(this.x * Math.cos(angle)- this.y * Math.sin(angle),
+            this.x * Math.sin(angle)+this.y*Math.cos(angle));
+    };
+
+    /**
+     *
+     * calculate vector dot product
+     * @param {Vector} v
+     * @returns {Number} dot product of this vector and vector v
+     */
+    Vector.prototype.dot = function(v){
+        return (this.x * v.x) + (this.y * v.y);
+    };
+
+    /**
+     *
+     * calculate angle between vectors
+     * @param {Vector} v
+     * @returns {Number} angle between this vector and v in radians
+     */
+    Vector.prototype.angle=function(v){
+        var perpDot = this.x * v.y - this.y * v.x;
+        return Math.atan2(perpDot, this.dot(v));
+    };
+
+    /**
+     * @returns {Vector} vector with max length as specified.
+     */
+    Vector.prototype.truncate = function(maxLength) {
+        if (this.len() > maxLength) {
+            var unitVector = this.unit();
+            return unitVector.multiply(maxLength);
+        }
+        return this;
+    };
 }());
