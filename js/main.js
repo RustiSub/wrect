@@ -313,7 +313,7 @@ function buildShip1() {
 
 
 function addGui() {
-    var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
+   /* var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
     fullscreenButton.addEvent('click', function(){game.goFullscreen();});
     game.getGuiManager().addElement(fullscreenButton);
 
@@ -330,7 +330,10 @@ function addGui() {
     secondButton.addEvent('click', function(){
       window.game._builder.createObject(false);
     });
-    panel.addChild(secondButton);
+    panel.addChild(secondButton);*/
+  var rootGui = new window.RootGui(1280, 720);
+  game.getGuiManager().addElement(rootGui);
+  console.log(rootGui);
 }
 
 window.onload = function() {
