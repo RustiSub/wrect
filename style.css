@@ -74,6 +74,9 @@ button.gui {
 	border: none;
 	margin: 0;
 	padding: 0;
+
+  /*positioning*/
+  position: absolute;
 }
 
 .panel.gui {
@@ -83,4 +86,161 @@ button.gui {
 	-ms-transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
 	-o-transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
 	transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
+}
+
+/* Grid sizing */
+.gui.col-1 {
+  width: 80px;
+}
+.gui.col-2 {
+  width: 160px;
+}
+.gui.col-3 {
+  width: 240px;
+}
+.gui.col-4 {
+  width: 320px;
+}
+.gui.col-5 {
+  width: 400px;
+}
+.gui.col-6 {
+  width: 480px;
+}
+.gui.col-7 {
+  width: 560px;
+}
+.gui.col-8 {
+  width: 640px;
+}
+.gui.col-9 {
+  width: 720px;
+}
+.gui.col-10 {
+  width: 800px;
+}
+.gui.col-11 {
+  width: 880px;
+}
+.gui.col-12 {
+  width: 960px;
+}
+.gui.col-13 {
+  width: 1040px;
+}
+.gui.col-14 {
+  width: 1120px;
+}
+.gui.col-15 {
+  width: 1200px;
+}
+.gui.col-16 {
+  width: 1280px;
+}
+
+.gui.row-1 {
+  height: 80px;
+}
+.gui.row-2 {
+  height: 160px;
+}
+.gui.row-3 {
+  height: 240px;
+}
+.gui.row-4 {
+  height: 320px;
+}
+.gui.row-5 {
+  height: 400px;
+}
+.gui.row-6 {
+  height: 480px;
+}
+.gui.row-7 {
+  height: 560px;
+}
+.gui.row-8 {
+  height: 640px;
+}
+.gui.row-9 {
+  height: 720px;
+}
+
+
+/* Grid positioning */
+.gui.col-pos-1 {
+  left: 0;
+}
+.gui.col-pos-2 {
+  left: 80px;
+}
+.gui.col-pos-3 {
+  left: 160px;
+}
+.gui.col-pos-4 {
+  left: 240px;
+}
+.gui.col-pos-5 {
+  left: 320px;
+}
+.gui.col-pos-6 {
+  left: 400px;
+}
+.gui.col-pos-7 {
+  left: 480px;
+}
+.gui.col-pos-8 {
+  left: 560px;
+}
+.gui.col-pos-9 {
+  left: 650px;
+}
+.gui.col-pos-10 {
+  left: 720px;
+}
+.gui.col-pos-11 {
+  left: 800px;
+}
+.gui.col-pos-12 {
+  left: 880px;
+}
+.gui.col-pos-13 {
+  left: 960px;
+}
+.gui.col-pos-14 {
+  left: 1040px;
+}
+.gui.col-pos-15 {
+  left: 1120px;
+}
+.gui.col-pos-16 {
+  left: 1200px;
+}
+
+.gui.row-pos-1 {
+  top: 0;
+}
+.gui.row-pos-2 {
+  top: 80px;
+}
+.gui.row-pos-3 {
+  top: 160px;
+}
+.gui.row-pos-4 {
+  top: 240px;
+}
+.gui.row-pos-5 {
+  top: 320px;
+}
+.gui.row-pos-6 {
+  top: 400px;
+}
+.gui.row-pos-7 {
+  top: 480px;
+}
+.gui.row-pos-8 {
+  top: 560px;
+}
+.gui.row-pos-9 {
+  top: 650px;
 }

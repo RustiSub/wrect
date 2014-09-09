@@ -333,7 +333,9 @@ function addGui() {
     panel.addChild(secondButton);*/
   var rootGui = new window.RootGui(1280, 720);
   game.getGuiManager().addElement(rootGui);
-  console.log(rootGui);
+  //imagePath, width, height, positionCss, id
+  var button = new window.ImageButton('resources/gui/plus.png', 1, 1);
+  rootGui.addElement(button, 5, 5);
 }
 
 window.onload = function() {

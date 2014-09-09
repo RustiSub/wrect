@@ -18,19 +18,27 @@
         */
         init: function(options){
             this.guiPosition = options.position ? options.position : [0, 0];
+            this.cols = options.cols;
+            this.rows = options.rows;
             if (options.element) {
                 this.setHtmlElement(options.element);
             }
         },
         setHtmlElement: function(htmlElement) {
             this.htmlElement = htmlElement;
-            var className;
+            var className = '';
             if (this.htmlElement.className.length) {
-                className = ' gui';
+                className = ' ';
             }
-            else {
-                className = 'gui';
-            }
+            className += 'gui';
+            className += ' col-';
+            className += this.cols;
+            className += ' row-';
+            className += this.rows;
+            className += ' col-pos-';
+            className += this.guiPosition[0];
+            className += ' row-pos-';
+            className += this.guiPosition[1];
             this.htmlElement.className += className;
         },
         setCss: function(cssProperties) {
