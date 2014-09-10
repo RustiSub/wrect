@@ -7,20 +7,29 @@ var Physics = Class.extend({
   xSpeed: 0,
   ySpeed: 0,
   vectors: [],
+  forceVectors: [],
   deltaVector: {},
 
   init: function() {
     this.deltaVector = new Vector(0, 0);
   },
+  addForceVector: function(vector) {
+    this.forceVectors.push(vector);
+  },
   calculateSpeed: function() {
-    this.deltaVector = new Vector(0, 0);
     for (var v = 0; v < this.vectors.length; v++) {
       var vector = this.vectors[v];
       this.deltaVector = this.deltaVector.add(vector);
     }
+    this.vectors = [];
 
-    this.increaseSpeedX(this.deltaVector.x);
-    this.increaseSpeedY(this.deltaVector.y);
+      for (var v = 0; v < this.forceVectors.length; v++) {
+          var forceVector = this.forceVectors[v];
+          forceVector.update(this.deltaVector);
+      }
+
+    this.xSpeed = this.deltaVector.x;
+    this.ySpeed = this.deltaVector.y;
   },
   increaseSpeedX: function(increase) {
     this.xSpeed += increase;

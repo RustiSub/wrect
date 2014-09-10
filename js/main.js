@@ -347,7 +347,7 @@ function buildShip1() {
 function vectorTest1() {
   createFrame();
 
-  var forceGenerator = game._builder.createBlock('wall_1', 600, 300, 20, 20, 0xFFFFFF);
+  var forceGenerator = game._builder.createBlock('force_generator', 600, 300, 20, 20, 0xFFFFFF);
   forceGenerator.glueSource = true;
   game.addEntity(forceGenerator);
 }

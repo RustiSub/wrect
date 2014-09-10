@@ -30,12 +30,10 @@ var Block = MovableEntity.extend({
     }
 
     if (inputHandler.key('K_FIVE')) {
-      this._physics.vectors.push(new Vector(10, 0));
-      this._physics.vectors.push(new Vector(-10, 2));
-      this._physics.calculateSpeed();
+      this._physics.vectors.push(new Vector(5, 2));
     }
-
-    this._physics.applyFriction(0);
+      this._physics.calculateSpeed();
+    //this._physics.applyFriction(0);
     //this._physics.applyFriction(this._graphics.position.y, this.height);
   },
   update: function(){

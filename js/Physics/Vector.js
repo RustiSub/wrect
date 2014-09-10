@@ -8,9 +8,10 @@
      * @returns {Vector}
      * @constructor
      */
-    window.Vector = function(x, y) {
+    window.Vector = function(x, y, update) {
         this.x = x;
         this.y = y;
+        this.update = update;
         return this;
     };
 
