@@ -83,7 +83,7 @@
             this._entities = [];
             this._entitiesByName = {};
             if (clearStage) {
-                game._builder.clearRooms();
+                game._builder.clearRooms(this.getAllEntities());
                 this._stage.removeChildren();
             }
         },

@@ -45,7 +45,7 @@ var Physics = Class.extend({
 
   applyFriction: function(friction) {
       var reduceSpeed = function(speed, friction) {
-          var zeroBarrier = 0.5;
+          var zeroBarrier = 0.01;
           if ((speed > - zeroBarrier && speed < 0) || (speed > 0 && speed < zeroBarrier)) {
               return 0;
           }
