@@ -4,9 +4,9 @@
      * @augments BaseGuiElement
      * @type {void|*}
      */
-    window.Panel = window.RootGui.extend({
+    window.Panel = window.BaseGuiCollection.extend({
       init: function(options) {
-
+          this._super(options);
       }
-    })
+    });
 })();

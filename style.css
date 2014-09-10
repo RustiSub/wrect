@@ -8,7 +8,6 @@ body {
 
 body {
 	margin: 0 auto;
-	width: 1280px;
 }
 
 canvas {
@@ -61,16 +60,15 @@ body:fullscreen .canvasContainer{
 }
 
 .canvasContainer {
-	height: 720px;
 	position: relative;
-	width: 1280px;
 	overflow: hidden;
 }
 
 
 /* GUI element styling */
 button.gui {
-	background: none;
+	background: none no-repeat;
+    background-position: center;
 	border: none;
 	margin: 0;
 	padding: 0;
@@ -90,157 +88,157 @@ button.gui {
 
 /* Grid sizing */
 .gui.col-1 {
-  width: 80px;
+  width: 6.25%;
 }
 .gui.col-2 {
-  width: 160px;
+  width: 12.50%;
 }
 .gui.col-3 {
-  width: 240px;
+  width: 18.75%;
 }
 .gui.col-4 {
-  width: 320px;
+  width: 25%;
 }
 .gui.col-5 {
-  width: 400px;
+  width: 31.25%;
 }
 .gui.col-6 {
-  width: 480px;
+  width: 37.5%;
 }
 .gui.col-7 {
-  width: 560px;
+  width: 43.75%;
 }
 .gui.col-8 {
-  width: 640px;
+  width: 50%;
 }
 .gui.col-9 {
-  width: 720px;
+  width: 56.25%;
 }
 .gui.col-10 {
-  width: 800px;
+  width: 62.5%;
 }
 .gui.col-11 {
-  width: 880px;
+  width: 68.75%;
 }
 .gui.col-12 {
-  width: 960px;
+  width: 75%;
 }
 .gui.col-13 {
-  width: 1040px;
+  width: 81.25%;
 }
 .gui.col-14 {
-  width: 1120px;
+  width: 87.5%;
 }
 .gui.col-15 {
-  width: 1200px;
+  width: 93.75%;
 }
 .gui.col-16 {
-  width: 1280px;
+  width: 100%;
 }
 
 .gui.row-1 {
-  height: 80px;
+  height: 11.1111111111111%;
 }
 .gui.row-2 {
-  height: 160px;
+  height: 22.2222222222222%;
 }
 .gui.row-3 {
-  height: 240px;
+  height: 33.3333333333333%;
 }
 .gui.row-4 {
-  height: 320px;
+  height: 44.4444444444444%;
 }
 .gui.row-5 {
-  height: 400px;
+  height: 55.5555555555555%;
 }
 .gui.row-6 {
-  height: 480px;
+  height: 66.6666666666666%;
 }
 .gui.row-7 {
-  height: 560px;
+  height: 77.7777777777777%;
 }
 .gui.row-8 {
-  height: 640px;
+  height: 88.8888888888888%;
 }
 .gui.row-9 {
-  height: 720px;
+  height: 100%;
 }
 
 
 /* Grid positioning */
+.gui.col-pos-0 {
+    left: 0;
+}
 .gui.col-pos-1 {
-  left: 0;
+    left: 6.25%;
 }
 .gui.col-pos-2 {
-  left: 80px;
+    left: 12.50%;
 }
 .gui.col-pos-3 {
-  left: 160px;
+    left: 18.75%;
 }
 .gui.col-pos-4 {
-  left: 240px;
+    left: 25%;
 }
 .gui.col-pos-5 {
-  left: 320px;
+    left: 31.25%;
 }
 .gui.col-pos-6 {
-  left: 400px;
+    left: 37.5%;
 }
 .gui.col-pos-7 {
-  left: 480px;
+    left: 43.75%;
 }
 .gui.col-pos-8 {
-  left: 560px;
+    left: 50%;
 }
 .gui.col-pos-9 {
-  left: 650px;
+    left: 56.25%;
 }
 .gui.col-pos-10 {
-  left: 720px;
+    left: 62.5%;
 }
 .gui.col-pos-11 {
-  left: 800px;
+    left: 68.75%;
 }
 .gui.col-pos-12 {
-  left: 880px;
+    left: 75%;
 }
 .gui.col-pos-13 {
-  left: 960px;
+    left: 81.25%;
 }
 .gui.col-pos-14 {
-  left: 1040px;
+    left: 87.5%;
 }
 .gui.col-pos-15 {
-  left: 1120px;
-}
-.gui.col-pos-16 {
-  left: 1200px;
+    left: 93.75%;
 }
 
+.gui.row-pos-0 {
+    top: 0;
+}
 .gui.row-pos-1 {
-  top: 0;
+    top: 11.1111111111111%;
 }
 .gui.row-pos-2 {
-  top: 80px;
+    top: 22.2222222222222%;
 }
 .gui.row-pos-3 {
-  top: 160px;
+    top: 33.3333333333333%;
 }
 .gui.row-pos-4 {
-  top: 240px;
+    top: 44.4444444444444%;
 }
 .gui.row-pos-5 {
-  top: 320px;
+    top: 55.5555555555555%;
 }
 .gui.row-pos-6 {
-  top: 400px;
+    top: 66.6666666666666%;
 }
 .gui.row-pos-7 {
-  top: 480px;
+    top: 77.7777777777777%;
 }
 .gui.row-pos-8 {
-  top: 560px;
-}
-.gui.row-pos-9 {
-  top: 650px;
+    top: 88.8888888888888%;
 }

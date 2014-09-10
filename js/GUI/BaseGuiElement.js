@@ -9,7 +9,23 @@
         inDom: false,
         cols: 1,
         rows: 1,
-        position: [],
+        position: null,
+        alignment: null,
+        image: null,
+        getDefaultOptions: function() {
+            return {
+                alignment: {
+                    x: 'center',
+                    y: 'center'
+                },
+                position: {
+                    x: 0,
+                    y: 0
+                },
+                cols: 1,
+                rows: 1
+            };
+        },
 
        /**
         * @param {Object} options
@@ -17,9 +33,11 @@
         * @param {Array} options.position
         */
         init: function(options){
-            this.position = options.position ? options.position : [0, 0];
+            options = window.game.getHelpers().merge(this.getDefaultOptions(), options);
+            this.position = options.position;
             this.cols = options.cols;
             this.rows = options.rows;
+            this.alignment = options.alignment;
             if (options.element) {
                 this.setHtmlElement(options.element);
             }
@@ -36,15 +54,14 @@
             className += ' row-';
             className += this.rows;
             className += ' col-pos-';
-            className += this.position[0];
+            className += this.position.x;
             className += ' row-pos-';
-            className += this.position[1];
+            className += this.position.y;
             this.htmlElement.className += className;
         },
         setCss: function(cssProperties) {
             if (this.htmlElement) {
                 for (var x in cssProperties) {
-                    console.log(x, this.htmlElement.style[x]);
                     this.htmlElement.style[x] = cssProperties[x];
                 }
             }

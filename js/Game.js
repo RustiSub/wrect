@@ -8,7 +8,7 @@
         timeDelta: 0,
         previousTime: 0,
         debug: false,
-        fpsOutInterval: 1000,
+        fpsOutInterval: 10000,
         debugStats: [],
         _defaults: {
             inputHandlerClass: InputHandler,
@@ -248,9 +248,25 @@
                 else if (docElm.webkitRequestFullScreen) {
                     docElm.webkitRequestFullScreen();
                 }
+                var self = this;
+                setTimeout(function() {
+                    self._renderer.resize(screen.width, screen.height);
+                }, 40);
             }
-            this._renderer.view.style.width = element.width + 'px';
-            this._renderer.view.style.height = element.height + 'px';
+            else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen()
+                }
+                else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                }
+                else if (document.webkitExitFullscreen) {
+                    document.webkitCancelFullscreen();
+                }
+                else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
         },
 
         getHeight: function() {

@@ -11,17 +11,14 @@
      * @param options.canvasHeight
      */
     init: function(options) {
+      this._super({position: { x:0, y: 0 }});
       this.setCss({
         width: options.canvasWidth + 'px',
         height: options.canvasHeight + 'px'
       });
 
       this.cellSize = options.canvasWidth / this.cols;
-      this.grid = new window.Grid(this.rows, this.cols);
-    },
-    addElement: function(guiElement, row, col) {
-      this.grid.addChild(guiElement, row, col);
-      game.getGuiManager().addElement(guiElement, this.htmlElement);
+        console.log(this.cellSize);
     }
   });
-})();
+}());

@@ -15,19 +15,16 @@
          */
         init: function(options) {
             var element = document.createElement('button');
-            this._super({
-              element: element,
-              cols: options.cols,
-              rows: options.rows,
-              position: [options.position[0], options.position[1]]
-            });
+            options.element = element;
+            this._super(options);
             if (options.id) {
                 element.id = options.id;
             }
             var cssProps = {
-                'background-image': 'url(' + options.imagePath + ')'
+                backgroundImage: 'url("' + options.imagePath + '")',
+                backgroundPosition: this.alignment.x + ' ' + this.alignment.y
             };
-
+console.log(this.alignment.x, this.alignment.y);
             this.setCss(cssProps);
         }
     });

@@ -366,22 +366,40 @@ function addGui() {
     panel.addChild(secondButton);*/
   var guiManager = game.getGuiManager();
   var rootGui = new window.RootGui({
-    canvasWidth: 1280,
-    canvasHeight: 720
+    canvasWidth: window.innerWidth,
+    canvasHeight: window.innerHeight
   });
   guiManager.addElement(rootGui);
   //imagePath, width, height, positionCss, id
-  var button = new window.ImageButton({
-    imagePath: 'resources/gui/plus.png',
-    rows: 1,
-    cols: 1,
-    position: [0, 0]
-  });
-  rootGui.addElement(button, 5, 5);
+  for (var a = 0; a < 16; a++) {
+      for (var b = 0; b < 9; b++) {
+          var button = new window.ImageButton({
+            imagePath: 'resources/gui/plus.png',
+            rows: 1,
+            cols: 1,
+            position: {
+                x: a,
+                y: b
+            },
+            alignment: {
+              x: 'left',
+              y: 'center'
+            }
+          });
+        rootGui.addElement(button);
+      }
+  }
+  /*button.addEvent('click', function() {
+      game.goFullscreen();
+  });*/
 }
 
 window.onload = function() {
-  game = new Game({debug: true});
+  game = new Game({
+      debug: true,
+      width: window.innerWidth,
+      height: window.innerHeight
+  });
   //entity.applyGlue();
 
   //createFrame();
