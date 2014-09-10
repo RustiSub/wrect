@@ -1,29 +1,22 @@
 (function() {
   "use strict";
-  window.RootGui = BaseGuiElement.extend({
-    cols: 16,
-    rows: 9,
-    grid: null,
+  window.RootGui = window.BaseGuiCollection.extend({
     cellSize: 0,
-    elementPadding: 8,
-    init: function(canvasWidth, canvasHeight, options) {
-      var element = document.createElement('div');
-      element.className = 'rootGrid';
-      this.children = [];
-      this._super({element: element, rows: this.rows, cols: this.cols});
+    cols: 16,
+    elementClass: 'rootGrid',
+    rows: 9,
+    /**
+     * @param options
+     * @param options.canvasWidth
+     * @param options.canvasHeight
+     */
+    init: function(options) {
       this.setCss({
-        width: canvasWidth + 'px',
-        height: canvasHeight + 'px'
+        width: options.canvasWidth + 'px',
+        height: options.canvasHeight + 'px'
       });
-      if (options) {
-        if (options.baseGridSize) {
-          this.baseGridSize = options.baseGridSize;
-        }
-        if (options.elementPadding) {
-          this.elementPadding = options.elementPadding;
-        }
-      }
-      this.cellSize = canvasWidth / this.cols;
+
+      this.cellSize = options.canvasWidth / this.cols;
       this.grid = new window.Grid(this.rows, this.cols);
     },
     addElement: function(guiElement, row, col) {

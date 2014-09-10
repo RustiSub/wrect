@@ -6,28 +6,28 @@
      */
     window.ImageButton = window.BaseGuiElement.extend({
         /**
-         * @param imagePath
-         * @param cols
-         * @param rows
-         * @param positionCss
-         * @param [id]
+         * @param options
+         * @param options.imagePath
+         * @param options.cols
+         * @param options.rows
+         * @param options.position
+         * @param [options.id]
          */
-        init: function(imagePath, cols, rows, positionCss, id) {
+        init: function(options) {
             var element = document.createElement('button');
             this._super({
               element: element,
-              cols: cols,
-              rows: rows,
-              position: [16, 9]
+              cols: options.cols,
+              rows: options.rows,
+              position: [options.position[0], options.position[1]]
             });
-            if (id) {
-                element.id = id;
+            if (options.id) {
+                element.id = options.id;
             }
             var cssProps = {
-                background: 'url(' + imagePath + ')'
+                'background-image': 'url(' + options.imagePath + ')'
             };
 
-            //cssProps = window.game.getHelpers().merge(cssProps, positionCss);
             this.setCss(cssProps);
         }
     });

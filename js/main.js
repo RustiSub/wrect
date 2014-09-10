@@ -331,10 +331,19 @@ function addGui() {
       window.game._builder.createObject(false);
     });
     panel.addChild(secondButton);*/
-  var rootGui = new window.RootGui(1280, 720);
-  game.getGuiManager().addElement(rootGui);
+  var guiManager = game.getGuiManager();
+  var rootGui = new window.RootGui({
+    canvasWidth: 1280,
+    canvasHeight: 720
+  });
+  guiManager.addElement(rootGui);
   //imagePath, width, height, positionCss, id
-  var button = new window.ImageButton('resources/gui/plus.png', 1, 1);
+  var button = new window.ImageButton({
+    imagePath: 'resources/gui/plus.png',
+    rows: 1,
+    cols: 1,
+    position: [0, 0]
+  });
   rootGui.addElement(button, 5, 5);
 }
 

@@ -9,7 +9,7 @@
         inDom: false,
         cols: 1,
         rows: 1,
-        guiPosition: [],
+        position: [],
 
        /**
         * @param {Object} options
@@ -17,7 +17,7 @@
         * @param {Array} options.position
         */
         init: function(options){
-            this.guiPosition = options.position ? options.position : [0, 0];
+            this.position = options.position ? options.position : [0, 0];
             this.cols = options.cols;
             this.rows = options.rows;
             if (options.element) {
@@ -36,9 +36,9 @@
             className += ' row-';
             className += this.rows;
             className += ' col-pos-';
-            className += this.guiPosition[0];
+            className += this.position[0];
             className += ' row-pos-';
-            className += this.guiPosition[1];
+            className += this.position[1];
             this.htmlElement.className += className;
         },
         setCss: function(cssProperties) {
