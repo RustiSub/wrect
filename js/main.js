@@ -344,6 +344,13 @@ function buildShip1() {
   game.addEntity(game._builder.createBlock('wall_6', 750, 250, 20, 20, 0xFFFFFF));
 }
 
+function vectorTest1() {
+  createFrame();
+
+  var forceGenerator = game._builder.createBlock('wall_1', 600, 300, 20, 20, 0xFFFFFF);
+  forceGenerator.glueSource = true;
+  game.addEntity(forceGenerator);
+}
 
 function addGui() {
     var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
@@ -371,8 +378,10 @@ window.onload = function() {
   //builderTest1();
   //builderTest2();
   //builderTest3();
-  builderTest5();
+  //builderTest5();
   //buildShip1();
+
+  vectorTest1();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());

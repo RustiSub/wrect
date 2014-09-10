@@ -14,31 +14,39 @@ var Block = MovableEntity.extend({
   init: function(name, graphics) {
     this._super(name, graphics);
   },
-//  move: function () {
-//    var inputHandler = Container.getComponent('InputHandler');
-//    if (inputHandler.key('left')) {
-//      this._physics.increaseSpeedX(-1);
-//    }
-//    if (inputHandler.key('right')) {
-//      this._physics.increaseSpeedX(1);
-//    }
-//    if (inputHandler.key('up')) {
-//      this._physics.increaseSpeedY(-1);
-//    }
-//    if (inputHandler.key('down')) {
-//      this._physics.increaseSpeedY(1);
-//    }
-//
-//    //this._physics.applyFriction(this._graphics.position.y, this.height);
-//  },
+  move: function () {
+    var inputHandler = Container.getComponent('InputHandler');
+    if (inputHandler.key('left')) {
+      this._physics.increaseSpeedX(-1);
+    }
+    if (inputHandler.key('right')) {
+      this._physics.increaseSpeedX(1);
+    }
+    if (inputHandler.key('up')) {
+      this._physics.increaseSpeedY(-1);
+    }
+    if (inputHandler.key('down')) {
+      this._physics.increaseSpeedY(1);
+    }
+
+    if (inputHandler.key('K_FIVE')) {
+      this._physics.vectors.push(new Vector(10, 0));
+      this._physics.vectors.push(new Vector(-10, 2));
+      this._physics.calculateSpeed();
+    }
+
+    this._physics.applyFriction(0);
+    //this._physics.applyFriction(this._graphics.position.y, this.height);
+  },
   update: function(){
     this._super();
 
     if (this.selected) {
-      game._builder.moveBuilderBlock(this);
+      //game._builder.moveBuilderBlock(this);
+      this.move();
     }
-    this._graphics.position.x += this._physics.calculateSpeedX();
-    this._graphics.position.y += this._physics.calculateSpeedY();
+    this._graphics.position.x += this._physics.deltaVector.x;
+    this._graphics.position.y += this._physics.deltaVector.y;
   },
 //  transformations: {
     rotate: function() {

@@ -261,7 +261,7 @@
                     return a + b;
                 });
 
-                console.log('Past ' + this.fpsOutInterval + 'ms avg FPS: ' + (sum/this.debugStats.fps.length));
+                //console.log('Past ' + this.fpsOutInterval + 'ms avg FPS: ' + (sum/this.debugStats.fps.length));
                 this.debugStats.fps = [];
                 this.debugStats.previousFpsOut = timestamp;
             }

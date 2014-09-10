@@ -6,32 +6,36 @@ var Physics = Class.extend({
   fallTime: 0,
   xSpeed: 0,
   ySpeed: 0,
+  vectors: [],
+  deltaVector: {},
 
   init: function() {
+    this.deltaVector = new Vector(0, 0);
+  },
+  calculateSpeed: function() {
+    this.deltaVector = new Vector(0, 0);
+    for (var v = 0; v < this.vectors.length; v++) {
+      var vector = this.vectors[v];
+      this.deltaVector = this.deltaVector.add(vector);
+    }
 
+    this.increaseSpeedX(this.deltaVector.x);
+    this.increaseSpeedY(this.deltaVector.y);
   },
   increaseSpeedX: function(increase) {
     this.xSpeed += increase;
-  },
-
-  calculateSpeedX: function() {
-    return this.xSpeed;
   },
 
   increaseSpeedY: function(increase) {
     this.ySpeed += increase;
   },
 
-  calculateSpeedY: function() {
-    return this.ySpeed;
-  },
-
   reverseSpeedX: function() {
-    this.xSpeed = - this.xSpeed ;
+    this.deltaVector = this.deltaVector.multiply(new Vector(-1, 1));
   },
 
   reverseSpeedY: function() {
-    this.ySpeed = - this.ySpeed;
+    this.deltaVector = this.deltaVector.multiply(new Vector(1, -1));
   },
 
   stop: function() {
