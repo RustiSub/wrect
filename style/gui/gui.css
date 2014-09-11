@@ -1,0 +1,29 @@
+/* GUI element styling */
+button.gui {
+    background: none no-repeat;
+    background-position: center;
+    border: none;
+    margin: 0;
+    padding: 0;
+
+    /*positioning*/
+    position: absolute;
+}
+
+.panel.gui {
+    opacity: 0.5;
+    -webkit-transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
+    -moz-transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
+    -ms-transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
+    -o-transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
+    transition: left 0.3s ease, right 0.3s ease 0.5s, top 0.3s ease 0.5s, bottom 0.3s ease 0.5s;
+}
+
+.collection {
+    position: absolute;
+}
+
+.rootGrid {
+    position: relative;
+}
+

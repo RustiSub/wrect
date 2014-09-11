@@ -1,0 +1,68 @@
+@import "gui/gui.css";
+@import "gui/grid.css";
+
+* {
+  outline: none;
+}
+body {
+	background-color: #222;
+	margin: 0;
+}
+
+body {
+	margin: 0 auto;
+}
+
+canvas {
+	background-color: transparent;
+	position: absolute;
+  transition: opacity 1s ease;
+}
+
+/* Fullscreen */
+body:-webkit-full-screen {
+  height: 100%;
+  width: 100%;
+}
+
+body:-moz-full-screen {
+  height: 100%;
+  width: 100%;
+}
+
+body:fullscreen {
+  height: 100%;
+  width: 100%;
+}
+
+body:-webkit-full-screen canvas {
+	height: 100%;
+}
+
+body:-moz-full-screen canvas {
+	height: 100%;
+}
+
+body:fullscreen canvas {
+	height: 100%;
+}
+
+body:-webkit-full-screen .canvasContainer{
+	height: 100%;
+	width: 100%;
+}
+
+body:-moz-full-screen .canvasContainer{
+	height: 100%;
+	width: 100%;
+}
+
+body:fullscreen .canvasContainer{
+	height: 100%;
+	width: 100%;
+}
+
+.canvasContainer {
+	position: relative;
+	overflow: hidden;
+}

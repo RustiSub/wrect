@@ -12,6 +12,8 @@
         position: null,
         alignment: null,
         image: null,
+        presentationStyle: null,
+        parent: null,
         getDefaultOptions: function() {
             return {
                 alignment: {
@@ -41,6 +43,9 @@
             if (options.element) {
                 this.setHtmlElement(options.element);
             }
+           if (options.presentationStyle) {
+                this.setPresentationStyle(options.presentationStyle);
+           }
         },
         setHtmlElement: function(htmlElement) {
             this.htmlElement = htmlElement;
@@ -59,12 +64,28 @@
             className += this.position.y;
             this.htmlElement.className += className;
         },
+        setPresentationStyle: function(presentationStyle) {
+            this.presentationStyle = presentationStyle;
+            this.setCss(presentationStyle);
+        },
         setCss: function(cssProperties) {
             if (this.htmlElement) {
                 for (var x in cssProperties) {
                     this.htmlElement.style[x] = cssProperties[x];
                 }
             }
+        },
+        getWidth: function() {
+            if (this.width !== undefined) {
+                return this.width
+            }
+            return this.htmlElement.offsetWidth;
+        },
+        getHeight: function() {
+            if (this.height !== undefined) {
+                return this.height;
+            }
+            return this.htmlElement.offsetHeight;
         },
         addEvent: function(eventName, callback) {
             if (this.htmlElement) {
