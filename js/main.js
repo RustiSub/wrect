@@ -79,13 +79,30 @@ function triangleTest1() {
   game.addEntity(entity);
 }
 function testCollide1() {
-  var speed = 5;
+  var speed = 10;
   var block1 = game._builder.createBlock('b1', 185, 50, 20, 20);
+
   game.addEntity(block1);
-  block1._physics.xSpeed = speed;
+
+  block1._physics.forceVectors.push(new Vector(speed, 0,
+      function(delta, vector) {
+        if (vector.x != 0) {
+          //vector.x *= 0.95;
+        }
+      }
+  ));
+  //game.getEntityManager().getEntityByName('_bottom')._physics.forceVectors = [];
+  //block1._physics.xSpeed = speed;
   var block2 = game._builder.createBlock('b2', 810, 50, 20, 20, 0xFF0000);
   game.addEntity(block2);
-  block2._physics.xSpeed = -speed;
+  //block2._physics.xSpeed = -speed;
+  block2._physics.forceVectors.push(new Vector(-speed, 0,
+      function(delta, vector) {
+        if (vector.x != 0) {
+          //vector.x *= 0.95;
+        }
+      }
+  ));
 }
 function testCollide2() {
   var speed = 5;
@@ -347,9 +364,7 @@ function buildShip1() {
 function vectorTest1() {
   createFrame();
 
-  var forceGenerator = game._builder.createBlock('force_generator', 600, 300, 20, 20, 0xFFFFFF);
-  forceGenerator.glueSource = true;
-  game.addEntity(forceGenerator);
+  testCollide1();
 }
 
 function addGui() {

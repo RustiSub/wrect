@@ -29,19 +29,6 @@ var Block = MovableEntity.extend({
       this._physics.increaseSpeedY(1);
     }
 
-    if (inputHandler.key('K_FIVE')) {
-      this._physics.forceVectors.push(new Vector(5, 2, function(deltaVector, vector) {
-          //if (!vector.once) {
-          //  vector.once = true;
-          //  vector.x = 10;
-          //  vector.y = 10;
-          //} else {
-          //  vector.x = 0;
-          //  vector.y = 0;
-          //}
-      }));
-    }
-      this._physics.calculateSpeed();
     //this._physics.applyFriction(0);
     //this._physics.applyFriction(this._graphics.position.y, this.height);
   },
@@ -50,10 +37,13 @@ var Block = MovableEntity.extend({
 
     if (this.selected) {
       //game._builder.moveBuilderBlock(this);
-      this.move();
+      //this.move();
     }
-    this._graphics.position.x += this._physics.deltaVector.x;
-    this._graphics.position.y += this._physics.deltaVector.y;
+    //console.log(this.name, this._physics.forceVectors.length);
+    this._physics.calculateSpeed();
+
+    this._graphics.position.x += this._physics.xSpeed;
+    this._graphics.position.y += this._physics.ySpeed;
   },
 //  transformations: {
     rotate: function() {

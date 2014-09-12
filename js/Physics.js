@@ -12,17 +12,19 @@ var Physics = Class.extend({
 
   init: function() {
     this.deltaVector = new Vector(0, 0);
+    this.forceVectors = [];
   },
   calculateSpeed: function() {
     this.deltaVector = new Vector(0, 0);
     for (var v = 0; v < this.forceVectors.length; v++) {
       var forceVector = this.forceVectors[v];
+
       forceVector.update(this.deltaVector, forceVector);
       this.deltaVector = this.deltaVector.add(forceVector);
     }
 
-    //this.xSpeed = Math.round(this.deltaVector.x);
-    //this.ySpeed = Math.round(this.deltaVector.y);
+    this.xSpeed = this.deltaVector.x;
+    this.ySpeed = this.deltaVector.y;
     //this.deltaVector = new Vector(0, 0);
   },
   increaseSpeedX: function(increase) {
@@ -36,14 +38,18 @@ var Physics = Class.extend({
   reverseSpeedX: function() {
     for (var v = 0; v < this.forceVectors.length; v++) {
       var forceVector = this.forceVectors[v];
-      forceVector.multiply(new Vector(-1, 1));
+      forceVector = forceVector.multiply({x: -1, y: 1});
+      this.forceVectors[v].x = forceVector.x;
+      this.forceVectors[v].y = forceVector.y;
     }
   },
 
   reverseSpeedY: function() {
     for (var v = 0; v < this.forceVectors.length; v++) {
       var forceVector = this.forceVectors[v];
-      forceVector.multiply(new Vector(1, -1));
+      forceVector = forceVector.multiply({x: 1, y: -1});
+      this.forceVectors[v].x = forceVector.x;
+      this.forceVectors[v].y = forceVector.y;
     }
   },
 
