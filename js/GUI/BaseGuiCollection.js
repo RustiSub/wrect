@@ -36,24 +36,8 @@
         },
         addElement: function(guiElement) {
             this.grid.addChild(guiElement, guiElement.position.y, guiElement.position.x);
-            this.alterChildStyle(guiElement);
             guiElement.parent = this;
             game.getGuiManager().addElement(guiElement, this.htmlElement);
-        },
-        alterChildStyle: function(guiElement) {
-            var sizeCss = {
-                width: Math.round(this.cellSize * guiElement.cols) + 'px',
-                height: Math.round(this.cellSize * guiElement.rows) + 'px'
-            };
-            debugger;
-            console.log(this.cellSize, guiElement.cols);
-            guiElement.setCss(sizeCss);
-        },
-        calculateCellSize: function() {
-            return this.getWidth / this.cols;
-        },
-        toDomCallback: function() {
-            this.cellSize = this.calculateCellSize();
         }
     });
 }());

@@ -14,6 +14,7 @@
         image: null,
         presentationStyle: null,
         parent: null,
+        htmlWrapper: null,
         getDefaultOptions: function() {
             return {
                 alignment: {
@@ -48,9 +49,18 @@
            }
         },
         setHtmlElement: function(htmlElement) {
+            var elementToAdd;
+            this.htmlWrapper = this.createHtmlWrapper();
             this.htmlElement = htmlElement;
+            if (this.htmlWrapper) {
+                this.htmlWrapper.appendChild(htmlElement);
+                elementToAdd = this.htmlWrapper;
+            }
+            else {
+                elementToAdd = this.htmlElement;
+            }
             var className = '';
-            if (this.htmlElement.className.length) {
+            if (elementToAdd.className.length) {
                 className = ' ';
             }
             className += 'gui';
@@ -62,7 +72,10 @@
             className += this.position.x;
             className += ' row-pos-';
             className += this.position.y;
-            this.htmlElement.className += className;
+            elementToAdd.className += className;
+        },
+        createHtmlWrapper: function() {
+            return null;
         },
         setPresentationStyle: function(presentationStyle) {
             this.presentationStyle = presentationStyle;

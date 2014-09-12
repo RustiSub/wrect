@@ -24,8 +24,10 @@
                 backgroundImage: 'url("' + options.imagePath + '")',
                 backgroundPosition: this.alignment.x + ' ' + this.alignment.y
             };
-console.log(this.alignment.x, this.alignment.y);
             this.setCss(cssProps);
+        },
+        createHtmlWrapper: function() {
+            return document.createElement('div');
         }
     });
 })();

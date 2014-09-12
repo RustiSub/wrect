@@ -11,7 +11,12 @@
                 if (container === undefined) {
                     container = window.Container.getComponent('Renderer').view.parentNode;
                 }
-                container.appendChild(guiElement.htmlElement);
+                if (guiElement.htmlWrapper) {
+                    container.appendChild(guiElement.htmlWrapper);
+                }
+                else {
+                    container.appendChild(guiElement.htmlElement);
+                }
                 guiElement.inDom = true;
                 guiElement.toDomCallback();
             }

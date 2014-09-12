@@ -19,10 +19,6 @@
             });
             this.width = options.canvasWidth;
             this.height = options.canvasHeight;
-        },
-        calculateCellSize: function() {
-            console.log(this.width, this.cols);
-            return this.width / this.cols;
         }
     });
 }());
