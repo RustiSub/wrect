@@ -20,6 +20,13 @@
                 guiElement.inDom = true;
                 guiElement.toDomCallback();
             }
+        },
+        createElement: function(name, options) {
+            if (typeof window[name] === 'function') {
+                return new window[name](options);
+            }
+            console.error(name + ' ain\'t no element I\'ve ever heard of');
+            return null;
         }
     });
 })();

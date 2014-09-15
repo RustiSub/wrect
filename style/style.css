@@ -1,5 +1,6 @@
 @import "gui/gui.css";
 @import "gui/grid.css";
+@import "gui/scaling.css";
 
 * {
   outline: none;

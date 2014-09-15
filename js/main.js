@@ -391,21 +391,16 @@ function addGui() {
         rows: 1,
         cols: 1,
         position: {
-            x: 0,
-            y: 0
+            x: 8,
+            y: 8
         },
         alignment: {
             x: 'left',
-            y: 'center'
+            y: 'bottom'
         }
     });
     rootGui.addElement(panel);
-    panel.addElement(button);
-    //imagePath, width, height, positionCss, id
-    // rootGui.addElement(button);
-    /*button.addEvent('click', function() {
-     game.goFullscreen();
-     });*/
+    rootGui.addElement(button);
 }
 
 window.onload = function() {

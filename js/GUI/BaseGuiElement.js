@@ -15,6 +15,7 @@
         presentationStyle: null,
         parent: null,
         htmlWrapper: null,
+        htmlTag: 'div',
         getDefaultOptions: function() {
             return {
                 alignment: {
@@ -41,38 +42,40 @@
             this.cols = options.cols;
             this.rows = options.rows;
             this.alignment = options.alignment;
-            if (options.element) {
-                this.setHtmlElement(options.element);
+            if (!options.element) {
+                options.element = document.createElement(this.htmlTag);
             }
+            this.setHtmlElement(options.element);
            if (options.presentationStyle) {
                 this.setPresentationStyle(options.presentationStyle);
            }
         },
         setHtmlElement: function(htmlElement) {
-            var elementToAdd;
+            var className = '';
             this.htmlWrapper = this.createHtmlWrapper();
             this.htmlElement = htmlElement;
             if (this.htmlWrapper) {
+                if (this.htmlWrapper.className.length) {
+                    className = ' ';
+                }
                 this.htmlWrapper.appendChild(htmlElement);
-                elementToAdd = this.htmlWrapper;
+                className += 'gui wrapper';
+                className += ' col-';
+                className += this.cols;
+                className += ' row-';
+                className += this.rows;
+                className += ' col-pos-';
+                className += this.position.x;
+                className += ' row-pos-';
+                className += this.position.y;
+                this.htmlWrapper.className += className;
+                className = '';
             }
-            else {
-                elementToAdd = this.htmlElement;
-            }
-            var className = '';
-            if (elementToAdd.className.length) {
+            if (this.htmlElement.className.length) {
                 className = ' ';
             }
             className += 'gui';
-            className += ' col-';
-            className += this.cols;
-            className += ' row-';
-            className += this.rows;
-            className += ' col-pos-';
-            className += this.position.x;
-            className += ' row-pos-';
-            className += this.position.y;
-            elementToAdd.className += className;
+            this.htmlElement.className += className;
         },
         createHtmlWrapper: function() {
             return null;

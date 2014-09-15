@@ -5,7 +5,6 @@ button.gui {
     border: none;
     margin: 0;
     padding: 0;
-
     /*positioning*/
     position: absolute;
 }
@@ -26,4 +25,3 @@ button.gui {
 .rootGrid {
     position: relative;
 }
-

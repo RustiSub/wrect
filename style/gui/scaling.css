@@ -1,0 +1,32 @@
+/*  The top class is set by JS and will determine the default sizes of images
+    The dimensions are calculated as icon size * amount of columns = min screen size
+    For example: 64px * 16 cols = 1024px are required for 64x64 icons
+    We determine screen size by width so a landscape orientation is required */
+
+@media (min-width: 1024px) {
+    .gui {
+        min-width: 64px;
+        min-height: 64px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .gui {
+        min-width: 64px;
+        min-height: 64px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .gui {
+        min-width: 64px;
+        min-height: 64px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .gui {
+        min-width: 64px;
+        min-height: 64px;
+    }
+}

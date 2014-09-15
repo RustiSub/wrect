@@ -5,6 +5,7 @@
      * @type {void|*}
      */
     window.ImageButton = window.BaseGuiElement.extend({
+        htmlTag: 'button',
         /**
          * @param options
          * @param options.imagePath
@@ -14,7 +15,7 @@
          * @param [options.id]
          */
         init: function(options) {
-            var element = document.createElement('button');
+            var element = document.createElement(this.htmlTag);
             options.element = element;
             this._super(options);
             if (options.id) {

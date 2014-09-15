@@ -9,7 +9,7 @@
         elementClass: 'baseCollection',
         grid: null,
         init: function(options) {
-            var element = document.createElement('div');
+            var element = document.createElement(this.htmlTag);
             element.className = this.elementClass;
             this.children = [];
             this.grid = new window.Grid(this.rows, this.cols);

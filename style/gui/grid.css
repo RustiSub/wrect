@@ -154,3 +154,81 @@
 .gui.collection.row-pos-8 {
     top: 88.8888888888888%;
 }
+
+/* Wrapper sub-celling */
+.wrapper.col-1 .gui{
+    width: 100%;
+}
+.wrapper.col-2 .gui{
+    width: 50%;
+}
+.wrapper.col-3 .gui{
+    width: 33.333333%;
+}
+.wrapper.col-4 .gui{
+    width: 25%;
+}
+.wrapper.col-5 .gui{
+    width: 20%;
+}
+.wrapper.col-6 .gui{
+    width: 16.666666%;
+}
+.wrapper.col-7 .gui{
+    width: 14.2857%;
+}
+.wrapper.col-8 .gui{
+    width: 12.5%;
+}
+.wrapper.col-9 .gui{
+    width: 11.111111%;
+}
+.wrapper.col-10 .gui{
+    width: 10%;
+}
+.wrapper.col-11 .gui{
+    width: 9.09090909%;
+}
+.wrapper.col-12 .gui{
+    width: 8.33333333%;
+}
+.wrapper.col-13 .gui{
+    width: 7.6923%;
+}
+.wrapper.col-14 .gui{
+    width: 7.14285%;
+}
+.wrapper.col-15 .gui{
+    width: 6.66666666%;
+}
+.wrapper.col-16 .gui{
+    width: 6.25%;
+}
+
+.wrapper.row-1 .gui{
+    height: 100%;
+}
+.wrapper.row-2 .gui{
+    height: 50%;
+}
+.wrapper.row-3 .gui{
+    height: 33.3333333%;
+}
+.wrapper.row-4 .gui{
+    height: 25%;
+}
+.wrapper.row-5 .gui{
+    height: 20%;
+}
+.wrapper.row-6 .gui{
+    height: 16.6666666%;
+}
+.wrapper.row-7 .gui{
+    height: 14.2857%;
+}
+.wrapper.row-8 .gui{
+    height: 12.5%;
+}
+.wrapper.row-9 .gui{
+    height: 11.1111111%;
+}
