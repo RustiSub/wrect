@@ -21,6 +21,10 @@ button.gui {
     position: absolute;
 }
 
+.element {
+    z-index: 1;
+}
+
 .rootGrid {
     position: relative;
 }
