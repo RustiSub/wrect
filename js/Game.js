@@ -57,6 +57,7 @@
          * @param {Boolean} options.autoBoot Whether or not to automatically start up the game. This can be useful for overriding classes between the init and boot
          */
         init: function(options) {
+            this.createGlobalContainer.call(this);
             this.buildOptions(options);
             if (options.debug) {
                 console.info('debug mode enabled');
@@ -70,7 +71,6 @@
             if (this._options && typeof this._options.autoBoot !== 'undefined' && this._options.autoBoot) {
                 this.bootstrap(options);
             }
-            this.createGlobalContainer.call(this);
         },
 
         /**

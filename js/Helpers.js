@@ -86,6 +86,43 @@
         getFunctionFromString: function (ns, o) {
             o = (o === undefined) ? window : o;
             return ns.split('.').reduce(index, o);
+        },
+
+        hasClass: function(elem, className) {
+            return elem.className.split( ' ' ).indexOf( className ) !== -1;
+        },
+
+        removeClass: function(elem, className) {
+            if (this.hasClass(elem, className)) {
+                var classes = elem.className.split(' ');
+                var index;
+                if ((index = classes.indexOf(className)) !== -1) {
+                    classes.splice(index, 1);
+                    elem.className = classes.join(' ');
+                }
+            }
+        },
+
+        addClass: function(elem, className) {
+            if (className instanceof Array) {
+                this.addClasses(elem, className);
+            }
+            else if (!this.hasClass(elem, className)) {
+                elem.className += ' ';
+                elem.className += className;
+            }
+        },
+
+        addClasses: function(elem, classes) {
+            var classesToAdd = [];
+            for (var i = 0; i < classes.length; i++) {
+                var c = classes[i];
+                if (!this.hasClass(elem, c)) {
+                    classesToAdd.push(c);
+                }
+            }
+            elem.className += ' ';
+            elem.className += classesToAdd.join(' ');
         }
     });
 

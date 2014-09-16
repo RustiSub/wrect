@@ -7,12 +7,10 @@
     window.BaseGuiCollection = window.BaseGuiElement.extend({
         cellSize: 0,
         elementClass: 'baseCollection',
-        grid: null,
         init: function(options) {
             var element = document.createElement(this.htmlTag);
             element.className = this.elementClass;
             this.children = [];
-            this.grid = new window.Grid(this.rows, this.cols);
             options.element = element;
             this._super(options);
             this.htmlElement.className += ' collection';
@@ -35,7 +33,6 @@
             this.htmlElement.className += className;
         },
         addElement: function(guiElement) {
-            this.grid.addChild(guiElement, guiElement.position.y, guiElement.position.x);
             guiElement.parent = this;
             game.getGuiManager().addElement(guiElement, this.htmlElement);
         }
