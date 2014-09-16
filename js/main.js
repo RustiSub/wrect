@@ -380,14 +380,32 @@ function addGui() {
         position: {
             x: 8,
             y: 8
-        },
-        alignment: {
-            x: 'center',
-            y: 'bottom'
         }
     });
     var button = new window.ImageButton({
-        imagePath: 'resources/gui/plus.png',
+        imgPath: 'resources/gui/plus.png',
+        imgHeight: 24,
+        imgWidth: 24,
+        rows: 1,
+        cols: 1,
+        position: {
+            x: 8,
+            y: 8
+        },
+        alignment: {
+            x: 'center',
+            y: 'center'
+        }
+    });
+    rootGui.addElement(panel);
+    button.addEvent('click', function() {
+        alert('You clicked the center button');
+    });
+    rootGui.addElement(button);
+    button = new window.ImageButton({
+        imgPath: 'resources/gui/plus.png',
+        imgHeight: 24,
+        imgWidth: 24,
         rows: 1,
         cols: 1,
         position: {
@@ -396,10 +414,12 @@ function addGui() {
         },
         alignment: {
             x: 'left',
-            y: 'bottom'
+            y: 'center'
         }
     });
-    rootGui.addElement(panel);
+    button.addEvent('click', function() {
+        alert('You clicked the left button');
+    });
     rootGui.addElement(button);
 }
 

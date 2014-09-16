@@ -74,7 +74,7 @@
             if (this.htmlElement.className.length) {
                 className = ' ';
             }
-            className += 'gui';
+            className += 'gui element';
             this.htmlElement.className += className;
         },
         createHtmlWrapper: function() {
@@ -84,24 +84,22 @@
             this.presentationStyle = presentationStyle;
             this.setCss(presentationStyle);
         },
-        setCss: function(cssProperties) {
-            if (this.htmlElement) {
-                for (var x in cssProperties) {
-                    this.htmlElement.style[x] = cssProperties[x];
+        setCss: function(cssProperties, wrapper) {
+            var x;
+            if (wrapper) {
+                if (this.htmlWrapper) {
+                    for (x in cssProperties) {
+                        this.htmlWrapper.style[x] = cssProperties[x];
+                    }
                 }
             }
-        },
-        getWidth: function() {
-            if (this.width !== undefined) {
-                return this.width
+            else {
+                if (this.htmlElement) {
+                    for (x in cssProperties) {
+                        this.htmlElement.style[x] = cssProperties[x];
+                    }
+                }
             }
-            return this.htmlElement.offsetWidth;
-        },
-        getHeight: function() {
-            if (this.height !== undefined) {
-                return this.height;
-            }
-            return this.htmlElement.offsetHeight;
         },
         addEvent: function(eventName, callback) {
             if (this.htmlElement) {
