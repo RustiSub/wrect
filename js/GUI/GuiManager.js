@@ -41,7 +41,9 @@
             document.addEventListener('mouseout', function(e) {
                 if (e.target !== document) {
                     if (!helpers.hasClass(e.target, 'rootGrid') && helpers.hasClass(e.target, 'collection')) {
-                        helpers.addClass(document.getElementById('guiRoot'), ['fade-out', 'woop']);
+                        var rootGui = document.getElementById('guiRoot');
+                        rootGui.
+                        helpers.addClass(rootGui, 'fade-out');
                     }
                 }
             });

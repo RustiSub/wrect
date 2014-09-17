@@ -25,6 +25,11 @@ button.gui {
 
 .element {
     z-index: 1;
+    pointer-events: all;
+}
+
+.wrapper {
+    pointer-events: none;
 }
 
 .rootGrid {
