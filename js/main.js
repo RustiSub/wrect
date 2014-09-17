@@ -11,9 +11,8 @@ function test1() {
 }
 
 function test2() {
-  var block = game._builder.createBlock('b1', 350, 60, 20, 20);
-  block.frozen = false;
-  game.addEntity(block);
+  var player = new MovableEntity('suit_1', 'resources/images/rsz_suit_1.png');
+    game.addEntity(player);
 }
 
 function test3() {
@@ -357,7 +356,7 @@ window.onload = function() {
 
   //createFrame();
   //test1();
-  //test2();
+  test2();
   //test3();
   //testCollide1();
   //testCollide2();
@@ -371,7 +370,7 @@ window.onload = function() {
   //builderTest1();
   //builderTest2();
   //builderTest3();
-  builderTest5();
+  //builderTest5();
   //buildShip1();
 
   //game._builder.clearRooms();
