@@ -36,16 +36,16 @@ button.gui {
     position: relative;
 }
 
-.gui {
-    -webkit-transition: opacity 1s ease;
-    -moz-transition: opacity 1s ease;
-    -ms-transition: opacity 1s ease;
-    -o-transition: opacity 1s ease;
-    transition: opacity 1s ease;
+.rootGrid {
+    -webkit-transition: opacity 0.5s ease;
+    -moz-transition: opacity 0.5s ease;
+    -ms-transition: opacity 0.5s ease;
+    -o-transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
     opacity: 0.95;
 }
 
-.gui.fade-out {
+.rootGrid.fade-out {
     opacity: 0.05;
     -webkit-transition-delay: 10s;
     -moz-transition-delay: 10s;

@@ -2,8 +2,20 @@
     "use strict";
     window.GuiManager = window.Class.extend({
         elements: [],
+        guiRoot: null,
         init: function(){
+            this.createRootGui();
             this.initGlobalEvents();
+        },
+        createRootGui: function() {
+          this.guiRoot = new window.RootGui({
+            canvasWidth: window.innerWidth,
+            canvasHeight: window.innerHeight
+          });
+          this.addElement(this.guiRoot);
+        },
+        getRoot: function() {
+          return this.guiRoot;
         },
         addElement: function(guiElement, container) {
             if (guiElement instanceof window.BaseGuiElement) {
@@ -30,21 +42,27 @@
         },
         initGlobalEvents: function() {
             var helpers = Container.getGame().getHelpers();
+            var rootGui = document.getElementById('guiRoot');
             document.addEventListener('mouseover', function(e) {
                 if (e.target !== document) {
                     if (!helpers.hasClass(e.target, 'rootGrid') && helpers.hasClass(e.target, 'collection')) {
-                        helpers.removeClass(document.getElementById('guiRoot'), 'fade-out');
+                       helpers.removeClass(rootGui, 'fade-out');
                     }
                 }
             });
 
+            rootGui.addEventListener('transitionend', function fadeIn(e) {
+                helpers.removeClass(rootGui, 'fade-out');
+            });
+
             document.addEventListener('mouseout', function(e) {
                 if (e.target !== document) {
-                    if (!helpers.hasClass(e.target, 'rootGrid') && helpers.hasClass(e.target, 'collection')) {
-                        var rootGui = document.getElementById('guiRoot');
-                        rootGui.
-                        helpers.addClass(rootGui, 'fade-out');
-                    }
+                      if (!helpers.hasClass(e.target, 'rootGrid') && helpers.hasClass(e.target, 'collection')) {
+                          rootGui.addEventListener('transitionend', function fadeOut(e) {
+                              rootGui.removeEventListener('transitionend', fadeOut);
+                              helpers.addClass(rootGui, 'fade-out');
+                          });
+                      }
                 }
             });
         },

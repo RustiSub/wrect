@@ -37,7 +37,7 @@
         * @param {Array} options.position
         */
         init: function(options){
-            options = window.game.getHelpers().merge(this.getDefaultOptions(), options);
+         options = Container.getGame().getHelpers().merge(this.getDefaultOptions(), options);
             this.position = options.position;
             this.cols = options.cols;
             this.rows = options.rows;

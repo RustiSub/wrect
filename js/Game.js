@@ -79,6 +79,7 @@
         buildComponents: function() {
             this._stage = new PIXI.Stage(0x5E5E5E);
             this._renderer = new PIXI.autoDetectRenderer(this._options.width, this._options.height);
+            global.document.body.querySelector('.canvasContainer').appendChild(this._renderer.view);
             // Required for fading
             this._renderer.view.style.opacity = 1;
 
@@ -112,7 +113,6 @@
             var renderer = this.getRenderer();
             var self = this;
 
-            global.document.body.querySelector('.canvasContainer').appendChild(renderer.view);
             requestAnimationFrame(run);
 
             function run(timestamp) {

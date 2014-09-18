@@ -364,12 +364,7 @@ function addGui() {
      window.game._builder.createObject(false);
      });
      panel.addChild(secondButton);*/
-    var guiManager = game.getGuiManager();
-    var rootGui = new window.RootGui({
-        canvasWidth: window.innerWidth,
-        canvasHeight: window.innerHeight
-    });
-    guiManager.addElement(rootGui);
+    var rootGui = game.getGuiManager().getRoot();
     var panel = new window.Panel({
         cols: 5,
         rows: 1,
@@ -402,25 +397,25 @@ function addGui() {
         alert('You clicked the center button');
     });
     rootGui.addElement(button);
-  button = new window.ImageButton({
-    imgPath: 'resources/gui/plus.png',
-    imgHeight: 24,
-    imgWidth: 24,
-    rows: 1,
-    cols: 1,
-    position: {
-      x: 8,
-      y: 8
-    },
-    alignment: {
-      x: 'left',
-      y: 'center'
-    }
-  });
-  button.addEvent('click', function() {
-    alert('You clicked the left button');
-  });
-  rootGui.addElement(button);
+    button = new window.ImageButton({
+      imgPath: 'resources/gui/plus.png',
+      imgHeight: 24,
+      imgWidth: 24,
+      rows: 1,
+      cols: 1,
+      position: {
+        x: 8,
+        y: 8
+      },
+      alignment: {
+        x: 'left',
+        y: 'center'
+      }
+    });
+    button.addEvent('click', function() {
+      alert('You clicked the left button');
+    });
+    rootGui.addElement(button);
 }
 
 window.onload = function() {
