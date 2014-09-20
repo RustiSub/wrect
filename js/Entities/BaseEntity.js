@@ -16,7 +16,7 @@ var BaseEntity = Class.extend({
      * Dimensions of the entity in px.
      */
     size: {
-        x: 80,
+        x: 320,
         y: 170
     },
     connectedBodies: [],

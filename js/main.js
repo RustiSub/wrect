@@ -11,7 +11,7 @@ function test1() {
 }
 
 function test2() {
-  var player = new MovableEntity('suit_1', 'resources/images/rsz_suit_1.png');
+  var player = new MovableEntity('suit_1', 'resources/images/rsz_sheet_suit_one3.png');
     game.addEntity(player);
 }
 
