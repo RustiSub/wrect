@@ -144,6 +144,31 @@
                   self._gravityManager.applyForce(1, self.getEntityManager().getEntityByName('wall_1'));
                 }
 
+                var player = self.getEntityManager().getEntityByName('player');
+                if (player) {
+                    if (self.getInputHandler().key('right')) {
+                        player.moveRight(5);
+                        if (player.getGraphics().playing === false) {
+                            player.getGraphics().scale.x = 1;
+                            player.getGraphics().play();
+                            player.stepSound.play();
+                        }
+                    }
+                    else if (self.getInputHandler().key('left')) {
+                        player.moveLeft(5);
+                        if (player.getGraphics().playing === false) {
+                            player.getGraphics().scale.x = -1;
+                            player.getGraphics().play();
+                            player.stepSound.play();
+                        }
+                    }
+                    else {
+                        player.stop();
+                        player.getGraphics().stop();
+                        player.stepSound.pause();
+                    }
+                }
+
 //                self._builder.clearRooms(game.getEntityManager().getAllEntities());
 //                self._builder.buildConnections(game.getEntityManager().getAllEntities());
 //

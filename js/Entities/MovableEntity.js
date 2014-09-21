@@ -12,7 +12,6 @@ var MovableEntity = BaseEntity.extend({
     gluedGraphicsCallback: {},
     unGluedGraphicsCallback: {},
     position: {},
-    stats: {},
     frozen: true,
     collisions: [],
 
@@ -32,11 +31,11 @@ var MovableEntity = BaseEntity.extend({
         this.position.y = options.position.y;
       }
     },
-    moveLeft: function() {
-        this.position.x -= this.stats.speed;
+    moveLeft: function(speed) {
+        this._physics.xSpeed = -speed;
     },
-    moveRight: function() {
-        this.position.x += this.stats.speed;
+    moveRight: function(speed) {
+        this._physics.xSpeed = speed;
     },
     moveUp: function() {
         // TODO: top-down only
@@ -44,15 +43,12 @@ var MovableEntity = BaseEntity.extend({
     moveDown: function() {
         // TODO: top-down only
     },
+    stop: function() {
+        this._physics.xSpeed = 0;
+        this._physics.ySpeed = 0;
+    },
     jump: function() {
 
-    },
-
-    getDefaultStats: function() {
-      return {
-        health: 10,
-        speed: 1
-      };
     },
     deselect: function() {
       this.selected = false;
@@ -80,5 +76,10 @@ var MovableEntity = BaseEntity.extend({
       } else {
         this.select();
       }
+    },
+
+    update: function() {
+        this._graphics.position.x += this._physics.calculateSpeedX();
+        this._graphics.position.y += this._physics.calculateSpeedY();
     }
 });

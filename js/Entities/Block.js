@@ -37,8 +37,6 @@ var Block = MovableEntity.extend({
     if (this.selected) {
       game._builder.moveBuilderBlock(this);
     }
-    this._graphics.position.x += this._physics.calculateSpeedX();
-    this._graphics.position.y += this._physics.calculateSpeedY();
   },
 //  transformations: {
     rotate: function() {

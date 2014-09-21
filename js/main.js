@@ -11,8 +11,22 @@ function test1() {
 }
 
 function test2() {
-  var player = new MovableEntity('suit_1', 'resources/images/rsz_sheet_suit_one3.png');
-    game.addEntity(player);
+  var animatedSprite = new PIXI.AnimatedSprite('resources/images/sheet_suit_one3-aligned.png', 5, 0.14, true);
+    animatedSprite.anchor = new PIXI.Point(0.5, 0.5);
+  var player = new MovableEntity('player', animatedSprite, {position: {
+      x: 200,
+      y: 300
+  }});
+
+    var audio = document.createElement('audio');
+    audio.src = 'resources/sfx/step.ogg';
+    //audio.preload = 'auto';
+    audio.loop = true;
+  player.stepSound = audio;
+    document.body.appendChild(audio);
+
+  game.addEntity(player);
+  //animatedSprite.play();
 }
 
 function test3() {
@@ -351,17 +365,28 @@ function addGui() {
 }
 
 window.onload = function() {
-  game = new Game({debug: true});
+  // The assetloader makes sure our required textures are loaded before we use them.
+  var loader = new PIXI.AssetLoader([
+      'resources/gui/maximize.png',
+      'resources/images/rsz_sheet_suit_one3.png',
+      'resources/images/sheet_suit_one3-aligned.png'
+  ]);
+  loader.load();
+  loader.addEventListener('onComplete', function() {
+    game = new Game({debug: false});
+    test2();
+    addGui();
+  });
   //entity.applyGlue();
 
   //createFrame();
   //test1();
-  test2();
+  //test2();
   //test3();
   //testCollide1();
   //testCollide2();
 
-  addGui();
+  //addGui();
   //testRooms1();
   //testRooms1();
   //testRooms2Closed();

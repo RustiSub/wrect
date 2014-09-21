@@ -38,6 +38,7 @@ var BaseEntity = Class.extend({
         this.name = name;
         if (typeof graphics === 'string') {
             this._graphics = this.buildSprite(graphics);
+            this._physics = new Physics();
         }
         else {
             this._graphics = graphics;
@@ -80,6 +81,8 @@ var BaseEntity = Class.extend({
     },
 
     update: function() {
-
+       /* if (this._graphics instanceof PIXI.AnimatedSprite) {
+            this._graphics.update();
+        }*/
     }
 });
