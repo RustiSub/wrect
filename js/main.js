@@ -11,7 +11,7 @@ function test1() {
 }
 
 function test2() {
-  var animatedSprite = new PIXI.AnimatedSprite('resources/images/sheet_suit_one3-aligned.png', 5, 0.14, true);
+  var animatedSprite = new PIXI.AnimatedSprite('resources/images/sheet_suit_one3-aligned-25.png', 5, 0.14, true);
     animatedSprite.anchor = new PIXI.Point(0.5, 0.5);
   var player = new MovableEntity('player', animatedSprite, {position: {
       x: 200,
@@ -369,7 +369,8 @@ window.onload = function() {
   var loader = new PIXI.AssetLoader([
       'resources/gui/maximize.png',
       'resources/images/rsz_sheet_suit_one3.png',
-      'resources/images/sheet_suit_one3-aligned.png'
+      'resources/images/sheet_suit_one3-aligned.png',
+      'resources/images/sheet_suit_one3-aligned-25.png'
   ]);
   loader.load();
   loader.addEventListener('onComplete', function() {
