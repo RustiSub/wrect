@@ -368,7 +368,7 @@ function addGui() {
     var panel = new window.Panel({
         cols: 5,
         rows: 1,
-        presentationStyle: {
+        css: {
             border: '1px solid white',
             backgroundColor: '#CCC'
         },

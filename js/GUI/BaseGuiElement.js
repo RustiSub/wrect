@@ -11,8 +11,7 @@
         rows: 1,
         position: null,
         alignment: null,
-        image: null,
-        presentationStyle: null,
+        imgPath: '',
         parent: null,
         htmlWrapper: null,
         htmlTag: 'div',
@@ -31,13 +30,13 @@
             };
         },
 
-       /**
-        * @param {Object} options
-        * @param {HTMLElement} options.element
-        * @param {Array} options.position
-        */
+        /**
+         * @param {Object} options
+         * @param {HTMLElement} options.element
+         * @param {Array} options.position
+         */
         init: function(options){
-         options = Container.getGame().getHelpers().merge(this.getDefaultOptions(), options);
+            options = Container.getGame().getHelpers().merge(this.getDefaultOptions(), options);
             this.position = options.position;
             this.cols = options.cols;
             this.rows = options.rows;
@@ -45,10 +44,11 @@
             if (!options.element) {
                 options.element = document.createElement(this.htmlTag);
             }
+            this.setImage(options.imgPath);
+            if (options.css) {
+                this.setCss(options.css);
+            }
             this.setHtmlElement(options.element);
-           if (options.presentationStyle) {
-                this.setPresentationStyle(options.presentationStyle);
-           }
         },
         setHtmlElement: function(htmlElement) {
             var className = '';
@@ -77,12 +77,14 @@
             className += 'gui element';
             this.htmlElement.className += className;
         },
+        setImage: function(path) {
+            this.imgPath = path;
+            this.setCss({
+                backgroundImage: 'url("' + path + '")'
+            });
+        },
         createHtmlWrapper: function() {
             return null;
-        },
-        setPresentationStyle: function(presentationStyle) {
-            this.presentationStyle = presentationStyle;
-            this.setCss(presentationStyle);
         },
         setCss: function(cssProperties, wrapper) {
             var x;

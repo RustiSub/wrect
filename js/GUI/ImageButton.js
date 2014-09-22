@@ -8,14 +8,13 @@
         htmlTag: 'button',
         imgWidth: 0,
         imgHeight: 0,
-        imgPath: '',
         getDefaultOptions: function() {
             return {
                 alignment: {
                     x: 'center',
                     y: 'center'
                 }
-            }
+            };
         },
         /**
          * @param options
@@ -28,22 +27,14 @@
         init: function(options) {
             options = window.game.getHelpers().merge(this.getDefaultOptions(), options);
             var element = document.createElement(this.htmlTag);
-            this.imgWidth = options.imgWidth;
-            this.imgHeight = options.imgHeight;
-            this.imgPath = options.imgPath;
             options.element = element;
             this._super(options);
+            this.imgWidth = options.imgWidth;
+            this.imgHeight = options.imgHeight;
             if (options.id) {
                 element.id = options.id;
             }
-
-            this.setImage(options.imgPath);
             this.setDomPosition(options);
-        },
-        setImage: function(path) {
-            this.setCss({
-                backgroundImage: 'url("' + path + '")'
-            });
         },
         createHtmlWrapper: function() {
             return document.createElement('div');
