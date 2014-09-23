@@ -1,70 +1,7 @@
 var CollisionManager = Class.extend({
-  checkAxisCollisionRest: function() {
 
-  },
-  checkAxisCollision: function (mainBody, otherBody, debug, axis) {
-    var yDist = null;
-
-    var mainBodyAbsolutePosition = mainBody.position + mainBody.size;
-    var otherBodyAbsolutePosition = otherBody.position + otherBody.size;
-
-    if (mainBody.position == otherBody.position) {
-      if (debug) { console.log(axis, '1'); }
-      return 0;
-    }
-
-    if (mainBody.position < otherBody.position) {
-      if (mainBodyAbsolutePosition >= otherBody.position) {
-        if (debug) { console.log(axis,'2'); }
-        return mainBodyAbsolutePosition - otherBody.position;
-      }
-
-      if (mainBodyAbsolutePosition + mainBody.speed > otherBody.position + otherBody.speed) {
-        if (debug) { console.log(axis, '3'); }
-        return mainBodyAbsolutePosition - otherBody.position;
-      }
-    }
-
-    if (mainBody.position > otherBody.position) {
-      if (debug) {
-        console.log(mainBody.position, otherBody.position, otherBody.size);
-        console.log(axis, '4');
-      }
-      if (mainBody.position <= otherBodyAbsolutePosition) {
-        return otherBodyAbsolutePosition - mainBody.position;
-      }
-
-      if (mainBody.position + mainBody.speed < otherBodyAbsolutePosition) {
-        if (debug) { console.log(axis, '5'); }
-        return otherBody.position - mainBodyAbsolutePosition + mainBody.speed;
-      }
-    }
-
-    return yDist;
-  }, registerCollision: function (xDist, yDist, body, otherBody) {
-    var collision = new Collision();
-    if (xDist < yDist) {
-      collision.x = true;
-      collision.direction.x = body._physics.xSpeed;
-    }
-    else if (xDist > yDist) {
-      collision.y = true;
-      collision.direction.y = body._physics.ySpeed;
-    }
-    else {
-      collision.direction.x = body._physics.xSpeed;
-      collision.direction.y = body._physics.ySpeed;
-      collision.x = true;
-      collision.y = true;
-    }
-
-    collision.main = body.name;
-    collision.other = otherBody.name;
-    body.collisions.push(collision);
-  },
   satTest: function(a, b) {
-    function intersect_safe(a, b)
-    {
+    function intersect_safe(a, b) {
       var result = new Array();
 
       var as = a.map( function(x) { return x.toString(); });
@@ -85,7 +22,7 @@ var CollisionManager = Class.extend({
       a.topRight.subtract(a.topLeft),
       a.bottomRight.subtract(a.topRight),
       b.topRight.subtract(b.topLeft),
-      b.bottomRight.subtract(b.topRight),
+      b.bottomRight.subtract(b.topRight)
     ];
     var ainvolvedVertices = [];
     var binvolvedVertices = [];
@@ -107,7 +44,9 @@ var CollisionManager = Class.extend({
       // Loop through foreignProjections, and test if each point is x lt my.min AND x gt m.max
       // If it's in the range, add this vertex to a list
       for (var j in foreignProjections) {
-        if (foreignProjections[j] > myProjections.min() && foreignProjections[j] < myProjections.max()) {
+        var min = Math.min.apply(null, myProjections);
+        var max = Math.max.apply(null, myProjections);
+        if (foreignProjections[j] < min && foreignProjections[j] > max) {
           binvolvedVertices[i].push(b.vertex(j));
         }
       }
@@ -115,7 +54,9 @@ var CollisionManager = Class.extend({
       // Loop through myProjections and test if each point is x gt foreign.min and x lt foreign.max
       // If it's in the range, add the vertex to the list
       for (var j in myProjections) {
-        if (myProjections[j] > foreignProjections.min() && myProjections[j] < foreignProjections.max()) {
+        var min = Math.min.apply(null, foreignProjections);
+        var max = Math.max.apply(null, foreignProjections);
+        if (myProjections[j] > min && myProjections[j] < max) {
           ainvolvedVertices[i].push(a.vertex(j));
         }
       }
@@ -163,12 +104,8 @@ var CollisionManager = Class.extend({
 
 
     return true;
-
   },
   updateAllCollisions: function(bodies) {
-    for (var x = 0; x < bodies.length; x++) {
-      var mainBody = bodies[x];
-
     for (var t = 0; t < game.completeTree.length; t++) {
       var bodies = game.completeTree[t];
 
@@ -182,36 +119,37 @@ var CollisionManager = Class.extend({
           if (x !== y) {
             var otherBody = bodies[y];
 
-          console.log(this.satTest(mainBody));
+            console.log(this.satTest(mainBody.dimensions, otherBody.dimensions));
+          }
         }
-      }
-      for (var x = 0; x < bodies.length; x++) {
-        var body = bodies[x];
-        for (var c = 0; c < body.collisions.length; c++) {
-          var collision = body.collisions[c];
-          body._physics.applyCollision(collision);
-          //body._physics.applyGravity(collision);
-        }
+//        for (var x = 0; x < bodies.length; x++) {
+//          var body = bodies[x];
+//          for (var c = 0; c < body.collisions.length; c++) {
+//            var collision = body.collisions[c];
+//            body._physics.applyCollision(collision);
+//            //body._physics.applyGravity(collision);
+//          }
+//        }
       }
     }
-  },
-  mapQuadTree: function (bodies, range) {
+
+  }, mapQuadTree: function (bodies, range) {
     var localTree = [];
     for (var x = 0; x < bodies.length; x++) {
       var body = bodies[x];
 
-      var outOfRange = (body.position.x + body.size.x) < range.x || (body.position.y + body.size.y) < range.y
-          || body.position.x > range.x + range.width || body.position.y > range.y + range.width;
+      var outOfRange = (body.dimensions.topLeft.x + body.dimensions.width) < range.x || (body.dimensions.topLeft.y + body.size.y) < range.y
+        || body.dimensions.topLeft.x > range.x + range.width || body.dimensions.topLeft.y > range.y + range.width;
 
-      var outOfRangeSpeed = (body.position.x + body.size.x + body._physics.xSpeed) < range.x || (body.position.y + body.size.y + body._physics.ySpeed) < range.y
-          || body.position.x + body._physics.xSpeed > range.x + range.width || body.position.y + body._physics.ySpeed > range.y + range.width;
+//      var outOfRangeSpeed = (body.dimensions.topLeft.x + body.dimensions.width + body._physics.xSpeed) < range.x || (body.dimensions.topLeft.y + body.size.y + body._physics.ySpeed) < range.y
+//        || body.dimensions.topLeft.x + body._physics.xSpeed > range.x + range.width || body.dimensions.topLeft.y + body._physics.ySpeed > range.y + range.width;
 
-      if (!outOfRange || !outOfRangeSpeed) {
+      if (!outOfRange) {
         localTree.push(body);
       }
     }
 
-    if (localTree.length > 9) {
+    if (localTree.length > 2) {
       var quadWidth = range.width / 2;
       var quadHeight = range.height / 2;
       var range1 = {

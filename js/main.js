@@ -1,4 +1,5 @@
 var game;
+
 function test1() {
   var entity = game._builder.createBlock('_b10', 300, 250, 400, 20, 0xFFFFFF);
   game.addEntity(entity);
@@ -469,8 +470,10 @@ window.onload = function() {
   //builderTest1();
   //builderTest2();
   //builderTest3();
-  builderTest5();
+  //builderTest5();
   //buildShip1();
+
+  vectorTest1();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
