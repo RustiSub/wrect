@@ -1,3 +1,6 @@
+*, *:after, *:before {
+    box-sizing: border-box;
+}
 /* GUI element styling */
 button.gui {
     background: none no-repeat;
@@ -30,6 +33,11 @@ button.gui {
 
 .wrapper {
     pointer-events: none;
+    padding: 0 10px;
+}
+
+.wrapper .element {
+    width: calc(100% - 20px);
 }
 
 .rootGrid {

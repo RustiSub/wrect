@@ -377,45 +377,16 @@ function addGui() {
             y: 8
         }
     });
-    var button = new window.ImageButton({
-        imgPath: 'resources/gui/plus.png',
-        imgHeight: 24,
-        imgWidth: 24,
+    rootGui.addElement(panel);
+    var inputBox = game.getGuiManager().createElement('Textbox', {
         rows: 1,
-        cols: 1,
+        cols: 5,
         position: {
             x: 8,
             y: 8
-        },
-        alignment: {
-            x: 'center',
-            y: 'center'
         }
     });
-    rootGui.addElement(panel);
-    button.addEvent('click', function() {
-        alert('You clicked the center button');
-    });
-    rootGui.addElement(button);
-    button = new window.ImageButton({
-      imgPath: 'resources/gui/plus.png',
-      imgHeight: 24,
-      imgWidth: 24,
-      rows: 1,
-      cols: 1,
-      position: {
-        x: 8,
-        y: 8
-      },
-      alignment: {
-        x: 'left',
-        y: 'center'
-      }
-    });
-    button.addEvent('click', function() {
-      alert('You clicked the left button');
-    });
-    rootGui.addElement(button);
+    rootGui.addElement(inputBox);
 }
 
 window.onload = function() {

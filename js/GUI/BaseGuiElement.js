@@ -45,10 +45,10 @@
                 options.element = document.createElement(this.htmlTag);
             }
             this.setImage(options.imgPath);
+            this.setHtmlElement(options.element);
             if (options.css) {
                 this.setCss(options.css);
             }
-            this.setHtmlElement(options.element);
         },
         setHtmlElement: function(htmlElement) {
             var className = '';
@@ -84,7 +84,7 @@
             });
         },
         createHtmlWrapper: function() {
-            return null;
+            return document.createElement('div');
         },
         setCss: function(cssProperties, wrapper) {
             var x;
