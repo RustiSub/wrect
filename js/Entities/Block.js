@@ -16,14 +16,34 @@ var Block = MovableEntity.extend({
   init: function(name, graphics, params) {
     this._super(name, graphics);
 
-    var dimensions = this.dimensions;
-    dimensions.width = params.w;
-    dimensions.height = params.h;
+    this.dimensions = {};
+    this.physicsBody = {};
+    this.dimensions.vertex = function(id)
+    {
+      if (id == 0)
+      {
+        return this.topLeft;
+      }
+      else if (id == 1)
+      {
+        return this.topRight;
+      }
+      else if (id == 2)
+      {
+        return this.bottomRight;
+      }
+      else if (id == 3)
+      {
+        return this.bottomLeft;
+      }
+    };
+    this.dimensions.width = params.w;
+    this.dimensions.height = params.h;
 
-    dimensions.topLeft = new Vector(params.x, params.y);
-    dimensions.topRight = new Vector(params.x + params.w, params.y);
-    dimensions.bottomRight = new Vector(params.x + params.w, params.y + params.h);
-    dimensions.bottomLeft = new Vector(params.x, params.y + params.h);
+    this.dimensions.topLeft = new Vector(params.x, params.y);
+    this.dimensions.topRight = new Vector(params.x + params.w, params.y);
+    this.dimensions.bottomRight = new Vector(params.x + params.w, params.y + params.h);
+    this.dimensions.bottomLeft = new Vector(params.x, params.y + params.h);
 
     var physicsBody = this.physicsBody;
 
@@ -35,6 +55,8 @@ var Block = MovableEntity.extend({
     physicsBody.alpha = 0;
 
     physicsBody.J = 1;//this.m * (dimensions.height * dimensions.height + dimensions.width * this.width) / 12000;
+
+    this._graphics.position = this.dimensions.topLeft;
   },
   move: function () {
     var inputHandler = Container.getComponent('InputHandler');

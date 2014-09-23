@@ -158,24 +158,13 @@ var Builder = Class.extend({
   },
 
   createBlock: function (name, x, y, width, height, color) {
-    color = typeof color !== 'undefined' ? color : 0x00FF00;
+    color = typeof color !== 'undefined' ? color : 0xFFFFFF;
 
     var blockGraphics = new PIXI.Graphics();
 
     var block = new Block(name, blockGraphics, {x: x, y: y, w: width, h: height});
 
     block.name = name;
-    block.size = {x: width, y: height};
-
-    blockGraphics.position.x = x;
-    blockGraphics.position.y = y;
-    blockGraphics.position.getAnchor = function() {
-      return {
-        x: block.position.x + (block.size.x / 2),
-        y: block.position.y + (block.size.y / 2)
-      }
-    };
-    block.position = blockGraphics.position;
 
     block.baseGraphicsCallback = function() {
       this._graphics.clear();
@@ -184,32 +173,31 @@ var Builder = Class.extend({
       this.glueCallback();
 
       this._graphics.beginFill(0x0080FF);
-      this._graphics.drawCircle(this.size.x / 2, this.size.y / 2, 2);
+      this._graphics.drawCircle(this.dimensions.width / 2, this.dimensions.height / 2, 2);
       this._graphics.endFill();
     };
 
     block.baseCallback  = function() {
       this._graphics.beginFill(color);
-      this._graphics.drawRect(0, 0, this.size.x, this.size.y);
-
+      this._graphics.drawRect(0, 0, this.dimensions.width,this.dimensions.height);
       this._graphics.endFill();
     };
 
     block.glueCallback = function() {
-      if (block.hasGlue) {
-        var mark = 4;
-        this._graphics.beginFill(0xB231EB);
-        this._graphics.drawRect(0 + mark , 0 + mark , this.size.x - (mark  * 2), this.size.y - (mark  * 2));
-        this._graphics.endFill();
-      }
+//      if (block.hasGlue) {
+//        var mark = 4;
+//        this._graphics.beginFill(0xB231EB);
+//        this._graphics.drawRect(0 + mark , 0 + mark , this.size.x - (mark  * 2), this.size.y - (mark  * 2));
+//        this._graphics.endFill();
+//      }
     };
 
     block.selectCallback = function() {
-      if (this.selected) {
-        this._graphics.beginFill(0x00FF00);
-        this._graphics.drawRect(0 - 2, 0 - 2, this.size.x + 4, this.size.y + 4);
-        this._graphics.endFill();
-      }
+//      if (this.selected) {
+//        this._graphics.beginFill(0x00FF00);
+//        this._graphics.drawRect(0 - 2, 0 - 2, this.size.x + 4, this.size.y + 4);
+//        this._graphics.endFill();
+//      }
     };
 
     block.baseGraphicsCallback();

@@ -147,7 +147,7 @@
 //                self._builder.clearRooms(game.getEntityManager().getAllEntities());
 //                self._builder.buildConnections(game.getEntityManager().getAllEntities());
 
-//                self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
+                self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
                 self._entityManager.update();
                 self._inputHandler.update();
 

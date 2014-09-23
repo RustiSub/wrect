@@ -28,7 +28,7 @@ var Physics = Class.extend({
     /* Add damping */
 //    f = f.add( physicsBody.v.scale(b) );
 
-    var deltaTheta = 0.05;
+    var deltaTheta = 0;
     this.rotate(physicsBody, dimensions, deltaTheta);
   },
   center: function(dimensions) {
