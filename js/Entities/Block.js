@@ -34,7 +34,7 @@ var Block = MovableEntity.extend({
     physicsBody.omega = 0;
     physicsBody.alpha = 0;
 
-    physicsBody.J = this.m * (dimensions.height * dimensions.height + dimensions.width * this.width) / 12000;
+    physicsBody.J = 1;//this.m * (dimensions.height * dimensions.height + dimensions.width * this.width) / 12000;
   },
   move: function () {
     var inputHandler = Container.getComponent('InputHandler');
@@ -61,30 +61,19 @@ var Block = MovableEntity.extend({
 
     this._graphics.position.x = this.dimensions.topLeft.x;
     this._graphics.position.y = this.dimensions.topLeft.y;
+    this._graphics.rotation = this.physicsBody.theta;
 
-    if (this.selected) {
-      //game._builder.moveBuilderBlock(this);
-      //this.move();
-    }
-    //console.log(this.name, this._physics.forceVectors.length);
-//    this._physics.calculateSpeed();
-//
-//    this._graphics.position.x += this._physics.xSpeed;
-//    this._graphics.position.y += this._physics.ySpeed;
+//    this._graphics.beginFill(0x0080FF);
+//    this._graphics.drawCircle(this.dimensions.bottomLeft.x, this.dimensions.bottomLeft.y, 2);
+//    this._graphics.drawCircle(this.dimensions.bottomRight.x, this.dimensions.bottomRight.y, 2);
+//    this._graphics.drawCircle(this.dimensions.topLeft.x, this.dimensions.bottomLeft.y, 2);
+//    this._graphics.drawCircle(this.dimensions.bottomLeft.x, this.dimensions.bottomLeft.y, 2);
+//    this._graphics.endFill();
+//    this._graphics.pivot.x = 75;
+//    this._graphics.pivot.y = 10;
+//    this._graphics.rotation += 0.01;
   },
 //  transformations: {
-    rotate: function() {
-      this.position.x -= Math.round(this.size.y / 2 - this.size.x / 2);
-      this.position.y += Math.round(this.size.y / 2 - this.size.x / 2);
-      this._graphics.x = this.position.x;
-      this._graphics.y = this.position.y;
-
-      var t_width = this.size.x;
-      this.size.x = this.size.y;
-      this.size.y = t_width;
-
-      this.baseGraphicsCallback();
-    },
 //  },
   toJSON: function() {
       return {

@@ -351,8 +351,9 @@ function buildShip1() {
 
 function vectorTest1() {
   //createFrame();
-  var block1 = game._builder.createBlock('b1', 185, 50, 150, 20);
-  block1.physicsBody.v = new Vector(0 ,2);
+  var block1 = game._builder.createBlock('b1', 185, 150 , 150, 20);
+  block1.physicsBody.v = new Vector(0 ,0);
+
 
   game.addEntity(block1);
 }

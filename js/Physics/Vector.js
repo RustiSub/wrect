@@ -31,7 +31,7 @@
      * @param {Vector} v vector
      * @returns {Vector} vector
      */
-    Vector.prototype.substract = function(v) {
+    Vector.prototype.subtract = function(v) {
         return new Vector(this.x - v.x, this.y - v.y);
     };
 
@@ -95,15 +95,24 @@
         return new Vector(0, 0);
     };
 
-    /**
-     * rotate vector
-     * @param {Number} angle to rotate vector by, radians. can be negative
-     * @returns {Vector} rotated vector
-     */
-    Vector.prototype.rotate = function(angle){
-        angle = window.game.getHelpers().math.normaliseRadians(angle);
-        return new Vector(this.x * Math.cos(angle)- this.y * Math.sin(angle),
-            this.x * Math.sin(angle)+this.y*Math.cos(angle));
+  Vector.prototype.cross = function(v) {
+    return (this.x * v.y - this.y * v.x);
+  };
+
+  /**
+   *
+   * @param {Number} angle
+   * @param {Vector} vector
+   * @returns {Vector}
+   */
+    Vector.prototype.rotate = function(angle, vector) {
+      var x = this.x - vector.x;
+      var y = this.y - vector.y;
+
+      var x_prime = vector.x + ((x * Math.cos(angle)) - (y * Math.sin(angle)));
+      var y_prime = vector.y + ((x * Math.sin(angle)) + (y * Math.cos(angle)));
+
+      return new Vector(x_prime, y_prime);
     };
 
     /**

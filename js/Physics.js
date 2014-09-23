@@ -9,14 +9,31 @@ var Physics = Class.extend({
   vectors: [],
   forceVectors: [],
   deltaVector: {},
+  torque: 0,
 
   init: function() {
     this.deltaVector = new Vector(0, 0);
     this.forceVectors = [];
   },
   apply: function(physicsBody, dimensions, dt) {
-    var dr = physicsBody.v.scale(dt).add(physicsBody.a.scale(0.5 * dt * dt));
-    this.move(dimensions, dr.scale(100));
+    var f = new Vector(0, 0);
+    var b = -5;
+
+    var dr = physicsBody.v; //.scale(dt).add(physicsBody.a.scale(0.5 * dt * dt));
+    this.move(dimensions, dr);//.scale(100));
+
+    /* Add Gravity */
+//    f = f.add(new Vector(0, physicsBody.m * 9.81));
+
+    /* Add damping */
+//    f = f.add( physicsBody.v.scale(b) );
+
+    var deltaTheta = 0.05;
+    this.rotate(physicsBody, dimensions, deltaTheta);
+  },
+  center: function(dimensions) {
+    var diagonal = dimensions.bottomRight.subtract(dimensions.topLeft);
+    return dimensions.topLeft.add(diagonal.scale(0.5));
   },
   move: function(dimensions, v) {
     dimensions.topLeft = dimensions.topLeft.add(v);
@@ -26,8 +43,18 @@ var Physics = Class.extend({
 
     return dimensions;
   },
-  rotate: function(dimensions, v) {
+  rotate: function(physicsBody, dimensions, angle) {
+//    console.log('angle', angle);
+    physicsBody.theta += angle;
+    var center = this.center(dimensions);
 
+//    console.log('before', dimensions.topLeft, angle, center);
+    dimensions.topLeft = dimensions.topLeft.rotate(angle, center);
+    dimensions.topRight = dimensions.topRight.rotate(angle, center);
+    dimensions.bottomRight = dimensions.bottomRight.rotate(angle, center);
+    dimensions.bottomLeft = dimensions.bottomLeft.rotate(angle, center);
+
+    return this;
   },
   calculateSpeed: function() {
     this.deltaVector = new Vector(0, 0);

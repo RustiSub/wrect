@@ -191,6 +191,7 @@ var Builder = Class.extend({
     block.baseCallback  = function() {
       this._graphics.beginFill(color);
       this._graphics.drawRect(0, 0, this.size.x, this.size.y);
+
       this._graphics.endFill();
     };
 
