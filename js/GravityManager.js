@@ -16,13 +16,11 @@ var GravityManager = Class.extend({
     applyForce: function(multiplier, centerBlock) {
         var inputHandler = Container.getComponent('InputHandler');
 
-        multiplier = 3;
-
         if (inputHandler.key('SPACE')) {
             multiplier *= -1;
         }
 
-        var maxDistance = 250;
+        var maxDistance = 500;
         var forcePoint = {
             x: centerBlock.position.getAnchor().x,
             y: centerBlock.position.getAnchor().y
@@ -31,9 +29,10 @@ var GravityManager = Class.extend({
         var entities = game.getEntityManager().getAllEntities();
         for (var i = 0; i < entities.length; i++) {
             var entity = entities[i];
-            if (entity.hasGlue) {
+            if (entity.hasGlue || entity.frozen) {
                 continue;
             }
+
             var xDist = entity.position.getAnchor().x - forcePoint.x;
             var yDist = entity.position.getAnchor().y - forcePoint.y;
             var totalDistance = Math.sqrt(Math.pow(Math.abs(xDist), 2) + Math.pow(Math.abs(yDist), 2));

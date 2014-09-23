@@ -356,8 +356,91 @@ function vectorTest1() {
   var block1 = game._builder.createBlock('b1', 200, 150 , 150, 20);
   block1.physicsBody.v = new Vector(5 ,0);
   game.addEntity(block1);
+}
+function quadTreeTest1() {
+  var blockSize = 30;
+  for (var l= 0; l < 1; l++) {
+    for (var t= 0; t < 10; t++) {
+      game.addEntity(game._builder.createBlock(
+          'wall_spam_left_' + t + '_' + l,
+          50 + t * (blockSize + 5) + l * 50,
+          50 + l  * (blockSize + 5) + t * 50,
+        blockSize, blockSize, 0xFFFFFF));
+    }
+  }
+}
 
 
+function quadTreeTest2() {
+  var forceGenerator = game._builder.createBlock('wall_1', 600, 250, 20, 20, 0xFFFFFF);
+//  forceGenerator.glueSource = true;
+  game.addEntity(forceGenerator);
+
+    for (var l= 0; l < 20; l++) {
+        for (var t= 0; t < 50; t++) {
+            game.addEntity(game._builder.createBlock('wall_spam_' + t + '_' + l, 50 + t * 21, 50 + l * 21, 20, 20, 0xFFFFFF));
+        }
+    }
+}
+
+function quadTreeTest3() {
+  createFrame();
+
+//  var forceGenerator = game._builder.createBlock('force_generator', 500, 200, 20, 20, 0xFFFFFF);
+////  forceGenerator.glueSource = true;
+//  game.addEntity(forceGenerator);
+
+  var blockSize = 30;
+  for (var l= 0; l < 4; l++) {
+    for (var t= 0; t < 15; t++) {
+      var entity = game._builder.createBlock(
+          'wall_spam_top_' + t + '_' + l,
+          55 + t * (blockSize + 25),
+          50 + l * (blockSize + 5) ,
+          blockSize, blockSize, (Math.random()*0xFFFFFF<<0), 0.7);
+      entity._physics.ySpeed = t;
+      entity._physics.xSpeed = t;
+      game.addEntity(entity);
+    }
+  }
+}
+
+function quadTreeTest4() {
+  createFrame();
+
+  var blockSize = 20;
+  var xSpeed = 0;
+  var ySpeed = 10;
+  var stack = 10;
+
+  var colorLeft = (Math.random() * 0xFFFFFF << 0);
+  for (var l= 0; l < stack; l++) {
+    for (var t= 0; t < 1; t++) {
+
+      var entity = game._builder.createBlock(
+          'wall_spam_left_' + t + '_' + l,
+          55 + t * (blockSize),
+          50 + l * (blockSize  + 2),
+          blockSize, blockSize, colorLeft, 1);
+      entity._physics.ySpeed = ySpeed;
+      entity._physics.xSpeed = xSpeed;
+      game.addEntity(entity);
+    }
+  }
+  var colorRight = (Math.random() * 0xFFFFFF << 0);
+  for (var l= 0; l < stack; l++) {
+    for (var t= 0; t < 1; t++) {
+
+      var entity = game._builder.createBlock(
+          'wall_spam_right_' + t + '_' + l,
+          900 + t * (blockSize),
+          50 + l * (blockSize + 2),
+          blockSize, blockSize, colorRight, 1);
+      entity._physics.ySpeed = ySpeed;
+      entity._physics.xSpeed = -xSpeed;
+      game.addEntity(entity);
+    }
+  }
 }
 
 function addGui() {
@@ -386,10 +469,8 @@ window.onload = function() {
   //builderTest1();
   //builderTest2();
   //builderTest3();
-  //builderTest5();
+  builderTest5();
   //buildShip1();
-
-  vectorTest1();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
