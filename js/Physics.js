@@ -14,6 +14,21 @@ var Physics = Class.extend({
     this.deltaVector = new Vector(0, 0);
     this.forceVectors = [];
   },
+  apply: function(physicsBody, dimensions, dt) {
+    var dr = physicsBody.v.scale(dt).add(physicsBody.a.scale(0.5 * dt * dt));
+    this.move(dimensions, dr.scale(100));
+  },
+  move: function(dimensions, v) {
+    dimensions.topLeft = dimensions.topLeft.add(v);
+    dimensions.topRight = dimensions.topRight.add(v);
+    dimensions.bottomRight = dimensions.bottomRight.add(v);
+    dimensions.bottomLeft = dimensions.bottomLeft.add(v);
+
+    return dimensions;
+  },
+  rotate: function(dimensions, v) {
+
+  },
   calculateSpeed: function() {
     this.deltaVector = new Vector(0, 0);
     for (var v = 0; v < this.forceVectors.length; v++) {

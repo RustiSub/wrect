@@ -8,10 +8,9 @@
      * @returns {Vector}
      * @constructor
      */
-    window.Vector = function(x, y, update) {
+    window.Vector = function(x, y) {
         this.x = x;
         this.y = y;
-        this.update = update;
         return this;
     };
 
@@ -43,6 +42,15 @@
      */
     Vector.prototype.add = function(v) {
         return new Vector(this.x + v.x, this.y + v.y);
+    };
+
+    /**
+    *
+    * @param {Number} s
+    * @returns {Vector}
+    */
+    Vector.prototype.scale = function(s) {
+      return new Vector(this.x * s, this.y * s);
     };
 
     /**

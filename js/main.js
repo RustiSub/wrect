@@ -84,19 +84,7 @@ function testCollide1() {
 
   game.addEntity(block1);
 
-  block1._physics.forceVectors.push(new Vector(speed, 0,
-      function(delta, vector) {
-        if (vector.x != 0) {
-          //vector.x *= 0.95;
-        }
-      }
-  ));
-  //game.getEntityManager().getEntityByName('_bottom')._physics.forceVectors = [];
-  //block1._physics.xSpeed = speed;
-  var block2 = game._builder.createBlock('b2', 810, 50, 20, 20, 0xFF0000);
-  game.addEntity(block2);
-  //block2._physics.xSpeed = -speed;
-  block2._physics.forceVectors.push(new Vector(-speed, 0,
+  block1._physics.forceVectors.push(new Vector(speed, speed / 2,
       function(delta, vector) {
         if (vector.x != 0) {
           //vector.x *= 0.95;
@@ -362,9 +350,11 @@ function buildShip1() {
 }
 
 function vectorTest1() {
-  createFrame();
+  //createFrame();
+  var block1 = game._builder.createBlock('b1', 185, 50, 150, 20);
+  block1.physicsBody.v = new Vector(0 ,2);
 
-  testCollide1();
+  game.addEntity(block1);
 }
 
 function addGui() {

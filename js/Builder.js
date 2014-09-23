@@ -162,7 +162,8 @@ var Builder = Class.extend({
 
     var blockGraphics = new PIXI.Graphics();
 
-    var block = new Block(name, blockGraphics);
+    var block = new Block(name, blockGraphics, {x: x, y: y, w: width, h: height});
+
     block.name = name;
     block.size = {x: width, y: height};
 
