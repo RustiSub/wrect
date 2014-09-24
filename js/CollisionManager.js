@@ -27,7 +27,6 @@ var CollisionManager = Class.extend({
       //for (int i = 0; i < shape.vertices.length; i++) {
       var vertices = dimensions.vertices(dimensions);
       for (var i = 0; i < vertices.length ; i++) {
-
         // get the current vertex
         var p1 = vertices[i];
         // get the next vertex
@@ -35,7 +34,7 @@ var CollisionManager = Class.extend({
         // subtract the two to get the edge vector
         var edge = p2.subtract(p1);
         // get either perpendicular vector
-        axes[i] = edge.perpendicular();
+        axes[i] = edge.perpendicular().unit();
       }
 
       return axes;
@@ -103,12 +102,13 @@ var CollisionManager = Class.extend({
     var axes2Overlap = checkOverlap(getNormalAxes(b), a, b);
 
     if (axes1Overlap.hasOverlap && axes2Overlap.hasOverlap) {
-      var transormSpeedVector = new Vector(
-        axes1Overlap.axis.x === 0 ? 1 : -1,
-        axes1Overlap.axis.y === 0 ? 1 : -1
-      );
-      shapeA.physicsBody.v = shapeA.physicsBody.v.multiply(transormSpeedVector);
-      //shapeA.physicsBody.omega = -1 * 0.2 * (shapeA.physicsBody.omega / Math.abs(shapeA.physicsBody.omega)) * center.subtract(axes1Overlap.axis).cross(Vr);
+      var n = axes2Overlap.axis.unit();
+      var v = shapeA.physicsBody.v.unit();
+      var vn = v.dot(n);
+      var u = n.multiply(vn);
+      var w = v.subtract(u);
+      var v2 = w.subtract(u);
+      shapeA.physicsBody.v = v2;
     }
   },
   updateAllCollisions: function() {
@@ -121,7 +121,7 @@ var CollisionManager = Class.extend({
 
         mainBody.collisions = [];
 
-        if (mainBody.physicsBody.v.x == 0) { continue;}
+        if (mainBody.physicsBody.v.x == 0 && mainBody.physicsBody.v.y == 0) { continue;}
         for (var y = 0; y < bodies.length; y++) {
           if (x !== y) {
             var otherBody = bodies[y];

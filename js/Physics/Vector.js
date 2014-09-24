@@ -153,6 +153,6 @@
    * @returns {Vector}
    */
     Vector.prototype.perpendicular = function() {
-      return new Vector(this.y, -this.x);
+      return new Vector(-this.y, this.x);
     };
 }());

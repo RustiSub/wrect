@@ -44,11 +44,9 @@ var Physics = Class.extend({
     return dimensions;
   },
   rotate: function(physicsBody, dimensions, angle) {
-//    console.log('angle', angle);
     physicsBody.theta += angle;
     var center = this.center(dimensions);
 
-//    console.log('before', dimensions.topLeft, angle, center);
     dimensions.topLeft = dimensions.topLeft.rotate(angle, center);
     dimensions.topRight = dimensions.topRight.rotate(angle, center);
     dimensions.bottomRight = dimensions.bottomRight.rotate(angle, center);
