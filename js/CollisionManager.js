@@ -61,7 +61,10 @@ var CollisionManager = Class.extend({
     }
 
     function checkOverlap(axes, a, b) {
-      var axes1Overlap = true;
+      var smallestOverlap = null;
+      var smallestAxis = null;
+
+      var axesOverlap = true;
       for (var i = 0; i < axes.length ; i++) {
         var axis = axes[i];
         // project both shapes onto the axis
@@ -69,24 +72,40 @@ var CollisionManager = Class.extend({
         var p2 = project(b, axis);
 
         if (p1.max < p2.min || p1.min > p2.max){
-          axes1Overlap = false;
+          axesOverlap = false;
           break;
+        } else {
+          var overlapP1 = p1.min < p2.min ? p2.min : p1.min;
+          var overlapP2 = p1.max < p2.max ? p1.max : p2.max;
+          var overlap = overlapP2 - overlapP1;
+          if (smallestOverlap == null || overlap < smallestOverlap) {
+            smallestOverlap = overlap;
+            smallestAxis = axis
+          }
         }
       }
 
-      return axes1Overlap;
+      return {
+        hasOverlap: axesOverlap,
+        overlap: smallestOverlap,
+        axis: smallestAxis
+      };
     }
 
-    var axes1 = getNormalAxes(a);
-    var axes2 = getNormalAxes(b);
-// loop over the axes1
+    var axes1Overlap = checkOverlap(getNormalAxes(a), a, b);
+    var axes2Overlap = checkOverlap(getNormalAxes(b), a, b);
 
-    var axes1Overlap = checkOverlap(axes1, a, b);
-    var axes2Overlap = checkOverlap(axes2, a, b);
-
-
-    if (axes1Overlap && axes2Overlap) {
-      console.log('overlap');
+    if (axes1Overlap.hasOverlap && axes2Overlap.hasOverlap) {
+//      var axes1Overlap = checkOverlap(getNormalAxes(a), a, b);
+//      var axes2Overlap = checkOverlap(getNormalAxes(b), a, b);
+//      console.log(axes1Overlap, axes2Overlap);
+      var center = shapeA._physics.center(shapeA.dimensions);
+      var N = center.subtract(axes1Overlap.axis); //.rotate(Math.PI , new V(0,0));
+      N = N.scale( 1 / N.len());
+      var Vr = shapeA.physicsBody.v;
+      var I =  N.scale( -1 * (1 + 0.3) * Vr.dot(N) );
+      shapeA.physicsBody.v = I;
+      //shapeA.physicsBody.omega = -1 * 0.2 * (shapeA.physicsBody.omega / Math.abs(shapeA.physicsBody.omega)) * center.subtract(axes1Overlap.axis).cross(Vr);
     }
   },
   updateAllCollisions: function() {

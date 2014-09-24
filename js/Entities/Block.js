@@ -69,7 +69,7 @@ var Block = MovableEntity.extend({
   update: function(){
     this._super();
 
-    this._physics.apply(this.physicsBody, this.dimensions, 0.02);//game.timeDelta);
+    this._physics.apply(this.physicsBody, this.dimensions, 0);//game.timeDelta);
 
     this._graphics.position.x = this.dimensions.topLeft.x;
     this._graphics.position.y = this.dimensions.topLeft.y;

@@ -354,8 +354,8 @@ function vectorTest1() {
   //createFrame();
   var block2 = game._builder.createBlock('b2', 500, 0 , 20, 400);
   game.addEntity(block2);
-  var block1 = game._builder.createBlock('b1', 340, 150 , 150, 20, 0xFFFFFF);
-  block1.physicsBody.v = new Vector(5 ,0);
+  var block1 = game._builder.createBlock('b1', 100, 150 , 150, 20, 0xFFFFFF);
+  block1.physicsBody.v = new Vector(4 ,1);
   game.addEntity(block1);
 }
 function quadTreeTest1() {
