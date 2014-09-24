@@ -46,6 +46,7 @@ var CollisionManager = Class.extend({
       var vertices = dimensions.vertices(dimensions);
       var min = axis.dot(vertices[0]);
       var max = min;
+      var projections = [];
 
       for (var i = 1; i < vertices.length ; i++) {
         var v = vertices[i];
@@ -55,16 +56,22 @@ var CollisionManager = Class.extend({
         } else if (p > max) {
           max = p;
         }
+
+        projections.push(p);
       }
 
-      return {min: min, max: max};
+      return {
+        min: min,
+        max: max,
+        projections: projections
+      };
     }
 
     function checkOverlap(axes, a, b) {
       var smallestOverlap = null;
       var smallestAxis = null;
-
       var axesOverlap = true;
+
       for (var i = 0; i < axes.length ; i++) {
         var axis = axes[i];
         // project both shapes onto the axis
@@ -80,7 +87,7 @@ var CollisionManager = Class.extend({
           var overlap = overlapP2 - overlapP1;
           if (smallestOverlap == null || overlap < smallestOverlap) {
             smallestOverlap = overlap;
-            smallestAxis = axis
+            smallestAxis = axis;
           }
         }
       }
@@ -96,15 +103,11 @@ var CollisionManager = Class.extend({
     var axes2Overlap = checkOverlap(getNormalAxes(b), a, b);
 
     if (axes1Overlap.hasOverlap && axes2Overlap.hasOverlap) {
-//      var axes1Overlap = checkOverlap(getNormalAxes(a), a, b);
-//      var axes2Overlap = checkOverlap(getNormalAxes(b), a, b);
-//      console.log(axes1Overlap, axes2Overlap);
-      var center = shapeA._physics.center(shapeA.dimensions);
-      var N = center.subtract(axes1Overlap.axis); //.rotate(Math.PI , new V(0,0));
-      N = N.scale( 1 / N.len());
-      var Vr = shapeA.physicsBody.v;
-      var I =  N.scale( -1 * (1 + 0.3) * Vr.dot(N) );
-      shapeA.physicsBody.v = I;
+      var transormSpeedVector = new Vector(
+        axes1Overlap.axis.x === 0 ? 1 : -1,
+        axes1Overlap.axis.y === 0 ? 1 : -1
+      );
+      shapeA.physicsBody.v = shapeA.physicsBody.v.multiply(transormSpeedVector);
       //shapeA.physicsBody.omega = -1 * 0.2 * (shapeA.physicsBody.omega / Math.abs(shapeA.physicsBody.omega)) * center.subtract(axes1Overlap.axis).cross(Vr);
     }
   },

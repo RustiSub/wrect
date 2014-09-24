@@ -358,6 +358,16 @@ function vectorTest1() {
   block1.physicsBody.v = new Vector(4 ,1);
   game.addEntity(block1);
 }
+
+function vectorTest2() {
+  //createFrame();
+  var block2 = game._builder.createBlock('b2', 10, 400 , 700, 20);
+  game.addEntity(block2);
+  var block1 = game._builder.createBlock('b1', 100, 150 , 20, 150, 0xFFFFFF);
+  block1.physicsBody.v = new Vector(1, 4);
+  game.addEntity(block1);
+}
+
 function quadTreeTest1() {
   var blockSize = 30;
   for (var l= 0; l < 1; l++) {
@@ -473,7 +483,8 @@ window.onload = function() {
   //builderTest5();
   //buildShip1();
 
-  vectorTest1();
+  //vectorTest1();
+  vectorTest2();
 
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
