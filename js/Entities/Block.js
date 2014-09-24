@@ -17,26 +17,7 @@ var Block = MovableEntity.extend({
     this._super(name, graphics);
 
     this.dimensions = {};
-    this.physicsBody = {};
-    this.dimensions.vertex = function(id)
-    {
-      if (id == 0)
-      {
-        return this.topLeft;
-      }
-      else if (id == 1)
-      {
-        return this.topRight;
-      }
-      else if (id == 2)
-      {
-        return this.bottomRight;
-      }
-      else if (id == 3)
-      {
-        return this.bottomLeft;
-      }
-    };
+
     this.dimensions.width = params.w;
     this.dimensions.height = params.h;
 
@@ -45,16 +26,25 @@ var Block = MovableEntity.extend({
     this.dimensions.bottomRight = new Vector(params.x + params.w, params.y + params.h);
     this.dimensions.bottomLeft = new Vector(params.x, params.y + params.h);
 
-    var physicsBody = this.physicsBody;
+    this.dimensions.vertices = function(dimensions) {
+      return [
+        dimensions.topLeft,
+        dimensions.topRight,
+        dimensions.bottomRight,
+        dimensions.bottomLeft
+      ];
+    };
 
-    physicsBody.v = new Vector(0, 0);
-    physicsBody.a = new Vector(0, 0);
-    physicsBody.m = 1;
-    physicsBody.theta = 0;
-    physicsBody.omega = 0;
-    physicsBody.alpha = 0;
+    this.physicsBody = {};
 
-    physicsBody.J = 1;//this.m * (dimensions.height * dimensions.height + dimensions.width * this.width) / 12000;
+    this.physicsBody.v = new Vector(0, 0);
+    this.physicsBody.a = new Vector(0, 0);
+    this.physicsBody.m = 1;
+    this.physicsBody.theta = 0;
+    this.physicsBody.omega = 0;
+    this.physicsBody.alpha = 0;
+
+    this.physicsBody.J = 1;//this.m * (dimensions.height * dimensions.height + dimensions.width * this.width) / 12000;
 
     this._graphics.position = this.dimensions.topLeft;
   },

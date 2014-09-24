@@ -171,13 +171,13 @@ var Builder = Class.extend({
 
     block.baseGraphicsCallback = function() {
       this._graphics.clear();
-      this.selectCallback();
+//      this.selectCallback();
       this.baseCallback();
-      this.glueCallback();
+//      this.glueCallback();
 
-      this._graphics.beginFill(0x0080FF);
-      this._graphics.drawCircle(this.dimensions.width / 2, this.dimensions.height / 2, 2);
-      this._graphics.endFill();
+//      this._graphics.beginFill(0x0080FF);
+//      this._graphics.drawCircle(this.dimensions.width / 2, this.dimensions.height / 2, 2);
+//      this._graphics.endFill();
     };
 
     block.baseCallback  = function() {

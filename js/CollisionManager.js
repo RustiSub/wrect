@@ -1,6 +1,9 @@
 var CollisionManager = Class.extend({
 
-  satTest: function(a, b) {
+  satTest: function(shapeA, shapeB) {
+    var a = shapeA.dimensions;
+    var b = shapeB.dimensions;
+
     function intersect_safe(a, b) {
       var result = new Array();
 
@@ -18,94 +21,75 @@ var CollisionManager = Class.extend({
       return result;
     }
 
-    var testVectors = [
-      a.topRight.subtract(a.topLeft),
-      a.bottomRight.subtract(a.topRight),
-      b.topRight.subtract(b.topLeft),
-      b.bottomRight.subtract(b.topRight)
-    ];
-    var ainvolvedVertices = [];
-    var binvolvedVertices = [];
+    function getNormalAxes(dimensions) {
+      var axes = [];
+// loop over the vertices
+      //for (int i = 0; i < shape.vertices.length; i++) {
+      var vertices = dimensions.vertices(dimensions);
+      for (var i = 0; i < vertices.length ; i++) {
 
-    /*
-     * Look at each test vector (shadows)
-     */
-    for (var i = 0; i < 4; i++) {
-      ainvolvedVertices[i] = []; // Our container for involved vertces
-      binvolvedVertices[i] = []; // Our container for involved vertces
-      var myProjections = [];
-      var foreignProjections = [];
-
-      for (var j = 0; j < 4; j++) {
-        myProjections.push(testVectors[i].dot(a.vertex(j)));
-        foreignProjections.push(testVectors[i].dot(b.vertex(j)));
+        // get the current vertex
+        var p1 = vertices[i];
+        // get the next vertex
+        var p2 = vertices[i + 1 == vertices.length ? 0 : i + 1];
+        // subtract the two to get the edge vector
+        var edge = p2.subtract(p1);
+        // get either perpendicular vector
+        axes[i] = edge.perpendicular();
       }
 
-      // Loop through foreignProjections, and test if each point is x lt my.min AND x gt m.max
-      // If it's in the range, add this vertex to a list
-      for (var j in foreignProjections) {
-        var min = Math.min.apply(null, myProjections);
-        var max = Math.max.apply(null, myProjections);
-        if (foreignProjections[j] < min && foreignProjections[j] > max) {
-          binvolvedVertices[i].push(b.vertex(j));
+      return axes;
+    }
+
+    function project(dimensions, axis) {
+      axis = axis.unit();
+      var vertices = dimensions.vertices(dimensions);
+      var min = axis.dot(vertices[0]);
+      var max = min;
+
+      for (var i = 1; i < vertices.length ; i++) {
+        var v = vertices[i];
+        var p = axis.dot(v);
+        if (p < min) {
+          min = p;
+        } else if (p > max) {
+          max = p;
         }
       }
 
-      // Loop through myProjections and test if each point is x gt foreign.min and x lt foreign.max
-      // If it's in the range, add the vertex to the list
-      for (var j in myProjections) {
-        var min = Math.min.apply(null, foreignProjections);
-        var max = Math.max.apply(null, foreignProjections);
-        if (myProjections[j] > min && myProjections[j] < max) {
-          ainvolvedVertices[i].push(a.vertex(j));
+      return {min: min, max: max};
+    }
+
+    function checkOverlap(axes, a, b) {
+      var axes1Overlap = true;
+      for (var i = 0; i < axes.length ; i++) {
+        var axis = axes[i];
+        // project both shapes onto the axis
+        var p1 = project(a, axis);
+        var p2 = project(b, axis);
+
+        if (p1.max < p2.min || p1.min > p2.max){
+          axes1Overlap = false;
+          break;
         }
       }
+
+      return axes1Overlap;
     }
 
-    // console.log( intersect_safe ( intersect_safe( involvedVertices[0], involvedVertices[1] ), intersect_safe( involvedVertices[2], involvedVertices[3] ) ) );
-    ainvolvedVertices = intersect_safe(intersect_safe(ainvolvedVertices[0], ainvolvedVertices[1]), intersect_safe(ainvolvedVertices[2], ainvolvedVertices[3]));
-    binvolvedVertices = intersect_safe(intersect_safe(binvolvedVertices[0], binvolvedVertices[1]), intersect_safe(binvolvedVertices[2], binvolvedVertices[3]));
-    /*
-     If we have two vertices from one rect and one vertex from the other, probably the single vertex is penetrating the segment
-     return involvedVertices;
-     */
+    var axes1 = getNormalAxes(a);
+    var axes2 = getNormalAxes(b);
+// loop over the axes1
 
-    if (ainvolvedVertices.length === 1 && binvolvedVertices.length === 2)
-    {
-      return ainvolvedVertices[0];
-    }
-    else if (binvolvedVertices.length === 1 && ainvolvedVertices.length === 2)
-    {
-      return binvolvedVertices[0];
-    }
-    else if (ainvolvedVertices.length === 1 && binvolvedVertices.length === 1)
-    {
-      return ainvolvedVertices[0];
-    }
-    else if (ainvolvedVertices.length === 1 && binvolvedVertices.length === 0)
-    {
-      return ainvolvedVertices[0];
-    }
-    else if (ainvolvedVertices.length === 0 && binvolvedVertices.length === 1)
-    {
-      return binvolvedVertices[0];
-    }
-    else if (ainvolvedVertices.length === 0 && binvolvedVertices.length === 0)
-    {
-      return false;
-    }
-    else
-    {
-      console.log("Unknown collision profile");
-      console.log(ainvolvedVertices);
-      console.log(binvolvedVertices);
-      clearInterval(timer);
-    }
+    var axes1Overlap = checkOverlap(axes1, a, b);
+    var axes2Overlap = checkOverlap(axes2, a, b);
 
 
-    return true;
+    if (axes1Overlap && axes2Overlap) {
+      console.log('overlap');
+    }
   },
-  updateAllCollisions: function(bodies) {
+  updateAllCollisions: function() {
     for (var t = 0; t < game.completeTree.length; t++) {
       var bodies = game.completeTree[t];
 
@@ -115,11 +99,12 @@ var CollisionManager = Class.extend({
 
         mainBody.collisions = [];
 
+        if (mainBody.physicsBody.v.x == 0) { continue;}
         for (var y = 0; y < bodies.length; y++) {
           if (x !== y) {
             var otherBody = bodies[y];
 
-            console.log(this.satTest(mainBody.dimensions, otherBody.dimensions));
+            this.satTest(mainBody, otherBody);
           }
         }
 //        for (var x = 0; x < bodies.length; x++) {

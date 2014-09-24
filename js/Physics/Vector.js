@@ -146,4 +146,13 @@
         }
         return this;
     };
+
+  /**
+   * Get the perpendicular vector to this edge.
+   * @param vector
+   * @returns {Vector}
+   */
+    Vector.prototype.perpendicular = function() {
+      return new Vector(this.y, -this.x);
+    };
 }());
