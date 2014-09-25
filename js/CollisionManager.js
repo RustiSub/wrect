@@ -89,12 +89,14 @@ var CollisionManager = Class.extend({
     var axes2Overlap = checkOverlap(getNormalAxes(b), a, b);
 
     if (axes1Overlap.hasOverlap && axes2Overlap.hasOverlap) {
-      var n = axes2Overlap.axis;//.unit();
+
       var v = shapeA.physicsBody.v;//.unit();
+      var n = axes2Overlap.axis;//.unit();
       var vn = v.dot(n);
       var u = n.multiply(vn);
       var w = v.subtract(u);
       var v2 = w.subtract(u);
+      var energyTransfer = 0.9;
 
       v2.x = capSmallSpeed(v2.x);
       v2.y = capSmallSpeed(v2.y);
@@ -104,11 +106,12 @@ var CollisionManager = Class.extend({
 
       shapeA._physics.move(shapeA.dimensions, pushOutVector);
 
-      shapeA.physicsBody.v = v2.multiply(0.5);
+      if (!shapeB.frozen) {
+        shapeB.physicsBody.v = shapeB.physicsBody.v.add(v.multiply(energyTransfer));
+        v2 = v2.multiply(energyTransfer);
+      }
 
-//      if (!shapeB.frozen) {
-//        shapeB.physicsBody.v = w.subtract(u).multiply(-1);
-//      }
+      shapeA.physicsBody.v = v2;
     }
   },
   updateAllCollisions: function() {
@@ -157,7 +160,7 @@ var CollisionManager = Class.extend({
       }
     }
 
-    if (localTree.length > 2) {
+    if (localTree.length > 50) {
       var quadWidth = range.width / 2;
       var quadHeight = range.height / 2;
       var range1 = {

@@ -46,34 +46,46 @@ function createFrame() {
   var height = 400;
   var width = 1000;
 
-  game.addEntity(game._builder.createBorder('_left', {
-    x: 5,
-    y: 5,
-    width: 5,
-    height: height
-  }));
-
-  game.addEntity(game._builder.createBorder('_right', {
-    x: 5 + width,
-    y: 5,
-    width: 5,
-    height: height
-  }));
+  var left = game._builder.createBlock('_left',
+    5,
+    5,
+    5,
+    height
+  );
 
 
-  game.addEntity(game._builder.createBorder('_top', {
-    x: 5,
-    y: 5,
-    width: width,
-    height: 5
-  }));
+  var right = game._builder.createBlock('_right',
+      5 + width,
+    5,
+    5,
+    height
+  );
 
-  game.addEntity(game._builder.createBorder('_bottom', {
-    x: 5,
-    y: 5 + height,
-    width: width,
-    height: 5
-  }));
+
+
+  var top = game._builder.createBlock('_top',
+    5,
+    5,
+    width,
+    5
+  );
+
+
+  var bottom = game._builder.createBlock('_bottom',
+    5,
+      5 + height,
+    width,
+    5
+  );
+  bottom.frozen = true;
+  left.frozen = true;
+  right.frozen = true;
+  top.frozen = true;
+
+  game.addEntity(bottom);
+  game.addEntity(left);
+  game.addEntity(right);
+  game.addEntity(top);
 }
 function triangleTest1() {
   var entity = game._builder.createBlock('b3', 190, 190, 20, 20);
@@ -401,13 +413,13 @@ function vectorTest_moving_1() {
   block1.physicsBody.v = new Vector(10, 0);
   game.addEntity(block1);
 
-  var block2 = game._builder.createBlock('block2', 650, 250 , 20, 50, 0xFFFFFF);
-//  block2.physicsBody.v = new Vector(-10, 0);
-  game.addEntity(block2);
-
-  var block3 = game._builder.createBlock('right', 900, 150 , 20, 350);
-  block3.frozen = true;
+  var block3 = game._builder.createBlock('block2', 650, 250 , 20, 50, 0xFFFFFF);
+  block3.physicsBody.v = new Vector(-10, 0);
   game.addEntity(block3);
+
+  var block4 = game._builder.createBlock('right', 900, 150 , 20, 350);
+  block4.frozen = true;
+  game.addEntity(block4);
 }
 
 function quadTreeTest1() {
@@ -496,6 +508,32 @@ function quadTreeTest4() {
   }
 }
 
+function entityStressTest2() {
+//  createFrame();
+
+  var forceGenerator = game._builder.createBlock('force_generator', 300, 150, 20, 20, 0xFFFFFF);
+  forceGenerator.glueSource = true;
+  game.addEntity(forceGenerator);
+
+  var blockSize = 20;
+
+  for (var l= 1; l < 25 ; l++) {
+    for (var t= 1; t < 50; t++) {
+      game.addEntity(game._builder.createBlock
+        (
+          'wall_spam_' + t,
+           t * (blockSize),  l * (blockSize),
+          blockSize,
+          blockSize,
+          0xFFFFFF
+        )
+      );
+    }
+  }
+
+  console.log(game.getEntityManager().getAllEntities().length);
+}
+
 function addGui() {
     var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
     fullscreenButton.addEvent('click', function(){game.goFullscreen()});
@@ -527,9 +565,9 @@ window.onload = function() {
 
   //vectorTest1();
   //vectorTest2();
-  vectorTest_pivot_1();
-  //vectorTest_moving_1();
-
+  //vectorTest_pivot_1();
+  vectorTest_moving_1();
+  //entityStressTest2();
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
 };
