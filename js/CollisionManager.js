@@ -4,6 +4,10 @@ var CollisionManager = Class.extend({
     var a = shapeA.dimensions;
     var b = shapeB.dimensions;
 
+    function capSmallSpeed(speed) {
+      return speed > -1 && speed < 1 ? 0 : speed;
+    }
+
     function getNormalAxes(dimensions) {
       var axes = [];
 // loop over the vertices
@@ -91,7 +95,20 @@ var CollisionManager = Class.extend({
       var u = n.multiply(vn);
       var w = v.subtract(u);
       var v2 = w.subtract(u);
-      shapeA.physicsBody.v = v2;
+
+      v2.x = capSmallSpeed(v2.x);
+      v2.y = capSmallSpeed(v2.y);
+
+      var sign = vn ? vn < 0 ? -1 : 1:0;
+      var pushOutVector = n.unit().multiply(axes2Overlap.overlap * -sign);
+
+      shapeA._physics.move(shapeA.dimensions, pushOutVector);
+
+      shapeA.physicsBody.v = v2.multiply(0.5);
+
+//      if (!shapeB.frozen) {
+//        shapeB.physicsBody.v = w.subtract(u).multiply(-1);
+//      }
     }
   },
   updateAllCollisions: function() {
