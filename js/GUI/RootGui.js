@@ -12,7 +12,7 @@
          * @param options.canvasHeight
          */
         init: function(options) {
-            this._super({position: { x:0, y: 0 }, cols: this.cols, rows: this.rows});
+            this._super({name: options.name, position: { x:0, y: 0 }, cols: this.cols, rows: this.rows});
             this.htmlElement.id = 'guiRoot';
             this.setCss({
                 width: options.canvasWidth + 'px',

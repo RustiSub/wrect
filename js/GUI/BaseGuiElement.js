@@ -15,6 +15,7 @@
         parent: null,
         htmlWrapper: null,
         htmlTag: 'div',
+        name: '',
         getDefaultOptions: function() {
             return {
                 alignment: {
@@ -36,6 +37,11 @@
          * @param {Array} options.position
          */
         init: function(options){
+            if (!options.name) {
+                console.error('A name is required for a GUI element!');
+                return null;
+            }
+            this.name = options.name;
             options = Container.getGame().getHelpers().merge(this.getDefaultOptions(), options);
             this.position = options.position;
             this.cols = options.cols;
@@ -131,6 +137,9 @@
             }
         },
         toDomCallback: function() {
+        },
+        getValue: function() {
+            return null;
         }
     });
 })();

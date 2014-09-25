@@ -4,9 +4,8 @@
      * @augments BaseGuiElement
      * @type {void|*}
      */
-    window.Checkbox = window.BaseGuiElement.extend({
-        htmlTag: 'input',
-        characterLimit: 0,
+    window.Number = window.InputElement.extend({
+        inputType: 'number',
         init: function(options) {
             this._super(options);
         }

@@ -366,6 +366,7 @@ function addGui() {
      panel.addChild(secondButton);*/
     var rootGui = game.getGuiManager().getRoot();
     var panel = new window.Panel({
+        name: 'panel1',
         cols: 5,
         rows: 1,
         css: {
@@ -379,6 +380,7 @@ function addGui() {
     });
     rootGui.addElement(panel);
     var inputBox = game.getGuiManager().createElement('Textbox', {
+        name: 'text1',
         rows: 1,
         cols: 5,
         position: {
@@ -387,6 +389,17 @@ function addGui() {
         }
     });
     rootGui.addElement(inputBox);
+    var checkbox = game.getGuiManager().createElement('Checkbox', {
+        name: 'chk1',
+        value: true,
+        rows: 1,
+        cols: 1,
+        position: {
+            x: 9,
+            y: 8
+        }
+    });
+    rootGui.addElement(checkbox);
 }
 
 window.onload = function() {

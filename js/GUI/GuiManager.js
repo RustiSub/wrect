@@ -2,6 +2,7 @@
     "use strict";
     window.GuiManager = window.Class.extend({
         elements: [],
+        elementsByName: {},
         guiRoot: null,
         guiState: 0,
         STATE_READY: 0,
@@ -10,9 +11,12 @@
         init: function(){
             this.createRootGui();
             this.initGlobalEvents();
+            this.elementsByName = {};
+            this.elements = [];
         },
         createRootGui: function() {
             this.guiRoot = new window.RootGui({
+                name: 'root',
                 canvasWidth: window.innerWidth,
                 canvasHeight: window.innerHeight
             });
@@ -24,8 +28,14 @@
         addElement: function(guiElement, container) {
             if (guiElement instanceof window.BaseGuiElement) {
                 this.elements.push(guiElement);
+                this.elementsByName[guiElement.name] = guiElement;
                 if (container === undefined) {
-                    container = window.Container.getComponent('Renderer').view.parentNode;
+                    if (this.guiRoot.inDom) {
+                        container = this.guiRoot.htmlElement;
+                    }
+                    else {
+                        container = window.Container.getComponent('Renderer').view.parentNode;
+                    }
                 }
                 if (guiElement.htmlWrapper) {
                     container.appendChild(guiElement.htmlWrapper);
@@ -37,11 +47,14 @@
                 guiElement.toDomCallback();
             }
         },
-        createElement: function(name, options) {
-            if (typeof window[name] === 'function') {
-                return new window[name](options);
+        getElement: function(name) {
+            return this.elementsByName[name];
+        },
+        createElement: function(type, options) {
+            if (typeof window[type] === 'function' && options.name) {
+                return new window[type](options);
             }
-            console.error(name + ' ain\'t no element I\'ve ever heard of');
+            console.error(type + ' ain\'t no element I\'ve ever heard of! Or did you forget to give this element a name?');
             return null;
         },
         // FRAGILE, do not touch
