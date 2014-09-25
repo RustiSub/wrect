@@ -146,6 +146,7 @@
 
 //                self._builder.clearRooms(game.getEntityManager().getAllEntities());
                 game.completeTree = [];
+                game.treeHashes = [];
                 var range = {
                   x: 0,
                   y: 0,

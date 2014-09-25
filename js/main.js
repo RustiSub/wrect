@@ -370,17 +370,26 @@ function vectorTest2() {
 
 function vectorTest_pivot_1() {
   //createFrame();
-  var block2 = game._builder.createBlock('b2', 0, 450 , 250, 20);
-  block2._physics.rotate(block2.physicsBody, block2.dimensions, 0.9);
+
+  var block1 = game._builder.createBlock('b1', 200, 250 , 20, 50, 0xFFFFFF);
+  block1.physicsBody.v = new Vector(0, 10);
+  game.addEntity(block1);
+
+  var block2 = game._builder.createBlock('b2', 100, 500 , 250, 20);
+  block2._physics.rotate(block2.physicsBody, block2.dimensions, game._helpers.math.toRadians(45));
   game.addEntity(block2);
 
-  var block3 = game._builder.createBlock('b3', 500, 450 , 250, 20);
-  block3._physics.rotate(block3.physicsBody, block3.dimensions, -0.9);
+  var block3 = game._builder.createBlock('b3', 500, 500 , 250, 20);
+  block3._physics.rotate(block3.physicsBody, block3.dimensions, game._helpers.math.toRadians(-45));
   game.addEntity(block3);
 
-  var block1 = game._builder.createBlock('b1', 150, 50 , 20, 150, 0xFFFFFF);
-  block1.physicsBody.v = new Vector(0, 4);
-  game.addEntity(block1);
+  var block4 = game._builder.createBlock('b4', 100, 150 , 250, 20);
+  block4._physics.rotate(block4.physicsBody, block4.dimensions, game._helpers.math.toRadians(-45));
+  game.addEntity(block4);
+
+  var block5 = game._builder.createBlock('b5', 500, 150 , 250, 20);
+  block5._physics.rotate(block5.physicsBody, block5.dimensions, game._helpers.math.toRadians(45));
+  game.addEntity(block5);
 }
 
 function quadTreeTest1() {

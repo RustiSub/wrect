@@ -43,6 +43,7 @@ var Block = MovableEntity.extend({
     this.physicsBody.theta = 0;
     this.physicsBody.omega = 0;
     this.physicsBody.alpha = 0;
+    this.physicsBody.collided = false;
 
     this.physicsBody.J = 1;//this.m * (dimensions.height * dimensions.height + dimensions.width * this.width) / 12000;
 

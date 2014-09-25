@@ -4,23 +4,6 @@ var CollisionManager = Class.extend({
     var a = shapeA.dimensions;
     var b = shapeB.dimensions;
 
-    function intersect_safe(a, b) {
-      var result = new Array();
-
-      var as = a.map( function(x) { return x.toString(); });
-      var bs = b.map( function(x) { return x.toString(); });
-
-      for (var i in as)
-      {
-        if (bs.indexOf(as[i]) !== -1)
-        {
-          result.push( a[i] );
-        }
-      }
-
-      return result;
-    }
-
     function getNormalAxes(dimensions) {
       var axes = [];
 // loop over the vertices
@@ -102,8 +85,8 @@ var CollisionManager = Class.extend({
     var axes2Overlap = checkOverlap(getNormalAxes(b), a, b);
 
     if (axes1Overlap.hasOverlap && axes2Overlap.hasOverlap) {
-      var n = axes2Overlap.axis.unit();
-      var v = shapeA.physicsBody.v.unit();
+      var n = axes2Overlap.axis;//.unit();
+      var v = shapeA.physicsBody.v;//.unit();
       var vn = v.dot(n);
       var u = n.multiply(vn);
       var w = v.subtract(u);
@@ -117,6 +100,7 @@ var CollisionManager = Class.extend({
 
       for (var x = 0; x < bodies.length; x++) {
         var mainBody = bodies[x];
+        mainBody.physicsBody.collided = false;
         //mainBody._physics.applyFriction(1);
 
         mainBody.collisions = [];
@@ -198,9 +182,27 @@ var CollisionManager = Class.extend({
     }
     else {
       if (localTree.length > 1) {
-        //var color = (Math.random()*0xFFFFFF<<0);
-        //game.addEntity(game._builder.createBlock('tree', range.x, range.y, range.width, range.height, color, 0.5));
-        game.completeTree.push(localTree);
+        var hash = function(name) {
+          var hash = 0, i, chr, len;
+          if (name.length == 0) return hash;
+          for (i = 0, len = name.length; i < len; i++) {
+            chr = name.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+          }
+          return hash;
+        };
+//        var color = (Math.random()*0xFFFFFF<<0);
+//        game.addEntity(game._builder.createBlock('tree', range.x, range.y, range.width, range.height, color, 0.5));
+        var treeHash = '';
+        for (var h = 0; h < localTree.length; h++) {
+          treeHash += localTree[h].name;
+        }
+        var hashedBranch = hash(treeHash);
+        if (game.treeHashes.indexOf(hashedBranch) === -1) {
+          game.treeHashes.push(hashedBranch);
+          game.completeTree.push(localTree);
+        }
       }
     }
   }
