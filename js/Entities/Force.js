@@ -35,8 +35,9 @@ var Force = BaseEntity.extend({
     params.begin = params.begin.rotate(forceAngle, origin);
 
     angle = window.game.getHelpers().math.toRadians(angle);
-    params.end = params.begin.rotate(angle, params.origin);
-    params.top = params.begin.add(params.end).scale(0.51);
+    params.begin = params.begin.rotate(-(angle / 2), origin);
+    params.top = params.begin.rotate((angle / 2), origin);
+    params.end = params.top.rotate((angle / 2), params.origin);
 
     return params;
   }, /**

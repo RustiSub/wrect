@@ -66,8 +66,8 @@ function shieldTest() {
   var force = new Force(
       new Vector(200, 250),
       400,
-      45,
-      -25
+      90,
+      0
   );
 
   game.addEntity(force);
