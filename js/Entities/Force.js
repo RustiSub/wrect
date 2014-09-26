@@ -53,6 +53,8 @@ var Force = BaseEntity.extend({
     this.dimensions = {};
     this.drawCone(graphics, this.params);
     this._super('shield', graphics);
+
+    this._physics.solid = false;
     this.frozen = true;
 
     this.dimensions.vertices = function (dimensions) {
@@ -107,7 +109,7 @@ var Force = BaseEntity.extend({
       var speed = collisionShape.physicsBody.v;
 
       var penetrationVector = this.params.origin.subtract(collisionShape.dimensions.center());
-      var newSpeed = speed.add(penetrationVector.multiply(-0.1));
+      var newSpeed = speed.add(penetrationVector.multiply(-0.05));
       var speedValue = Math.abs(newSpeed.distance(new Vector(0, 0)));
 
       if (speedValue > this.strength) {

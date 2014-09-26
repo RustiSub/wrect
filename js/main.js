@@ -135,7 +135,7 @@ window.onload = function() {
         debug: true,
         width: window.innerWidth,
         height: window.innerHeight,
-        defaultLevel: 'test1'
+        defaultLevel: false
     });
 
   shieldTest();
