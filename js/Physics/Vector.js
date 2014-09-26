@@ -116,6 +116,17 @@
     };
 
     /**
+     * rotate vector
+     * @param {Number} angle to rotate vector by, radians. can be negative
+     * @returns {Vector} rotated vector
+     */
+    Vector.prototype.rotateAngle = function(angle){
+      angle = window.game.getHelpers().math.normaliseRadians(angle);
+      return new Vector(this.x * Math.cos(angle)- this.y * Math.sin(angle),
+          this.x * Math.sin(angle)+this.y*Math.cos(angle));
+    };
+
+    /**
      *
      * calculate vector dot product
      * @param {Vector} v

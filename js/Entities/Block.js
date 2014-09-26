@@ -88,6 +88,35 @@ var Block = MovableEntity.extend({
   },
 //  transformations: {
 //  },
+  handleCollision: function(collisionShape, axes1Overlap, axes2Overlap) {
+
+    function capSmallSpeed(speed) {
+      return speed > -1 && speed < 1 ? 0 : speed;
+    }
+
+    var v = this.physicsBody.v;//.unit();
+    var n = axes2Overlap.axis;//.unit();
+    var vn = v.dot(n);
+    var u = n.multiply(vn);
+    var w = v.subtract(u);
+    var v2 = w.subtract(u);
+    var energyTransfer = 0.9;
+
+    v2.x = capSmallSpeed(v2.x);
+    v2.y = capSmallSpeed(v2.y);
+
+    var sign = vn ? vn < 0 ? -1 : 1:0;
+    var pushOutVector = n.unit().multiply(axes2Overlap.overlap * -sign);
+
+    this._physics.move(this.dimensions, pushOutVector);
+
+    if (!collisionShape.frozen) {
+      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
+      v2 = v2.multiply(energyTransfer);
+    }
+
+    this.physicsBody.v = v2;
+  },
   toJSON: function() {
       return {
           name: this.name,
