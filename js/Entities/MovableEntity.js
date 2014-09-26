@@ -32,21 +32,6 @@ var MovableEntity = BaseEntity.extend({
         this.position.y = options.position.y;
       }
     },
-    moveLeft: function() {
-        this.position.x -= this.stats.speed;
-    },
-    moveRight: function() {
-        this.position.x += this.stats.speed;
-    },
-    moveUp: function() {
-        // TODO: top-down only
-    },
-    moveDown: function() {
-        // TODO: top-down only
-    },
-    jump: function() {
-
-    },
 
     getDefaultStats: function() {
       return {

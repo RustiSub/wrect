@@ -1,4 +1,5 @@
 var game;
+
 function test1() {
     var entity = game._builder.createBlock('_b10', 300, 250, 400, 20, 0xFFFFFF);
     game.addEntity(entity);
@@ -45,47 +46,64 @@ function createFrame() {
     var height = 400;
     var width = 1000;
 
-    game.addEntity(game._builder.createBorder('_left', {
-        x: 5,
-        y: 5,
-        width: 5,
-        height: height
-    }));
-
-    game.addEntity(game._builder.createBorder('_right', {
-        x: 5 + width,
-        y: 5,
-        width: 5,
-        height: height
-    }));
+  var left = game._builder.createBlock('_left',
+    5,
+    5,
+    5,
+    height
+  );
 
 
-    game.addEntity(game._builder.createBorder('_top', {
-        x: 5,
-        y: 5,
-        width: width,
-        height: 5
-    }));
+  var right = game._builder.createBlock('_right',
+      5 + width,
+    5,
+    5,
+    height
+  );
 
-    game.addEntity(game._builder.createBorder('_bottom', {
-        x: 5,
-        y: 5 + height,
-        width: width,
-        height: 5
-    }));
+
+
+  var top = game._builder.createBlock('_top',
+    5,
+    5,
+    width,
+    5
+  );
+
+
+  var bottom = game._builder.createBlock('_bottom',
+    5,
+      5 + height,
+    width,
+    5
+  );
+  bottom.frozen = true;
+  left.frozen = true;
+  right.frozen = true;
+  top.frozen = true;
+
+  game.addEntity(bottom);
+  game.addEntity(left);
+  game.addEntity(right);
+  game.addEntity(top);
 }
 function triangleTest1() {
     var entity = game._builder.createBlock('b3', 190, 190, 20, 20);
     game.addEntity(entity);
 }
 function testCollide1() {
-    var speed = 5;
-    var block1 = game._builder.createBlock('b1', 185, 50, 20, 20);
-    game.addEntity(block1);
-    block1._physics.xSpeed = speed;
-    var block2 = game._builder.createBlock('b2', 810, 50, 20, 20, 0xFF0000);
-    game.addEntity(block2);
-    block2._physics.xSpeed = -speed;
+  var speed = 10;
+  var block1 = game._builder.createBlock('b1', 185, 50, 20, 20);
+
+  game.addEntity(block1);
+
+  block1._physics.forceVectors.push(new Vector(speed, speed / 2,
+      function(delta, vector) {
+        if (vector.x != 0) {
+          //vector.x *= 0.95;
+        }
+      }
+  ));
 }
 function testCollide2() {
     var speed = 5;
@@ -344,6 +362,185 @@ function buildShip1() {
     game.addEntity(game._builder.createBlock('wall_6', 750, 250, 20, 20, 0xFFFFFF));
 }
 
+function vectorTest1() {
+  //createFrame();
+  var block2 = game._builder.createBlock('b2', 500, 0 , 20, 400);
+  game.addEntity(block2);
+  var block1 = game._builder.createBlock('b1', 100, 150 , 150, 20, 0xFFFFFF);
+  block1.physicsBody.v = new Vector(4 ,1);
+  game.addEntity(block1);
+}
+
+function vectorTest2() {
+  //createFrame();
+  var block2 = game._builder.createBlock('b2', 10, 400 , 700, 20);
+  game.addEntity(block2);
+  var block1 = game._builder.createBlock('b1', 100, 150 , 20, 150, 0xFFFFFF);
+  block1.physicsBody.v = new Vector(1, 4);
+  game.addEntity(block1);
+}
+
+function vectorTest_pivot_1() {
+  //createFrame();
+
+  var block1 = game._builder.createBlock('b1', 200, 350 , 20, 50, 0xFFFFFF);
+  block1.physicsBody.v = new Vector(0, 10);
+  game.addEntity(block1);
+
+  var block0 = game._builder.createBlock('b0', 200, 190 , 20, 50, 0xFFFFFF);
+  block0.physicsBody.v = new Vector(0, 10);
+  game.addEntity(block0);
+
+  var block2 = game._builder.createBlock('b2', 100, 500 , 250, 20);
+  block2._physics.rotate(block2.physicsBody, block2.dimensions, game._helpers.math.toRadians(45));
+  block2.frozen = true;
+  game.addEntity(block2);
+
+  var block3 = game._builder.createBlock('b3', 500, 500 , 250, 20);
+  block3._physics.rotate(block3.physicsBody, block3.dimensions, game._helpers.math.toRadians(-45));
+  block3.frozen = true;
+  game.addEntity(block3);
+
+  var block4 = game._builder.createBlock('b4', 100, 150 , 250, 20);
+  block4._physics.rotate(block4.physicsBody, block4.dimensions, game._helpers.math.toRadians(-45));
+  block4.frozen = true;
+  game.addEntity(block4);
+
+  var block5 = game._builder.createBlock('b5', 500, 150 , 250, 20);
+  block5._physics.rotate(block5.physicsBody, block5.dimensions, game._helpers.math.toRadians(45));
+  block5.frozen = true;
+  game.addEntity(block5);
+}
+
+function vectorTest_moving_1() {
+  var block2 = game._builder.createBlock('left', 100, 150 , 20, 350);
+  block2.frozen = true;
+  game.addEntity(block2);
+
+  var block1 = game._builder.createBlock('block1',150, 250 , 20, 50, 0xFFFFFF);
+  block1.physicsBody.v = new Vector(10, 0);
+  game.addEntity(block1);
+
+  var block3 = game._builder.createBlock('block2', 650, 250 , 20, 50, 0xFFFFFF);
+  block3.physicsBody.v = new Vector(-10, 0);
+  game.addEntity(block3);
+
+  var block4 = game._builder.createBlock('right', 900, 150 , 20, 350);
+  block4.frozen = true;
+  game.addEntity(block4);
+}
+
+function quadTreeTest1() {
+  var blockSize = 30;
+  for (var l= 0; l < 1; l++) {
+    for (var t= 0; t < 10; t++) {
+      game.addEntity(game._builder.createBlock(
+          'wall_spam_left_' + t + '_' + l,
+          50 + t * (blockSize + 5) + l * 50,
+          50 + l  * (blockSize + 5) + t * 50,
+        blockSize, blockSize, 0xFFFFFF));
+    }
+  }
+}
+
+
+function quadTreeTest2() {
+  var forceGenerator = game._builder.createBlock('wall_1', 600, 250, 20, 20, 0xFFFFFF);
+//  forceGenerator.glueSource = true;
+  game.addEntity(forceGenerator);
+
+    for (var l= 0; l < 20; l++) {
+        for (var t= 0; t < 50; t++) {
+            game.addEntity(game._builder.createBlock('wall_spam_' + t + '_' + l, 50 + t * 21, 50 + l * 21, 20, 20, 0xFFFFFF));
+        }
+    }
+}
+
+function quadTreeTest3() {
+  createFrame();
+
+//  var forceGenerator = game._builder.createBlock('force_generator', 500, 200, 20, 20, 0xFFFFFF);
+////  forceGenerator.glueSource = true;
+//  game.addEntity(forceGenerator);
+
+  var blockSize = 30;
+  for (var l= 0; l < 4; l++) {
+    for (var t= 0; t < 15; t++) {
+      var entity = game._builder.createBlock(
+          'wall_spam_top_' + t + '_' + l,
+          55 + t * (blockSize + 25),
+          50 + l * (blockSize + 5) ,
+          blockSize, blockSize, (Math.random()*0xFFFFFF<<0), 0.7);
+      entity._physics.ySpeed = t;
+      entity._physics.xSpeed = t;
+      game.addEntity(entity);
+    }
+  }
+}
+
+function quadTreeTest4() {
+  createFrame();
+
+  var blockSize = 20;
+  var xSpeed = 0;
+  var ySpeed = 10;
+  var stack = 10;
+
+  var colorLeft = (Math.random() * 0xFFFFFF << 0);
+  for (var l= 0; l < stack; l++) {
+    for (var t= 0; t < 1; t++) {
+
+      var entity = game._builder.createBlock(
+          'wall_spam_left_' + t + '_' + l,
+          55 + t * (blockSize),
+          50 + l * (blockSize  + 2),
+          blockSize, blockSize, colorLeft, 1);
+      entity._physics.ySpeed = ySpeed;
+      entity._physics.xSpeed = xSpeed;
+      game.addEntity(entity);
+    }
+  }
+  var colorRight = (Math.random() * 0xFFFFFF << 0);
+  for (var l= 0; l < stack; l++) {
+    for (var t= 0; t < 1; t++) {
+
+      var entity = game._builder.createBlock(
+          'wall_spam_right_' + t + '_' + l,
+          900 + t * (blockSize),
+          50 + l * (blockSize + 2),
+          blockSize, blockSize, colorRight, 1);
+      entity._physics.ySpeed = ySpeed;
+      entity._physics.xSpeed = -xSpeed;
+      game.addEntity(entity);
+    }
+  }
+}
+
+function entityStressTest2() {
+//  createFrame();
+
+  var forceGenerator = game._builder.createBlock('force_generator', 300, 150, 20, 20, 0xFFFFFF);
+  forceGenerator.glueSource = true;
+  game.addEntity(forceGenerator);
+
+  var blockSize = 20;
+
+  for (var l= 1; l < 25 ; l++) {
+    for (var t= 1; t < 50; t++) {
+      game.addEntity(game._builder.createBlock
+        (
+          'wall_spam_' + t,
+           t * (blockSize),  l * (blockSize),
+          blockSize,
+          blockSize,
+          0xFFFFFF
+        )
+      );
+    }
+  }
+
+  console.log(game.getEntityManager().getAllEntities().length);
+}
 
 function addGui() {
     /* var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
@@ -417,18 +614,23 @@ window.onload = function() {
     //testCollide1();
     //testCollide2();
 
-    addGui();
-    //testRooms1();
-    //testRooms1();
-    //testRooms2Closed();
-    //testRooms3Closed();
-    //testRooms4Closed();
-    //builderTest1();
-    //builderTest2();
-    //builderTest3();
-    builderTest5();
-    //buildShip1();
+  addGui();
+  //testRooms1();
+  //testRooms1();
+  //testRooms2Closed();
+  //testRooms3Closed();
+  //testRooms4Closed();
+  //builderTest1();
+  //builderTest2();
+  //builderTest3();
+  //builderTest5();
+  //buildShip1();
 
-    //game._builder.clearRooms();
-    //game._builder.buildConnections(game.getEntityManager().getAllEntities());
+  //vectorTest1();
+  //vectorTest2();
+  vectorTest_pivot_1();
+  //vectorTest_moving_1();
+  //entityStressTest2();
+  //game._builder.clearRooms();
+  //game._builder.buildConnections(game.getEntityManager().getAllEntities());
 };

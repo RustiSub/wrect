@@ -141,13 +141,25 @@
                 }
 
                 if (inputHandler.key('RETURN')) {
-                  self._gravityManager.applyForce(1, self.getEntityManager().getEntityByName('wall_1'));
+                  self._gravityManager.applyForce(5, self.getEntityManager().getEntityByName('force_generator'));
                 }
 
-                self._builder.clearRooms(game.getEntityManager().getAllEntities());
-                self._builder.buildConnections(game.getEntityManager().getAllEntities());
+//                self._builder.clearRooms(game.getEntityManager().getAllEntities());
+                game.completeTree = [];
+                game.treeHashes = [];
+                var range = {
+                  x: 0,
+                  y: 0,
+                  width : 1280,
+                  height: 720,
+                  level: 0,
+                  quadLevel : 0
+                };
 
-                self._collisionManager.updateAllCollisions(self._entityManager.getAllEntities());
+                game._collisionManager.mapQuadTree(game.getEntityManager().getAllEntities(), range);
+//console.log(game.completeTree);
+//                self._builder.buildConnections(game.getEntityManager().getAllEntities());
+                self._collisionManager.updateAllCollisions();
                 self._entityManager.update();
                 self._inputHandler.update();
 
@@ -291,7 +303,7 @@
                     return a + b;
                 });
 
-                console.log('Past ' + this.fpsOutInterval + 'ms avg FPS: ' + (sum/this.debugStats.fps.length));
+                //console.log('Past ' + this.fpsOutInterval + 'ms avg FPS: ' + (sum/this.debugStats.fps.length));
                 this.debugStats.fps = [];
                 this.debugStats.previousFpsOut = timestamp;
             }

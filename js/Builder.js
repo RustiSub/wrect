@@ -154,60 +154,53 @@ var Builder = Class.extend({
     blockGraphics.position.x = coords.x;
     blockGraphics.position.y = coords.y;
 
+    block.frozen = true;
+
     return block;
   },
 
-  createBlock: function (name, x, y, width, height, color) {
+  createBlock: function (name, x, y, width, height, color, alpha) {
+    alpha = typeof alpha !== 'undefined' ? alpha : 1;
     color = typeof color !== 'undefined' ? color : 0x00FF00;
 
     var blockGraphics = new PIXI.Graphics();
 
-    var block = new Block(name, blockGraphics);
-    block.name = name;
-    block.size = {x: width, y: height};
+    var block = new Block(name, blockGraphics, {x: x, y: y, w: width, h: height});
 
-    blockGraphics.position.x = x;
-    blockGraphics.position.y = y;
-    blockGraphics.position.getAnchor = function() {
-      return {
-        x: block.position.x + (block.size.x / 2),
-        y: block.position.y + (block.size.y / 2)
-      }
-    };
-    block.position = blockGraphics.position;
+    block.name = name;
 
     block.baseGraphicsCallback = function() {
       this._graphics.clear();
-      this.selectCallback();
+//      this.selectCallback();
       this.baseCallback();
-      this.glueCallback();
+//      this.glueCallback();
 
-      this._graphics.beginFill(0x0080FF);
-      this._graphics.drawCircle(this.size.x / 2, this.size.y / 2, 2);
-      this._graphics.endFill();
+//      this._graphics.beginFill(0x0080FF);
+//      this._graphics.drawCircle(this.dimensions.width / 2, this.dimensions.height / 2, 2);
+//      this._graphics.endFill();
     };
 
     block.baseCallback  = function() {
       this._graphics.beginFill(color);
-      this._graphics.drawRect(0, 0, this.size.x, this.size.y);
+      this._graphics.drawRect(0, 0, this.dimensions.width,this.dimensions.height);
       this._graphics.endFill();
     };
 
     block.glueCallback = function() {
-      if (block.hasGlue) {
-        var mark = 4;
-        this._graphics.beginFill(0xB231EB);
-        this._graphics.drawRect(0 + mark , 0 + mark , this.size.x - (mark  * 2), this.size.y - (mark  * 2));
-        this._graphics.endFill();
-      }
+//      if (block.hasGlue) {
+//        var mark = 4;
+//        this._graphics.beginFill(0xB231EB);
+//        this._graphics.drawRect(0 + mark , 0 + mark , this.size.x - (mark  * 2), this.size.y - (mark  * 2));
+//        this._graphics.endFill();
+//      }
     };
 
     block.selectCallback = function() {
-      if (this.selected) {
-        this._graphics.beginFill(0x00FF00);
-        this._graphics.drawRect(0 - 2, 0 - 2, this.size.x + 4, this.size.y + 4);
-        this._graphics.endFill();
-      }
+//      if (this.selected) {
+//        this._graphics.beginFill(0x00FF00);
+//        this._graphics.drawRect(0 - 2, 0 - 2, this.size.x + 4, this.size.y + 4);
+//        this._graphics.endFill();
+//      }
     };
 
     block.baseGraphicsCallback();
@@ -333,223 +326,225 @@ var Builder = Class.extend({
       }
     }
   },
-  buildConnections: function(bodies) {
-    for (var x = 0; x < bodies.length; x++) {
-      var mainBody = bodies[x];
+  buildConnections: function() {
+      for (var t = 0; t < game.completeTree.length; t++) {
+          var bodies = game.completeTree[t];
 
-      var face = {
-        p1: {
-          x: mainBody.position.x,
-          y: mainBody.position.y
-        },
-        p2: {
-          x: mainBody.position.x + mainBody.size.x,
-          y: mainBody.position.y + mainBody.size.y
-        }
-      };
+          for (var x = 0; x < bodies.length; x++) {
+              var mainBody = bodies[x];
 
-      for (var y = 0; y < bodies.length; y++) {
-        if (x !== y) {
-          var otherBody = bodies[y];
-
-          var matchingFace = {
-            p1: {
-              x: otherBody.position.x,
-              y: otherBody.position.y
-            },
-            p2: {
-              x: otherBody.position.x + otherBody.size.x,
-              y: otherBody.position.y  + otherBody.size.y
-            }
-          };
-
-          if (face.p2.x >= matchingFace.p1.x && face.p1.x <= matchingFace.p2.x) {
-            if (face.p2.y >= matchingFace.p1.y && face.p1.y <= matchingFace.p2.y) {
-
-              var x1 = null;
-              var x2 = null;
-
-              //CALCULATE X
-              //P1-right <=> P2-left
-              if (face.p2.x === matchingFace.p1.x) {
-                x1 = face.p2.x;
-                x2 = face.p2.x;
-              }
-
-              //P1-left <=> P2-right
-              if (face.p1.x === matchingFace.p2.x) {
-                x1 = face.p1.x;
-                x2 = face.p1.x;
-              }
-
-              //P1-top <=> P2-bottom
-              if (face.p1.x <= matchingFace.p1.x) {
-                x1 = matchingFace.p1.x;
-              } else if (face.p1.x > matchingFace.p1.x) {
-                x1 = face.p1.x;
-              }
-
-              if (face.p2.x <= matchingFace.p2.x) {
-                x2 = face.p2.x;
-              } else if (face.p2.x > matchingFace.p2.x) {
-                x2 = matchingFace.p2.x;
-              }
-
-              //CALCULATE Y
-              var y1 = null;
-              var y2 = null;
-              //P1-right <=> P2-left
-              if (face.p2.y === matchingFace.p1.y) {
-                y1 = face.p2.y;
-                y2 = face.p2.y;
-              }
-
-              //P1-left <=> P2-right
-              if (face.p1.y === matchingFace.p2.y) {
-                y1 = face.p1.y;
-                y2 = face.p1.y;
-              }
-
-              //P1-top <=> P2-bottom
-              if (face.p1.y <= matchingFace.p1.y) {
-                y1 = matchingFace.p1.y;
-              } else if (face.p1.y > matchingFace.p1.y) {
-                y1 = face.p1.y;
-              }
-
-              if (face.p2.y <= matchingFace.p2.y) {
-                y2 = face.p2.y;
-              } else if (face.p2.y > matchingFace.p2.y) {
-                y2 = matchingFace.p2.y;
-              }
-
-              var connectionFace = {
-                first: {
-                  x: x1,
-                  y: y1
-                },
-                second: {
-                  x: x2,
-                  y: y2
-                }
+              var face = {
+                  p1: {
+                      x: mainBody.position.x,
+                      y: mainBody.position.y
+                  },
+                  p2: {
+                      x: mainBody.position.x + mainBody.size.x,
+                      y: mainBody.position.y + mainBody.size.y
+                  }
               };
 
-              mainBody.connectedBodies.push({
-                body: otherBody,
-                face: connectionFace
-              });
+              for (var y = 0; y < bodies.length; y++) {
+                  if (x !== y) {
+                      var otherBody = bodies[y];
 
-              //If neither body is currently in a cluster, push them both in a new cluster
-              if (mainBody.inClusters === -1 && otherBody.inClusters === -1) {
-                var cluster = [];
-                cluster.push(mainBody.name);
-                cluster.push(otherBody.name);
-                var clusterId = this.clusters.push(cluster) - 1;
-                mainBody.inClusters = clusterId;
-                otherBody.inClusters = clusterId;
-              }
-              else if (otherBody.inClusters !== -1 && mainBody.inClusters !== -1 && mainBody.inClusters !== otherBody.inClusters) {
-                var cluster = [];
-                var clusterId = this.clusters.push(cluster) - 1;
-                for (var ce = 0; ce < this.clusters[otherBody.inClusters].length; ce++) {
-                  var mergingEntity = game.getEntityManager().getEntityByName(this.clusters[otherBody.inClusters][ce]);
+                      var matchingFace = {
+                          p1: {
+                              x: otherBody.position.x,
+                              y: otherBody.position.y
+                          },
+                          p2: {
+                              x: otherBody.position.x + otherBody.size.x,
+                              y: otherBody.position.y  + otherBody.size.y
+                          }
+                      };
 
-                  if (this.clusters[clusterId].indexOf(mergingEntity.name) === -1) {
-                    this.clusters[clusterId].push(mergingEntity.name);
-                  }
+                      if (face.p2.x >= matchingFace.p1.x && face.p1.x <= matchingFace.p2.x) {
+                          if (face.p2.y >= matchingFace.p1.y && face.p1.y <= matchingFace.p2.y) {
 
-                  mergingEntity.inClusters = clusterId;
-                }
+                              var x1 = null;
+                              var x2 = null;
 
-                for (var ce = 0; ce < this.clusters[mainBody.inClusters].length; ce++) {
-                  var mergingEntity = game.getEntityManager().getEntityByName(this.clusters[mainBody.inClusters][ce]);
+                              //CALCULATE X
+                              //P1-right <=> P2-left
+                              if (face.p2.x === matchingFace.p1.x) {
+                                  x1 = face.p2.x;
+                                  x2 = face.p2.x;
+                              }
 
-                  if (this.clusters[clusterId].indexOf(mergingEntity.name) === -1) {
-                    this.clusters[clusterId].push(mergingEntity.name);
-                  }
+                              //P1-left <=> P2-right
+                              if (face.p1.x === matchingFace.p2.x) {
+                                  x1 = face.p1.x;
+                                  x2 = face.p1.x;
+                              }
 
-                  mergingEntity.inClusters = clusterId;
-                }
-              }
-              else if (otherBody.inClusters !== -1 && mainBody.inClusters === -1) {
-                mainBody.inClusters = otherBody.inClusters;
-                this.clusters[otherBody.inClusters].push(mainBody.name);
-              } else if (mainBody.inClusters !== -1 && otherBody.inClusters === -1) {
-                otherBody.inClusters = mainBody.inClusters;
-                this.clusters[mainBody.inClusters].push(otherBody.name);
-              }
+                              //P1-top <=> P2-bottom
+                              if (face.p1.x <= matchingFace.p1.x) {
+                                  x1 = matchingFace.p1.x;
+                              } else if (face.p1.x > matchingFace.p1.x) {
+                                  x1 = face.p1.x;
+                              }
 
-              if (this.connectionFaces.indexOf(connectionFace) === -1) {
-                var found = false;
-                for (var f = 0; f < this.connectionFaces.length; f++) {
-                  var existingFace = this.connectionFaces[f].face;
+                              if (face.p2.x <= matchingFace.p2.x) {
+                                  x2 = face.p2.x;
+                              } else if (face.p2.x > matchingFace.p2.x) {
+                                  x2 = matchingFace.p2.x;
+                              }
 
-                  found = existingFace.first.x === connectionFace.first.x;
-                  found = existingFace.first.y === connectionFace.first.y && found;
-                  found = existingFace.second.x === connectionFace.second.x && found;
-                  found = existingFace.second.y === connectionFace.second.y && found;
-                  if (found) {
-                    break;
-                  }
-                }
+                              //CALCULATE Y
+                              var y1 = null;
+                              var y2 = null;
+                              //P1-right <=> P2-left
+                              if (face.p2.y === matchingFace.p1.y) {
+                                  y1 = face.p2.y;
+                                  y2 = face.p2.y;
+                              }
 
-                if (!found) {
-                  this.createCircle(connectionFace.first);
-                  this.createCircle(connectionFace.second);
-                  this.connectionFaces.push(
-                      {
-                        face: connectionFace,
-                        bodies: [mainBody.name, otherBody.name],
-                        chained: false,
-                        chainCount: 0
+                              //P1-left <=> P2-right
+                              if (face.p1.y === matchingFace.p2.y) {
+                                  y1 = face.p1.y;
+                                  y2 = face.p1.y;
+                              }
+
+                              //P1-top <=> P2-bottom
+                              if (face.p1.y <= matchingFace.p1.y) {
+                                  y1 = matchingFace.p1.y;
+                              } else if (face.p1.y > matchingFace.p1.y) {
+                                  y1 = face.p1.y;
+                              }
+
+                              if (face.p2.y <= matchingFace.p2.y) {
+                                  y2 = face.p2.y;
+                              } else if (face.p2.y > matchingFace.p2.y) {
+                                  y2 = matchingFace.p2.y;
+                              }
+
+                              var connectionFace = {
+                                  first: {
+                                      x: x1,
+                                      y: y1
+                                  },
+                                  second: {
+                                      x: x2,
+                                      y: y2
+                                  }
+                              };
+
+                              mainBody.connectedBodies.push({
+                                  body: otherBody,
+                                  face: connectionFace
+                              });
+
+                              //If neither body is currently in a cluster, push them both in a new cluster
+                              if (mainBody.inClusters === -1 && otherBody.inClusters === -1) {
+                                  var cluster = [];
+                                  cluster.push(mainBody.name);
+                                  cluster.push(otherBody.name);
+                                  var clusterId = this.clusters.push(cluster) - 1;
+                                  mainBody.inClusters = clusterId;
+                                  otherBody.inClusters = clusterId;
+                              }
+                              else if (otherBody.inClusters !== -1 && mainBody.inClusters !== -1 && mainBody.inClusters !== otherBody.inClusters) {
+                                  var cluster = [];
+                                  var clusterId = this.clusters.push(cluster) - 1;
+                                  for (var ce = 0; ce < this.clusters[otherBody.inClusters].length; ce++) {
+                                      var mergingEntity = game.getEntityManager().getEntityByName(this.clusters[otherBody.inClusters][ce]);
+
+                                      if (this.clusters[clusterId].indexOf(mergingEntity.name) === -1) {
+                                          this.clusters[clusterId].push(mergingEntity.name);
+                                      }
+
+                                      mergingEntity.inClusters = clusterId;
+                                  }
+
+                                  for (var ce = 0; ce < this.clusters[mainBody.inClusters].length; ce++) {
+                                      var mergingEntity = game.getEntityManager().getEntityByName(this.clusters[mainBody.inClusters][ce]);
+
+                                      if (this.clusters[clusterId].indexOf(mergingEntity.name) === -1) {
+                                          this.clusters[clusterId].push(mergingEntity.name);
+                                      }
+
+                                      mergingEntity.inClusters = clusterId;
+                                  }
+                              }
+                              else if (otherBody.inClusters !== -1 && mainBody.inClusters === -1) {
+                                  mainBody.inClusters = otherBody.inClusters;
+                                  this.clusters[otherBody.inClusters].push(mainBody.name);
+                              } else if (mainBody.inClusters !== -1 && otherBody.inClusters === -1) {
+                                  otherBody.inClusters = mainBody.inClusters;
+                                  this.clusters[mainBody.inClusters].push(otherBody.name);
+                              }
+
+                              if (this.connectionFaces.indexOf(connectionFace) === -1) {
+                                  var found = false;
+                                  for (var f = 0; f < this.connectionFaces.length; f++) {
+                                      var existingFace = this.connectionFaces[f].face;
+
+                                      found = existingFace.first.x === connectionFace.first.x;
+                                      found = existingFace.first.y === connectionFace.first.y && found;
+                                      found = existingFace.second.x === connectionFace.second.x && found;
+                                      found = existingFace.second.y === connectionFace.second.y && found;
+                                      if (found) {
+                                          break;
+                                      }
+                                  }
+
+                                  if (!found) {
+                                      this.createCircle(connectionFace.first);
+                                      this.createCircle(connectionFace.second);
+                                      this.connectionFaces.push(
+                                          {
+                                              face: connectionFace,
+                                              bodies: [mainBody.name, otherBody.name],
+                                              chained: false,
+                                              chainCount: 0
+                                          }
+                                      )
+                                      ;
+                                  }
+                              }
+                          }
                       }
-                  )
-                  ;
-                }
+                  }
               }
-            }
+
+              if (mainBody.inClusters === -1 && mainBody.hasGlue) {
+                  mainBody.removeGlue();
+              }
+
+              if (mainBody.glueSource) {
+                  mainBody.changed = true;
+                  mainBody.applyGlue();
+              }
           }
-        }
       }
+      for (var c = 0; c < this.clusters.length; c++) {
+          var clusterGlued = false;
+          for (var cb = 0; cb < this.clusters[c].length; cb++) {
+              var entity = game.getEntityManager().getEntityByName(this.clusters[c][cb]);
 
-      if (mainBody.inClusters === -1 && mainBody.hasGlue) {
-        mainBody.removeGlue();
+              if (entity.glueSource) {
+                  clusterGlued = true;
+                  break;
+              }
+          }
+
+          for (var cb = 0; cb < this.clusters[c].length; cb++) {
+              var entity = game.getEntityManager().getEntityByName(this.clusters[c][cb]);
+
+              if (entity.glueSource) {
+                  continue;
+              }
+
+              entity.changed = true;
+
+              if (clusterGlued) {
+                  entity.applyGlue();
+              } else {
+                  entity.removeGlue();
+              }
+          }
       }
-
-      if (mainBody.glueSource) {
-//        console.log(mainBody.name);
-        mainBody.changed = true;
-        mainBody.applyGlue();
-      }
-    }
-
-    for (var c = 0; c < this.clusters.length; c++) {
-      var clusterGlued = false;
-      for (var cb = 0; cb < this.clusters[c].length; cb++) {
-        var entity = game.getEntityManager().getEntityByName(this.clusters[c][cb]);
-
-        if (entity.glueSource) {
-          clusterGlued = true;
-          break;
-        }
-      }
-
-      for (var cb = 0; cb < this.clusters[c].length; cb++) {
-        var entity = game.getEntityManager().getEntityByName(this.clusters[c][cb]);
-
-        if (entity.glueSource) {
-          continue;
-        }
-
-        entity.changed = true;
-
-        if (clusterGlued) {
-          entity.applyGlue();
-        } else {
-          entity.removeGlue();
-        }
-      }
-    }
 //    this.drawConnectionFaces();
   }
 });

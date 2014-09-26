@@ -6,32 +6,91 @@ var Physics = Class.extend({
   fallTime: 0,
   xSpeed: 0,
   ySpeed: 0,
+  vectors: [],
+  forceVectors: [],
+  deltaVector: {},
+  torque: 0,
 
   init: function() {
+    this.deltaVector = new Vector(0, 0);
+    this.forceVectors = [];
+  },
+  apply: function(physicsBody, dimensions, dt) {
+    var f = new Vector(0, 0);
+    var b = -5;
 
+    var dr = physicsBody.v; //.scale(dt).add(physicsBody.a.scale(0.5 * dt * dt));
+    this.move(dimensions, dr);//.scale(100));
+
+    /* Add Gravity */
+//    f = f.add(new Vector(0, physicsBody.m * 9.81));
+
+    /* Add damping */
+//    f = f.add( physicsBody.v.scale(b) );
+
+    var deltaTheta = 0  ;
+    this.rotate(physicsBody, dimensions, deltaTheta);
+  },
+  center: function(dimensions) {
+    var diagonal = dimensions.bottomRight.subtract(dimensions.topLeft);
+    return dimensions.topLeft.add(diagonal.scale(0.5));
+  },
+  move: function(dimensions, v) {
+    dimensions.topLeft = dimensions.topLeft.add(v);
+    dimensions.topRight = dimensions.topRight.add(v);
+    dimensions.bottomRight = dimensions.bottomRight.add(v);
+    dimensions.bottomLeft = dimensions.bottomLeft.add(v);
+
+    return dimensions;
+  },
+  rotate: function(physicsBody, dimensions, angle) {
+    physicsBody.theta += angle;
+    var center = this.center(dimensions);
+
+    dimensions.topLeft = dimensions.topLeft.rotate(angle, center);
+    dimensions.topRight = dimensions.topRight.rotate(angle, center);
+    dimensions.bottomRight = dimensions.bottomRight.rotate(angle, center);
+    dimensions.bottomLeft = dimensions.bottomLeft.rotate(angle, center);
+
+    return this;
+  },
+  calculateSpeed: function() {
+    this.deltaVector = new Vector(0, 0);
+    for (var v = 0; v < this.forceVectors.length; v++) {
+      var forceVector = this.forceVectors[v];
+
+      forceVector.update(this.deltaVector, forceVector);
+      this.deltaVector = this.deltaVector.add(forceVector);
+    }
+
+    this.xSpeed = this.deltaVector.x;
+    this.ySpeed = this.deltaVector.y;
+    //this.deltaVector = new Vector(0, 0);
   },
   increaseSpeedX: function(increase) {
     this.xSpeed += increase;
-  },
-
-  calculateSpeedX: function() {
-    return this.xSpeed;
   },
 
   increaseSpeedY: function(increase) {
     this.ySpeed += increase;
   },
 
-  calculateSpeedY: function() {
-    return this.ySpeed;
-  },
-
   reverseSpeedX: function() {
-    this.xSpeed = - this.xSpeed ;
+    for (var v = 0; v < this.forceVectors.length; v++) {
+      var forceVector = this.forceVectors[v];
+      forceVector = forceVector.multiply({x: -1, y: 1});
+      this.forceVectors[v].x = forceVector.x;
+      this.forceVectors[v].y = forceVector.y;
+    }
   },
 
   reverseSpeedY: function() {
-    this.ySpeed = - this.ySpeed;
+    for (var v = 0; v < this.forceVectors.length; v++) {
+      var forceVector = this.forceVectors[v];
+      forceVector = forceVector.multiply({x: 1, y: -1});
+      this.forceVectors[v].x = forceVector.x;
+      this.forceVectors[v].y = forceVector.y;
+    }
   },
 
   stop: function() {
