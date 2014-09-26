@@ -134,7 +134,8 @@ window.onload = function() {
     game = new Game({
         debug: true,
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
+        defaultLevel: 'test1'
     });
 
   shieldTest();

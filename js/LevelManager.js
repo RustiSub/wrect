@@ -4,12 +4,39 @@
         currentLevel: {},
         _stage: {},
         _currentOpacity: 1,
+        defaultLevel: null,
+        game: null,
 
         /**
          * @param stage
+         * @param defaultLevel
          */
-        init: function(stage) {
-            this._stage = stage;
+        init: function(stage, defaultLevel) {
+          this.game = Container.getGame();
+          this._stage = stage;
+            this.defaultLevel = defaultLevel;
+            this.loadInitialLevel();
+        },
+
+        loadInitialLevel: function() {
+          if (this.defaultLevel) {
+            var self = this;
+            var loadCallback = function(levelData) {
+              self.clearLevel();
+              self.initLevel(levelData);
+            };
+            this.loadData(self.defaultLevel, true, loadCallback);
+          }
+          else {
+            this.createDummyLevel();
+          }
+        },
+
+        createDummyLevel: function() {
+          var level = new BaseLevel('dummy');
+          level.width = 2000;
+          level.height = 2000;
+          this.currentLevel = level;
         },
 
         /**
@@ -26,7 +53,7 @@
             this.currentLevel = level;
             Container.getGame().getEntityManager().clearEntities();
             for (var x = 0; x < level.entities.length; x++) {
-                game.getEntityManager().addEntity(level.entities[x]);
+                this.game.getEntityManager().addEntity(level.entities[x]);
             }
         },
 
@@ -39,16 +66,16 @@
             var self = this;
             var loadCallback = function(levelData) {
                 self.initLevel(levelData);
-                game.fadeIn();
+                self.game.fadeIn();
             };
-            game.fadeOut(function() {
+            this.game.fadeOut(function() {
                 this.clearLevel();
                 this.loadData(name, fromFile, loadCallback);
             }, this);
         },
 
         clearLevel: function() {
-            game.getEntityManager().clearEntities(true);
+            Container.getGame().getEntityManager().clearEntities(true);
         },
 
         /**
@@ -101,6 +128,10 @@
          */
         getCurrentLevelName: function() {
             return this.currentLevel.getFullLevelName();
+        },
+
+        getCurrentLevel: function() {
+            return this.currentLevel;
         },
 
         /**
