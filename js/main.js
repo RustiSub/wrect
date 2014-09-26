@@ -114,7 +114,7 @@ window.onload = function() {
       new Vector(200, 100),
       250,
       45,
-      10
+      25
   );
 
   game.addEntity(force);

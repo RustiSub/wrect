@@ -10,15 +10,19 @@ var Force = BaseEntity.extend({
   end: 0,
 
   /**
+   *
    * @param {Vector}origin
    * @param {Number}length
    * @param {Number}angle
+   * @param {Number}forceAngle
    */
   init: function(origin, length, angle, forceAngle) {
     var forceGraphics = new PIXI.Graphics();
     this.origin = origin;
     this.begin = new Vector(origin.x + length, this.origin.y);
-    //this.begin = this.begin.rotate(forceAngle, this.origin);
+    forceAngle = window.game.getHelpers().math.toRadians(forceAngle);
+    this.begin = this.begin.rotate(forceAngle, origin);
+
     angle = window.game.getHelpers().math.toRadians(angle);
     this.end = this.begin.rotate(angle, this.origin);
     this.top = this.begin.add(this.end).scale(0.51);
@@ -50,18 +54,6 @@ var Force = BaseEntity.extend({
     };
 
     this.physicsBody = {};
-
-    this.physicsBody.v = new Vector(0, 0);
-    this.physicsBody.a = new Vector(0, 0);
-    this.physicsBody.m = 1;
-    this.physicsBody.theta = 0;
-    this.physicsBody.omega = 0;
-    this.physicsBody.alpha = 0;
-    this.physicsBody.collided = false;
-
-    this.physicsBody.J = 1;//this.m * (dimensions.height * dimensions.height + dimensions.width * this.width) / 12000;
-
-    //this._graphics.position = this.dimensions.topLeft;
   },
   update: function() {
 
