@@ -22,7 +22,7 @@
      * @returns {Number}
      */
     Vector.prototype.distance = function (v) {
-        var resultVector = this.substract(v);
+        var resultVector = this.subtract(v);
         return resultVector.len();
     };
 

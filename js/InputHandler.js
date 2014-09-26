@@ -127,6 +127,16 @@
         event.preventDefault();
       }
     },
+    /**
+     * @returns {Window.Vector|boolean}
+     */
+    getMousePosition: function() {
+      var pos = Container.getGame().getStage().getMousePosition();
+      if (pos.x === -10000 && pos.y === -10000) {
+        return false;
+      }
+      return new Vector(pos.x, pos.y);
+    },
     key: function(keyName) {
       var keyCode = this._keys[keyName.toUpperCase()];
       var keyFound = this._pressed.indexOf(keyCode) != -1;
