@@ -130,6 +130,52 @@ function addGui() {
     rootGui.addElement(checkbox);
 }
 
+function makeSpaceLevel() {
+  var level = new window.SpaceLevel('space');
+  game.getLevelManager().switchLevel(level);
+  var builder = game._builder;
+  var i;
+  var optionsSmall = {
+    x: 0,
+    y: 0,
+    width: 2,
+    height: 2,
+    mass: 1,
+    color: 0xFF0000,
+    alpha: 1
+  };
+  var optionsMedium = {
+    x: 0,
+    y: 0,
+    width: 4,
+    height: 4,
+    mass: 3,
+    color: 0xFF0000,
+    alpha: 1
+  };
+  var optionsLarge = {
+    x: 0,
+    y: 0,
+    width: 8,
+    height: 8,
+    mass: 5,
+    color: 0xFF0000,
+    alpha: 1
+  };
+  for (i = 0; i < 20; i++) {
+    optionsSmall.name = 'smallMeteor' + i;
+    level.levelData.meteors.push(builder.createMeteor(optionsSmall));
+  }
+  for (i = 0; i < 10; i++) {
+    optionsSmall.name = 'mediumMeteor' + i;
+    level.levelData.meteors.push(builder.createMeteor(optionsMedium));
+  }
+  for (i = 0; i < 5; i++) {
+    optionsSmall.name = 'bigAssMeteor' + i;
+    level.levelData.meteors.push(builder.createMeteor(optionsLarge));
+  }
+}
+
 window.onload = function() {
     game = new Game({
         debug: true,
@@ -138,5 +184,5 @@ window.onload = function() {
         defaultLevel: false
     });
 
-  shieldTest();
+  makeSpaceLevel();
 };

@@ -55,6 +55,12 @@ var Block = MovableEntity.extend({
 
     this._graphics.position = this.dimensions.topLeft;
   },
+  setPosition: function(vector) {
+    this.dimensions.topLeft = vector;
+    this.dimensions.topRight = new Vector(vector.x + this.dimensions.width, vector.y);
+    this.dimensions.bottomRight = new Vector(vector.x + this.dimensions.width, vector.y + this.dimensions.height);
+    this.dimensions.bottomLeft = new Vector(vector.x, vector.y + this.dimensions.height);
+  },
   move: function () {
     var inputHandler = Container.getComponent('InputHandler');
     if (inputHandler.key('left')) {

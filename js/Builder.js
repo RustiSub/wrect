@@ -210,6 +210,40 @@ var Builder = Class.extend({
     return block;
   },
 
+  createMeteor: function (options) {
+    var alpha = typeof options.alpha !== 'undefined' ? options.alpha : 1;
+    var color = typeof options.color !== 'undefined' ? options.color : 0xFF0000;
+
+    var blockGraphics = new PIXI.Graphics();
+
+    var meteor = new Meteor(options.name, blockGraphics, {x: options.x, y: options.y, w: options.width, h: options.height});
+    meteor.physicsBody.m = options.m;
+
+    meteor.name = options.name;
+
+    meteor.baseGraphicsCallback = function() {
+      this._graphics.clear();
+//      this.selectCallback();
+      this.baseCallback();
+//      this.glueCallback();
+
+//      this._graphics.beginFill(0x0080FF);
+//      this._graphics.drawCircle(this.dimensions.width / 2, this.dimensions.height / 2, 2);
+//      this._graphics.endFill();
+    };
+
+    meteor.baseCallback  = function() {
+      this._graphics.beginFill(color);
+      this._graphics.drawRect(0, 0, this.dimensions.width,this.dimensions.height);
+      this._graphics.endFill();
+    };
+
+    meteor.baseGraphicsCallback();
+    meteor.frozen = false;
+
+    return meteor;
+  },
+
   createCircle: function (point) {
       var graphics = new PIXI.Graphics();
       graphics.beginFill(0xFF0000, 1);

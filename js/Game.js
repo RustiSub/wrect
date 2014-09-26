@@ -174,6 +174,7 @@
 //                self._builder.buildConnections(game.getEntityManager().getAllEntities());
                 self._collisionManager.updateAllCollisions();
                 self._entityManager.update();
+                self._levelManager.update();
                 self._camera.update();
                 self._inputHandler.update();
 

@@ -48,7 +48,13 @@ window.BaseLevel = Class.extend({
     // EntityData
     for (var i = 0; i < data.entities.length; i++) {
       var dataObject = data.entities[i];
-      var entity = game._builder.createBlock(dataObject.name, dataObject.x, dataObject.y, dataObject.width, dataObject.height, dataObject.color);
+      var entity;
+      if (dataObject.entityType) {
+        entity = game._builder['create' + dataObject.entityType](dataObject);
+      }
+      else {
+        entity = game._builder.createBlock(dataObject.name, dataObject.x, dataObject.y, dataObject.width, dataObject.height, dataObject.color);
+      }
       this.entities.push(entity);
     }
 
