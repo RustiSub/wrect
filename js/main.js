@@ -44,6 +44,31 @@ function vectorTest_pivot_1() {
   game.addEntity(block5);
 }
 
+function shieldTest() {
+  var block2 = game._builder.createBlock('left', 100, 150 , 20, 350);
+  block2.frozen = true;
+  game.addEntity(block2);
+
+
+  var block4 = game._builder.createBlock('right', 900, 150 , 20, 350);
+  block4.frozen = true;
+  game.addEntity(block4);
+
+  var meteor = game._builder.createBlock('meteor', 600, 250, 20, 20, 0xFFFFFF);
+//  forceGenerator.glueSource = true;
+  meteor.physicsBody.v = new Vector(-10,0);
+  game.addEntity(meteor);
+
+  var force = new Force(
+      new Vector(200, 250),
+      250,
+      45,
+      -25
+  );
+
+  game.addEntity(force);
+}
+
 function addGui() {
     /* var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
      fullscreenButton.addEvent('click', function(){game.goFullscreen();});
@@ -108,14 +133,5 @@ window.onload = function() {
         height: window.innerHeight
     });
 
-  //vectorTest_pivot_1();
-
-  var force = new Force(
-      new Vector(200, 100),
-      250,
-      45,
-      25
-  );
-
-  game.addEntity(force);
+  shieldTest();
 };

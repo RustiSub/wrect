@@ -86,6 +86,7 @@ var CollisionManager = Class.extend({
 
     if (axes1Overlap.hasOverlap && axes2Overlap.hasOverlap) {
       shapeA.handleCollision(shapeB, axes1Overlap, axes2Overlap);
+      shapeB.handleCollision(shapeA, axes1Overlap, axes2Overlap);
     }
   },
   updateAllCollisions: function() {
