@@ -3,6 +3,7 @@
   window.InputHandler = Class.extend({
     _pressed: [],
     _registeredPressed: [],
+    _previousMousePos: null,
     _keys: {
       BACKSPACE: 8,
       TAB:       9,
@@ -26,7 +27,7 @@
     },
     _singleInputKeys: [
       13,
-      37, 38, 39, 40,
+      //37, 38, 39, 40,
       65,
       90,
       96,
@@ -137,6 +138,13 @@
       }
       return new Vector(pos.x, pos.y);
     },
+    mousePositionChanged: function() {
+      if (this._previousMousePos) {
+        var mp = this.getMousePosition();
+        return (this._previousMousePos.x != mp.x || this._previousMousePos.y != mp.y);
+      }
+      return false;
+    },
     key: function(keyName) {
       var keyCode = this._keys[keyName.toUpperCase()];
       var keyFound = this._pressed.indexOf(keyCode) != -1;
@@ -152,6 +160,9 @@
 
       return false;
     },
+    updateMouse: function() {
+      this._previousMousePos = this.getMousePosition();
+    },
     updateGamepad: function() {
       if (this.gamepadSupported) {
         var gamepads = window.navigator.getGamepads();
@@ -164,6 +175,7 @@
     },
     update: function() {
       this.updateGamepad();
+      this.updateMouse();
     },
     gamepadButton: function(buttonName, playerIndex) {
       if (this.currentGamepadState !== null) {
