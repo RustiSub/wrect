@@ -387,20 +387,28 @@ function vectorTest_pivot_1() {
   block1.physicsBody.v = new Vector(0, 10);
   game.addEntity(block1);
 
+  var block0 = game._builder.createBlock('b0', 200, 190 , 20, 50, 0xFFFFFF);
+  block0.physicsBody.v = new Vector(0, 10);
+  game.addEntity(block0);
+
   var block2 = game._builder.createBlock('b2', 100, 500 , 250, 20);
   block2._physics.rotate(block2.physicsBody, block2.dimensions, game._helpers.math.toRadians(45));
+  block2.frozen = true;
   game.addEntity(block2);
 
   var block3 = game._builder.createBlock('b3', 500, 500 , 250, 20);
   block3._physics.rotate(block3.physicsBody, block3.dimensions, game._helpers.math.toRadians(-45));
+  block3.frozen = true;
   game.addEntity(block3);
 
   var block4 = game._builder.createBlock('b4', 100, 150 , 250, 20);
   block4._physics.rotate(block4.physicsBody, block4.dimensions, game._helpers.math.toRadians(-45));
+  block4.frozen = true;
   game.addEntity(block4);
 
   var block5 = game._builder.createBlock('b5', 500, 150 , 250, 20);
   block5._physics.rotate(block5.physicsBody, block5.dimensions, game._helpers.math.toRadians(45));
+  block5.frozen = true;
   game.addEntity(block5);
 }
 
@@ -565,8 +573,8 @@ window.onload = function() {
 
   //vectorTest1();
   //vectorTest2();
-  //vectorTest_pivot_1();
-  vectorTest_moving_1();
+  vectorTest_pivot_1();
+  //vectorTest_moving_1();
   //entityStressTest2();
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
