@@ -68,6 +68,12 @@ var Force = BaseEntity.extend({
     this.params = this.createCone(this.params.origin, this.params.length, this.params.forceAngle, this.params.angle);
     this.drawCone(this._graphics, this.params);
   },
+  adjustAngle: function(angle) {
+    this._graphics.clear();
+    this.params.angle = angle;
+    this.params = this.createCone(this.params.origin, this.params.length, this.params.forceAngle, this.params.angle);
+    this.drawCone(this._graphics, this.params);
+  },
   update: function() {
 
   },
