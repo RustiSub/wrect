@@ -100,19 +100,7 @@ var Block = MovableEntity.extend({
     this._graphics.position.x = this.dimensions.topLeft.x;
     this._graphics.position.y = this.dimensions.topLeft.y;
     this._graphics.rotation = this.physicsBody.theta;
-
-//    this._graphics.beginFill(0x0080FF);
-//    this._graphics.drawCircle(this.dimensions.bottomLeft.x, this.dimensions.bottomLeft.y, 2);
-//    this._graphics.drawCircle(this.dimensions.bottomRight.x, this.dimensions.bottomRight.y, 2);
-//    this._graphics.drawCircle(this.dimensions.topLeft.x, this.dimensions.bottomLeft.y, 2);
-//    this._graphics.drawCircle(this.dimensions.bottomLeft.x, this.dimensions.bottomLeft.y, 2);
-//    this._graphics.endFill();
-//    this._graphics.pivot.x = 75;
-//    this._graphics.pivot.y = 10;
-//    this._graphics.rotation += 0.01;
   },
-//  transformations: {
-//  },
   handleCollision: function(collisionShape, axes1Overlap, axes2Overlap) {
     if (!collisionShape._physics.solid) {
       return;
