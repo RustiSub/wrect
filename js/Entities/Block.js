@@ -15,6 +15,7 @@ var Block = MovableEntity.extend({
 
   init: function(name, graphics, params) {
     this._super(name, graphics);
+    this._physics.solid = true;
 
     this.dimensions = {};
 
@@ -33,6 +34,11 @@ var Block = MovableEntity.extend({
         dimensions.bottomRight,
         dimensions.bottomLeft
       ];
+    };
+
+    this.dimensions.center = function() {
+      var diagonal = this.bottomRight.subtract(this.topLeft);
+      return this.topLeft.add(diagonal.scale(0.5));
     };
 
     this.physicsBody = {};
@@ -89,7 +95,9 @@ var Block = MovableEntity.extend({
 //  transformations: {
 //  },
   handleCollision: function(collisionShape, axes1Overlap, axes2Overlap) {
-
+    if (!collisionShape._physics.solid) {
+      return;
+    }
     function capSmallSpeed(speed) {
       return speed > -1 && speed < 1 ? 0 : speed;
     }

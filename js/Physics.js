@@ -10,6 +10,7 @@ var Physics = Class.extend({
   forceVectors: [],
   deltaVector: {},
   torque: 0,
+  solid : false,
 
   init: function() {
     this.deltaVector = new Vector(0, 0);
