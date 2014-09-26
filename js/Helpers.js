@@ -98,49 +98,50 @@
             }
         },
         math: {
-            /**
-             * absolute angle to relative angle, in degrees
-             * @param {Number} degrees absolute angle in degrees
-             * @returns {Number} relative angle in degrees
-             */
-            normaliseDegrees: function(degrees){
-                degrees=degrees % 360;
-                if(degrees<0) {
-                    degrees+=360;
-                }
-                return degrees;
-            },
-
-            /**
-             * absolute angle to relative angle, in radians
-             * @param {Number} radians absolute angle in radians
-             * @returns {Number} relative angle in radians
-             */
-            normaliseRadians: function(radians){
-                radians=radians % (2*Math.PI);
-                if(radians<0) {
-                    radians+=(2*Math.PI);
-                }
-                return radians;
-            },
-
-            /**
-             * convert radians to degrees
-             * @param {Number} radians
-             * @returns {Number} degrees
-             */
-            toDegrees: function(radians) {
-                return radians*(180/Math.PI);
-            },
-
-            /**
-             * convert degrees to radians
-             * @param {Number} degrees
-             * @returns {Number} radians
-             */
-            toRadians: function(degrees) {
-                return degrees*(Math.PI/180);
+          /**
+           * absolute angle to relative angle, in degrees
+           * @param {Number} degrees absolute angle in degrees
+           * @returns {Number} relative angle in degrees
+           */
+          normaliseDegrees: function (degrees) {
+            degrees = degrees % 360;
+            if (degrees < 0) {
+              degrees += 360;
             }
+            return degrees;
+          },
+
+          /**
+           * absolute angle to relative angle, in radians
+           * @param {Number} radians absolute angle in radians
+           * @returns {Number} relative angle in radians
+           */
+          normaliseRadians: function (radians) {
+            radians = radians % (2 * Math.PI);
+            if (radians < 0) {
+              radians += (2 * Math.PI);
+            }
+            return radians;
+          },
+
+          /**
+           * convert radians to degrees
+           * @param {Number} radians
+           * @returns {Number} degrees
+           */
+          toDegrees: function (radians) {
+            return radians * (180 / Math.PI);
+          },
+
+          /**
+           * convert degrees to radians
+           * @param {Number} degrees
+           * @returns {Number} radians
+           */
+          toRadians: function (degrees) {
+            return degrees * (Math.PI / 180);
+          }
+        },
         getFunctionFromString: function (ns, o) {
             o = (o === undefined) ? window : o;
             return ns.split('.').reduce(index, o);
