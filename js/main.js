@@ -85,6 +85,14 @@ function buildShip_1() {
   block2.frozen = true;
   game.addEntity(block2);
 
+  var block3 = game._builder.createBlock('3', origin.x + wall_size, 180 + origin.y , 450, wall_size, 0xB5B5B5);
+  block3.frozen = true;
+  game.addEntity(block3);
+
+  var block4 = game._builder.createBlock('4', 470 + origin.x, origin.y , wall_size, 200, 0xB5B5B5);
+  block4.frozen = true;
+  game.addEntity(block4);
+
   var force = new Force(
       new Vector(origin.x + 200, origin.y + 120),
       400,
@@ -93,14 +101,6 @@ function buildShip_1() {
   );
 
   game.addEntity(force);
-
-  var block3 = game._builder.createBlock('3', origin.x + wall_size, 180 + origin.y , 450, wall_size, 0xB5B5B5);
-  block3.frozen = true;
-  game.addEntity(block3);
-
-  var block4 = game._builder.createBlock('4', 470 + origin.x, origin.y , wall_size, 200, 0xB5B5B5);
-  block4.frozen = true;
-  game.addEntity(block4);
 }
 
 function addGui() {
