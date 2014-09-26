@@ -22,7 +22,7 @@
      * @returns {Number}
      */
     Vector.prototype.distance = function (v) {
-        var resultVector = this.substract(v);
+        var resultVector = this.subtract(v);
         return resultVector.len();
     };
 
@@ -95,9 +95,18 @@
         return new Vector(0, 0);
     };
 
-  Vector.prototype.cross = function(v) {
-    return (this.x * v.y - this.y * v.x);
-  };
+    /**
+     *
+     * @param scalar
+     * @returns {Number|Vector}
+     */
+      Vector.prototype.unitScalar = function(scalar) {
+        return this.unit().multiply(scalar);
+      };
+
+    Vector.prototype.cross = function(v) {
+      return (this.x * v.y - this.y * v.x);
+    };
 
   /**
    *

@@ -5,7 +5,11 @@
 var Force = BaseEntity.extend({
 
   params: {},
-
+  strength: 10,
+  pulseTimer: {
+    interval: 100,
+    timeLapsed: 0
+  },
   drawCone: function (forceGraphics, params) {
     forceGraphics.beginFill(0xD281F7, 0.5);
     forceGraphics.moveTo(params.origin.x, params.origin.y);
@@ -71,6 +75,17 @@ var Force = BaseEntity.extend({
 
     this.physicsBody.J = 1;//this.m * (dimensions.height * dimensions.height + dimensions.width * this.width) / 12000;
 
+    this.pulseTimer.checkInterval = function() {
+      this.timeLapsed += game.timeDelta;
+
+      if (this.timeLapsed >= this.interval) {
+        this.timeLapsed = 0;
+
+        return true;
+      }
+
+      return false;
+    };
   },
   adjustWidth: function(angle) {
     this._graphics.clear();
@@ -87,8 +102,20 @@ var Force = BaseEntity.extend({
   update: function() {
 
   },
-  handleCollision: function() {
-    //alert('collide');
+  handleCollision: function(collisionShape, axes1Overlap, axes2Overlap) {
+    if (this.pulseTimer.checkInterval()) {
+      var speed = collisionShape.physicsBody.v;
+
+      var penetrationVector = this.params.origin.subtract(collisionShape.dimensions.center());
+      var newSpeed = speed.add(penetrationVector.multiply(-0.1));
+      var speedValue = Math.abs(newSpeed.distance(new Vector(0, 0)));
+
+      if (speedValue > this.strength) {
+        newSpeed = newSpeed.unitScalar(this.strength);
+      }
+
+      collisionShape.physicsBody.v = newSpeed;
+    }
   },
   apply: function() {
     //Draw
