@@ -172,7 +172,10 @@ function makeSpaceLevel() {
     height: 2,
     mass: 1,
     color: 0xFF0000,
-    alpha: 1
+    alpha: 1,
+    health: {
+      max: 5
+    }
   };
   var optionsMedium = {
     x: 0,
@@ -181,7 +184,10 @@ function makeSpaceLevel() {
     height: 4,
     mass: 3,
     color: 0xFF0000,
-    alpha: 1
+    alpha: 1,
+    health: {
+      max: 5
+    }
   };
   var optionsLarge = {
     x: 0,
@@ -190,17 +196,20 @@ function makeSpaceLevel() {
     height: 8,
     mass: 5,
     color: 0xFF0000,
-    alpha: 1
+    alpha: 1,
+    health: {
+      max: 5
+    }
   };
-  for (i = 0; i < 20; i++) {
+ /* for (i = 0; i < 20; i++) {
     optionsSmall.name = 'smallMeteor' + i;
     level.levelData.meteors.push(builder.createMeteor(optionsSmall));
   }
   for (i = 0; i < 10; i++) {
     optionsSmall.name = 'mediumMeteor' + i;
     level.levelData.meteors.push(builder.createMeteor(optionsMedium));
-  }
-  for (i = 0; i < 5; i++) {
+  }*/
+  for (i = 0; i < 1; i++) {
     optionsSmall.name = 'bigAssMeteor' + i;
     level.levelData.meteors.push(builder.createMeteor(optionsLarge));
   }
@@ -214,6 +223,6 @@ window.onload = function() {
         defaultLevel: false
     });
 
-  buildShip_1();
   makeSpaceLevel();
+  buildShip_1();
 };

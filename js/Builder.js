@@ -226,7 +226,7 @@ var Builder = Class.extend({
 
     var blockGraphics = new PIXI.Graphics();
 
-    var meteor = new Meteor(options.name, blockGraphics, {x: options.x, y: options.y, w: options.width, h: options.height});
+    var meteor = new Meteor(options.name, blockGraphics, {x: options.x, y: options.y, w: options.width, h: options.height, health: options.health});
     meteor.physicsBody.m = options.m;
 
     meteor.name = options.name;
