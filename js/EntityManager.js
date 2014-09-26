@@ -3,8 +3,10 @@
         _entities: [],
         _entitiesByName: {},
         _stage: null,
+        camera: null,
         init: function(stage){
             this._stage = stage;
+            this.camera = Container.getGame()._cameraContainer;
         },
 
         /**
@@ -12,10 +14,13 @@
          * @param {Boolean} [addToWorld]
          */
         addEntity: function(entity, addToWorld){
+            if (addToWorld === undefined){
+              addToWorld = true;
+            }
             this._entities.push(entity);
             this._entitiesByName[entity.name] = entity;
-            if (addToWorld === undefined || addToWorld) {
-                this._stage.addChild(entity.getGraphics());
+            if (addToWorld) {
+                this.camera.addChild(entity.getGraphics());
             }
         },
 
@@ -30,6 +35,9 @@
             }
         },
 
+      /**
+       * @param {string} name
+       */
         removeEntityByName: function(name) {
             var entity = this._entitiesByName[name];
             if (entity) {
@@ -83,8 +91,8 @@
             this._entities = [];
             this._entitiesByName = {};
             if (clearStage) {
-                game._builder.clearRooms(this.getAllEntities());
-                this._stage.removeChildren();
+                Container.getGame()._builder.clearRooms(this.getAllEntities());
+                Container.getGame()._cameraContainer.removeChildren();
             }
         },
 
