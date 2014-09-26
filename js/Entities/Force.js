@@ -5,7 +5,7 @@
 var Force = BaseEntity.extend({
 
   params: {},
-  rotationSpeed: 1,
+  rotationSpeed: 2,
 
   drawCone: function (forceGraphics, params) {
     forceGraphics.beginFill(0xD281F7, 0.5);
@@ -86,6 +86,11 @@ var Force = BaseEntity.extend({
     this.drawCone(this._graphics, this.params);
   },
   update: function() {
+    this.updateAngle();
+    this.updateWidth();
+
+  },
+  updateAngle: function() {
     var helpers = game.getHelpers();
     var mousePos = Container.getGame().getInputHandler().getMousePosition();
     if (mousePos) {
@@ -106,6 +111,15 @@ var Force = BaseEntity.extend({
           }
         }
       }
+    }
+  },
+  updateWidth: function() {
+    var inputHandler = Container.getGame().getInputHandler();
+    if (inputHandler.key('up') || inputHandler.key('right')) {
+      this.adjustWidth(this.params.angle+2);
+    }
+    else if (inputHandler.key('down') || inputHandler.key('left')) {
+      this.adjustWidth(this.params.angle-2);
     }
   },
   handleCollision: function() {
