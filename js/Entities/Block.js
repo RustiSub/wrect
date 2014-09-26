@@ -12,6 +12,7 @@ var Block = MovableEntity.extend({
   _className: 'Block',
   dimensions: {},
   physicsBody: {},
+  health: {},
 
   init: function(name, graphics, params) {
     this._super(name, graphics);
@@ -54,6 +55,24 @@ var Block = MovableEntity.extend({
     this.physicsBody.J = 1;//this.m * (dimensions.height * dimensions.height + dimensions.width * this.width) / 12000;
 
     this._graphics.position = this.dimensions.topLeft;
+
+    var max = typeof params.health.max !== 'undefined' ? params.health.max : 100;
+    var current = typeof params.health.current !== 'undefined' ? params.health.current : max;
+    this.health = {
+      max: max,
+      current: current,
+      doDamage: function(percentage) {
+        this.current -= percentage;
+      }
+    };
+  },
+  displayDamage: function() {
+    this._graphics.clear();
+    this.baseCallback(this.health.current / this.health.max);
+
+    if (this.health.current <= 0) {
+      game.getEntityManager().removeEntity(this);
+    }
   },
   setPosition: function(vector) {
     this.dimensions.topLeft = vector;
@@ -87,19 +106,7 @@ var Block = MovableEntity.extend({
     this._graphics.position.x = this.dimensions.topLeft.x;
     this._graphics.position.y = this.dimensions.topLeft.y;
     this._graphics.rotation = this.physicsBody.theta;
-
-//    this._graphics.beginFill(0x0080FF);
-//    this._graphics.drawCircle(this.dimensions.bottomLeft.x, this.dimensions.bottomLeft.y, 2);
-//    this._graphics.drawCircle(this.dimensions.bottomRight.x, this.dimensions.bottomRight.y, 2);
-//    this._graphics.drawCircle(this.dimensions.topLeft.x, this.dimensions.bottomLeft.y, 2);
-//    this._graphics.drawCircle(this.dimensions.bottomLeft.x, this.dimensions.bottomLeft.y, 2);
-//    this._graphics.endFill();
-//    this._graphics.pivot.x = 75;
-//    this._graphics.pivot.y = 10;
-//    this._graphics.rotation += 0.01;
   },
-//  transformations: {
-//  },
   handleCollision: function(collisionShape, axes1Overlap, axes2Overlap) {
     if (!collisionShape._physics.solid) {
       return;
@@ -114,7 +121,7 @@ var Block = MovableEntity.extend({
     var u = n.multiply(vn);
     var w = v.subtract(u);
     var v2 = w.subtract(u);
-    var energyTransfer = 0.9;
+
 
     v2.x = capSmallSpeed(v2.x);
     v2.y = capSmallSpeed(v2.y);
@@ -125,11 +132,22 @@ var Block = MovableEntity.extend({
     this._physics.move(this.dimensions, pushOutVector);
 
     if (!collisionShape.frozen) {
-      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
-      v2 = v2.multiply(energyTransfer);
+      //var energyTransfer = 0.9;
+      //collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
+      //v2 = v2.multiply(energyTransfer);
     }
 
     this.physicsBody.v = v2;
+
+    var damage = Math.abs(u.dot(new Vector(1, 1)));
+    damage = damage * this.physicsBody.m;
+    var damageCapped = damage <= 100 ? damage : 100;
+
+    this.health.doDamage(damageCapped);
+    this.displayDamage();
+
+    collisionShape.health.doDamage(damageCapped);
+    collisionShape.displayDamage();
   },
   toJSON: function() {
       return {

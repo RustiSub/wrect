@@ -159,13 +159,22 @@ var Builder = Class.extend({
     return block;
   },
 
-  createBlock: function (name, x, y, width, height, color, alpha) {
+  createBlock: function (name, x, y, width, height, color, alpha, health) {
     alpha = typeof alpha !== 'undefined' ? alpha : 1;
     color = typeof color !== 'undefined' ? color : 0x00FF00;
+    health = typeof health !== 'undefined' ? health : {};
 
     var blockGraphics = new PIXI.Graphics();
 
-    var block = new Block(name, blockGraphics, {x: x, y: y, w: width, h: height});
+    var block = new Block(name, blockGraphics,
+        {
+          x: x,
+          y: y,
+          w: width,
+          h: height,
+          health: health
+        }
+    );
 
     block.name = name;
 
@@ -180,8 +189,9 @@ var Builder = Class.extend({
 //      this._graphics.endFill();
     };
 
-    block.baseCallback  = function() {
-      this._graphics.beginFill(color);
+    block.baseCallback  = function(alpha) {
+      alpha = typeof alpha !== 'undefined' ? alpha : 1;
+      this._graphics.beginFill(color, alpha);
       this._graphics.drawRect(0, 0, this.dimensions.width,this.dimensions.height);
       this._graphics.endFill();
     };

@@ -73,6 +73,36 @@ function shieldTest() {
   game.addEntity(force);
 }
 
+function buildShip_1() {
+  var wall_size = 20;
+  var origin = new Vector(250, 200);
+
+  var block1 = game._builder.createBlock('1', origin.x, origin.y, wall_size, 200, 0xB5B5B5);
+  block1.frozen = true;
+  game.addEntity(block1);
+
+  var block2 = game._builder.createBlock('2', origin.x + wall_size, origin.y, 450, wall_size, 0xB5B5B5);
+  block2.frozen = true;
+  game.addEntity(block2);
+
+  var block3 = game._builder.createBlock('3', origin.x + wall_size, 180 + origin.y , 450, wall_size, 0xB5B5B5);
+  block3.frozen = true;
+  game.addEntity(block3);
+
+  var block4 = game._builder.createBlock('4', 470 + origin.x, origin.y , wall_size, 200, 0xB5B5B5);
+  block4.frozen = true;
+  game.addEntity(block4);
+
+  var force = new Force(
+      new Vector(origin.x + 200, origin.y + 120),
+      400,
+      45,
+      -25
+  );
+
+  game.addEntity(force);
+}
+
 function addGui() {
     /* var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
      fullscreenButton.addEvent('click', function(){game.goFullscreen();});
@@ -184,5 +214,6 @@ window.onload = function() {
         defaultLevel: false
     });
 
+  buildShip_1();
   makeSpaceLevel();
 };
