@@ -1,0 +1,156 @@
+/* Grid sizing */
+.gui.col-1 {
+    width: 6.25%;
+}
+.gui.col-2 {
+    width: 12.50%;
+}
+.gui.col-3 {
+    width: 18.75%;
+}
+.gui.col-4 {
+    width: 25%;
+}
+.gui.col-5 {
+    width: 31.25%;
+}
+.gui.col-6 {
+    width: 37.5%;
+}
+.gui.col-7 {
+    width: 43.75%;
+}
+.gui.col-8 {
+    width: 50%;
+}
+.gui.col-9 {
+    width: 56.25%;
+}
+.gui.col-10 {
+    width: 62.5%;
+}
+.gui.col-11 {
+    width: 68.75%;
+}
+.gui.col-12 {
+    width: 75%;
+}
+.gui.col-13 {
+    width: 81.25%;
+}
+.gui.col-14 {
+    width: 87.5%;
+}
+.gui.col-15 {
+    width: 93.75%;
+}
+.gui.col-16 {
+    width: 100%;
+}
+
+.gui.row-1 {
+    height: 11.1111111111111%;
+}
+.gui.row-2 {
+    height: 22.2222222222222%;
+}
+.gui.row-3 {
+    height: 33.3333333333333%;
+}
+.gui.row-4 {
+    height: 44.4444444444444%;
+}
+.gui.row-5 {
+    height: 55.5555555555555%;
+}
+.gui.row-6 {
+    height: 66.6666666666666%;
+}
+.gui.row-7 {
+    height: 77.7777777777777%;
+}
+.gui.row-8 {
+    height: 88.8888888888888%;
+}
+.gui.row-9 {
+    height: 100%;
+}
+
+
+/* Grid positioning */
+.gui.col-pos-0 {
+    left: 0;
+}
+.gui.col-pos-1 {
+    left: 6.25%;
+}
+.gui.col-pos-2 {
+    left: 12.50%;
+}
+.gui.col-pos-3 {
+    left: 18.75%;
+}
+.gui.col-pos-4 {
+    left: 25%;
+}
+.gui.col-pos-5 {
+    left: 31.25%;
+}
+.gui.col-pos-6 {
+    left: 37.5%;
+}
+.gui.col-pos-7 {
+    left: 43.75%;
+}
+.gui.col-pos-8 {
+    left: 50%;
+}
+.gui.col-pos-9 {
+    left: 56.25%;
+}
+.gui.col-pos-10 {
+    left: 62.5%;
+}
+.gui.col-pos-11 {
+    left: 68.75%;
+}
+.gui.col-pos-12 {
+    left: 75%;
+}
+.gui.col-pos-13 {
+    left: 81.25%;
+}
+.gui.col-pos-14 {
+    left: 87.5%;
+}
+.gui.col-pos-15 {
+    left: 93.75%;
+}
+
+.gui.row-pos-0 {
+    top: 0;
+}
+.gui.row-pos-1 {
+    top: 11.1111111111111%;
+}
+.gui.row-pos-2 {
+    top: 22.2222222222222%;
+}
+.gui.row-pos-3 {
+    top: 33.3333333333333%;
+}
+.gui.row-pos-4 {
+    top: 44.4444444444444%;
+}
+.gui.row-pos-5 {
+    top: 55.5555555555555%;
+}
+.gui.row-pos-6 {
+    top: 66.6666666666666%;
+}
+.gui.row-pos-7 {
+    top: 77.7777777777777%;
+}
+.gui.row-pos-8 {
+    top: 88.8888888888888%;
+}

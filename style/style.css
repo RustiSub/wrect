@@ -1,3 +1,10 @@
+@import "gui/gui.css";
+@import "gui/grid.css";
+@import "gui/scaling.css";
+
+* {
+  outline: none;
+}
 body {
 	background-color: #222;
 	margin: 0;
@@ -5,7 +12,6 @@ body {
 
 body {
 	margin: 0 auto;
-	width: 1280px;
 }
 
 canvas {
@@ -58,16 +64,6 @@ body:fullscreen .canvasContainer{
 }
 
 .canvasContainer {
-	height: 720px;
 	position: relative;
-	width: 1280px;
-}
-
-
-/* GUI element styling */
-button.gui {
-	background: none;
-	border: none;
-	margin: 0;
-	padding: 0;
+	overflow: hidden;
 }

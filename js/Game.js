@@ -8,7 +8,7 @@
         timeDelta: 0,
         previousTime: 0,
         debug: false,
-        fpsOutInterval: 1000,
+        fpsOutInterval: 10000,
         debugStats: [],
         _defaults: {
             inputHandlerClass: InputHandler,
@@ -57,6 +57,7 @@
          * @param {Boolean} options.autoBoot Whether or not to automatically start up the game. This can be useful for overriding classes between the init and boot
          */
         init: function(options) {
+            this.createGlobalContainer.call(this);
             this.buildOptions(options);
             if (options.debug) {
                 console.info('debug mode enabled');
@@ -70,7 +71,6 @@
             if (this._options && typeof this._options.autoBoot !== 'undefined' && this._options.autoBoot) {
                 this.bootstrap(options);
             }
-            this.createGlobalContainer.call(this);
         },
 
         /**
@@ -79,6 +79,7 @@
         buildComponents: function() {
             this._stage = new PIXI.Stage(0x5E5E5E);
             this._renderer = new PIXI.autoDetectRenderer(this._options.width, this._options.height);
+            global.document.body.querySelector('.canvasContainer').appendChild(this._renderer.view);
             // Required for fading
             this._renderer.view.style.opacity = 1;
 
@@ -112,7 +113,6 @@
             var renderer = this.getRenderer();
             var self = this;
 
-            global.document.body.querySelector('.canvasContainer').appendChild(renderer.view);
             requestAnimationFrame(run);
 
             function run(timestamp) {
@@ -229,24 +229,54 @@
             }
         },
 
-				goFullscreen: function(element) {
-					var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
-						(document.mozFullScreen || document.webkitIsFullScreen);
+        /**
+         * @param [element]
+         */
+        goFullscreen: function(element) {
+            var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
+                (document.mozFullScreen || document.webkitIsFullScreen);
 
-					var docElm = element ? element : document.body;
-					if (!isInFullScreen) {
+            var docElm = element ? element : document.body;
+            if (!isInFullScreen) {
 
-						if (docElm.requestFullscreen) {
-							docElm.requestFullscreen();
-						}
-						else if (docElm.mozRequestFullScreen) {
-							docElm.mozRequestFullScreen();
-						}
-						else if (docElm.webkitRequestFullScreen) {
-							docElm.webkitRequestFullScreen();
-						}
-					}
-				},
+                if (docElm.requestFullscreen) {
+                    docElm.requestFullscreen();
+                }
+                else if (docElm.mozRequestFullScreen) {
+                    docElm.mozRequestFullScreen();
+                }
+                else if (docElm.webkitRequestFullScreen) {
+                    docElm.webkitRequestFullScreen();
+                }
+                var self = this;
+                setTimeout(function() {
+                    self._renderer.resize(screen.width, screen.height);
+                }, 40);
+            }
+            else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen()
+                }
+                else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                }
+                else if (document.webkitExitFullscreen) {
+                    document.webkitCancelFullscreen();
+                }
+                else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        },
+
+        getHeight: function() {
+            return this.getRenderer().view.height;
+        },
+
+        getWidth: function() {
+            return this.getRenderer().view.width;
+        },
+
         trackFps: function(timestamp) {
             if (!this.debugStats.previousFpsOut) {
                 this.debugStats.previousFpsOut = timestamp;
