@@ -58,19 +58,21 @@ function shieldTest() {
   //meteor.physicsBody.v = new Vector(0, 5);
   //game.addEntity(meteor);
 
-  var meteor = game._builder.createBlock('meteor_left', 800, 250, 20, 20, 0xFFFFFF);
-  meteor.physicsBody.v = new Vector(-25, 0);
+  var meteor = game._builder.createBlock('meteor_left', 800, 250, 20, 20, 0xFFFFFF, 1, {
+    max: 5
+  });
+  meteor.physicsBody.v = new Vector(-20, 1);
 
   game.addEntity(meteor);
 
-  var force = new Force(
-      new Vector(200, 250),
-      400,
-      45,
-      -25
-  );
-
-  game.addEntity(force);
+  //var force = new Force(
+  //    new Vector(200, 250),
+  //    400,
+  //    45,
+  //    -25
+  //);
+  //
+  //game.addEntity(force);
 }
 
 function addGui() {
