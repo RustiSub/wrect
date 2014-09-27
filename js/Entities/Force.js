@@ -110,23 +110,30 @@ var Force = BaseEntity.extend({
   },
   updateAngle: function() {
     var helpers = game.getHelpers();
-    var mousePos = Container.getGame().getInputHandler().getMousePosition();
+    var mousePos = Container.getGame().getInputHandler().getMouseWorldPosition();
     if (mousePos) {
+      // Calculate the angle between the mouse and the current shield position
       var targetVector = mousePos.subtract(this.params.origin);
       var targetAngle = helpers.math.toDegrees(Math.atan2(targetVector.y, targetVector.x));
-      var diff = Math.abs(targetAngle - this.params.forceAngle);
 
-      if (diff >= this.rotationSpeed) {
+      // Calculate the difference in degrees between the current and the target anglen modulo'd by 360 to keep things working after doing a full circle
+      var diff = Math.round(targetAngle - this.params.forceAngle)%360;
+      if (Math.abs(diff) > this.rotationSpeed) {
+
+        // Prevents choosing the wrong turning direction
         if (diff > 180) {
-          targetAngle += 360;
+          diff -= 360;
         }
-        if (Math.floor(targetAngle) != Math.floor(this.params.forceAngle)) {
-          if (targetAngle < this.params.forceAngle) {
-            this.adjustAngle(Math.round(this.params.forceAngle - this.rotationSpeed));
-          }
-          else {
-            this.adjustAngle(Math.round(this.params.forceAngle + this.rotationSpeed));
-          }
+        else if (diff < -180) {
+          diff += 360;
+        }
+
+        // Apply the rotationspeed in the correct direction. Modulo'd by 360 to keep things working after doing a full circle
+        if (diff < 0) {
+          this.adjustAngle(Math.round(this.params.forceAngle - this.rotationSpeed)%360);
+        }
+        else {
+          this.adjustAngle(Math.round(this.params.forceAngle + this.rotationSpeed)%360);
         }
       }
     }

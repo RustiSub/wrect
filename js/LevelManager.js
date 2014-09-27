@@ -51,7 +51,7 @@
 
     switchLevel: function(level) {
       this.currentLevel = level;
-      Container.getGame().getEntityManager().clearEntities();
+      this.game.getEntityManager().clearEntities();
       for (var x = 0; x < level.entities.length; x++) {
         this.game.getEntityManager().addEntity(level.entities[x]);
       }
@@ -75,7 +75,7 @@
     },
 
     clearLevel: function() {
-      Container.getGame().getEntityManager().clearEntities(true);
+      this.game.getEntityManager().clearEntities(true);
     },
 
     /**
@@ -85,7 +85,7 @@
     saveCurrentState: function(levelName, asFile) {
       this.currentLevel = new BaseLevel();
       this.currentLevel.name = levelName;
-      var entities = Container.getComponent('EntityManager').getAllEntities();
+      var entities = this.game.getEntityManager().getAllEntities();
       var blocks = [];
       for (var x = 0; x < entities.length; x++) {
         if (entities[x] instanceof Block) {

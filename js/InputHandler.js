@@ -65,6 +65,12 @@
     gamepadsConnected: [],
     gamepadSupported: false,
     currentGamepadState: null,
+    game: null,
+
+    /**
+     * Init the
+     * @param containerId
+     */
     init: function(containerId) {
       var captureScope = window;
       if (typeof containerId !== 'undefined' ) {
@@ -73,13 +79,14 @@
       // Register all keys in _keys as keys we should capture. Others will be ignored.
       for (var x in this._keys) {
         if (this._keys.hasOwnProperty(x)) {
-          this._keysToCapture.push(this._keys[x])
+          this._keysToCapture.push(this._keys[x]);
         }
       }
       this._mouseWheel = {
         up: false,
         down: false
       };
+      this.game = Container.getGame();
       captureScope.addEventListener('keyup', this._onKeyup.bind(this));
       captureScope.addEventListener('keydown', this._onKeydown.bind(this));
       captureScope.addEventListener('wheel', this._onMouseWheel.bind(this));
@@ -91,6 +98,11 @@
         console.info('Gamepad API not supported in this browser');
       }
     },
+
+    /**
+     * Init the gamepad logic. Only triggered when the Gamepad API is supported
+     * @param captureScope
+     */
     initGamepad: function(captureScope) {
       var self = this;
       this.gamepadSupported = true;
@@ -114,6 +126,12 @@
         self.gamepadsConnected.splice(self.gamepadsConnected.indexOf(e.gamepad.id), 1);
       });
     },
+
+    /**
+     * Internal event for detecting when a key is pushed
+     * @param event
+     * @private
+     */
     _onKeydown: function(event) {
       if (this._keysToCapture.indexOf(event.keyCode) !== -1
         && this._pressed.indexOf(event.keyCode) === -1) {
@@ -122,6 +140,12 @@
         event.preventDefault();
       }
     },
+
+    /**
+     * Internal event for detecting when a key is released
+     * @param event
+     * @private
+     */
     _onKeyup: function(event) {
       var index;
       if ((index = this._pressed.indexOf(event.keyCode)) !== -1) {
@@ -134,6 +158,12 @@
         event.preventDefault();
       }
     },
+
+    /**
+     * Internal event for handling the mousewheel
+     * @param e
+     * @private
+     */
     _onMouseWheel: function(e) {
       if (e.wheelDelta > 0) {
         this._mouseWheel.up = true;
@@ -143,21 +173,45 @@
       }
     },
     /**
+     * Get the current mouse position relative to the screen
      * @returns {Window.Vector|boolean}
      */
     getMousePosition: function() {
-      var pos = Container.getGame().getStage().getMousePosition();
+      var pos = this.game.getStage().getMousePosition();
       if (pos.x === -10000 && pos.y === -10000) {
         return false;
       }
       return new Vector(pos.x, pos.y);
     },
+
+    /**
+     * Get the current mouse position relative to the world
+     * @returns {*}
+     */
+    getMouseWorldPosition: function() {
+      return this.game.getCamera().getMouseWorldCoordinates();
+    },
+
+    /**
+     * Get if the mousewheel was scrolled up this frame
+     * @returns {boolean}
+     */
     mouseWheelUp: function() {
       return this._mouseWheel.up;
     },
+
+    /**
+     * Get if the mousewheel was scrolled down this frame
+     * @returns {boolean}
+     */
     mouseWheelDown: function() {
       return this._mouseWheel.down;
     },
+
+    /**
+     * Gets if the position of the mouse changed in the previous frame (relative to screen, not world)
+     * @returns {boolean}
+     */
     mousePositionChanged: function() {
       if (this._previousMousePos) {
         var mp = this.getMousePosition();
@@ -165,6 +219,12 @@
       }
       return false;
     },
+
+    /**
+     * Gets if the key with the given keyname is currently down
+     * @param keyName
+     * @returns {boolean}
+     */
     key: function(keyName) {
       var keyCode = this._keys[keyName.toUpperCase()];
       var keyFound = this._pressed.indexOf(keyCode) != -1;
@@ -180,11 +240,19 @@
 
       return false;
     },
+
+    /**
+     * Update the internal mouse variables
+     */
     updateMouse: function() {
       this._previousMousePos = this.getMousePosition();
       this._mouseWheel.up = false;
       this._mouseWheel.down = false;
     },
+
+    /**
+     * Update the gamepad state
+     */
     updateGamepad: function() {
       if (this.gamepadSupported) {
         var gamepads = window.navigator.getGamepads();
@@ -195,10 +263,21 @@
         }
       }
     },
+
+    /**
+     * Update the inputhandler
+     */
     update: function() {
       this.updateGamepad();
       this.updateMouse();
     },
+
+    /**
+     * Gets if the button with the given name (and player) is currently down
+     * @param buttonName
+     * @param playerIndex
+     * @returns {*}
+     */
     gamepadButton: function(buttonName, playerIndex) {
       if (this.currentGamepadState !== null) {
         if (playerIndex === undefined) {
@@ -219,6 +298,13 @@
       }
       return false;
     },
+
+    /**
+     * Gets the value of the gamepad axis with the given name
+     * @param axisName
+     * @param playerIndex
+     * @returns {*}
+     */
     gamepadAxis: function(axisName, playerIndex) {
       if (this.currentGamepadState !== null) {
         if (playerIndex === undefined) {
@@ -239,6 +325,13 @@
       }
       return false;
     },
+
+    /**
+     * Gets a boolean value of the direction of the gamepad axis
+     * @param axisName
+     * @param playerIndex
+     * @returns {*}
+     */
     gamepadAxisDigital: function(axisName, playerIndex) {
       var state = this.gamepadAxis(axisName, playerIndex);
       if (state !== false) {
@@ -256,9 +349,20 @@
       }
       return false;
     },
+    /**
+     * Sets the gamezone to use for the Digital Axis checks
+     * @param axisName
+     * @param deadzone
+     */
     setgamepadDigitalAxisDeadzone: function(axisName, deadzone) {
       this._gamepadDigitalAxisDeadzones[axisName] = deadzone;
     },
+
+    /**
+     * Gets the gamezone to use for the Digital Axis checks
+     * @param axisName
+     * @param deadzone
+     */
     getgamepadDigitalAxisDeadzone: function(axisName) {
       return this._gamepadDigitalAxisDeadzones[axisName];
     }

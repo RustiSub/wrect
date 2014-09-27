@@ -1,4 +1,8 @@
 (function(global) {
+  /**
+   * @Class Game
+   * @type {void|*}
+   */
     global.Game = Class.extend ({
         _stage: null,
         _renderer: null,

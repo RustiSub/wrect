@@ -9,8 +9,7 @@
     },
     update: function() {
       this.timer += game.getDelta();
-      //if (this.timer > ((15000 - 5000) * Math.random() + 5000)) {
-      if (true) {
+      if (this.timer > ((15000 - 5000) * Math.random() + 5000)) {
         if (this.levelData.meteorsSpawned.length !== this.levelData.meteors.length) {
           this.timer = 0;
           var randomIndex = this.getRandomMeteorIndex();
@@ -34,7 +33,7 @@
       var meteor = this.levelData.meteors[index];
       var entityManager = window.game.getEntityManager();
       var position = this.getRandomMeteorPosition();
-      var speed = (20-5) * Math.random() + 5;
+      var speed = (15-2) * Math.random() + 2;
 
       meteor.setPosition(position);
       meteor.physicsBody.v = ship.dimensions.topLeft.subtract(position).unit().multiply(speed);
@@ -44,13 +43,12 @@
     getRandomMeteorPosition: function(){
       var x = 0;
       var y = 0;
-      while (x > 0 && x < Container.getGame().getWidth()) {
+      while (x >= 0 && x < Container.getGame().getWidth()) {
         x = 20000 * Math.random() - 10000;
       }
-      while (y > 0 && y < Container.getGame().getHeight()) {
+      while (y >= 0 && y < Container.getGame().getHeight()) {
         y = 20000 * Math.random() - 10000;
       }
-
       return new Vector(x, y);
     },
     toJSON: function() {

@@ -168,8 +168,8 @@ function makeSpaceLevel() {
   var optionsSmall = {
     x: 0,
     y: 0,
-    width: 2,
-    height: 2,
+    width: 10,
+    height: 10,
     mass: 1,
     color: 0xFF0000,
     alpha: 1,
@@ -180,8 +180,8 @@ function makeSpaceLevel() {
   var optionsMedium = {
     x: 0,
     y: 0,
-    width: 4,
-    height: 4,
+    width: 20,
+    height: 20,
     mass: 3,
     color: 0xFF0000,
     alpha: 1,
@@ -192,8 +192,8 @@ function makeSpaceLevel() {
   var optionsLarge = {
     x: 0,
     y: 0,
-    width: 8,
-    height: 8,
+    width: 40,
+    height: 40,
     mass: 5,
     color: 0xFF0000,
     alpha: 1,
@@ -201,14 +201,14 @@ function makeSpaceLevel() {
       max: 5
     }
   };
- /* for (i = 0; i < 20; i++) {
+  for (i = 0; i < 20; i++) {
     optionsSmall.name = 'smallMeteor' + i;
     level.levelData.meteors.push(builder.createMeteor(optionsSmall));
   }
   for (i = 0; i < 10; i++) {
     optionsSmall.name = 'mediumMeteor' + i;
     level.levelData.meteors.push(builder.createMeteor(optionsMedium));
-  }*/
+  }
   for (i = 0; i < 1; i++) {
     optionsSmall.name = 'bigAssMeteor' + i;
     level.levelData.meteors.push(builder.createMeteor(optionsLarge));
@@ -225,4 +225,6 @@ window.onload = function() {
 
   makeSpaceLevel();
   buildShip_1();
+  var shield = game.getEntityManager().getEntityByName('1');
+  game.getCamera().follow(shield);
 };

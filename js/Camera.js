@@ -13,7 +13,7 @@
   window.Camera = function(x, y, width, height) {
     /**
      * Reference to game
-     * @type {game|*}
+     * @type Game
      */
     this.game = Container.getGame();
 
@@ -44,26 +44,17 @@
       width: 200
     };
 
-    this.displayContainer = Container.getGame()._cameraContainer;
+    this.displayContainer = this.game._cameraContainer;
 
     /**
      * Position of the camera
      * @type {{x: number, y: number}}
      */
-    this.position = {
-      x: x,
-      y: y
-    };
+    this.position = new Vector(x, y);
 
-    this.targetPosition = {
-      x: x,
-      y: y
-    };
+    this.targetPosition = new Vector(x, y);
 
-    this.nextPosition = {
-      x: x,
-      y: y
-    };
+    this.nextPosition = new Vector(x, y);
 
     /**
      * Bounds of the camera
@@ -80,14 +71,16 @@
       }
     };
 
+    var curLvl = this.game.getCurrentLevel();
+
     /**
      * Dimensions of the level
      * @type {{x: *, y: *}}
      */
-    this.levelDimensions = {
-      x: this.game.getCurrentLevel().width,
-      y: this.game.getCurrentLevel().height
-    };
+    this.levelDimensions = new Vector(
+      curLvl.width,
+      curLvl.height
+    );
 
     /**
      * Whether or not the camera is at the edge
@@ -104,9 +97,16 @@
    * @param {Block} entity
    */
   window.Camera.prototype.follow = function(entity) {
-    //this.targetPosition = entity.dimensions.topLeft;
-    this.position = entity.dimensions.topLeft;
     this.target = entity;
+  };
+
+  window.Camera.prototype.getMouseWorldCoordinates = function() {
+    var screenPos = this.game.getInputHandler().getMousePosition();
+    if (screenPos) {
+      return screenPos.add(this.position);
+    }
+
+    return false;
   };
 
   window.Camera.prototype.unfollow = function() {
