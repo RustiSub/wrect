@@ -109,15 +109,32 @@ var Force = BaseEntity.extend({
     if (this.pulseTimer.checkInterval()) {
       var speed = collisionShape.physicsBody.v;
 
+      var center = collisionShape.dimensions.center();
       var penetrationVector = this.params.origin.subtract(collisionShape.dimensions.center());
-      var newSpeed = speed.add(penetrationVector.multiply(-0.05));
-      var speedValue = Math.abs(newSpeed.distance(new Vector(0, 0)));
-
-      if (speedValue > this.strength) {
-        newSpeed = newSpeed.unitScalar(this.strength);
-      }
-
+      var newSpeed = collisionShape.physicsBody.v;
+//      var speedValue = Math.abs(newSpeed.distance(new Vector(0, 0)));
+//
+//      if (speedValue > this.strength) {
+//        newSpeed = newSpeed.unitScalar(this.strength);
+//      }
+//
+      newSpeed = newSpeed.add(penetrationVector.unitScalar(-1));
+//      var repulsionVector = collisionShape.dimensions.center().add(this.params.origin.subtract(collisionShape.dimensions.center()).unitScalar(-50));
+//      console.log(collisionShape.physicsBody.v, repulsionVector);
+////      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(repulsionVector);
+//      console.log(collisionShape.physicsBody.v);
+//
+////      console.log(penetrationVector);
+//      this._graphics.beginFill(0xFFFFFF, 0.5);
+//      this._graphics.moveTo(center.x, center.y);
+//      this._graphics.lineTo(repulsionVector.x, repulsionVector.y);
+//      this._graphics.lineTo(repulsionVector.x, repulsionVector.y + 10);
+////      this._graphics.lineTo(center.x, center.y);
+////      this._graphics.lineTo(center.x, center.y + 10);
+//      this._graphics.lineTo(center.x, center.y);
+//      this._graphics.endFill();
       collisionShape.physicsBody.v = newSpeed;
+
     }
   },
   apply: function() {
