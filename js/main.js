@@ -54,13 +54,11 @@ function shieldTest() {
   block4.frozen = true;
   game.addEntity(block4);
 
-  var meteor_down = game._builder.createBlock('meteor_down', 500, 550, 20, 20, 0xFFFFFF);
-  meteor_down.physicsBody.v = new Vector(0, -5);
-  game.addEntity(meteor_down);
-
-  var meteor_left = game._builder.createBlock('meteor_left', 800, 250, 20, 20, 0xFFFFFF);
-  meteor_left.physicsBody.v = new Vector(-5, 0);
-  game.addEntity(meteor_left);
+  for(var i = 0; i < 10; i++) {
+    var meteor_left = game._builder.createBlock('meteor_left_' + i, 800, 50 + (i * 40), 20, 20, 0xFFFFFF);
+    meteor_left.physicsBody.v = new Vector(-(5) , 0);
+    game.addEntity(meteor_left);
+  }
 
   var force = new Force(
       new Vector(200, 250),
