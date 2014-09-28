@@ -180,13 +180,7 @@ var Builder = Class.extend({
 
     block.baseGraphicsCallback = function() {
       this._graphics.clear();
-//      this.selectCallback();
       this.baseCallback();
-//      this.glueCallback();
-
-//      this._graphics.beginFill(0x0080FF);
-//      this._graphics.drawCircle(this.dimensions.width / 2, this.dimensions.height / 2, 2);
-//      this._graphics.endFill();
     };
 
     block.baseCallback  = function(alpha) {
@@ -196,22 +190,9 @@ var Builder = Class.extend({
       this._graphics.endFill();
     };
 
-    block.glueCallback = function() {
-//      if (block.hasGlue) {
-//        var mark = 4;
-//        this._graphics.beginFill(0xB231EB);
-//        this._graphics.drawRect(0 + mark , 0 + mark , this.size.x - (mark  * 2), this.size.y - (mark  * 2));
-//        this._graphics.endFill();
-//      }
-    };
+    block.glueCallback = function() {};
 
-    block.selectCallback = function() {
-//      if (this.selected) {
-//        this._graphics.beginFill(0x00FF00);
-//        this._graphics.drawRect(0 - 2, 0 - 2, this.size.x + 4, this.size.y + 4);
-//        this._graphics.endFill();
-//      }
-    };
+    block.selectCallback = function() {};
 
     block.baseGraphicsCallback();
 
@@ -226,12 +207,7 @@ var Builder = Class.extend({
 
     var graphics = new PIXI.Graphics();
 
-    var circle = new Circle(options.name, graphics,
-      {
-        origin: options.origin,
-        radius: options.radius
-      }
-    );
+    var circle = new Circle(options.name, graphics, options);
 
     circle.name = options.name;
 
@@ -241,7 +217,7 @@ var Builder = Class.extend({
     };
 
     circle.baseCallback  = function() {
-      this._graphics.beginFill(this.color);
+      this._graphics.beginFill(this.color, this.alpha);
       this._graphics.drawCircle(this.dimensions.origin.x, this.dimensions.origin.y, this.dimensions.radius);
       this._graphics.endFill();
     };

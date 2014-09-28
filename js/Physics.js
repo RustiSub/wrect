@@ -32,26 +32,28 @@ var Physics = Class.extend({
     var deltaTheta = 0  ;
     this.rotate(physicsBody, dimensions, deltaTheta);
   },
-  center: function(dimensions) {
-    var diagonal = dimensions.bottomRight.subtract(dimensions.topLeft);
-    return dimensions.topLeft.add(diagonal.scale(0.5));
-  },
   move: function(dimensions, v) {
-    dimensions.topLeft = dimensions.topLeft.add(v);
-    dimensions.topRight = dimensions.topRight.add(v);
-    dimensions.bottomRight = dimensions.bottomRight.add(v);
-    dimensions.bottomLeft = dimensions.bottomLeft.add(v);
+//    dimensions.topLeft = dimensions.topLeft.add(v);
+//    dimensions.topRight = dimensions.topRight.add(v);
+//    dimensions.bottomRight = dimensions.bottomRight.add(v);
+//    dimensions.bottomLeft = dimensions.bottomLeft.add(v);
+
+    for(var vIndex in dimensions.vertices) {
+      var vertex = dimensions.verticies[vIndex];
+      vertex = vertex.add(v);
+    }
 
     return dimensions;
   },
   rotate: function(physicsBody, dimensions, angle) {
     physicsBody.theta += angle;
-    var center = this.center(dimensions);
+    var center = dimensions.center();
+    var vertices = dimensions.vertices();
 
-    dimensions.topLeft = dimensions.topLeft.rotate(angle, center);
-    dimensions.topRight = dimensions.topRight.rotate(angle, center);
-    dimensions.bottomRight = dimensions.bottomRight.rotate(angle, center);
-    dimensions.bottomLeft = dimensions.bottomLeft.rotate(angle, center);
+    for(var vIndex in  vertices) {
+      var vertex = vertices[vIndex];
+      vertex = vertex.rotate(angle, center);
+    }
 
     return this;
   },

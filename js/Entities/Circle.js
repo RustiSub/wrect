@@ -7,34 +7,33 @@ var Circle = MovableEntity.extend({
   dimensions: {},
   physicsBody: {},
 
-  init: function(name, graphics, params) {
+  init: function(name, graphics, options) {
     this._super(name, graphics);
-    this.circle = params.color;
+    this.color = options.color;
+    this.alpha = options.alpha;
+
     this.dimensions = {};
-    this.dimensions.origin = params.origin;
-    this.dimensions.radius = params.radius;
-    this.dimensions.radius = params.radius;
+    this.dimensions.origin = options.origin;
+    this.dimensions.radius = options.radius;
 
     this.dimensions.vertices = function() {
-      return [this.radius];
+      return [this.origin];
     };
 
     this.dimensions.center = function() {
       return this.origin;
     };
 
-    this.dimensions.compareVector = function(compareVector, callable) {
-      var match = true;
-      var vertices = this.vertices();
-      for (var v in  vertices) {
-        var vector = vertices[v];
-
-        match = match && callable(compareVector, vector);
-      }
-
-      return match;
+    this.dimensions.bounds = function() {
+      var topLeft = this.origin.subtract(new Vector(this.radius, this.radius));
+      var diameter = this.radius * 2;
+      return {
+        topLeft : topLeft,
+        topRight : topLeft.add(new Vector(diameter, 0)),
+        bottomRight : topLeft.add(new Vector(diameter, diameter)),
+        bottomLeft : topLeft.add(new Vector(0, diameter))
+      };
     };
-
 
     this.physicsBody = {};
 
