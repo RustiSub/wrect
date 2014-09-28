@@ -37,6 +37,26 @@ var Block = MovableEntity.extend({
       ];
     };
 
+    this.dimensions.move = function(v) {
+      this.topLeft = this.topLeft.add(v);
+      this.topRight = this.topRight.add(v);
+      this.bottomRight = this.bottomRight.add(v);
+      this.bottomLeft = this.bottomLeft.add(v);
+
+      return this
+    };
+    this.dimensions.rotate = function(physicsBody, angle) {
+      physicsBody.theta += angle;
+      var center = this.center();
+
+      this.topLeft = this.topLeft.rotate(angle, center);
+      this.topRight = this.topRight.rotate(angle, center);
+      this.bottomRight = this.bottomRight.rotate(angle, center);
+      this.bottomLeft = this.bottomLeft.rotate(angle, center);
+
+      return this;
+    };
+
     this.dimensions.bounds = function() {
       return this;
     };
@@ -90,24 +110,6 @@ var Block = MovableEntity.extend({
       game.getEntityManager().removeEntity(this);
     }
   },
-  move: function () {
-    var inputHandler = Container.getComponent('InputHandler');
-    if (inputHandler.key('left')) {
-      this._physics.increaseSpeedX(-1);
-    }
-    if (inputHandler.key('right')) {
-      this._physics.increaseSpeedX(1);
-    }
-    if (inputHandler.key('up')) {
-      this._physics.increaseSpeedY(-1);
-    }
-    if (inputHandler.key('down')) {
-      this._physics.increaseSpeedY(1);
-    }
-
-    //this._physics.applyFriction(0);
-    //this._physics.applyFriction(this._graphics.position.y, this.height);
-  },
   update: function(){
     this._super();
 
@@ -138,7 +140,7 @@ var Block = MovableEntity.extend({
     var sign = vn ? vn < 0 ? -1 : 1:0;
     var pushOutVector = n.unit().multiply(axes2Overlap.overlap * -sign);
 
-    this._physics.move(this.dimensions, pushOutVector);
+    this.dimensions.move(pushOutVector);
 
     if (!collisionShape.frozen) {
 //      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));

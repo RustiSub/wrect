@@ -21,7 +21,7 @@ var Physics = Class.extend({
     var b = -5;
 
     var dr = physicsBody.v; //.scale(dt).add(physicsBody.a.scale(0.5 * dt * dt));
-    this.move(dimensions, dr);//.scale(100));
+    dimensions.move(dr);//.scale(100));
 
     /* Add Gravity */
 //    f = f.add(new Vector(0, physicsBody.m * 9.81));
@@ -30,32 +30,7 @@ var Physics = Class.extend({
 //    f = f.add( physicsBody.v.scale(b) );
 
     var deltaTheta = 0  ;
-    this.rotate(physicsBody, dimensions, deltaTheta);
-  },
-  move: function(dimensions, v) {
-//    dimensions.topLeft = dimensions.topLeft.add(v);
-//    dimensions.topRight = dimensions.topRight.add(v);
-//    dimensions.bottomRight = dimensions.bottomRight.add(v);
-//    dimensions.bottomLeft = dimensions.bottomLeft.add(v);
-
-    for(var vIndex in dimensions.vertices) {
-      var vertex = dimensions.verticies[vIndex];
-      vertex = vertex.add(v);
-    }
-
-    return dimensions;
-  },
-  rotate: function(physicsBody, dimensions, angle) {
-    physicsBody.theta += angle;
-    var center = dimensions.center();
-    var vertices = dimensions.vertices();
-
-    for(var vIndex in  vertices) {
-      var vertex = vertices[vIndex];
-      vertex = vertex.rotate(angle, center);
-    }
-
-    return this;
+    dimensions.rotate(physicsBody, deltaTheta);
   },
   calculateSpeed: function() {
     this.deltaVector = new Vector(0, 0);

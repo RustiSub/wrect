@@ -20,6 +20,20 @@ var Circle = MovableEntity.extend({
       return [this.origin];
     };
 
+    this.dimensions.move = function(v) {
+      this.origin = this.origin.add(v);
+
+      return this
+    };
+    this.dimensions.rotate = function(physicsBody, angle) {
+      physicsBody.theta += angle;
+      var center = this.center();
+
+      this.origin = this.origin.rotate(angle, center);
+
+      return this;
+    };
+
     this.dimensions.center = function() {
       return this.origin;
     };
