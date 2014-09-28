@@ -56,6 +56,10 @@ var CollisionManager = Class.extend({
 
       for (var i = 0; i < axes.length ; i++) {
         var axis = axes[i];
+        if (axes.length === 1 && axis.x === 0 && axis.y === 0) {
+          axis = b.center().subtract(a.center()).unit();
+        }
+
         // project both shapes onto the axis
         var p1 = project(a, axis);
         var p2 = project(b, axis);

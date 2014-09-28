@@ -17,12 +17,15 @@ var Circle = MovableEntity.extend({
     this.dimensions.radius = options.radius;
 
     this.dimensions.vertices = function(axis) {
-      axis = typeof axis !== 'undefined' ? axis : new Vector(0, 0);
-      return [
-        this.origin.add(axis.unitScalar(this.radius)),
-        this.origin,
-        this.origin.add(axis.unitScalar(-this.radius))
-      ];
+      if (typeof axis != 'undefined') {
+        return [
+          this.origin.add(axis.unitScalar(this.radius)),
+          this.origin,
+          this.origin.add(axis.unitScalar(-this.radius))
+        ];
+      }
+
+      return [this.origin];
     };
 
     this.dimensions.move = function(v) {

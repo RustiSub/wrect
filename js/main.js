@@ -54,21 +54,44 @@ function shieldCircleSpamTest() {
   block2.frozen = true;
   game.addEntity(block2);
 
+  var block3 = game._builder.createBlock('top', 120, 150 , 800, 20);
+  block3.frozen = true;
+  game.addEntity(block3);
 
   var block4 = game._builder.createBlock('right', 900, 150 , 20, 350);
   block4.frozen = true;
   game.addEntity(block4);
 
+  var block5 = game._builder.createBlock('bottom', 120, 500 , 800, 20);
+  block5.frozen = true;
+  game.addEntity(block5);
+
   for(var i = 0; i < 5; i++) {
-    var meteor_left = game._builder.createBlock('meteor_left_' + i, 800, 50 + (i * 40), 20, 20, 0xFFFFFF);
-    meteor_left.physicsBody.v = new Vector(-(5) , 0);
-    game.addEntity(meteor_left);
+    var circle1 = game._builder.createCircle({
+      name: 'c1' + i,
+      origin: new Vector(800, 250 + (i * 40)),
+      radius: 10,
+      color: 0xFFFF00
+    });
+    circle1.physicsBody.v = new Vector(-5, 1);
+    game.addEntity(circle1);
+//    var meteor_left = game._builder.createBlock('meteor_left_' + i, 800, 50 + (i * 40), 20, 20, 0xFFFFFF);
+//    meteor_left.physicsBody.v = new Vector(-(5) , 0);
+//    game.addEntity(meteor_left);
   }
 
   for(var i = 0; i < 5; i++) {
-    var meteor_right = game._builder.createBlock('meteor_right_' + i, 300, 50 + (i * 40), 20, 20, 0xFFFFFF);
-    meteor_right.physicsBody.v = new Vector(5 , 0);
-    game.addEntity(meteor_right);
+    var circle1 = game._builder.createCircle({
+      name: 'c2' + i,
+      origin: new Vector(600, 250 + (i * 40)),
+      radius: 25,
+      color: 0xFFFFFF
+    });
+    circle1.physicsBody.v = new Vector(10, -2);
+    game.addEntity(circle1);
+//    var meteor_right = game._builder.createBlock('meteor_right_' + i, 600, 150 + (i * 40), 20, 20, 0xFFFFFF);
+//    meteor_right.physicsBody.v = new Vector(0 , 0);
+//    game.addEntity(meteor_right);
   }
 
 //  var force = new Force(
@@ -176,5 +199,5 @@ window.onload = function() {
         defaultLevel: false
     });
 
-  vectorTest_pivot_1();
+  shieldCircleSpamTest();
 };
