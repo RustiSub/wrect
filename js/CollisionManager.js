@@ -113,25 +113,16 @@ var CollisionManager = Class.extend({
 
   }, mapQuadTree: function (bodies, range) {
     var localTree = [];
-    var outOfRange = false;
-    var topLeftRangeVector = new Vector(range.x, range.y);
-    var bottomRightRangeVector = new Vector(range.x + range.width , range.y + range.height);
     for (var x = 0; x < bodies.length; x++) {
       var body = bodies[x];
 
-      outOfRange = body.dimensions.compareVector(topLeftRangeVector, function(topLeftRangeVector, vector) {
-        var result = vector.subtract(topLeftRangeVector);
+      var bounds = body.dimensions.bounds();
 
-        return result.x < 0 && result.y < 0;
-      });
+      var speed = body.physicsBody.v;
+      var outOfRangeSpeed = (bounds.topRight.x + speed.x) < range.x || (bounds.bottomLeft + speed.y) < range.y
+        || bounds.topLeft.x + speed.x > range.x + range.width || bounds.topLeft.y + speed.y > range.y + range.width;
 
-      outOfRange = outOfRange || body.dimensions.compareVector(bottomRightRangeVector, function(bottomRightRangeVector, vector) {
-        var result = vector.subtract(bottomRightRangeVector);
-
-        return !(result.x < 0 && result.y < 0);
-      });
-
-      if (!outOfRange) {
+      if (!outOfRangeSpeed) {
         localTree.push(body);
       }
     }

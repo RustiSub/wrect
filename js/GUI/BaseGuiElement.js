@@ -55,6 +55,7 @@
             if (options.css) {
                 this.setCss(options.css);
             }
+            this.bindDefaultEvents(options.element);
         },
         setHtmlElement: function(htmlElement) {
             var className = '';
@@ -140,6 +141,9 @@
         },
         getValue: function() {
             return null;
-        }
+        },
+      bindDefaultEvents: function(htmlElement) {
+        return null;
+      }
     });
 })();

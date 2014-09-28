@@ -98,8 +98,8 @@
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
-            this._guiManager = new this._options.guiManagerClass();
             this._gravityManager = new this._options.gravityManagerClass();
+            this._guiManager = new this._options.guiManagerClass();
             this._builder = new this._options.builder();
             this._levelManager = new this._options.levelManagerClass(this._stage, this._options.defaultLevel);
             this._camera = new window.Camera(0, 0, this._options.width, this._options.height);
@@ -174,10 +174,15 @@
 //                self._builder.buildConnections(game.getEntityManager().getAllEntities());
                 self._collisionManager.updateAllCollisions();
                 self._entityManager.update();
-                self._inputHandler.update();
                 self._camera.update();
+                self._inputHandler.update();
 
                 renderer.render(stage);
+
+                // Sets the element used for mouse-event tracking to the root GUI element. This fixes mouse input over GUI elements.
+                if (stage.interactionManager.interactionDOMElement !== self._guiManager.getRoot().htmlElement) {
+                  stage.setInteractionDelegate(self._guiManager.guiRoot.htmlElement);
+                }
             }
         },
 

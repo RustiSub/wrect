@@ -9,6 +9,7 @@ var Force = BaseEntity.extend({
     interval: 100,
     timeLapsed: 0
   },
+  rotationSpeed: 2,
   drawCone: function (forceGraphics, params) {
     forceGraphics.beginFill(0xD281F7, 0.5);
     forceGraphics.moveTo(params.origin.x, params.origin.y);
@@ -102,7 +103,41 @@ var Force = BaseEntity.extend({
     this.drawCone(this._graphics, this.params);
   },
   update: function() {
+    this.updateAngle();
+    this.updateWidth();
 
+  },
+  updateAngle: function() {
+    var helpers = game.getHelpers();
+    var mousePos = Container.getGame().getInputHandler().getMousePosition();
+    if (mousePos) {
+      var targetVector = mousePos.subtract(this.params.origin);
+      var targetAngle = helpers.math.toDegrees(Math.atan2(targetVector.y, targetVector.x));
+      var diff = Math.abs(targetAngle - this.params.forceAngle);
+
+      if (diff >= this.rotationSpeed) {
+        if (diff > 180) {
+          targetAngle += 360;
+        }
+        if (Math.floor(targetAngle) != Math.floor(this.params.forceAngle)) {
+          if (targetAngle < this.params.forceAngle) {
+            this.adjustAngle(Math.round(this.params.forceAngle - this.rotationSpeed));
+          }
+          else {
+            this.adjustAngle(Math.round(this.params.forceAngle + this.rotationSpeed));
+          }
+        }
+      }
+    }
+  },
+  updateWidth: function() {
+    var inputHandler = Container.getGame().getInputHandler();
+    if (inputHandler.key('up') || inputHandler.key('right')) {
+      this.adjustWidth(this.params.angle+2);
+    }
+    else if (inputHandler.key('down') || inputHandler.key('left')) {
+      this.adjustWidth(this.params.angle-2);
+    }
   },
   handleCollision: function(collisionShape, axes1Overlap, axes2Overlap) {
     if (this.pulseTimer.checkInterval()) {
