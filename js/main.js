@@ -11,19 +11,20 @@ function test1() {
 }
 
 function test2() {
-  var animatedSprite = new PIXI.AnimatedSprite('resources/images/sheet_suit_one3-aligned-25.png', 5, 0.14, true);
+  var animatedSprite = new PIXI.AnimatedSprite('resources/images/sheet_suit_one3-aligned-25-2.png', 3, 2, 0.01, true);
     animatedSprite.anchor = new PIXI.Point(0.5, 0.5);
+    animatedSprite.addAnimationSet({
+        name: 'walkTop',
+        row: 1
+    });
+    animatedSprite.addAnimationSet({
+        name: 'walkBot',
+        row: 2
+    });
   var player = new MovableEntity('player', animatedSprite, {position: {
       x: 200,
       y: 300
   }});
-
-    var audio = document.createElement('audio');
-    audio.src = 'resources/sfx/step.ogg';
-    //audio.preload = 'auto';
-    audio.loop = true;
-  player.stepSound = audio;
-    document.body.appendChild(audio);
 
   game.addEntity(player);
   //animatedSprite.play();
@@ -370,7 +371,8 @@ window.onload = function() {
       'resources/gui/maximize.png',
       'resources/images/rsz_sheet_suit_one3.png',
       'resources/images/sheet_suit_one3-aligned.png',
-      'resources/images/sheet_suit_one3-aligned-25.png'
+      'resources/images/sheet_suit_one3-aligned-25.png',
+      'resources/images/sheet_suit_one3-aligned-25-2.png'
   ]);
   loader.load();
   loader.addEventListener('onComplete', function() {

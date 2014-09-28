@@ -147,25 +147,22 @@
                 var player = self.getEntityManager().getEntityByName('player');
                 if (player) {
                     if (self.getInputHandler().key('right')) {
-                        player.moveRight(5);
+                        player.moveRight(0);
                         if (player.getGraphics().playing === false) {
                             player.getGraphics().scale.x = 1;
-                            player.getGraphics().play();
-                            player.stepSound.play();
+                            player.getGraphics().playAnimation('walkTop');
                         }
                     }
                     else if (self.getInputHandler().key('left')) {
-                        player.moveLeft(5);
+                        player.moveLeft(0);
                         if (player.getGraphics().playing === false) {
                             player.getGraphics().scale.x = -1;
-                            player.getGraphics().play();
-                            player.stepSound.play();
+                            player.getGraphics().playAnimation('walkBot');
                         }
                     }
                     else {
                         player.stop();
                         player.getGraphics().stop();
-                        player.stepSound.pause();
                     }
                 }
 
