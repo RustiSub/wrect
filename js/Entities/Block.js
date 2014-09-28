@@ -118,47 +118,6 @@ var Block = MovableEntity.extend({
     this._graphics.position = this.dimensions.topLeft;
     this._graphics.rotation = this.physicsBody.theta;
   },
-  handleCollision: function(collisionShape, axes1Overlap, axes2Overlap) {
-    if (!collisionShape._physics.solid) {
-      return;
-    }
-    function capSmallSpeed(speed) {
-      return speed > -1 && speed < 1 ? 0 : speed;
-    }
-
-    var v = this.physicsBody.v;//.unit();
-    var n = axes2Overlap.axis;//.unit();
-    var vn = v.dot(n);
-    var u = n.multiply(vn);
-    var w = v.subtract(u);
-    var v2 = w.subtract(u);
-
-
-    v2.x = capSmallSpeed(v2.x);
-    v2.y = capSmallSpeed(v2.y);
-
-    var sign = vn ? vn < 0 ? -1 : 1:0;
-    var pushOutVector = n.unit().multiply(axes2Overlap.overlap * -sign);
-
-    this.dimensions.move(pushOutVector);
-
-    if (!collisionShape.frozen) {
-//      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
-//      v2 = v2.multiply(energyTransfer);
-    }
-
-    this.physicsBody.v = v2;
-
-    var damage = Math.abs(u.dot(new Vector(1, 1)));
-    damage = damage * this.physicsBody.m;
-    var damageCapped = damage <= 100 ? damage : 100;
-
-    this.health.doDamage(damageCapped);
-    this.displayDamage();
-
-    collisionShape.health.doDamage(damageCapped);
-    collisionShape.displayDamage();
-  },
   toJSON: function() {
       return {
           name: this.name,

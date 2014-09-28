@@ -17,15 +17,15 @@ function vectorTest_pivot_1() {
 
   var circle1 = game._builder.createCircle({
     name: 'c1',
-    origin: new Vector(120, 120),
-    radius: 20,
+    origin: new Vector(200, 250),
+    radius: 25,
     color: 0xFFFFFF
   });
-  circle1.physicsBody.v = new Vector(0, 2);
+  circle1.physicsBody.v = new Vector(0, 10);
   game.addEntity(circle1);
 
-//  var block0 = game._builder.createBlock('b0', 200, 190 , 20, 50, 0xFFFFFF);
-//  block0.physicsBody.v = new Vector(0, 10);
+//  var block0 = game._builder.createBlock('b0', 120, 120 , 40, 40, 0xFFFFFF);
+//  block0.physicsBody.v = new Vector(0, 0);
 //  game.addEntity(block0);
 
   var block2 = game._builder.createBlock('b2', 100, 500 , 250, 20);
@@ -59,20 +59,26 @@ function shieldCircleSpamTest() {
   block4.frozen = true;
   game.addEntity(block4);
 
-  for(var i = 0; i < 10; i++) {
+  for(var i = 0; i < 5; i++) {
     var meteor_left = game._builder.createBlock('meteor_left_' + i, 800, 50 + (i * 40), 20, 20, 0xFFFFFF);
     meteor_left.physicsBody.v = new Vector(-(5) , 0);
     game.addEntity(meteor_left);
   }
 
-  var force = new Force(
-      new Vector(200, 250),
-      400,
-      90,
-      0
-  );
+  for(var i = 0; i < 5; i++) {
+    var meteor_right = game._builder.createBlock('meteor_right_' + i, 300, 50 + (i * 40), 20, 20, 0xFFFFFF);
+    meteor_right.physicsBody.v = new Vector(5 , 0);
+    game.addEntity(meteor_right);
+  }
 
-  game.addEntity(force);
+//  var force = new Force(
+//      new Vector(200, 250),
+//      400,
+//      90,
+//      0
+//  );
+//
+//  game.addEntity(force);
 }
 
 function buildShip_1() {

@@ -8,7 +8,7 @@ var CollisionManager = Class.extend({
       var axes = [];
 // loop over the vertices
       //for (int i = 0; i < shape.vertices.length; i++) {
-      var vertices = dimensions.vertices(dimensions);
+      var vertices = dimensions.vertices();
       for (var i = 0; i < vertices.length ; i++) {
         // get the current vertex
         var p1 = vertices[i];
@@ -25,12 +25,12 @@ var CollisionManager = Class.extend({
 
     function project(dimensions, axis) {
       axis = axis.unit();
-      var vertices = dimensions.vertices(dimensions);
+      var vertices = dimensions.vertices(axis);
       var min = axis.dot(vertices[0]);
       var max = min;
       var projections = [];
 
-      for (var i = 1; i < vertices.length ; i++) {
+      for (var i = 0; i < vertices.length ; i++) {
         var v = vertices[i];
         var p = axis.dot(v);
         if (p < min) {
@@ -81,12 +81,10 @@ var CollisionManager = Class.extend({
       };
     }
 
-    var axes1Overlap = checkOverlap(getNormalAxes(a), a, b);
-    var axes2Overlap = checkOverlap(getNormalAxes(b), a, b);
+    var axesOverlap = checkOverlap(getNormalAxes(b), a, b);
 
-    if (axes1Overlap.hasOverlap && axes2Overlap.hasOverlap) {
-      shapeA.handleCollision(shapeB, axes1Overlap, axes2Overlap);
-      shapeB.handleCollision(shapeA, axes1Overlap, axes2Overlap);
+    if (axesOverlap.hasOverlap) {
+      shapeA.handleCollision(shapeB, axesOverlap);
     }
   },
   updateAllCollisions: function() {

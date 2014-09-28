@@ -218,7 +218,7 @@ var Builder = Class.extend({
 
     circle.baseCallback  = function() {
       this._graphics.beginFill(this.color, this.alpha);
-      this._graphics.drawCircle(this.dimensions.origin.x, this.dimensions.origin.y, this.dimensions.radius);
+      this._graphics.drawCircle(0, 0, this.dimensions.radius);
       this._graphics.endFill();
     };
 
