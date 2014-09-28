@@ -26,6 +26,7 @@ var BaseEntity = Class.extend({
     connected: false,
     _graphics: {},
     _physics: {},
+    color: 0x000000,
 
     /**
      * @param {String} name Name of the entity. Used for identification purposes.

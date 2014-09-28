@@ -210,16 +210,41 @@ var Builder = Class.extend({
     return block;
   },
 
-  createCircle: function (point) {
-      var graphics = new PIXI.Graphics();
-      graphics.beginFill(0xFF0000, 1);
+  createCircle: function (options) {
+    options.alpha = typeof options.alpha !== 'undefined' ? options.alpha : 1;
+    options.color = typeof options.color !== 'undefined' ? options.color : 0x00FF00;
 
-      graphics.drawCircle(point.x, point.y, 2);
-      graphics.endFill();
+    var graphics = new PIXI.Graphics();
 
-      game.getEntityManager()._stage.addChildAt(graphics, game.getEntityManager()._stage.children.length);
+    var circle = new Circle(options.name, graphics,
+      {
+        origin: options.origin,
+        radius: options.radius
+      }
+    );
 
-      this.rooms.push(graphics);
+    circle.name = options.name;
+
+    circle.baseGraphicsCallback = function() {
+      this._graphics.clear();
+      this.baseCallback();
+    };
+
+    circle.baseCallback  = function() {
+      this._graphics.beginFill(this.color);
+      this._graphics.drawCircle(this.dimensions.origin.x, this.dimensions.origin.y, this.dimensions.radius);
+      this._graphics.endFill();
+    };
+
+    circle.glueCallback = function() {};
+
+    circle.selectCallback = function() {};
+
+    circle.baseGraphicsCallback();
+
+    circle.frozen = false;
+
+    return circle;
   },
   connectGlue: function(bodies) {
 

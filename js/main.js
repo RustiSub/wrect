@@ -15,9 +15,14 @@ function test1() {
 function vectorTest_pivot_1() {
   //createFrame();
 
-  var block1 = game._builder.createBlock('b1', 200, 350 , 20, 50, 0xFFFFFF);
-  block1.physicsBody.v = new Vector(0, 10);
-  game.addEntity(block1);
+  var circle1 = game._builder.createCircle({
+    name: 'c1',
+    origin: new Vector(200, 350),
+    radius: 20,
+    color: 0xFFFFFF
+  });
+//  circle1.physicsBody.v = new Vector(0, 10);
+//  game.addEntity(circle1);
 
   var block0 = game._builder.createBlock('b0', 200, 190 , 20, 50, 0xFFFFFF);
   block0.physicsBody.v = new Vector(0, 10);
@@ -44,7 +49,7 @@ function vectorTest_pivot_1() {
   game.addEntity(block5);
 }
 
-function shieldTest() {
+function shieldCircleSpamTest() {
   var block2 = game._builder.createBlock('left', 100, 150 , 20, 350);
   block2.frozen = true;
   game.addEntity(block2);
@@ -135,5 +140,5 @@ window.onload = function() {
         defaultLevel: false
     });
 
-  shieldTest();
+  vectorTest_pivot_1();
 };

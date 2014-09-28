@@ -108,27 +108,28 @@ var CollisionManager = Class.extend({
             this.satTest(mainBody, otherBody);
           }
         }
-//        for (var x = 0; x < bodies.length; x++) {
-//          var body = bodies[x];
-//          for (var c = 0; c < body.collisions.length; c++) {
-//            var collision = body.collisions[c];
-//            body._physics.applyCollision(collision);
-//            //body._physics.applyGravity(collision);
-//          }
-//        }
       }
     }
 
   }, mapQuadTree: function (bodies, range) {
     var localTree = [];
+    var outOfRange = false;
+    var topLeftRangeVector = new Vector(range.x, range.y);
+    var bottomRightRangeVector = new Vector(range.x + range.width , range.y + range.height);
     for (var x = 0; x < bodies.length; x++) {
       var body = bodies[x];
 
-      var outOfRange = (body.dimensions.topLeft.x + body.dimensions.width) < range.x || (body.dimensions.topLeft.y + body.size.y) < range.y
-        || body.dimensions.topLeft.x > range.x + range.width || body.dimensions.topLeft.y > range.y + range.width;
+      outOfRange = body.dimensions.compareVector(topLeftRangeVector, function(topLeftRangeVector, vector) {
+        var result = vector.subtract(topLeftRangeVector);
 
-//      var outOfRangeSpeed = (body.dimensions.topLeft.x + body.dimensions.width + body._physics.xSpeed) < range.x || (body.dimensions.topLeft.y + body.size.y + body._physics.ySpeed) < range.y
-//        || body.dimensions.topLeft.x + body._physics.xSpeed > range.x + range.width || body.dimensions.topLeft.y + body._physics.ySpeed > range.y + range.width;
+        return result.x < 0 && result.y < 0;
+      });
+
+      outOfRange = outOfRange || body.dimensions.compareVector(bottomRightRangeVector, function(bottomRightRangeVector, vector) {
+        var result = vector.subtract(bottomRightRangeVector);
+
+        return !(result.x < 0 && result.y < 0);
+      });
 
       if (!outOfRange) {
         localTree.push(body);

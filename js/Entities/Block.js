@@ -27,18 +27,30 @@ var Block = MovableEntity.extend({
     this.dimensions.bottomRight = new Vector(params.x + params.w, params.y + params.h);
     this.dimensions.bottomLeft = new Vector(params.x, params.y + params.h);
 
-    this.dimensions.vertices = function(dimensions) {
+    this.dimensions.vertices = function() {
       return [
-        dimensions.topLeft,
-        dimensions.topRight,
-        dimensions.bottomRight,
-        dimensions.bottomLeft
+        this.topLeft,
+        this.topRight,
+        this.bottomRight,
+        this.bottomLeft
       ];
     };
 
     this.dimensions.center = function() {
       var diagonal = this.bottomRight.subtract(this.topLeft);
       return this.topLeft.add(diagonal.scale(0.5));
+    };
+
+    this.dimensions.compareVector = function(compareVector, callable) {
+      var match = true;
+      var vertices = this.vertices();
+      for (var v in  vertices) {
+        var vector = vertices[v];
+
+        match = match && callable(compareVector, vector);
+      }
+
+      return match;
     };
 
     this.physicsBody = {};
@@ -78,8 +90,7 @@ var Block = MovableEntity.extend({
 
     this._physics.apply(this.physicsBody, this.dimensions, 0);//game.timeDelta);
 
-    this._graphics.position.x = this.dimensions.topLeft.x;
-    this._graphics.position.y = this.dimensions.topLeft.y;
+    this._graphics.position = this.dimensions.topLeft;
     this._graphics.rotation = this.physicsBody.theta;
 
 //    this._graphics.beginFill(0x0080FF);
@@ -119,8 +130,8 @@ var Block = MovableEntity.extend({
     this._physics.move(this.dimensions, pushOutVector);
 
     if (!collisionShape.frozen) {
-      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
-      v2 = v2.multiply(energyTransfer);
+//      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
+//      v2 = v2.multiply(energyTransfer);
     }
 
     this.physicsBody.v = v2;
