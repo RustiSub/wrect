@@ -37,6 +37,10 @@ var Block = MovableEntity.extend({
       ];
     };
 
+    this.dimensions.bounds = function() {
+      return this;
+    };
+
     this.dimensions.center = function() {
       var diagonal = this.bottomRight.subtract(this.topLeft);
       return this.topLeft.add(diagonal.scale(0.5));

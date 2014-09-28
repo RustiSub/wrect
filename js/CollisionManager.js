@@ -124,13 +124,13 @@ var CollisionManager = Class.extend({
     for (var x = 0; x < bodies.length; x++) {
       var body = bodies[x];
 
-      var outOfRange = (body.dimensions.topLeft.x + body.dimensions.width) < range.x || (body.dimensions.topLeft.y + body.size.y) < range.y
-        || body.dimensions.topLeft.x > range.x + range.width || body.dimensions.topLeft.y > range.y + range.width;
+      var bounds = body.dimensions.bounds();
 
-//      var outOfRangeSpeed = (body.dimensions.topLeft.x + body.dimensions.width + body._physics.xSpeed) < range.x || (body.dimensions.topLeft.y + body.size.y + body._physics.ySpeed) < range.y
-//        || body.dimensions.topLeft.x + body._physics.xSpeed > range.x + range.width || body.dimensions.topLeft.y + body._physics.ySpeed > range.y + range.width;
+      var speed = body.physicsBody.v;
+      var outOfRangeSpeed = (bounds.topRight.x + speed.x) < range.x || (bounds.bottomLeft + speed.y) < range.y
+        || bounds.topLeft.x + speed.x > range.x + range.width || bounds.topLeft.y + speed.y > range.y + range.width;
 
-      if (!outOfRange) {
+      if (!outOfRangeSpeed) {
         localTree.push(body);
       }
     }
