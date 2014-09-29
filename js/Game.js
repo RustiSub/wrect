@@ -102,8 +102,8 @@
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
-            this._gravityManager = new this._options.gravityManagerClass();
             this._guiManager = new this._options.guiManagerClass();
+            this._gravityManager = new this._options.gravityManagerClass();
             this._builder = new this._options.builder();
             this._levelManager = new this._options.levelManagerClass(this._stage, this._options.defaultLevel);
             this._camera = new window.Camera(0, 0, this._options.width, this._options.height);
@@ -180,6 +180,8 @@
                 self._entityManager.update();
                 self._levelManager.update();
                 self._camera.update();
+
+                // Needs to be last
                 self._inputHandler.update();
 
                 renderer.render(stage);
@@ -327,7 +329,7 @@
                     return a + b;
                 });
 
-                //console.log('Past ' + this.fpsOutInterval + 'ms avg FPS: ' + (sum/this.debugStats.fps.length));
+                console.log('Past ' + this.fpsOutInterval + 'ms avg FPS: ' + (sum/this.debugStats.fps.length));
                 this.debugStats.fps = [];
                 this.debugStats.previousFpsOut = timestamp;
             }

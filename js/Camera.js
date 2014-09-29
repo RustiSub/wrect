@@ -27,7 +27,11 @@
      * Zoom level
      * @type {number}
      */
-    this.scale = 1;
+    this.zoomLevel = 1;
+
+    this._realZoomLevel = 1;
+
+    this._zoomSpeed = 0.01;
 
     /**
      * Whether or not the position changed since the last update
@@ -116,16 +120,39 @@
   window.Camera.prototype.update = function() {
     this.changed = false;
 
+    this.updateZoom();
     this.updateFollow();
-    this.displayContainer.position.x = -this.position.x;
-    this.displayContainer.position.y = -this.position.y;
+
+    if (this.game.getInputHandler().mouseWheelUp()) {
+      this.zoomIn(0.05);
+    }
+    else if (this.game.getInputHandler().mouseWheelDown()) {
+      this.zoomOut(0.05);
+    }
+  };
+
+  window.Camera.prototype.updateZoom = function() {
+    if (this._realZoomLevel !== this.zoomLevel) {
+      if (this._realZoomLevel > this.zoomLevel) {
+        this._realZoomLevel -= this._zoomSpeed;
+      }
+      if (this._realZoomLevel < this.zoomLevel) {
+        this._realZoomLevel += this._zoomSpeed;
+      }
+      this.displayContainer.scale.x = this._realZoomLevel;
+      this.displayContainer.scale.y = this._realZoomLevel;
+    }
   };
 
   window.Camera.prototype.updateFollow = function() {
     if (this.target) {
       var center = this.target._physics.center(this.target.dimensions);
+      center = center.scale(this._realZoomLevel);
       this.position.x = center.x - this.bounds.x.max/2;
       this.position.y = center.y - this.bounds.y.max/2;
+
+      this.displayContainer.position.x = -this.position.x;
+      this.displayContainer.position.y = -this.position.y;
     }
   };
 
@@ -143,5 +170,74 @@
         //this.nextPosition.y = Math.round(this.position.y + delta.y/10);
       }*/
     }
+  };
+
+  /**
+   * !!THESE NEED TO BE SORTED FROM SMALL TO LARGE!!
+   * @type {{SMALLEST: number, SMALLER: number, SMALL: number, NORMAL: number, MEDIUM: number, LARGE: number, EXTRA_LARGE: number, LARGEST: number}}
+   */
+  window.Camera.prototype.zoomLevels = {
+    SMALLEST: 0.25,
+    SMALLER: 0.50,
+    SMALL: 0.75,
+    NORMAL: 1,
+    MEDIUM: 1.25,
+    LARGE: 1.50,
+    EXTRA_LARGE: 1.75,
+    LARGEST: 2.0
+  };
+
+  /**
+   * Min/max zoom levels
+   * @type {{min: number, max: number}}
+   */
+  window.Camera.prototype.zoomBounds = {
+    min: 0.25,
+    max: 2.0
+  };
+
+  /**
+   * Zoom in with the given amount
+   * @param value
+   */
+  window.Camera.prototype.zoomIn = function(value) {
+    var newZoomLevel = this.zoomLevel + value;
+    if (newZoomLevel >= this.zoomBounds.min && newZoomLevel <= this.zoomBounds.max) {
+      this.zoom(newZoomLevel);
+    }
+  };
+
+  /**
+   * Zoom out with the given amount
+   * @param value
+   */
+  window.Camera.prototype.zoomOut = function(value) {
+    var newZoomLevel = this.zoomLevel - value;
+    if (newZoomLevel >= this.zoomBounds.min && newZoomLevel <= this.zoomBounds.max) {
+      this.zoom(newZoomLevel);
+    }
+  };
+
+  /**
+   * Zoom to the given value
+   * @param value
+   */
+  window.Camera.prototype.zoom = function(value) {
+    this.zoomLevel = value;
+    this.updateFollow();
+  };
+
+  /**
+   * Get the name of the current zoom level. Useful for doing certain things only at a certain zoomlevel.
+   * @returns {*}
+   */
+  window.Camera.prototype.getCurrentZoomLevelName = function() {
+    for (var x in this.zoomLevels) {
+      var lvl = this.zoomLevels[x];
+      if (lvl > this.zoomLevel) {
+        return x;
+      }
+    }
+    return false;
   };
 }());
