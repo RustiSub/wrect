@@ -3,6 +3,8 @@
   window.InputHandler = Class.extend({
     _pressed: [],
     _registeredPressed: [],
+    _previousMousePos: null,
+    _mouseWheel: null,
     _keys: {
       BACKSPACE: 8,
       TAB:       9,
@@ -26,7 +28,7 @@
     },
     _singleInputKeys: [
       13,
-      37, 38, 39, 40,
+      //37, 38, 39, 40,
       65,
       90,
       96,
@@ -63,7 +65,7 @@
     gamepadsConnected: [],
     gamepadSupported: false,
     currentGamepadState: null,
-    init: function(containerId){
+    init: function(containerId) {
       var captureScope = window;
       if (typeof containerId !== 'undefined' ) {
         captureScope = document.getElementById(containerId);
@@ -74,8 +76,13 @@
           this._keysToCapture.push(this._keys[x])
         }
       }
+      this._mouseWheel = {
+        up: false,
+        down: false
+      };
       captureScope.addEventListener('keyup', this._onKeyup.bind(this));
       captureScope.addEventListener('keydown', this._onKeydown.bind(this));
+      captureScope.addEventListener('wheel', this._onMouseWheel.bind(this));
 
       if (Modernizr.gamepads === true) {
         this.initGamepad(captureScope);
@@ -127,6 +134,37 @@
         event.preventDefault();
       }
     },
+    _onMouseWheel: function(e) {
+      if (e.wheelDelta > 0) {
+        this._mouseWheel.up = true;
+      }
+      else if (e.wheelDelta < 0) {
+        this._mouseWheel.down = true;
+      }
+    },
+    /**
+     * @returns {Window.Vector|boolean}
+     */
+    getMousePosition: function() {
+      var pos = Container.getGame().getStage().getMousePosition();
+      if (pos.x === -10000 && pos.y === -10000) {
+        return false;
+      }
+      return new Vector(pos.x, pos.y);
+    },
+    mouseWheelUp: function() {
+      return this._mouseWheel.up;
+    },
+    mouseWheelDown: function() {
+      return this._mouseWheel.down;
+    },
+    mousePositionChanged: function() {
+      if (this._previousMousePos) {
+        var mp = this.getMousePosition();
+        return (this._previousMousePos.x != mp.x || this._previousMousePos.y != mp.y);
+      }
+      return false;
+    },
     key: function(keyName) {
       var keyCode = this._keys[keyName.toUpperCase()];
       var keyFound = this._pressed.indexOf(keyCode) != -1;
@@ -142,6 +180,11 @@
 
       return false;
     },
+    updateMouse: function() {
+      this._previousMousePos = this.getMousePosition();
+      this._mouseWheel.up = false;
+      this._mouseWheel.down = false;
+    },
     updateGamepad: function() {
       if (this.gamepadSupported) {
         var gamepads = window.navigator.getGamepads();
@@ -154,6 +197,7 @@
     },
     update: function() {
       this.updateGamepad();
+      this.updateMouse();
     },
     gamepadButton: function(buttonName, playerIndex) {
       if (this.currentGamepadState !== null) {

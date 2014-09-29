@@ -604,7 +604,7 @@ window.onload = function() {
         debug: true,
         width: window.innerWidth,
         height: window.innerHeight,
-        defaultLevel: 'test1'
+        defaultLevel: false
     });
     //entity.applyGlue();
 
@@ -634,4 +634,8 @@ window.onload = function() {
   //entityStressTest2();
   //game._builder.clearRooms();
   //game._builder.buildConnections(game.getEntityManager().getAllEntities());
+
+  var entity = game.getEntityManager().getEntityByName('b1');
+  game.getCamera().follow(entity);
+
 };

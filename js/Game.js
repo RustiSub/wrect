@@ -174,8 +174,10 @@
 //                self._builder.buildConnections(game.getEntityManager().getAllEntities());
                 self._collisionManager.updateAllCollisions();
                 self._entityManager.update();
-                self._inputHandler.update();
                 self._camera.update();
+
+                // Needs to be last
+                self._inputHandler.update();
 
                 renderer.render(stage);
             }
