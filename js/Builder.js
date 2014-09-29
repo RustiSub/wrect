@@ -254,8 +254,8 @@ var Builder = Class.extend({
 
       this._graphics.beginFill(0x000000, 1);
       this._graphics.moveTo(0,0);
-      for(var coordIndex in this.arcShapeCoords) {
-        var coord = this.arcShapeCoords[coordIndex];
+      for(var coordIndex in this.dimensions.arcShapeCoords) {
+        var coord = this.dimensions.arcShapeCoords[coordIndex];
         this._graphics.lineTo(coord.x, coord.y);
       }
       this._graphics.endFill();

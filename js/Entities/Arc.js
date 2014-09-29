@@ -17,12 +17,38 @@ var Arc = Circle.extend({
      var radius = origin.add(new Vector(this.options.radius, 0)).rotate(math.toRadians(this.options.angle), origin);
      var degrees = this.options.width / 2;
 
-     this.arcShapeCoords = [
+     this.dimensions.arcShapeCoords = [
        origin,
        radius.rotate(math.toRadians(-degrees), origin),
        radius,
        radius.rotate(math.toRadians(degrees), origin)
      ];
+
+     this.dimensions.vertices = function(axis) {
+       if (typeof axis === 'undefined') {
+         return [this.origin];
+       }
+
+       var minD = this.origin.add(axis.unitScalar(this.radius));
+       var minDP = axis.dot(minD);
+       var maxD = this.origin.add(axis.unitScalar(-this.radius));
+       var maxDP = axis.dot(maxD);
+
+       var minArc = this.arcShapeCoords[1].add(this.origin);
+       var minArcP = axis.dot(minArc);
+       var maxArc = this.arcShapeCoords[3].add(this.origin);
+       var maxArcP = axis.dot(maxArc);
+
+       var minPoint = minArcP > minDP ? minArc :  minD;
+       var maxPoint = maxArcP < maxDP ? maxArc :  maxD;
+
+       return [
+         minPoint,
+        this.arcShapeCoords[2].add(this.origin),
+         maxPoint,
+         this.origin
+      ];
+     };
    }
 
 //  init: function(name, graphics, options) {

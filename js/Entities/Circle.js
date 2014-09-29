@@ -9,6 +9,7 @@ var Circle = MovableEntity.extend({
 
   init: function(name, graphics, options) {
     this._super(name, graphics);
+    this._physics.solid = true;
     this.color = options.color;
     this.alpha = options.alpha;
 

@@ -105,16 +105,27 @@ function shieldCircleSpamTest() {
 }
 
 function arc_test_1() {
-  var circle1 = game._builder.createArc({
+  var arc1 = game._builder.createArc({
     name: 'a1',
-    origin: new Vector(500, 200),
+    origin: new Vector(500, 300),
     radius: 100,
     angle: 45,
     width: 180,
     color: 0xFFFF00
   });
+  game.addEntity(arc1);
+//
+//  var circle1 = game._builder.createCircle({
+//    name: 'c2',
+//    origin: new Vector(500, 300),
+//    radius: 100,
+//    color: 0xFFFFFF
+//  });
+//  game.addEntity(circle1);
 
-  game.addEntity(circle1);
+  var block1 = game._builder.createBlock('b1', 500, 150 , 40, 40);
+  block1.physicsBody.v = new Vector(0, 2);
+  game.addEntity(block1);
 }
 
 function buildShip_1() {
