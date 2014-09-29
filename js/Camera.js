@@ -60,20 +60,13 @@
 
     this.nextPosition = new Vector(x, y);
 
+    this.unscaledPosition = new Vector(x, y);
+
     /**
      * Bounds of the camera
      * @type {{x: {min: number, max: number}, y: {min: number, max: number}}}
      */
-    this.bounds = {
-      x: {
-        min: 0,
-        max: width
-      },
-      y: {
-        min: 0,
-        max: height
-      }
-    };
+    this.bounds = new Vector(width, height);
 
     var curLvl = this.game.getCurrentLevel();
 
@@ -107,7 +100,7 @@
   window.Camera.prototype.getMouseWorldCoordinates = function() {
     var screenPos = this.game.getInputHandler().getMousePosition();
     if (screenPos) {
-      return screenPos.add(this.position);
+      return screenPos.add(this.unscaledPosition);
     }
 
     return false;
@@ -147,9 +140,15 @@
   window.Camera.prototype.updateFollow = function() {
     if (this.target) {
       var center = this.target._physics.center(this.target.dimensions);
+      this.unscaledPosition.x = center.x - this.bounds.x/2;
+      this.unscaledPosition.y = center.y - this.bounds.y/2;
+
+      var halfBounds = this.bounds.scale(0.5);
+
       center = center.scale(this._realZoomLevel);
-      this.position.x = center.x - this.bounds.x.max/2;
-      this.position.y = center.y - this.bounds.y.max/2;
+      center = center.subtract(halfBounds);
+      this.position.x = center.x;
+      this.position.y = center.y;
 
       this.displayContainer.position.x = -this.position.x;
       this.displayContainer.position.y = -this.position.y;
