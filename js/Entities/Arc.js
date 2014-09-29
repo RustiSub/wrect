@@ -3,9 +3,27 @@
  * @type {void|*}
  */
 var Arc = Circle.extend({
-  _className: 'Arc'
+  _className: 'Arc',
+  arcShapeCoords: {},
   //dimensions: {},
   //physicsBody: {},
+
+   init: function(name, graphics, options) {
+     this._super(name, graphics, options);
+     this.options = options;
+
+     var math = window.game.getHelpers().math;
+     var origin = new Vector(0, 0);
+     var radius = origin.add(new Vector(this.options.radius, 0)).rotate(math.toRadians(this.options.angle), origin);
+     var degrees = this.options.width / 2;
+
+     this.arcShapeCoords = [
+       origin,
+       radius.rotate(math.toRadians(-degrees), origin),
+       radius,
+       radius.rotate(math.toRadians(degrees), origin)
+     ];
+   }
 
 //  init: function(name, graphics, options) {
 //    this._super(name, graphics, options);

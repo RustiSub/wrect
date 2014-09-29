@@ -248,20 +248,44 @@ var Builder = Class.extend({
     };
 
     arc.baseCallback  = function() {
-      this._graphics.beginFill(this.color, 0.5);
-      //this._graphics.drawCircle(0, 0, this.dimensions.radius);
+      this._graphics.beginFill(this.color, this.alpha);
+      this._graphics.drawCircle(0, 0, this.dimensions.radius);
+      this._graphics.endFill();
+
+      this._graphics.beginFill(0x000000, 1);
+      this._graphics.moveTo(0,0);
+      for(var coordIndex in this.arcShapeCoords) {
+        var coord = this.arcShapeCoords[coordIndex];
+        this._graphics.lineTo(coord.x, coord.y);
+      }
+      this._graphics.endFill();
+//      this._graphics.beginFill(this.color, 0.5);
+//      this._graphics.drawCircle(0, 0, this.dimensions.radius);
+//      this._graphics.endFill();
+//      this._graphics.beginFill(0xFFFFFF, 1);
+//      this._graphics.moveTo(0,0);//this.dimensions.origin.x, this.dimensions.origin.y);
+//      var angleStart = window.game.getHelpers().math.toRadians(0);
+//      var arcStart = new Vector(this.dimensions.origin.x + this.dimensions.radius, this.dimensions.origin.y).rotate(angleStart, this.dimensions.origin);
+//      this._graphics.lineTo(arcStart.x, arcStart.y);
+////      this._graphics.lineTo(arcStart.x, arcStart.y + 20);
+////      this._graphics.lineTo(0,0);
+//      var angleEnd = window.game.getHelpers().math.toRadians(50);
+//      var arcEnd = new Vector(arcStart.x, arcStart.y).rotate(angleEnd, this.dimensions.origin);
+//      this._graphics.lineTo(arcEnd.x, arcEnd.y);
+////      this._graphics.lineTo(this.dimensions.origin.x, this.dimensions.origin.y);
+//      this._graphics.lineTo(0,0);
       //this._graphics.moveTo(0, 0);
       //this._graphics.lineTo(100,75);
       //x,y,radius,startAngle,endAngle,anticlockwise
       //this._graphics.beginPath();
 
-      var beginAngle = window.game.getHelpers().math.toRadians(0);
-      var endAngle = window.game.getHelpers().math.toRadians(360);
-
-      this._graphics.arc(0, 0, 400, beginAngle, endAngle, false);
+//      var beginAngle = window.game.getHelpers().math.toRadians(0);
+//      var endAngle = window.game.getHelpers().math.toRadians(360);
+//
+//      this._graphics.arc(0, 0, 400, beginAngle, endAngle, false);
       //this._graphics.stroke();
       //this._graphics.lineTo(0, 0);
-      this._graphics.endFill();
+//      this._graphics.endFill();
     };
 
     arc.glueCallback = function() {};

@@ -107,9 +107,10 @@ function shieldCircleSpamTest() {
 function arc_test_1() {
   var circle1 = game._builder.createArc({
     name: 'a1',
-    origin: new Vector(700, 500),
-    radius: 400,
-    arc: 180,
+    origin: new Vector(500, 200),
+    radius: 100,
+    angle: 45,
+    width: 180,
     color: 0xFFFF00
   });
 
