@@ -104,6 +104,18 @@ function shieldCircleSpamTest() {
 //  game.addEntity(force);
 }
 
+function arc_test_1() {
+  var circle1 = game._builder.createArc({
+    name: 'a1',
+    origin: new Vector(700, 500),
+    radius: 400,
+    arc: 180,
+    color: 0xFFFF00
+  });
+
+  game.addEntity(circle1);
+}
+
 function buildShip_1() {
   var wall_size = 20;
   var origin = new Vector(250, 200);
@@ -199,5 +211,5 @@ window.onload = function() {
         defaultLevel: false
     });
 
-  shieldCircleSpamTest();
+  arc_test_1();
 };

@@ -232,6 +232,48 @@ var Builder = Class.extend({
 
     return circle;
   },
+  createArc: function (options) {
+    options.alpha = typeof options.alpha !== 'undefined' ? options.alpha : 1;
+    options.color = typeof options.color !== 'undefined' ? options.color : 0x00FF00;
+
+    var graphics = new PIXI.Graphics();
+
+    var arc = new Arc(options.name, graphics, options);
+
+    arc.name = options.name;
+
+    arc.baseGraphicsCallback = function() {
+      this._graphics.clear();
+      this.baseCallback();
+    };
+
+    arc.baseCallback  = function() {
+      this._graphics.beginFill(this.color, 0.5);
+      //this._graphics.drawCircle(0, 0, this.dimensions.radius);
+      //this._graphics.moveTo(0, 0);
+      //this._graphics.lineTo(100,75);
+      //x,y,radius,startAngle,endAngle,anticlockwise
+      //this._graphics.beginPath();
+
+      var beginAngle = window.game.getHelpers().math.toRadians(0);
+      var endAngle = window.game.getHelpers().math.toRadians(360);
+
+      this._graphics.arc(0, 0, 400, beginAngle, endAngle, false);
+      //this._graphics.stroke();
+      //this._graphics.lineTo(0, 0);
+      this._graphics.endFill();
+    };
+
+    arc.glueCallback = function() {};
+
+    arc.selectCallback = function() {};
+
+    arc.baseGraphicsCallback();
+
+    arc.frozen = false;
+
+    return arc;
+  },
   connectGlue: function(bodies) {
 
   },
