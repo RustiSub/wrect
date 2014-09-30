@@ -9,13 +9,14 @@
    * @param {number} y - Position of the camera on the Y axis
    * @param {number} width - The width of the view rectangle
    * @param {number} height - The height of the view rectangle
+   * @param {Game} game - The game class to bind to
    */
-  window.Camera = function(x, y, width, height) {
+  window.Camera = function(x, y, width, height, game) {
     /**
      * Reference to game
      * @type Game
      */
-    this.game = Container.getGame();
+    this.game = game;
 
     /**
      * Target, usually an entity
@@ -29,8 +30,18 @@
      */
     this.zoomLevel = 1;
 
+    /**
+     * Real zoom level, incremented with smaller steps for a smoother experience
+     * @type {number}
+     * @private
+     */
     this._realZoomLevel = 1;
 
+    /**
+     * Steps used to increment _realZoomLevel. Smaller is slower, but also smoother
+     * @type {number}
+     * @private
+     */
     this._zoomSpeed = 0.01;
 
     /**
@@ -48,6 +59,33 @@
       width: 200
     };
 
+    /**
+     * Time how long to shake
+     * @type {Window.Timer}
+     */
+    this.shakeTimer = new window.Timer(0);
+
+    /**
+     * @type {Window.Vector}
+     */
+    this.shakeOffset = new Vector(0, 0);
+
+    /**
+     * SOOOO INTENSE
+     * @type {number}
+     */
+    this.shakeIntensity = 1;
+
+    /**
+     * Currently shaking
+     * @type {boolean}
+     */
+    this.shaking = false;
+
+    /**
+     * Display element containing the Camera
+     * @type {PIXI.DisplayObjectContainer}
+     */
     this.displayContainer = this.game._cameraContainer;
 
     /**
@@ -97,6 +135,10 @@
     this.target = entity;
   };
 
+  /**
+   * Get position of the mouse relative to the camera position.
+   * @returns {window.Vector|boolean}
+   */
   window.Camera.prototype.getMouseWorldCoordinates = function() {
     var screenPos = this.game.getInputHandler().getMousePosition();
     if (screenPos) {
@@ -106,15 +148,23 @@
     return false;
   };
 
+  /**
+   * Stop following entities
+   */
   window.Camera.prototype.unfollow = function() {
     this.target = null;
   };
 
+  /**
+   * Update
+   */
   window.Camera.prototype.update = function() {
     this.changed = false;
 
     this.updateZoom();
     this.updateFollow();
+    this.updateShake();
+    this.updateCameraContainer();
 
     if (this.game.getInputHandler().mouseWheelUp()) {
       this.zoomIn(0.05);
@@ -124,6 +174,43 @@
     }
   };
 
+  /**
+   * Update the camera container position
+   */
+  window.Camera.prototype.updateCameraContainer = function() {
+    this.displayContainer.position.x = -this.position.x;
+    this.displayContainer.position.y = -this.position.y;
+  };
+
+  /**
+   * Update the shaking
+   */
+  window.Camera.prototype.updateShake = function() {
+    if (this.shaking) {
+      var delta = this.shakeTimer.delta();
+      if (delta > 0) {
+        var deltaPct = -delta / this.shakeTimer.targetTime;
+        var value = this.shakeIntensity * Math.pow(deltaPct, 2);
+        if (value > 0.5) {
+          this.shakeOffset.x = value * Math.random();
+          this.shakeOffset.y = value * Math.random();
+        }
+        this.shakeOffset.multiply(deltaPct);
+        var resultVector = this.position.add(this.shakeOffset);
+        this.position.x = resultVector.x;
+        this.position.y = resultVector.y;
+      }
+      else {
+        this.shaking = false;
+        this.shakeTimer.reset();
+      }
+      this.shakeTimer.update(this.game.getDelta());
+    }
+  };
+
+  /**
+   * Update the zoom level for interpolation
+   */
   window.Camera.prototype.updateZoom = function() {
     if (this._realZoomLevel !== this.zoomLevel) {
       if (this._realZoomLevel > this.zoomLevel) {
@@ -137,6 +224,9 @@
     }
   };
 
+  /**
+   * Update the position of the camera
+   */
   window.Camera.prototype.updateFollow = function() {
     if (this.target) {
       var center = this.target._physics.center(this.target.dimensions);
@@ -149,12 +239,12 @@
       center = center.subtract(halfBounds);
       this.position.x = center.x;
       this.position.y = center.y;
-
-      this.displayContainer.position.x = -this.position.x;
-      this.displayContainer.position.y = -this.position.y;
     }
   };
 
+  /**
+   * Will be used for interpolation
+   */
   window.Camera.prototype.updatePosition = function() {
     var delta = {
       x: this.position.x - this.targetPosition.x,
@@ -168,6 +258,19 @@
       if (Math.abs(delta.y) > 100) {
         //this.nextPosition.y = Math.round(this.position.y + delta.y/10);
       }*/
+    }
+  };
+
+  /**
+   * Shake the camera for a certain amount of time
+   * @param {int} intensity
+   * @param {int} duration
+   */
+  window.Camera.prototype.shake = function(intensity, duration) {
+    if (!this.shaking) {
+      this.shaking = true;
+      this.shakeTimer.set(duration);
+      this.shakeIntensity = intensity;
     }
   };
 
