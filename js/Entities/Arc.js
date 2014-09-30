@@ -24,30 +24,44 @@ var Arc = Circle.extend({
        radius.rotate(math.toRadians(degrees), origin)
      ];
 
-     this.dimensions.vertices = function(axis) {
-       if (typeof axis === 'undefined') {
-         return [this.origin];
-       }
 
-       var minD = this.origin.add(axis.unitScalar(this.radius));
-       var minDP = axis.dot(minD);
-       var maxD = this.origin.add(axis.unitScalar(-this.radius));
-       var maxDP = axis.dot(maxD);
+     this.dimensions.vertices = function(axis, centerConnectionPoint) {
+       //var minD = this.origin.add(axis.unitScalar(this.radius));
+       //var minDP = axis.dot(minD);
+       //var maxD = this.origin.add(axis.unitScalar(-this.radius));
+       //var maxDP = axis.dot(maxD);
 
        var minArc = this.arcShapeCoords[1].add(this.origin);
-       var minArcP = axis.dot(minArc);
+       //var minArcP = axis.dot(minArc);
        var maxArc = this.arcShapeCoords[3].add(this.origin);
-       var maxArcP = axis.dot(maxArc);
+       //var maxArcP = axis.dot(maxArc);
 
-       var minPoint = minArcP > minDP ? minArc :  minD;
-       var maxPoint = maxArcP < maxDP ? maxArc :  maxD;
+       //var minPoint = minArcP > minDP ? minArc :  minD;
+       //var maxPoint = maxArcP < maxDP ? maxArc :  maxD;
+
+       if (typeof axis !== 'undefined' && typeof centerConnectionPoint !== 'undefined') {
+         //console.log(
+         //    axis,
+         //    axis.dot(this.origin.add(centerConnectionPoint.unitScalar(this.radius))),
+         //    axis.dot(this.origin.add(axis.unitScalar(this.radius))),
+         //    axis.dot(minArc),
+         //    axis.dot(this.arcShapeCoords[2].add(this.origin)),
+         //    axis.dot(maxArc)
+         //);
+         return [
+           this.origin,
+           minArc,
+           this.origin.add(centerConnectionPoint.unitScalar(this.radius)),
+           maxArc
+         ];
+       }
 
        return [
-         minPoint,
-        this.arcShapeCoords[2].add(this.origin),
-         maxPoint,
-         this.origin
-      ];
+         this.origin,
+         minArc,
+         this.arcShapeCoords[2].add(this.origin),
+         maxArc
+        ];
      };
    }
 

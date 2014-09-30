@@ -123,7 +123,11 @@ function arc_test_1() {
 //  });
 //  game.addEntity(circle1);
 
-  var block1 = game._builder.createBlock('b1', 500, 150 , 40, 40);
+  var block1 = game._builder.createBlock('b1', 585, 150 , 40, 40);
+  block1.physicsBody.v = new Vector(0, 2);
+  game.addEntity(block1);
+
+  var block1 = game._builder.createBlock('b1', 400, 150 , 40, 40);
   block1.physicsBody.v = new Vector(0, 2);
   game.addEntity(block1);
 }

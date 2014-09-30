@@ -23,9 +23,9 @@ var CollisionManager = Class.extend({
       return axes;
     }
 
-    function project(dimensions, axis) {
+    function project(dimensions, axis, centerConnectionPoint) {
       axis = axis.unit();
-      var vertices = dimensions.vertices(axis);
+      var vertices = dimensions.vertices(axis, centerConnectionPoint);
       var min = axis.dot(vertices[0]);
       var max = min;
       var projections = [];
@@ -61,8 +61,8 @@ var CollisionManager = Class.extend({
         }
 
         // project both shapes onto the axis
-        var p1 = project(a, axis);
-        var p2 = project(b, axis);
+        var p1 = project(a, axis, b.center().subtract(a.center()).unit());
+        var p2 = project(b, axis, a.center().subtract(b.center()).unit());
 
         if (p1.max < p2.min || p1.min > p2.max){
           axesOverlap = false;
