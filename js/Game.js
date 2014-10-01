@@ -15,6 +15,8 @@
         previousTime: 0,
         debug: false,
         fpsOutInterval: 10000,
+        completeTree: [],
+        treeHashes: [],
         debugStats: [],
         _defaults: {
             inputHandlerClass: InputHandler,
@@ -160,13 +162,21 @@
                 if (inputHandler.key('RETURN')) {
                   self._gravityManager.applyForce(5, self.getEntityManager().getEntityByName('force_generator'));
                 }
+//                self._builder.clearRooms(self.getEntityManager().getAllEntities());
+                self.completeTree = [];
+                self.treeHashes = [];
+                var range = {
+                  x: 0,
+                  y: 0,
+                  width : 1280,
+                  height: 720,
+                  level: 0,
+                  quadLevel : 0
+                };
 
-                self._builder.clearRooms(game.getEntityManager().getAllEntities());
-                self._builder.buildConnections(game.getEntityManager().getAllEntities());
-
-                game._collisionManager.mapQuadTree(game.getEntityManager().getAllEntities(), range);
-//console.log(game.completeTree);
-//                self._builder.buildConnections(game.getEntityManager().getAllEntities());
+                self._collisionManager.mapQuadTree(self.getEntityManager().getAllEntities(), range);
+//console.log(self.completeTree);
+//                self._builder.buildConnections(self.getEntityManager().getAllEntities());
                 self._collisionManager.updateAllCollisions();
                 self._entityManager.update();
                 self._levelManager.update();

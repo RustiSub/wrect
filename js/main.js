@@ -232,10 +232,10 @@ window.onload = function() {
       height: window.innerHeight,
       defaultLevel: false
     });
+    makeSpaceLevel();
+    buildShip_1();
+    var shield = game.getEntityManager().getEntityByName('1');
+    game.getCamera().follow(shield);
   });
 
-  makeSpaceLevel();
-  buildShip_1();
-  var shield = game.getEntityManager().getEntityByName('1');
-  game.getCamera().follow(shield);
 };
