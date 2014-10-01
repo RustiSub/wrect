@@ -284,7 +284,7 @@
             }
             else {
                 if (document.exitFullscreen) {
-                    document.exitFullscreen()
+                    document.exitFullscreen();
                 }
                 else if (document.mozCancelFullScreen) {
                     document.mozCancelFullScreen();
