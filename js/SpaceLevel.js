@@ -17,7 +17,7 @@
           this.levelData.meteorsSpawned.push(randomIndex);
         }
         else {
-          console.log('done!');
+          //console.log('done!');
         }
       }
     },

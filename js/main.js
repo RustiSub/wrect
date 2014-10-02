@@ -201,18 +201,18 @@ function makeSpaceLevel() {
       max: 5
     }
   };
-  for (i = 0; i < 20; i++) {
-    optionsSmall.name = 'smallMeteor' + i;
-    level.levelData.meteors.push(builder.createMeteor(optionsSmall));
-  }
-  for (i = 0; i < 10; i++) {
-    optionsSmall.name = 'mediumMeteor' + i;
-    level.levelData.meteors.push(builder.createMeteor(optionsMedium));
-  }
-  for (i = 0; i < 1; i++) {
-    optionsSmall.name = 'bigAssMeteor' + i;
-    level.levelData.meteors.push(builder.createMeteor(optionsLarge));
-  }
+  //for (i = 0; i < 20; i++) {
+  //  optionsSmall.name = 'smallMeteor' + i;
+  //  level.levelData.meteors.push(builder.createMeteor(optionsSmall));
+  //}
+  //for (i = 0; i < 10; i++) {
+  //  optionsSmall.name = 'mediumMeteor' + i;
+  //  level.levelData.meteors.push(builder.createMeteor(optionsMedium));
+  //}
+  //for (i = 0; i < 1; i++) {
+  //  optionsSmall.name = 'bigAssMeteor' + i;
+  //  level.levelData.meteors.push(builder.createMeteor(optionsLarge));
+  //}
 }
 
 window.onload = function() {
@@ -235,7 +235,7 @@ window.onload = function() {
     makeSpaceLevel();
     buildShip_1();
     var shield = game.getEntityManager().getEntityByName('1');
-    game.getCamera().follow(shield);
+    //game.getCamera().follow(shield);
   });
 
 };
