@@ -142,11 +142,7 @@
   window.Camera.prototype.getMouseWorldCoordinates = function() {
     var screenPos = this.game.getInputHandler().getMousePosition();
     if (screenPos) {
-      //console.log(screenPos.scale(this._realZoomLevel));
-      if (1 - this._realZoomLevel != 0) {
-        return screenPos.scale(1 - this._realZoomLevel);//.add(this.unscaledPosition);
-      }
-      return screenPos;
+      return screenPos.add(this.position).divide(this._realZoomLevel);
     }
 
     return false;

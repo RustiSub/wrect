@@ -235,7 +235,7 @@ window.onload = function() {
     makeSpaceLevel();
     buildShip_1();
     var shield = game.getEntityManager().getEntityByName('1');
-    //game.getCamera().follow(shield);
+    game.getCamera().follow(shield);
   });
 
 };
