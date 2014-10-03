@@ -18,8 +18,12 @@
      * @private
      */
     this._currentTime = 0;
+    
+    Container.getGame().getEventManager().addListener('game.updateStart', this.update);
   };
-
+  
+  window.Timer.prototype.game = Container.getGame();
+  
   /**
    * Update the timer. Needs the current delta since the previous update
    * @param delta

@@ -11,6 +11,7 @@
         _levelManager: null,
         _cameraContainer: null,
         _camera: null,
+        _eventManager: null,
         timeDelta: 0,
         previousTime: 0,
         debug: false,
@@ -59,6 +60,9 @@
         getCamera: function() {
           return this._camera;
         },
+        getEventManager: function() {
+          return this._eventManager;
+        },
         getDelta: function() {
             return this.timeDelta;
         },
@@ -82,6 +86,7 @@
                 }
             }
             this.buildComponents();
+            this.buildEvents();
             if (this._options && typeof this._options.autoBoot !== 'undefined' && this._options.autoBoot) {
                 this.bootstrap(options);
             }
@@ -101,6 +106,7 @@
             this._cameraContainer.height = this._options.height;
             this._stage.addChild(this._cameraContainer);
 
+            this._eventManager = new window.EventManager();
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
@@ -123,6 +129,11 @@
             var defaults = this._helpers.copy(this._defaults);
             this._options = this._helpers.merge(defaults, options);
         },
+      
+        buildEvents: function() {
+          this.getEventManager().createEvent('game.updateStart');
+          this.getEventManager().createEvent('game.updateEnd');
+        },
 
         /**
          * Creates the stage and renderer and starts the game loop.
@@ -136,6 +147,7 @@
 
             function run(timestamp) {
                 requestAnimationFrame(run);
+                self.getEventManager().fire('game.updateStart');
                 self.updateTime(timestamp);
                 if (self.debug) {
                     self.trackFps(timestamp);
@@ -181,10 +193,10 @@
                 self._entityManager.update();
                 self._levelManager.update();
                 self._camera.update();
+                self.getEventManager().fire('game.updateEnd');
 
                 // Needs to be last
                 self._inputHandler.update();
-
                 renderer.render(stage);
 
                 // Sets the element used for mouse-event tracking to the root GUI element. This fixes mouse input over GUI elements.
