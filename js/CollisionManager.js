@@ -8,7 +8,7 @@ var CollisionManager = Class.extend({
       var axes = [];
 // loop over the vertices
       //for (int i = 0; i < shape.vertices.length; i++) {
-      var vertices = dimensions.vertices(dimensions);
+      var vertices = dimensions.vertices();
       for (var i = 0; i < vertices.length ; i++) {
         // get the current vertex
         var p1 = vertices[i];
@@ -25,12 +25,12 @@ var CollisionManager = Class.extend({
 
     function project(dimensions, axis) {
       axis = axis.unit();
-      var vertices = dimensions.vertices(dimensions);
+      var vertices = dimensions.vertices(axis);
       var min = axis.dot(vertices[0]);
       var max = min;
       var projections = [];
 
-      for (var i = 1; i < vertices.length ; i++) {
+      for (var i = 0; i < vertices.length ; i++) {
         var v = vertices[i];
         var p = axis.dot(v);
         if (p < min) {
@@ -56,6 +56,10 @@ var CollisionManager = Class.extend({
 
       for (var i = 0; i < axes.length ; i++) {
         var axis = axes[i];
+        if (axes.length === 1 && axis.x === 0 && axis.y === 0) {
+          axis = b.center().subtract(a.center()).unit();
+        }
+
         // project both shapes onto the axis
         var p1 = project(a, axis);
         var p2 = project(b, axis);
@@ -81,12 +85,10 @@ var CollisionManager = Class.extend({
       };
     }
 
-    var axes1Overlap = checkOverlap(getNormalAxes(a), a, b);
-    var axes2Overlap = checkOverlap(getNormalAxes(b), a, b);
+    var axesOverlap = checkOverlap(getNormalAxes(b), a, b);
 
-    if (axes1Overlap.hasOverlap && axes2Overlap.hasOverlap) {
-      shapeA.handleCollision(shapeB, axes1Overlap, axes2Overlap);
-      shapeB.handleCollision(shapeA, axes1Overlap, axes2Overlap);
+    if (axesOverlap.hasOverlap) {
+      shapeA.handleCollision(shapeB, axesOverlap);
     }
   },
   updateAllCollisions: function() {
@@ -108,14 +110,6 @@ var CollisionManager = Class.extend({
             this.satTest(mainBody, otherBody);
           }
         }
-//        for (var x = 0; x < bodies.length; x++) {
-//          var body = bodies[x];
-//          for (var c = 0; c < body.collisions.length; c++) {
-//            var collision = body.collisions[c];
-//            body._physics.applyCollision(collision);
-//            //body._physics.applyGravity(collision);
-//          }
-//        }
       }
     }
 
@@ -124,13 +118,13 @@ var CollisionManager = Class.extend({
     for (var x = 0; x < bodies.length; x++) {
       var body = bodies[x];
 
-      var outOfRange = (body.dimensions.topLeft.x + body.dimensions.width) < range.x || (body.dimensions.topLeft.y + body.size.y) < range.y
-        || body.dimensions.topLeft.x > range.x + range.width || body.dimensions.topLeft.y > range.y + range.width;
+      var bounds = body.dimensions.bounds();
 
-//      var outOfRangeSpeed = (body.dimensions.topLeft.x + body.dimensions.width + body._physics.xSpeed) < range.x || (body.dimensions.topLeft.y + body.size.y + body._physics.ySpeed) < range.y
-//        || body.dimensions.topLeft.x + body._physics.xSpeed > range.x + range.width || body.dimensions.topLeft.y + body._physics.ySpeed > range.y + range.width;
+      var speed = body.physicsBody.v;
+      var outOfRangeSpeed = (bounds.topRight.x + speed.x) < range.x || (bounds.bottomLeft + speed.y) < range.y
+        || bounds.topLeft.x + speed.x > range.x + range.width || bounds.topLeft.y + speed.y > range.y + range.width;
 
-      if (!outOfRange) {
+      if (!outOfRangeSpeed) {
         localTree.push(body);
       }
     }

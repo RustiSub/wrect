@@ -5,7 +5,6 @@
 var Force = BaseEntity.extend({
 
   params: {},
-  strength: 10,
   pulseTimer: {
     interval: 100,
     timeLapsed: 0
@@ -150,16 +149,43 @@ var Force = BaseEntity.extend({
   handleCollision: function(collisionShape, axes1Overlap, axes2Overlap) {
     if (this.pulseTimer.checkInterval()) {
       var speed = collisionShape.physicsBody.v;
+      var n = this.params.origin.subtract(collisionShape.dimensions.center());
+      var v = collisionShape.physicsBody.v;
 
-      var penetrationVector = this.params.origin.subtract(collisionShape.dimensions.center());
-      var newSpeed = speed.add(penetrationVector.multiply(-0.05));
-      var speedValue = Math.abs(newSpeed.distance(new Vector(0, 0)));
+      var vn = v.dot(n);
+      var nn = n.dot(n);
+      var penetrationSpeedVector = n.multiply(vn / nn);
+      var penetrationSpeed = penetrationSpeedVector.len();
 
-      if (speedValue > this.strength) {
-        newSpeed = newSpeed.unitScalar(this.strength);
+      var shieldSpeedLimit = 2;
+      var pulseDampStrength = 2;
+
+      if (penetrationSpeed > shieldSpeedLimit) {
+        var overSpeedLimit = penetrationSpeed - shieldSpeedLimit;
+        var dampStrength = overSpeedLimit > pulseDampStrength ? pulseDampStrength : overSpeedLimit;
+        var dampForceVector = penetrationSpeedVector.unitScalar(-(dampStrength));
+        collisionShape.physicsBody.v = speed.add(dampForceVector);
       }
+//
+      //=> this is the working repulsion
+//      newSpeed = newSpeed.add(penetrationVector.unitScalar(-1));
 
-      collisionShape.physicsBody.v = newSpeed;
+//      var repulsionVector = collisionShape.dimensions.center().add(this.params.origin.subtract(collisionShape.dimensions.center()).unitScalar(-50));
+//      console.log(collisionShape.physicsBody.v, repulsionVector);
+////      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(repulsionVector);
+//      console.log(collisionShape.physicsBody.v);
+//
+////      console.log(penetrationVector);
+//      this._graphics.beginFill(0xFFFFFF, 0.5);
+//      this._graphics.moveTo(center.x, center.y);
+//      this._graphics.lineTo(repulsionVector.x, repulsionVector.y);
+//      this._graphics.lineTo(repulsionVector.x, repulsionVector.y + 10);
+////      this._graphics.lineTo(center.x, center.y);
+////      this._graphics.lineTo(center.x, center.y + 10);
+//      this._graphics.lineTo(center.x, center.y);
+//      this._graphics.endFill();
+//      collisionShape.physicsBody.v = newSpeed;
+
     }
   },
   apply: function() {
