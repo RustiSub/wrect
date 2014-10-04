@@ -45,6 +45,20 @@ var BaseEntity = Class.extend({
             this._graphics = graphics;
             this._physics = new Physics();
         }
+
+        this.dimensions.bounds = function() {
+          var origin = new Vector(-1, -1);
+          return {
+            topLeft : origin,
+            topRight : origin,
+            bottomRight : origin,
+            bottomLeft : origin
+          };
+        };
+        this.dimensions.center = function() {
+          var origin = new Vector(-1, -1);
+          return origin;
+        };
     },
 
     /**

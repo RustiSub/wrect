@@ -267,7 +267,6 @@ window.onload = function() {
     buildShip_1();
     var shield = game.getEntityManager().getEntityByName('1');
     game.getCamera().follow(shield);
-  });
 
-  shieldCircleSpamTest();
+  });
 };
