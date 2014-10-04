@@ -21,7 +21,6 @@
         debugStats: [],
         _defaults: {
             inputHandlerClass: InputHandler,
-            helpersClass: Helpers,
             entityManagerClass: EntityManager,
             collisionManagerClass: CollisionManager,
             guiManagerClass: window.GuiManager,
@@ -32,7 +31,6 @@
             height: 720
         },
         _options: {},
-        _helpers: null,
         getStage: function() {
             return this._stage;
         },
@@ -42,8 +40,12 @@
         getInputHandler: function() {
             return this._inputHandler;
         },
+      /**
+       * @deprecated - This is now a global object, so always accessible from window.Helpers.
+       * @returns {null}
+       */
         getHelpers: function() {
-            return this._helpers;
+            return window.Helpers;
         },
         getEntityManager: function() {
             return this._entityManager;
@@ -125,11 +127,11 @@
          */
         buildOptions: function(options) {
             // We need our _helpers before we can merge.
-            this._helpers = options && options.helpersClass ? new options.helpersClass() : new this._defaults.helpersClass();
-            var defaults = this._helpers.copy(this._defaults);
-            this._options = this._helpers.merge(defaults, options);
+            var objHelpers = window.Helpers.object;
+            var defaults = objHelpers.copy(this._defaults);
+            this._options = objHelpers.merge(defaults, options);
         },
-      
+
         buildEvents: function() {
           this.getEventManager().createEvent('game.updateStart');
           this.getEventManager().createEvent('game.updateEnd');
