@@ -110,6 +110,31 @@ var Block = MovableEntity.extend({
       game.getEntityManager().removeEntity(this);
     }
   },
+  setPosition: function(vector) {
+    this.dimensions.topLeft = vector;
+    this.dimensions.topRight = new Vector(vector.x + this.dimensions.width, vector.y);
+    this.dimensions.bottomRight = new Vector(vector.x + this.dimensions.width, vector.y + this.dimensions.height);
+    this.dimensions.bottomLeft = new Vector(vector.x, vector.y + this.dimensions.height);
+    this._graphics.position = this.dimensions.topLeft;
+  },
+  move: function () {
+    var inputHandler = Container.getComponent('InputHandler');
+    if (inputHandler.key('left')) {
+      this._physics.increaseSpeedX(-1);
+    }
+    if (inputHandler.key('right')) {
+      this._physics.increaseSpeedX(1);
+    }
+    if (inputHandler.key('up')) {
+      this._physics.increaseSpeedY(-1);
+    }
+    if (inputHandler.key('down')) {
+      this._physics.increaseSpeedY(1);
+    }
+
+    //this._physics.applyFriction(0);
+    //this._physics.applyFriction(this._graphics.position.y, this.height);
+  },
   update: function(){
     this._super();
 

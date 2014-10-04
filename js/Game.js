@@ -1,4 +1,8 @@
 (function(global) {
+  /**
+   * @Class Game
+   * @type {void|*}
+   */
     global.Game = Class.extend ({
         _stage: null,
         _renderer: null,
@@ -11,6 +15,8 @@
         previousTime: 0,
         debug: false,
         fpsOutInterval: 10000,
+        completeTree: [],
+        treeHashes: [],
         debugStats: [],
         _defaults: {
             inputHandlerClass: InputHandler,
@@ -98,11 +104,11 @@
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
-            this._gravityManager = new this._options.gravityManagerClass();
             this._guiManager = new this._options.guiManagerClass();
+            this._gravityManager = new this._options.gravityManagerClass();
             this._builder = new this._options.builder();
             this._levelManager = new this._options.levelManagerClass(this._stage, this._options.defaultLevel);
-            this._camera = new window.Camera(0, 0, this._options.width, this._options.height);
+            this._camera = new window.Camera(0, 0, this._options.width, this._options.height, this);
 
             this.bootstrap();
         },
@@ -156,10 +162,9 @@
                 if (inputHandler.key('RETURN')) {
                   self._gravityManager.applyForce(5, self.getEntityManager().getEntityByName('force_generator'));
                 }
-
-//                self._builder.clearRooms(game.getEntityManager().getAllEntities());
-                game.completeTree = [];
-                game.treeHashes = [];
+//                self._builder.clearRooms(self.getEntityManager().getAllEntities());
+                self.completeTree = [];
+                self.treeHashes = [];
                 var range = {
                   x: 0,
                   y: 0,
@@ -169,12 +174,15 @@
                   quadLevel : 0
                 };
 
-                game._collisionManager.mapQuadTree(game.getEntityManager().getAllEntities(), range);
-//console.log(game.completeTree);
-//                self._builder.buildConnections(game.getEntityManager().getAllEntities());
+                self._collisionManager.mapQuadTree(self.getEntityManager().getAllEntities(), range);
+//console.log(self.completeTree);
+//                self._builder.buildConnections(self.getEntityManager().getAllEntities());
                 self._collisionManager.updateAllCollisions();
                 self._entityManager.update();
+                self._levelManager.update();
                 self._camera.update();
+
+                // Needs to be last
                 self._inputHandler.update();
 
                 renderer.render(stage);
@@ -286,7 +294,7 @@
             }
             else {
                 if (document.exitFullscreen) {
-                    document.exitFullscreen()
+                    document.exitFullscreen();
                 }
                 else if (document.mozCancelFullScreen) {
                     document.mozCancelFullScreen();
@@ -322,7 +330,7 @@
                     return a + b;
                 });
 
-                //console.log('Past ' + this.fpsOutInterval + 'ms avg FPS: ' + (sum/this.debugStats.fps.length));
+                console.debug('Past ' + this.fpsOutInterval + 'ms avg FPS: ' + (sum/this.debugStats.fps.length));
                 this.debugStats.fps = [];
                 this.debugStats.previousFpsOut = timestamp;
             }

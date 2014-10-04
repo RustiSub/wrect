@@ -9,13 +9,14 @@
    * @param {number} y - Position of the camera on the Y axis
    * @param {number} width - The width of the view rectangle
    * @param {number} height - The height of the view rectangle
+   * @param {Game} game - The game class to bind to
    */
-  window.Camera = function(x, y, width, height) {
+  window.Camera = function(x, y, width, height, game) {
     /**
      * Reference to game
-     * @type {game|*}
+     * @type Game
      */
-    this.game = Container.getGame();
+    this.game = game;
 
     /**
      * Target, usually an entity
@@ -27,7 +28,21 @@
      * Zoom level
      * @type {number}
      */
-    this.scale = 1;
+    this.zoomLevel = 1;
+
+    /**
+     * Real zoom level, incremented with smaller steps for a smoother experience
+     * @type {number}
+     * @private
+     */
+    this._realZoomLevel = 1;
+
+    /**
+     * Steps used to increment _realZoomLevel. Smaller is slower, but also smoother
+     * @type {number}
+     * @private
+     */
+    this._zoomSpeed = 0.01;
 
     /**
      * Whether or not the position changed since the last update
@@ -44,50 +59,63 @@
       width: 200
     };
 
-    this.displayContainer = Container.getGame()._cameraContainer;
+    /**
+     * Time how long to shake
+     * @type {Window.Timer}
+     */
+    this.shakeTimer = new window.Timer(0);
+
+    /**
+     * @type {Window.Vector}
+     */
+    this.shakeOffset = new Vector(0, 0);
+
+    /**
+     * SOOOO INTENSE
+     * @type {number}
+     */
+    this.shakeIntensity = 1;
+
+    /**
+     * Currently shaking
+     * @type {boolean}
+     */
+    this.shaking = false;
+
+    /**
+     * Display element containing the Camera
+     * @type {PIXI.DisplayObjectContainer}
+     */
+    this.displayContainer = this.game._cameraContainer;
 
     /**
      * Position of the camera
      * @type {{x: number, y: number}}
      */
-    this.position = {
-      x: x,
-      y: y
-    };
+    this.position = new Vector(x, y);
 
-    this.targetPosition = {
-      x: x,
-      y: y
-    };
+    this.targetPosition = new Vector(x, y);
 
-    this.nextPosition = {
-      x: x,
-      y: y
-    };
+    this.nextPosition = new Vector(x, y);
+
+    this.unscaledPosition = new Vector(x, y);
 
     /**
      * Bounds of the camera
      * @type {{x: {min: number, max: number}, y: {min: number, max: number}}}
      */
-    this.bounds = {
-      x: {
-        min: 0,
-        max: width
-      },
-      y: {
-        min: 0,
-        max: height
-      }
-    };
+    this.bounds = new Vector(width, height);
+
+    var curLvl = this.game.getCurrentLevel();
 
     /**
      * Dimensions of the level
      * @type {{x: *, y: *}}
      */
-    this.levelDimensions = {
-      x: this.game.getCurrentLevel().width,
-      y: this.game.getCurrentLevel().height
-    };
+    this.levelDimensions = new Vector(
+      curLvl.width,
+      curLvl.height
+    );
 
     /**
      * Whether or not the camera is at the edge
@@ -104,31 +132,119 @@
    * @param {Block} entity
    */
   window.Camera.prototype.follow = function(entity) {
-    //this.targetPosition = entity.dimensions.topLeft;
-    this.position = entity.dimensions.topLeft;
     this.target = entity;
   };
 
+  /**
+   * Get position of the mouse relative to the camera position.
+   * @returns {window.Vector|boolean}
+   */
+  window.Camera.prototype.getMouseWorldCoordinates = function() {
+    var screenPos = this.game.getInputHandler().getMousePosition();
+    if (screenPos) {
+      return screenPos.add(this.position).divide(this._realZoomLevel);
+    }
+
+    return false;
+  };
+
+  /**
+   * Stop following entities
+   */
   window.Camera.prototype.unfollow = function() {
     this.target = null;
   };
 
+  /**
+   * Update
+   */
   window.Camera.prototype.update = function() {
     this.changed = false;
 
+    this.updateZoom();
     this.updateFollow();
+    this.updateShake();
+    this.updateCameraContainer();
+
+    if (this.game.getInputHandler().mouseWheelUp()) {
+      this.zoomIn(0.05);
+    }
+    else if (this.game.getInputHandler().mouseWheelDown()) {
+      this.zoomOut(0.05);
+    }
+  };
+
+  /**
+   * Update the camera container position
+   */
+  window.Camera.prototype.updateCameraContainer = function() {
     this.displayContainer.position.x = -this.position.x;
     this.displayContainer.position.y = -this.position.y;
   };
 
-  window.Camera.prototype.updateFollow = function() {
-    if (this.target) {
-      var center = this.target._physics.center(this.target.dimensions);
-      this.position.x = center.x - this.bounds.x.max/2;
-      this.position.y = center.y - this.bounds.y.max/2;
+  /**
+   * Update the shaking
+   */
+  window.Camera.prototype.updateShake = function() {
+    if (this.shaking) {
+      var delta = this.shakeTimer.delta();
+      if (delta > 0) {
+        var deltaPct = -delta / this.shakeTimer.targetTime;
+        var value = this.shakeIntensity * Math.pow(deltaPct, 2);
+        if (value > 0.5) {
+          this.shakeOffset.x = value * Math.random();
+          this.shakeOffset.y = value * Math.random();
+        }
+        this.shakeOffset.multiply(deltaPct);
+        var resultVector = this.position.add(this.shakeOffset);
+        this.position.x = resultVector.x;
+        this.position.y = resultVector.y;
+      }
+      else {
+        this.shaking = false;
+        this.shakeTimer.reset();
+      }
+      this.shakeTimer.update(this.game.getDelta());
     }
   };
 
+  /**
+   * Update the zoom level for interpolation
+   */
+  window.Camera.prototype.updateZoom = function() {
+    if (this._realZoomLevel !== this.zoomLevel) {
+      if (this._realZoomLevel > this.zoomLevel) {
+        this._realZoomLevel -= this._zoomSpeed;
+      }
+      if (this._realZoomLevel < this.zoomLevel) {
+        this._realZoomLevel += this._zoomSpeed;
+      }
+      this.displayContainer.scale.x = this._realZoomLevel;
+      this.displayContainer.scale.y = this._realZoomLevel;
+    }
+  };
+
+  /**
+   * Update the position of the camera
+   */
+  window.Camera.prototype.updateFollow = function() {
+    if (this.target) {
+      var center = this.target._physics.center(this.target.dimensions);
+      this.unscaledPosition.x = center.x - this.bounds.x/2;
+      this.unscaledPosition.y = center.y - this.bounds.y/2;
+
+      var halfBounds = this.bounds.scale(0.5);
+
+      center = center.scale(this._realZoomLevel);
+      center = center.subtract(halfBounds);
+      this.position.x = center.x;
+      this.position.y = center.y;
+    }
+  };
+
+  /**
+   * Will be used for interpolation
+   */
   window.Camera.prototype.updatePosition = function() {
     var delta = {
       x: this.position.x - this.targetPosition.x,
@@ -143,5 +259,87 @@
         //this.nextPosition.y = Math.round(this.position.y + delta.y/10);
       }*/
     }
+  };
+
+  /**
+   * Shake the camera for a certain amount of time
+   * @param {int} intensity
+   * @param {int} duration
+   */
+  window.Camera.prototype.shake = function(intensity, duration) {
+    if (!this.shaking) {
+      this.shaking = true;
+      this.shakeTimer.set(duration);
+      this.shakeIntensity = intensity;
+    }
+  };
+
+  /**
+   * !!THESE NEED TO BE SORTED FROM SMALL TO LARGE!!
+   * @type {{SMALLEST: number, SMALLER: number, SMALL: number, NORMAL: number, MEDIUM: number, LARGE: number, EXTRA_LARGE: number, LARGEST: number}}
+   */
+  window.Camera.prototype.zoomLevels = {
+    SMALLEST: 0.25,
+    SMALLER: 0.50,
+    SMALL: 0.75,
+    NORMAL: 1,
+    MEDIUM: 1.25,
+    LARGE: 1.50,
+    EXTRA_LARGE: 1.75,
+    LARGEST: 2.0
+  };
+
+  /**
+   * Min/max zoom levels
+   * @type {{min: number, max: number}}
+   */
+  window.Camera.prototype.zoomBounds = {
+    min: 0.25,
+    max: 2.0
+  };
+
+  /**
+   * Zoom in with the given amount
+   * @param value
+   */
+  window.Camera.prototype.zoomIn = function(value) {
+    var newZoomLevel = this.zoomLevel + value;
+    if (newZoomLevel >= this.zoomBounds.min && newZoomLevel <= this.zoomBounds.max) {
+      this.zoom(newZoomLevel);
+    }
+  };
+
+  /**
+   * Zoom out with the given amount
+   * @param value
+   */
+  window.Camera.prototype.zoomOut = function(value) {
+    var newZoomLevel = this.zoomLevel - value;
+    if (newZoomLevel >= this.zoomBounds.min && newZoomLevel <= this.zoomBounds.max) {
+      this.zoom(newZoomLevel);
+    }
+  };
+
+  /**
+   * Zoom to the given value
+   * @param value
+   */
+  window.Camera.prototype.zoom = function(value) {
+    this.zoomLevel = value;
+    this.updateFollow();
+  };
+
+  /**
+   * Get the name of the current zoom level. Useful for doing certain things only at a certain zoomlevel.
+   * @returns {*}
+   */
+  window.Camera.prototype.getCurrentZoomLevelName = function() {
+    for (var x in this.zoomLevels) {
+      var lvl = this.zoomLevels[x];
+      if (lvl > this.zoomLevel) {
+        return x;
+      }
+    }
+    return false;
   };
 }());

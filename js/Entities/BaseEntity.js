@@ -16,8 +16,8 @@ var BaseEntity = Class.extend({
      * Dimensions of the entity in px.
      */
     size: {
-        x: 64,
-        y: 64
+        x: 320,
+        y: 170
     },
     connectedBodies: [],
     connectionPoint: {},
@@ -39,6 +39,7 @@ var BaseEntity = Class.extend({
         this.name = name;
         if (typeof graphics === 'string') {
             this._graphics = this.buildSprite(graphics);
+            this._physics = new Physics();
         }
         else {
             this._graphics = graphics;
@@ -65,9 +66,10 @@ var BaseEntity = Class.extend({
             }
         }
         var texture = PIXI.Texture.fromImage(spritePath, crossOrigin, scaleMode);
+
         var frame = new PIXI.Texture(texture, {x: 0, y: 0, width: this.size.x, height: this.size.y});
 
-        return new PIXI.AnimatedSprite(frame);
+        return new PIXI.Sprite(frame);
     },
 
     setGraphics: function(graphics) {
