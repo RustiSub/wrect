@@ -11,6 +11,7 @@
         _levelManager: null,
         _cameraContainer: null,
         _camera: null,
+        _eventManager: null,
         timeDelta: 0,
         previousTime: 0,
         debug: false,
@@ -20,7 +21,6 @@
         debugStats: [],
         _defaults: {
             inputHandlerClass: InputHandler,
-            helpersClass: Helpers,
             entityManagerClass: EntityManager,
             collisionManagerClass: CollisionManager,
             guiManagerClass: window.GuiManager,
@@ -31,7 +31,6 @@
             height: 720
         },
         _options: {},
-        _helpers: null,
         getStage: function() {
             return this._stage;
         },
@@ -41,8 +40,12 @@
         getInputHandler: function() {
             return this._inputHandler;
         },
+      /**
+       * @deprecated - This is now a global object, so always accessible from window.Helpers.
+       * @returns {null}
+       */
         getHelpers: function() {
-            return this._helpers;
+            return window.Helpers;
         },
         getEntityManager: function() {
             return this._entityManager;
@@ -58,6 +61,9 @@
         },
         getCamera: function() {
           return this._camera;
+        },
+        getEventManager: function() {
+          return this._eventManager;
         },
         getDelta: function() {
             return this.timeDelta;
@@ -82,6 +88,7 @@
                 }
             }
             this.buildComponents();
+            this.buildEvents();
             if (this._options && typeof this._options.autoBoot !== 'undefined' && this._options.autoBoot) {
                 this.bootstrap(options);
             }
@@ -101,6 +108,7 @@
             this._cameraContainer.height = this._options.height;
             this._stage.addChild(this._cameraContainer);
 
+            this._eventManager = new window.EventManager();
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();
@@ -119,9 +127,14 @@
          */
         buildOptions: function(options) {
             // We need our _helpers before we can merge.
-            this._helpers = options && options.helpersClass ? new options.helpersClass() : new this._defaults.helpersClass();
-            var defaults = this._helpers.copy(this._defaults);
-            this._options = this._helpers.merge(defaults, options);
+            var objHelpers = window.Helpers.object;
+            var defaults = objHelpers.copy(this._defaults);
+            this._options = objHelpers.merge(defaults, options);
+        },
+
+        buildEvents: function() {
+          this.getEventManager().createEvent('game.updateStart');
+          this.getEventManager().createEvent('game.updateEnd');
         },
 
         /**
@@ -136,6 +149,7 @@
 
             function run(timestamp) {
                 requestAnimationFrame(run);
+                self.getEventManager().fire('game.updateStart');
                 self.updateTime(timestamp);
                 if (self.debug) {
                     self.trackFps(timestamp);
@@ -181,10 +195,10 @@
                 self._entityManager.update();
                 self._levelManager.update();
                 self._camera.update();
+                self.getEventManager().fire('game.updateEnd');
 
                 // Needs to be last
                 self._inputHandler.update();
-
                 renderer.render(stage);
 
                 // Sets the element used for mouse-event tracking to the root GUI element. This fixes mouse input over GUI elements.

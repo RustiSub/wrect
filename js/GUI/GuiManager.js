@@ -59,18 +59,18 @@
         },
         // FRAGILE, do not touch
         initGlobalEvents: function() {
-            var helpers = Container.getGame().getHelpers();
+            var domHelpers = window.Helpers.dom;
             var rootGui = this.getRoot().htmlElement;
             var self = this;
 
             function fadeOutGui () {
-                helpers.addClass(rootGui, 'fade-out');
+              domHelpers.addClass(rootGui, 'fade-out');
                 self.guiState = self.STATE_TRANSITIONING_OUT;
             }
 
             function fadeInGui () {
-                if (helpers.hasClass(rootGui, 'fade-out')) {
-                    helpers.removeClass(rootGui, 'fade-out');
+                if (domHelpers.hasClass(rootGui, 'fade-out')) {
+                  domHelpers.removeClass(rootGui, 'fade-out');
                     if (self.guiState === self.STATE_READY) {
                         self.guiState = self.STATE_TRANSITIONING_IN;
                     }
@@ -88,7 +88,7 @@
 
             document.addEventListener('mouseover', function(e) {
                 if (e.target !== document) {
-                    if (!helpers.hasClass(e.target, 'rootGrid') && helpers.hasClass(e.target, 'collection')) {
+                    if (!domHelpers.hasClass(e.target, 'rootGrid') && domHelpers.hasClass(e.target, 'collection')) {
                         if (self.guiState === self.STATE_TRANSITIONING_OUT || self.guiState === self.STATE_READY) {
                             fadeInGui();
                         }
@@ -98,7 +98,7 @@
 
             document.addEventListener('mouseout', function(e) {
                 if (e.target !== document) {
-                    if (!helpers.hasClass(e.target, 'rootGrid') && helpers.hasClass(e.target, 'collection')) {
+                    if (!domHelpers.hasClass(e.target, 'rootGrid') && domHelpers.hasClass(e.target, 'collection')) {
                         if (self.guiState !== self.STATE_TRANSITIONING_IN) {
                             fadeOutGui();
                         }
