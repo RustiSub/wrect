@@ -60,11 +60,20 @@ var Force = BaseEntity.extend({
 
     this.dimensions.vertices = function (dimensions) {
       return [
-        dimensions.topLeft,
-        dimensions.topRight,
-        dimensions.bottomRight,
-        dimensions.bottomLeft
+        this.topLeft,
+        this.topRight,
+        this.bottomRight,
+        this.bottomLeft
       ];
+    };
+
+    this.dimensions.bounds = function() {
+      return this;
+    };
+
+    this.dimensions.center = function() {
+      var diagonal = this.bottomRight.subtract(this.topLeft);
+      return this.topLeft.add(diagonal.scale(0.5));
     };
 
     this.physicsBody = {};

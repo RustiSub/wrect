@@ -103,6 +103,27 @@ function buildShip_1() {
   game.addEntity(force);
 }
 
+function buildShip_2() {
+  var origin = new Vector(250, 200);
+
+  var block1 = game._builder.createBlock('1', origin.x, origin.y, 200, 100, 0xB5B5B5);
+  block1.physicsBody.v = new Vector(1,0);
+  game.addEntity(block1);
+
+  var force = new Force(
+      new Vector(origin.x + 100, origin.y + 50),
+      400,
+      45,
+      -25
+  );
+
+  game.addEntity(force);
+
+  var spaceEngine = new SpaceEngine(origin.add(new Vector(0, 0)), block1);
+  spaceEngine.frozen = true;
+  game.addEntity(spaceEngine);
+}
+
 function addGui() {
     /* var fullscreenButton = new window.ImageButton('resources/gui/maximize.png', 24, 24, {right: 0, bottom: 0});
      fullscreenButton.addEvent('click', function(){game.goFullscreen();});
@@ -201,18 +222,18 @@ function makeSpaceLevel() {
       max: 5
     }
   };
-  for (i = 0; i < 20; i++) {
-    optionsSmall.name = 'smallMeteor' + i;
-    level.levelData.meteors.push(builder.createMeteor(optionsSmall));
-  }
-  for (i = 0; i < 10; i++) {
-    optionsSmall.name = 'mediumMeteor' + i;
-    level.levelData.meteors.push(builder.createMeteor(optionsMedium));
-  }
-  for (i = 0; i < 1; i++) {
-    optionsSmall.name = 'bigAssMeteor' + i;
-    level.levelData.meteors.push(builder.createMeteor(optionsLarge));
-  }
+  //for (i = 0; i < 20; i++) {
+  //  optionsSmall.name = 'smallMeteor' + i;
+  //  level.levelData.meteors.push(builder.createMeteor(optionsSmall));
+  //}
+  //for (i = 0; i < 10; i++) {
+  //  optionsSmall.name = 'mediumMeteor' + i;
+  //  level.levelData.meteors.push(builder.createMeteor(optionsMedium));
+  //}
+  //for (i = 0; i < 1; i++) {
+  //  optionsSmall.name = 'bigAssMeteor' + i;
+  //  level.levelData.meteors.push(builder.createMeteor(optionsLarge));
+  //}
 }
 
 window.onload = function() {
@@ -233,9 +254,9 @@ window.onload = function() {
       defaultLevel: false
     });
     makeSpaceLevel();
-    buildShip_1();
+    buildShip_2();
     var shield = game.getEntityManager().getEntityByName('1');
-    game.getCamera().follow(shield);
+    //game.getCamera().follow(shield);
   });
 
 };

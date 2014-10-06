@@ -117,7 +117,9 @@ var CollisionManager = Class.extend({
     var localTree = [];
     for (var x = 0; x < bodies.length; x++) {
       var body = bodies[x];
-
+      if (!body.solid) {
+        continue;
+      }
       var bounds = body.dimensions.bounds();
 
       var speed = body.physicsBody.v;
