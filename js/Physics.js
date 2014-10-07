@@ -29,7 +29,34 @@ var Physics = Class.extend({
     /* Add damping */
 //    f = f.add( physicsBody.v.scale(b) );
 
-    var deltaTheta = 0  ;
+    ///* Add Spring; we calculate this separately so we can calculate a torque. */
+    //var springForce = rect.topLeft.subtract(spring).scale(-1 * stiffness);
+    ///* This vector is the distance from the end of the spring to the box's center point */
+    //var r = rect.center().subtract(rect.topLeft);
+    ///* The cross product informs us of the box's tendency to rotate. */
+    //var rxf = r.cross(springForce);
+    //
+    //torque += -1 * rxf;
+    //f = f.add(springForce);
+    //
+    ///* Finish Velocity Verlet */
+    //var new_a = f.scale(rect.m);
+    //var dv = rect.a.add(new_a).scale(0.5 * dt);
+    //rect.v = rect.v.add(dv);
+    //
+    ///* Do rotation; let's just use Euler for contrast */
+    //torque += rect.omega * angularB; // Angular damping
+    //rect.alpha = torque / rect.J;
+    //rect.omega += rect.alpha * dt;
+    //var deltaTheta = rect.omega * dt;
+    //rect.rotate(deltaTheta);
+    ///************/
+
+    //var r = dimensions.center().subtract(new Vector(10, 0));
+    ///* The cross product informs us of the box's tendency to rotate. */
+    //var rxf = r.cross(springForce);
+
+    var deltaTheta = 0.1;
     dimensions.rotate(physicsBody, deltaTheta);
   },
   calculateSpeed: function() {

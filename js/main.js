@@ -1,15 +1,9 @@
 var game;
 
 function test1() {
-  var forceGenerator = game._builder.createBlock('wall_1', 600, 250, 20, 20, 0xFFFFFF);
-//  forceGenerator.glueSource = true;
+  var forceGenerator = game._builder.createBlock('wall_1', 600, 250, 50, 150, 0xFFFFFF);
   game.addEntity(forceGenerator);
 
-  for (var l= 0; l < 20; l++) {
-    for (var t= 0; t < 50; t++) {
-      game.addEntity(game._builder.createBlock('wall_spam_' + t + '_' + l, 50 + t * 21, 50 + l * 21, 20, 20, 0xFFFFFF));
-    }
-  }
 }
 
 function vectorTest_pivot_1() {
@@ -263,10 +257,10 @@ window.onload = function() {
       height: window.innerHeight,
       defaultLevel: false
     });
-    makeSpaceLevel();
-    buildShip_1();
-    var shield = game.getEntityManager().getEntityByName('1');
-    game.getCamera().follow(shield);
+    //makeSpaceLevel();
+    test1();
+    //var shield = game.getEntityManager().getEntityByName('1');
+    //game.getCamera().follow(shield);
 
   });
 };
