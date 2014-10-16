@@ -1,3 +1,4 @@
+var wrect = {};
 var game;
 
 function test1() {
