@@ -28,6 +28,8 @@ var BaseEntity = Class.extend({
     _physics: {},
     color: 0x000000,
 
+    component: {},
+
     /**
      * @param {String} name Name of the entity. Used for identification purposes.
      * @param {PIXI.Sprite|PIXI.Graphics|String} graphics. Object or path to sprite to use for graphical representation.

@@ -1,12 +1,21 @@
 (function() {
   /**
-
    *
-   * @class wrect.Dimension
+   * @class wrect.Geometry.Rectangle
    * @constructor
    */
-  wrect.Geometry.Rectangle = function () {
+  wrect.Geometry.Rectangle = function (options) {
+    wrect.Geometry.Dimensions.call(this);
 
+    var width = new Vector(options.width, 0);
+    var height = new Vector(0, options.height);
+
+    this.vertices = [
+      options.origin,
+      options.origin.add(width),
+      options.origin.add(width).add(height),
+      options.origin.add(height)
+    ];
   };
 
   wrect.Geometry.Rectangle.prototype = Object.create( wrect.Geometry.Dimensions.prototype );

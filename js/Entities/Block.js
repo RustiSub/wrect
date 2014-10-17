@@ -16,6 +16,13 @@ var Block = MovableEntity.extend({
 
   init: function(name, graphics, params) {
     this._super(name, graphics);
+
+    this.component.dimensions = new wrect.Geometry.Rectangle({
+      origin: new Vector(params.x, params.y),
+      width: params.w,
+      height: params.h
+    });
+
     this._physics.solid = true;
 
     this.dimensions = {};
