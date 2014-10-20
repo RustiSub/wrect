@@ -4,6 +4,7 @@
   wrect.Entities = wrect.Entities || {};
 
   var Rectangle = wrect.Geometry.Rectangle;
+  var Vector = wrect.Physics.Vector;
 
   /**
    * @augments MovableEntity
