@@ -3,7 +3,7 @@
    * @augments Block
    * @type {void|*}
    */
-  window.Meteor = Block.extend({
+  window.Meteor = wrect.Entities.Block.extend({
     mass: 0,
     init: function(name, graphics, params) {
       this._super(name, graphics, params);

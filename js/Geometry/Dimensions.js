@@ -1,4 +1,8 @@
 (function() {
+  "use strict";
+
+  wrect.Geometry = wrect.Geometry || {};
+
   /**
    *
    * @class wrect.Geometry.Dimensions
