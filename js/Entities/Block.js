@@ -10,7 +10,7 @@
    * @augments MovableEntity
    * @type {void|*}
    */
-  wrect.Entities.Block = MovableEntity.extend({
+  wrect.Entities.Block = wrect.Entities.MovableEntity.extend({
 
     hasGlue: false,
     changed: false,

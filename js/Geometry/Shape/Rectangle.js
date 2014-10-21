@@ -1,4 +1,8 @@
 (function() {
+  "use strict";
+
+  var Vector = wrect.Physics.Vector;
+
   /**
    *
    * @class wrect.Geometry.Rectangle

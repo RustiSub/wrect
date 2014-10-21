@@ -1,12 +1,14 @@
 (function() {
   "use strict";
 
+  wrect.Physics = wrect.Physics || {};
+
   var Vector = wrect.Physics.Vector;
 
   /**
    * @type {void|*}
    */
-  var Physics = Class.extend({
+  wrect.Physics.Physics = Class.extend({
 
     fallTime: 0,
     xSpeed: 0,

@@ -1,5 +1,8 @@
 (function(){
   "use strict";
+
+  var Vector = wrect.Physics.Vector;
+
   window.InputHandler = Class.extend({
     _pressed: [],
     _registeredPressed: [],
