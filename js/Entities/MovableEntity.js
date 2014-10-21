@@ -70,6 +70,9 @@
         } else {
           this.select();
         }
+      },
+      update: function() {
+        this._super();
       }
   });
 }());

@@ -4,6 +4,8 @@
   wrect.Entities = wrect.Entities || {};
 
   var Rectangle = wrect.Geometry.Rectangle;
+  var PhysicsBody = wrect.Physics.PhysicsBody;
+  var RigidBody = wrect.Entities.Component.RigidBody;
   var Vector = wrect.Physics.Vector;
 
   /**
@@ -25,10 +27,13 @@
     init: function(name, graphics, params) {
       this._super(name, graphics);
 
-      this.component.dimensions = new Rectangle({
-        origin: new Vector(params.x, params.y),
-        width: params.w,
-        height: params.h
+      this.component = new RigidBody({
+          dimensions: new Rectangle({
+            origin: new Vector(params.x, params.y),
+            width: params.w,
+            height: params.h
+          }),
+          physicsBody: new PhysicsBody()
       });
 
       this._physics.solid = true;
@@ -153,10 +158,10 @@
     update: function(){
       this._super();
 
-      this._physics.apply(this.physicsBody, this.dimensions, 0);//game.timeDelta);
-
-      this._graphics.position = this.dimensions.topLeft;
-      this._graphics.rotation = this.physicsBody.theta;
+      //this._physics.apply(this.physicsBody, this.dimensions, 0);//game.timeDelta);
+      //
+      //this._graphics.position = this.dimensions.topLeft;
+      //this._graphics.rotation = this.physicsBody.theta;
     },
     toJSON: function() {
         return {
