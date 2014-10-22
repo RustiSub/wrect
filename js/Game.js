@@ -88,7 +88,6 @@
                 }
             }
             this.buildComponents();
-            this.buildEvents();
             if (this._options && typeof this._options.autoBoot !== 'undefined' && this._options.autoBoot) {
                 this.bootstrap(options);
             }
@@ -132,11 +131,6 @@
             this._options = objHelpers.merge(defaults, options);
         },
 
-        buildEvents: function() {
-          this.getEventManager().createEvent('game.updateStart');
-          this.getEventManager().createEvent('game.updateEnd');
-        },
-
         /**
          * Creates the stage and renderer and starts the game loop.
          */
@@ -149,7 +143,7 @@
 
             function run(timestamp) {
                 requestAnimationFrame(run);
-                self.getEventManager().fire('game.updateStart');
+                self.getEventManager().trigger('game.updateStart');
                 self.updateTime(timestamp);
                 if (self.debug) {
                     self.trackFps(timestamp);
@@ -195,7 +189,7 @@
                 self._entityManager.update();
                 self._levelManager.update();
                 self._camera.update();
-                self.getEventManager().fire('game.updateEnd');
+                self.getEventManager().trigger('game.updateEnd');
 
                 // Needs to be last
                 self._inputHandler.update();

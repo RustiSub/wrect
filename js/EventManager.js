@@ -1,48 +1,44 @@
 (function() {
   /**
-   * @class EventManager
+   * Wrapper class for Minivents
+   * @type {Events}
+   * @class window.EventManager
    * @constructor
    */
   window.EventManager = function() {
-    this.events = {};
+    window.Events.call(this);
   };
 
   /**
-   * Creates an event
-   * @param name
+   * Inheritance logic
    */
-  window.EventManager.prototype.createEvent = function(name) {
-    this.events[name] = new window.TriggerableEvent(name);
+  window.EventManager.prototype = Object.create( Events.prototype );
+  window.EventManager.prototype.constructor = window.EventManager;
+  
+  /**
+   * Triggers an event
+   * @param type
+   */
+  window.EventManager.prototype.trigger = function(type) {
+    this.emit(type);
   };
 
   /**
-   * Add a listener to an existing event
-   * @param eventName
-   * @param listenerFunction
-   * @returns {*}
+   * Subscribes a listener to an event
+   * @param type
+   * @param func
+   * @param ctx
    */
-  window.EventManager.prototype.addListener = function(eventName, listenerFunction) {
-    if (this.events[eventName] !== undefined) {
-      this.listeners[eventName].push(new window.EventListener(listenerFunction));
-    }
+  window.EventManager.prototype.addListener = function(type, func, ctx) {
+    this.on(type, func, ctx);
   };
 
   /**
-   * Remove a listener from an existing event
-   * @param eventName
-   * @param listenerFunctionName
-   * @returns {*}
+   * Removes a listener to an event
+   * @param type
+   * @param func
    */
-  window.EventManager.prototype.removeListener = function(eventName, listenerFunctionName) {
-    this.events[eventName].removeListener(listenerFunctionName);
-  };
-
-  /**
-   * Fire an existing event
-   * @param eventName
-   * @returns {*}
-   */
-  window.EventManager.prototype.fire = function(eventName) {
-    this.events[eventName].trigger();
+  window.EventManager.prototype.removeListener = function(type, func) {
+    this.off(type, func);
   };
 }());
