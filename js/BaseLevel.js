@@ -20,6 +20,7 @@ window.BaseLevel = Class.extend({
     var a = document.createElement('a');
     a.href = window.URL.createObjectURL(blob);
     a.download = this.getFullLevelName();
+    
     var ce = new Event('click');
     a.dispatchEvent(ce);
     window.URL.revokeObjectURL(a.href);
