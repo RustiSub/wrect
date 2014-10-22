@@ -5,6 +5,7 @@
   wrect.Entities.Component = wrect.Entities.Component || {};
 
   var Vector = wrect.Physics.Vector;
+  var PhysicsBody = wrect.Physics.PhysicsBody;
 
   /**
    *
@@ -12,27 +13,37 @@
    * @constructor
    */
   wrect.Entities.Component.Mover = function (options) {
+    this.game = Container.getGame();
     this.options = options || {};
 
+    this.update = function() {
+      alert('test');
+    };
+
+    this.game.getEventManager().addListener('game.updateStart', this.apply, this);
   };
 
   var Mover = wrect.Entities.Component.Mover;
 
-  Mover.prototype.apply = function(physicsBody) {
+  Mover.prototype.apply = function(self) {
     var inputHandler = Container.getComponent('InputHandler');
-    var distance = this.options.distance;
+    console.log(self);
+    var distance = self.options.distance;
+    var moveVector = new Vector(0, 0);
 
     if (inputHandler.key('left')) {
-      physicsBody.v = physicsBody.v.add(new Vector(-distance, 0));
+      moveVector = new Vector(-distance, 0);
     }
     if (inputHandler.key('right')) {
-      physicsBody.v = physicsBody.v.add(new Vector(distance, 0));
+      moveVector = new Vector(distance, 0);
     }
     if (inputHandler.key('up')) {
-      physicsBody.v = physicsBody.v.add(new Vector(0, -distance));
+      moveVector = new Vector(0, -distance);
     }
     if (inputHandler.key('down')) {
-      physicsBody.v = physicsBody.v.add(new Vector(0, distance));
+      moveVector = new Vector(0, distance);
     }
+
+    self.game.getEventManager().trigger('mover.apply', moveVector);
   }
 }());

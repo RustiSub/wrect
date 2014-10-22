@@ -4,6 +4,8 @@
   wrect.Entities = wrect.Entities || {};
   wrect.Entities.Component = wrect.Entities.Component || {};
 
+  var Vector = wrect.Physics.Vector;
+
   /**
    *
    * @class wrect.Entities.Component.RigidBody
@@ -12,23 +14,30 @@
   wrect.Entities.Component.RigidBody = function (options) {
     options = options || {};
 
+    this.game = Container.getGame();
     this.dimensions = options.dimensions || new wrect.Geometry.Dimensions();
     this.physicsBody = options.physicsBody || new wrect.Physics.PhysicsBody();
 
-    if (options.mover) {
-      this.mover = options.mover || new wrect.Entities.Component.Mover();
-    }
+    //if (options.mover) {
+    //  this.mover = options.mover || new wrect.Entities.Component.Mover();
+    //}
   };
 
   var RigidBody = wrect.Entities.Component.RigidBody;
 
   RigidBody.prototype.apply = function() {
-    this.mover.apply(this.physicsBody);
+    this.physicsBody.v = new Vector(0, 0);
+
+    var self = this;
+
+    this.game.getEventManager().addListener('mover.apply', function(moveVector) {
+      self.physicsBody.a = self.physicsBody.a.add(moveVector);
+    });
 
     //var f = new Vector(0, 0);
     //var b = -5;
 
-    var dr = this.physicsBody.v; //.scale(dt).add(physicsBody.a.scale(0.5 * dt * dt));
+    var dr = this.physicsBody.a; //.scale(dt).add(physicsBody.a.scale(0.5 * dt * dt));
     this.dimensions.move(dr);//.scale(100));
 
     /* Add Gravity */

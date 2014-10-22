@@ -34,10 +34,7 @@
             width: params.w,
             height: params.h
           }),
-          physicsBody: new PhysicsBody(),
-          mover: new Mover({
-            distance : 0
-          })
+          physicsBody: new PhysicsBody()
       });
 
       this._physics.solid = true;

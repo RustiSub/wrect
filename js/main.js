@@ -4,6 +4,10 @@ var game;
 function component_test_1() {
   var block0 = game._builder.createBlock('b0', 120, 120 , 40, 40, 0xFFFFFF);
   game.addEntity(block0);
+
+  var mover = new wrect.Entities.Component.Mover({
+    distance : 1
+  })
 }
 
 
