@@ -14,11 +14,17 @@
 
     this.dimensions = options.dimensions || new wrect.Geometry.Dimensions();
     this.physicsBody = options.physicsBody || new wrect.Physics.PhysicsBody();
+
+    if (options.mover) {
+      this.mover = options.mover || new wrect.Entities.Component.Mover();
+    }
   };
 
   var RigidBody = wrect.Entities.Component.RigidBody;
 
   RigidBody.prototype.apply = function() {
+    this.mover.apply(this.physicsBody);
+
     //var f = new Vector(0, 0);
     //var b = -5;
 

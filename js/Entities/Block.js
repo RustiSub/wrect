@@ -6,6 +6,7 @@
   var Rectangle = wrect.Geometry.Rectangle;
   var PhysicsBody = wrect.Physics.PhysicsBody;
   var RigidBody = wrect.Entities.Component.RigidBody;
+  var Mover = wrect.Entities.Component.Mover;
   var Vector = wrect.Physics.Vector;
 
   /**
@@ -33,7 +34,10 @@
             width: params.w,
             height: params.h
           }),
-          physicsBody: new PhysicsBody()
+          physicsBody: new PhysicsBody(),
+          mover: new Mover({
+            distance : 0
+          })
       });
 
       this._physics.solid = true;
