@@ -3,6 +3,8 @@
 
   wrect.Entities = wrect.Entities || {};
 
+  var Vector = wrect.Physics.Vector;
+
   /**
    * @augments BaseEntity
    * @type {void|*}
@@ -73,6 +75,27 @@
       },
       update: function() {
         this._super();
+
+        if (this.component) {
+          this.component.apply(game.timeDelta);
+
+          var inputHandler = Container.getComponent('InputHandler');
+
+          if (inputHandler.key('left')) {
+            this.component.physicsBody.v = this.component.physicsBody.v.add(new Vector(-1, 0));
+          }
+          if (inputHandler.key('right')) {
+            this.component.physicsBody.v = this.component.physicsBody.v.add(new Vector(1, 0));
+          }
+          if (inputHandler.key('up')) {
+            this.component.physicsBody.v = this.component.physicsBody.v.add(new Vector(0, -1));
+          }
+          if (inputHandler.key('down')) {
+            this.component.physicsBody.v = this.component.physicsBody.v.add(new Vector(0, 1));
+          }
+
+          this._graphics.position = this.component.dimensions.origin;
+        }
       }
   });
 }());

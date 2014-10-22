@@ -191,7 +191,7 @@
                 self._collisionManager.mapQuadTree(self.getEntityManager().getAllEntities(), range);
 //console.log(self.completeTree);
 //                self._builder.buildConnections(self.getEntityManager().getAllEntities());
-                self._collisionManager.updateAllCollisions();
+//                self._collisionManager.updateAllCollisions();
                 self._entityManager.update();
                 self._levelManager.update();
                 self._camera.update();

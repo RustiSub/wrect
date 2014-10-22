@@ -11,6 +11,8 @@
   wrect.Geometry.Rectangle = function (options) {
     wrect.Geometry.Dimensions.call(this);
 
+    this.origin = options.origin;
+
     var width = new Vector(options.width, 0);
     var height = new Vector(0, options.height);
 
