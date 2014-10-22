@@ -229,7 +229,7 @@
    */
   window.Camera.prototype.updateFollow = function() {
     if (this.target) {
-      var center = this.target._physics.center(this.target.dimensions);
+      var center = this.target.dimensions.center();
       this.unscaledPosition.x = center.x - this.bounds.x/2;
       this.unscaledPosition.y = center.y - this.bounds.y/2;
 

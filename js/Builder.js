@@ -180,13 +180,7 @@ var Builder = Class.extend({
 
     block.baseGraphicsCallback = function() {
       this._graphics.clear();
-//      this.selectCallback();
       this.baseCallback();
-//      this.glueCallback();
-
-//      this._graphics.beginFill(0x0080FF);
-//      this._graphics.drawCircle(this.dimensions.width / 2, this.dimensions.height / 2, 2);
-//      this._graphics.endFill();
     };
 
     block.baseCallback  = function(alpha) {
@@ -196,22 +190,9 @@ var Builder = Class.extend({
       this._graphics.endFill();
     };
 
-    block.glueCallback = function() {
-//      if (block.hasGlue) {
-//        var mark = 4;
-//        this._graphics.beginFill(0xB231EB);
-//        this._graphics.drawRect(0 + mark , 0 + mark , this.size.x - (mark  * 2), this.size.y - (mark  * 2));
-//        this._graphics.endFill();
-//      }
-    };
+    block.glueCallback = function() {};
 
-    block.selectCallback = function() {
-//      if (this.selected) {
-//        this._graphics.beginFill(0x00FF00);
-//        this._graphics.drawRect(0 - 2, 0 - 2, this.size.x + 4, this.size.y + 4);
-//        this._graphics.endFill();
-//      }
-    };
+    block.selectCallback = function() {};
 
     block.baseGraphicsCallback();
 
@@ -254,16 +235,39 @@ var Builder = Class.extend({
     return meteor;
   },
 
-  createCircle: function (point) {
+  createCircle: function (options) {
+    options.alpha = typeof options.alpha !== 'undefined' ? options.alpha : 1;
+    options.color = typeof options.color !== 'undefined' ? options.color : 0x00FF00;
+
       var graphics = new PIXI.Graphics();
       graphics.beginFill(0xFF0000, 1);
 
-      graphics.drawCircle(point.x, point.y, 2);
-      graphics.endFill();
+    var graphics = new PIXI.Graphics();
 
-      game.getEntityManager()._stage.addChildAt(graphics, game.getEntityManager()._stage.children.length);
+    var circle = new Circle(options.name, graphics, options);
 
-      this.rooms.push(graphics);
+    circle.name = options.name;
+
+    circle.baseGraphicsCallback = function() {
+      this._graphics.clear();
+      this.baseCallback();
+    };
+
+    circle.baseCallback  = function() {
+      this._graphics.beginFill(this.color, this.alpha);
+      this._graphics.drawCircle(0, 0, this.dimensions.radius);
+      this._graphics.endFill();
+    };
+
+    circle.glueCallback = function() {};
+
+    circle.selectCallback = function() {};
+
+    circle.baseGraphicsCallback();
+
+    circle.frozen = false;
+
+    return circle;
   },
   connectGlue: function(bodies) {
 

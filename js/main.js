@@ -15,62 +15,93 @@ function test1() {
 function vectorTest_pivot_1() {
   //createFrame();
 
-  var block1 = game._builder.createBlock('b1', 200, 350 , 20, 50, 0xFFFFFF);
-  block1.physicsBody.v = new Vector(0, 10);
-  game.addEntity(block1);
+  var circle1 = game._builder.createCircle({
+    name: 'c1',
+    origin: new Vector(200, 250),
+    radius: 25,
+    color: 0xFFFFFF
+  });
+  circle1.physicsBody.v = new Vector(0, 10);
+  game.addEntity(circle1);
 
-  var block0 = game._builder.createBlock('b0', 200, 190 , 20, 50, 0xFFFFFF);
-  block0.physicsBody.v = new Vector(0, 10);
-  game.addEntity(block0);
+//  var block0 = game._builder.createBlock('b0', 120, 120 , 40, 40, 0xFFFFFF);
+//  block0.physicsBody.v = new Vector(0, 0);
+//  game.addEntity(block0);
 
   var block2 = game._builder.createBlock('b2', 100, 500 , 250, 20);
-  block2._physics.rotate(block2.physicsBody, block2.dimensions, game._helpers.math.toRadians(45));
+  block2.dimensions.rotate(block2.physicsBody, game._helpers.math.toRadians(45));
   block2.frozen = true;
   game.addEntity(block2);
 
   var block3 = game._builder.createBlock('b3', 500, 500 , 250, 20);
-  block3._physics.rotate(block3.physicsBody, block3.dimensions, game._helpers.math.toRadians(-45));
+  block3.dimensions.rotate(block3.physicsBody, game._helpers.math.toRadians(-45));
   block3.frozen = true;
   game.addEntity(block3);
 
   var block4 = game._builder.createBlock('b4', 100, 150 , 250, 20);
-  block4._physics.rotate(block4.physicsBody, block4.dimensions, game._helpers.math.toRadians(-45));
+  block4.dimensions.rotate(block4.physicsBody, game._helpers.math.toRadians(-45));
   block4.frozen = true;
   game.addEntity(block4);
 
   var block5 = game._builder.createBlock('b5', 500, 150 , 250, 20);
-  block5._physics.rotate(block5.physicsBody, block5.dimensions, game._helpers.math.toRadians(45));
+  block5.dimensions.rotate(block5.physicsBody, game._helpers.math.toRadians(45));
   block5.frozen = true;
   game.addEntity(block5);
 }
 
-function shieldTest() {
+function shieldCircleSpamTest() {
   var block2 = game._builder.createBlock('left', 100, 150 , 20, 350);
   block2.frozen = true;
   game.addEntity(block2);
 
+  var block3 = game._builder.createBlock('top', 120, 150 , 800, 20);
+  block3.frozen = true;
+  game.addEntity(block3);
 
   var block4 = game._builder.createBlock('right', 900, 150 , 20, 350);
   block4.frozen = true;
   game.addEntity(block4);
 
-  //var meteor = game._builder.createBlock('meteor_down', 350, 150, 20, 20, 0xFFFFFF);
-  //meteor.physicsBody.v = new Vector(0, 5);
-  //game.addEntity(meteor);
+  var block5 = game._builder.createBlock('bottom', 120, 500 , 800, 20);
+  block5.frozen = true;
+  game.addEntity(block5);
 
-  var meteor = game._builder.createBlock('meteor_left', 800, 250, 20, 20, 0xFFFFFF);
-  meteor.physicsBody.v = new Vector(-25, 0);
+  for(var i = 0; i < 5; i++) {
+    var circle1 = game._builder.createCircle({
+      name: 'c1' + i,
+      origin: new Vector(800, 250 + (i * 40)),
+      radius: 10,
+      color: 0xFFFF00
+    });
+    circle1.physicsBody.v = new Vector(-5, 1);
+    game.addEntity(circle1);
+//    var meteor_left = game._builder.createBlock('meteor_left_' + i, 800, 50 + (i * 40), 20, 20, 0xFFFFFF);
+//    meteor_left.physicsBody.v = new Vector(-(5) , 0);
+//    game.addEntity(meteor_left);
+  }
 
-  game.addEntity(meteor);
+  for(var i = 0; i < 5; i++) {
+    var circle1 = game._builder.createCircle({
+      name: 'c2' + i,
+      origin: new Vector(600, 250 + (i * 40)),
+      radius: 25,
+      color: 0xFFFFFF
+    });
+    circle1.physicsBody.v = new Vector(10, -2);
+    game.addEntity(circle1);
+//    var meteor_right = game._builder.createBlock('meteor_right_' + i, 600, 150 + (i * 40), 20, 20, 0xFFFFFF);
+//    meteor_right.physicsBody.v = new Vector(0 , 0);
+//    game.addEntity(meteor_right);
+  }
 
-  var force = new Force(
-      new Vector(200, 250),
-      400,
-      90,
-      0
-  );
-
-  game.addEntity(force);
+//  var force = new Force(
+//      new Vector(200, 250),
+//      400,
+//      90,
+//      0
+//  );
+//
+//  game.addEntity(force);
 }
 
 function buildShip_1() {
@@ -236,6 +267,6 @@ window.onload = function() {
     buildShip_1();
     var shield = game.getEntityManager().getEntityByName('1');
     game.getCamera().follow(shield);
-  });
 
+  });
 };

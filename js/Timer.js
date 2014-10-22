@@ -53,7 +53,7 @@
 
     this._currentTime += this.game.getDelta();
 
-    if ((this.targetTime - this._currentTime) < 0) {
+    if (this.callback && (this.targetTime - this._currentTime) < 0) {
       this.callback();
       if (this.once) {
         this.stop();
