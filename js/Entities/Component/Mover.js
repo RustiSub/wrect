@@ -5,7 +5,6 @@
   wrect.Entities.Component = wrect.Entities.Component || {};
 
   var Vector = wrect.Physics.Vector;
-  var PhysicsBody = wrect.Physics.PhysicsBody;
 
   /**
    *
@@ -15,21 +14,21 @@
   wrect.Entities.Component.Mover = function (options) {
     this.game = Container.getGame();
     this.options = options || {};
+    this.self = this;
 
     this.update = function() {
       alert('test');
     };
-
+    var self = this;
     this.game.getEventManager().addListener('game.updateStart', this.apply, this);
   };
 
   var Mover = wrect.Entities.Component.Mover;
 
-  Mover.prototype.apply = function(self) {
+  Mover.prototype.apply = function() {
     var inputHandler = Container.getComponent('InputHandler');
-    console.log(self);
-    var distance = self.options.distance;
-    var moveVector = new Vector(0, 0);
+    var distance = this.options.distance;
+    var moveVector = null;
 
     if (inputHandler.key('left')) {
       moveVector = new Vector(-distance, 0);
@@ -44,6 +43,8 @@
       moveVector = new Vector(0, distance);
     }
 
-    self.game.getEventManager().trigger('mover.apply', moveVector);
+    if (moveVector) {
+      this.game.getEventManager().trigger('mover.apply', {moveVector: moveVector});
+    }
   }
 }());

@@ -1,4 +1,7 @@
 (function(global) {
+
+  var EventManager = wrect.Core.EventManager;
+
   /**
    * @Class Game
    * @type {void|*}
@@ -47,6 +50,9 @@
         getHelpers: function() {
             return window.Helpers;
         },
+        /**
+         * @returns {wrect.Core.EventManager}
+         */
         getEntityManager: function() {
             return this._entityManager;
         },
@@ -107,7 +113,7 @@
             this._cameraContainer.height = this._options.height;
             this._stage.addChild(this._cameraContainer);
 
-            this._eventManager = new window.EventManager();
+            this._eventManager = new EventManager();
             this._inputHandler = new this._options.inputHandlerClass();
             this._entityManager = new this._options.entityManagerClass(this._stage);
             this._collisionManager = new this._options.collisionManagerClass();

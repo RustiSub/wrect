@@ -25,14 +25,18 @@
 
   var RigidBody = wrect.Entities.Component.RigidBody;
 
+  /**
+   * @this wrect.Entities.Component.RigidBody
+   * @param data
+   */
+  function move(data) {
+    this.physicsBody.a = this.physicsBody.a.add(data.moveVector);
+  }
+
   RigidBody.prototype.apply = function() {
     this.physicsBody.v = new Vector(0, 0);
 
-    var self = this;
-
-    this.game.getEventManager().addListener('mover.apply', function(moveVector) {
-      self.physicsBody.a = self.physicsBody.a.add(moveVector);
-    });
+    this.game.getEventManager().addListener('mover.apply', move, this);
 
     //var f = new Vector(0, 0);
     //var b = -5;
