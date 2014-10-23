@@ -65,12 +65,12 @@
 
     /**
      * Time how long to shake
-     * @type {Window.Timer}
+     * @type {wrect.Core.Timer}
      */
-    this.shakeTimer = new window.Timer(0);
+    this.shakeTimer = new wrect.Core.Timer(0);
 
     /**
-     * @type {Window.Vector}
+     * @type {wrect.Physics.Vector}
      */
     this.shakeOffset = new Vector(0, 0);
 
@@ -141,7 +141,7 @@
 
   /**
    * Get position of the mouse relative to the camera position.
-   * @returns {window.Vector|boolean}
+   * @returns {wrect.Physics.Vector|boolean}
    */
   window.Camera.prototype.getMouseWorldCoordinates = function() {
     var screenPos = this.game.getInputHandler().getMousePosition();

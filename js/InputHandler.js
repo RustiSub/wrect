@@ -177,7 +177,7 @@
     },
     /**
      * Get the current mouse position relative to the screen
-     * @returns {Window.Vector|boolean}
+     * @returns {wrect.Physics.Vector|boolean}
      */
     getMousePosition: function() {
       var pos = this.game.getStage().getMousePosition();
