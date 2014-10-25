@@ -6,10 +6,10 @@
 
   var Entity = wrect.ECS.Entity;
 
-  wrect.ECS.Assemblage.BaseEntity = function () {
-    var entity = Entity();
+  wrect.ECS.Assemblage.Block = function () {
+    var entity = new Entity();
 
-    entity.addComponent( new ECS.Components.Appearance());
+    //entity.addComponent( new );
     //entity.addComponent( new ECS.Components.Position());
     //entity.addComponent( new ECS.Components.Collision());
   };

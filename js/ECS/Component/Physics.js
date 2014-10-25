@@ -13,7 +13,7 @@
     this.physics = new Physics();
   };
 
-  wrect.ECS.Component.Visual.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
-  wrect.ECS.Component.Visual.prototype.constructor = wrect.ECS.Component.Visual;
-  wrect.ECS.Component.Physics.name = 'Physics';
+  wrect.ECS.Component.Physics.prototype = Object.create(wrect.ECS.Component.BaseComponent.prototype);
+  wrect.ECS.Component.Physics.prototype.constructor = wrect.ECS.Component.Visual;
+  wrect.ECS.Component.Physics.prototype.name = 'Physics';
 }());

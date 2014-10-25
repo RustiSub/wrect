@@ -7,5 +7,5 @@
   wrect.ECS.Component.BaseComponent = function () {
   };
 
-  wrect.ECS.Component.BaseComponent.name = 'BaseComponent';
+  wrect.ECS.Component.BaseComponent.prototype.name = 'BaseComponent';
 }());

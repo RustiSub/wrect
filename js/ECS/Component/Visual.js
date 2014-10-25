@@ -14,5 +14,5 @@
 
   wrect.ECS.Component.Visual.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
   wrect.ECS.Component.Visual.prototype.constructor = wrect.ECS.Component.Visual;
-  wrect.ECS.Component.Visual.name = 'Visual';
+  wrect.ECS.Component.Visual.prototype.name = 'Visual';
 }());
