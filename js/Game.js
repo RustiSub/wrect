@@ -28,7 +28,7 @@
             collisionManagerClass: CollisionManager,
             guiManagerClass: window.GuiManager,
             gravityManagerClass: GravityManager,
-            builder: Builder,
+            //builder: Builder,
             levelManagerClass: LevelManager,
             width: 1280,
             height: 720

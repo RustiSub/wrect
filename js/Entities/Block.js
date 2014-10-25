@@ -37,6 +37,8 @@
           physicsBody: new PhysicsBody()
       });
 
+      this.component.apply();
+
       this._physics.solid = true;
 
       this.dimensions = {};
