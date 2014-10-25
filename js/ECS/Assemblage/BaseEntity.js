@@ -7,7 +7,7 @@
   var Entity = wrect.ECS.Entity;
 
   wrect.ECS.Assemblage.BaseEntity = function () {
-    var entity = new Entity();
+    this.entity = new Entity();
 
     //entity.addComponent( new ECS.Components.Appearance());
     //entity.addComponent( new ECS.Components.Position());

@@ -7,9 +7,9 @@
   var Entity = wrect.ECS.Entity;
 
   wrect.ECS.Assemblage.Block = function () {
-    var entity = new Entity();
+    this.entity = new Entity();
 
-    //entity.addComponent( new );
+    this.entity.addComponent( new wrect.ECS.Component.BaseComponent());
     //entity.addComponent( new ECS.Components.Position());
     //entity.addComponent( new ECS.Components.Collision());
   };

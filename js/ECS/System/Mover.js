@@ -18,5 +18,9 @@
   wrect.ECS.System.Mover.prototype.perform = wrect.ECS.System.perform;
   wrect.ECS.System.Mover.prototype.perform = function(entity) {
     console.log('move an entity', entity);
+    for (var c in entity.components) {
+      var component = entity.components[c];
+      console.log('component: ', component);
+    }
   }
 }());
