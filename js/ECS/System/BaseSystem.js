@@ -14,7 +14,7 @@
    */
   wrect.ECS.System.BaseSystem.prototype.run = function(entities) {
     for (var e = 0; e < entities.length; e++) {
-      this.perform(entities[e].entity);
+      this.perform(entities[e]);
     }
   };
 

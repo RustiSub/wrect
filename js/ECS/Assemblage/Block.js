@@ -5,12 +5,23 @@
   wrect.ECS.Assemblage = wrect.ECS.Assemblage || {};
 
   var Entity = wrect.ECS.Entity;
+  var Vector = wrect.Physics.Vector;
+  var Rectangle = wrect.Geometry.Rectangle;
 
-  wrect.ECS.Assemblage.Block = function () {
+  wrect.ECS.Assemblage.Block = function (options) {
     this.entity = new Entity();
 
-    this.entity.addComponent( new wrect.ECS.Component.BaseComponent());
+    var rigidBody = new wrect.ECS.Component.RigidBody({
+      dimensions: new Rectangle({
+        origin: new Vector(options.x, options.y),
+        width: options.w,
+        height: options.h
+      })
+    });
+    this.entity.addComponent(rigidBody);
     //entity.addComponent( new ECS.Components.Position());
     //entity.addComponent( new ECS.Components.Collision());
+
+    return this.entity;
   };
 }());

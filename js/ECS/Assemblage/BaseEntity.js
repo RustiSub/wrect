@@ -12,5 +12,7 @@
     //entity.addComponent( new ECS.Components.Appearance());
     //entity.addComponent( new ECS.Components.Position());
     //entity.addComponent( new ECS.Components.Collision());
+
+    return this.entity;
   };
 }());

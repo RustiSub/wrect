@@ -15,7 +15,7 @@
   var Entity = wrect.ECS.Entity;
 
   /**
-   * @param {wrect.ECS.Component.BaseComponent} component
+   * @param component
    */
   Entity.prototype.addComponent = function(component) {
     this.components[component.name] = component;
