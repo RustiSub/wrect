@@ -33,6 +33,8 @@ window.onload = function() {
     );
     block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(5, 0);
 
+    //TODO: @BDA: Game On!
+
     game.getEntityManager().addEntity(block);
     game.systems.Mover = {
       weight: 0,
