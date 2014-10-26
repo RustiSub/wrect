@@ -1,12 +1,14 @@
 (function(global) {
 
   var EventManager = wrect.Core.EventManager;
+  var Camera = wrect.Core.Camera;
 
   /**
    * @Class Game
    * @type {void|*}
    */
     global.Game = Class.extend ({
+        systems: {},
         _stage: null,
         _renderer: null,
         _inputHandler: null,
@@ -119,9 +121,9 @@
             this._collisionManager = new this._options.collisionManagerClass();
             this._guiManager = new this._options.guiManagerClass();
             this._gravityManager = new this._options.gravityManagerClass();
-            this._builder = new this._options.builder();
+            //this._builder = new this._options.builder();
             this._levelManager = new this._options.levelManagerClass(this._stage, this._options.defaultLevel);
-            this._camera = new window.Camera(0, 0, this._options.width, this._options.height, this);
+            this._camera = new Camera(0, 0, this._options.width, this._options.height, this);
 
             this.bootstrap();
         },
@@ -155,46 +157,13 @@
                     self.trackFps(timestamp);
                 }
 
-                var inputHandler = Container.getComponent('InputHandler');
-                if (inputHandler.key('a')) {
-                  self.selectEntity(-1);
-                }
-                if (inputHandler.key('z')) {
-                  self.selectEntity(1);
-                }
+                //TODO: Move to proper System Manager that takes weight and other flags into consideration
+                for (var s in self.systems) {
+                  var system = self.systems[s].system;
 
-                var glueSource = false;
-
-                if (inputHandler.key('K_TWO')) {
-                  glueSource = true;
+                  system.run(self.getEntityManager().getAllEntities());
                 }
 
-                if (inputHandler.key('K_ZERO')) {
-                  self._builder.createObject(glueSource);
-                }
-
-                if (inputHandler.key('RETURN')) {
-                  self._gravityManager.applyForce(5, self.getEntityManager().getEntityByName('force_generator'));
-                }
-//                self._builder.clearRooms(self.getEntityManager().getAllEntities());
-                self.completeTree = [];
-                self.treeHashes = [];
-                var range = {
-                  x: 0,
-                  y: 0,
-                  width : 1280,
-                  height: 720,
-                  level: 0,
-                  quadLevel : 0
-                };
-
-                self._collisionManager.mapQuadTree(self.getEntityManager().getAllEntities(), range);
-//console.log(self.completeTree);
-//                self._builder.buildConnections(self.getEntityManager().getAllEntities());
-//                self._collisionManager.updateAllCollisions();
-                self._entityManager.update();
-                self._levelManager.update();
-                self._camera.update();
                 self.getEventManager().trigger('game.updateEnd');
 
                 // Needs to be last

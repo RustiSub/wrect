@@ -7,8 +7,9 @@
   wrect.ECS.Component.Visual = function (options) {
     wrect.ECS.Component.BaseComponent.call(this);
 
-    this.options = options || {};
+    options = options || {};
     this.graphics = options.graphics || new PIXI.Graphics();
+
     this.color =  options.color || 0x000000;
   };
 

@@ -1,13 +1,15 @@
 (function() {
   "use strict";
 
+  wrect.Core = wrect.Core || {};
+
   var Vector = wrect.Physics.Vector;
 
   /**
    * A Camera is your view into the game world. It has a position and size and renders only those objects within its field of view.
    * The game automatically creates a single Stage sized camera on boot. Move the camera around the world with Phaser.Camera.x/y
    *
-   * @class window.Camera
+   * @class wrect.Core.Camera
    * @constructor
    * @param {number} x - Position of the camera on the X axis
    * @param {number} y - Position of the camera on the Y axis
@@ -15,7 +17,7 @@
    * @param {number} height - The height of the view rectangle
    * @param {Game} game - The game class to bind to
    */
-  window.Camera = function(x, y, width, height, game) {
+  wrect.Core.Camera = function(x, y, width, height, game) {
     /**
      * Reference to game
      * @type Game
@@ -131,11 +133,13 @@
     };
   };
 
+  var Camera = wrect.Core.Camera;
+
   /**
    * Follow the BaseEntity
    * @param {Block} entity
    */
-  window.Camera.prototype.follow = function(entity) {
+  Camera.prototype.follow = function(entity) {
     this.target = entity;
   };
 
@@ -143,7 +147,7 @@
    * Get position of the mouse relative to the camera position.
    * @returns {wrect.Physics.Vector|boolean}
    */
-  window.Camera.prototype.getMouseWorldCoordinates = function() {
+  Camera.prototype.getMouseWorldCoordinates = function() {
     var screenPos = this.game.getInputHandler().getMousePosition();
     if (screenPos) {
       return screenPos.add(this.position).divide(this._realZoomLevel);
@@ -155,14 +159,14 @@
   /**
    * Stop following entities
    */
-  window.Camera.prototype.unfollow = function() {
+  Camera.prototype.unfollow = function() {
     this.target = null;
   };
 
   /**
    * Update
    */
-  window.Camera.prototype.update = function() {
+  Camera.prototype.update = function() {
     this.changed = false;
 
     this.updateZoom();
@@ -181,7 +185,7 @@
   /**
    * Update the camera container position
    */
-  window.Camera.prototype.updateCameraContainer = function() {
+  Camera.prototype.updateCameraContainer = function() {
     this.displayContainer.position.x = -this.position.x;
     this.displayContainer.position.y = -this.position.y;
   };
@@ -189,7 +193,7 @@
   /**
    * Update the shaking
    */
-  window.Camera.prototype.updateShake = function() {
+  Camera.prototype.updateShake = function() {
     if (this.shaking) {
       var delta = this.shakeTimer.delta();
       if (delta > 0) {
@@ -215,7 +219,7 @@
   /**
    * Update the zoom level for interpolation
    */
-  window.Camera.prototype.updateZoom = function() {
+  Camera.prototype.updateZoom = function() {
     if (this._realZoomLevel !== this.zoomLevel) {
       if (this._realZoomLevel > this.zoomLevel) {
         this._realZoomLevel -= this._zoomSpeed;
@@ -231,7 +235,7 @@
   /**
    * Update the position of the camera
    */
-  window.Camera.prototype.updateFollow = function() {
+  Camera.prototype.updateFollow = function() {
     if (this.target) {
       var center = this.target.dimensions.center();
       this.unscaledPosition.x = center.x - this.bounds.x/2;
@@ -249,7 +253,7 @@
   /**
    * Will be used for interpolation
    */
-  window.Camera.prototype.updatePosition = function() {
+  Camera.prototype.updatePosition = function() {
     var delta = {
       x: this.position.x - this.targetPosition.x,
       y: this.position.y - this.targetPosition.y
@@ -270,7 +274,7 @@
    * @param {int} intensity
    * @param {int} duration
    */
-  window.Camera.prototype.shake = function(intensity, duration) {
+  Camera.prototype.shake = function(intensity, duration) {
     if (!this.shaking) {
       this.shaking = true;
       this.shakeTimer.set(duration);
@@ -282,7 +286,7 @@
    * !!THESE NEED TO BE SORTED FROM SMALL TO LARGE!!
    * @type {{SMALLEST: number, SMALLER: number, SMALL: number, NORMAL: number, MEDIUM: number, LARGE: number, EXTRA_LARGE: number, LARGEST: number}}
    */
-  window.Camera.prototype.zoomLevels = {
+  Camera.prototype.zoomLevels = {
     SMALLEST: 0.25,
     SMALLER: 0.50,
     SMALL: 0.75,
@@ -297,7 +301,7 @@
    * Min/max zoom levels
    * @type {{min: number, max: number}}
    */
-  window.Camera.prototype.zoomBounds = {
+  Camera.prototype.zoomBounds = {
     min: 0.25,
     max: 2.0
   };
@@ -306,7 +310,7 @@
    * Zoom in with the given amount
    * @param value
    */
-  window.Camera.prototype.zoomIn = function(value) {
+  Camera.prototype.zoomIn = function(value) {
     var newZoomLevel = this.zoomLevel + value;
     if (newZoomLevel >= this.zoomBounds.min && newZoomLevel <= this.zoomBounds.max) {
       this.zoom(newZoomLevel);
@@ -317,7 +321,7 @@
    * Zoom out with the given amount
    * @param value
    */
-  window.Camera.prototype.zoomOut = function(value) {
+  Camera.prototype.zoomOut = function(value) {
     var newZoomLevel = this.zoomLevel - value;
     if (newZoomLevel >= this.zoomBounds.min && newZoomLevel <= this.zoomBounds.max) {
       this.zoom(newZoomLevel);
@@ -328,7 +332,7 @@
    * Zoom to the given value
    * @param value
    */
-  window.Camera.prototype.zoom = function(value) {
+  Camera.prototype.zoom = function(value) {
     this.zoomLevel = value;
     this.updateFollow();
   };
@@ -337,7 +341,7 @@
    * Get the name of the current zoom level. Useful for doing certain things only at a certain zoomlevel.
    * @returns {*}
    */
-  window.Camera.prototype.getCurrentZoomLevelName = function() {
+  Camera.prototype.getCurrentZoomLevelName = function() {
     for (var x in this.zoomLevels) {
       var lvl = this.zoomLevels[x];
       if (lvl > this.zoomLevel) {

@@ -26,5 +26,9 @@
    */
   Entity.prototype.removeComponent = function(name) {
     delete this.components[name];
-  }
+  };
+
+  Entity.prototype.getGraphics = function() {
+    return this.components.Visual.graphics;
+  };
 }());

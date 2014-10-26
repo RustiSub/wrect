@@ -19,6 +19,7 @@
       })
     });
     this.entity.addComponent(rigidBody);
+    this.entity.addComponent(options.Visual || new wrect.ECS.Component.Visual());
     //entity.addComponent( new ECS.Components.Position());
     //entity.addComponent( new ECS.Components.Collision());
 

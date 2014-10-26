@@ -24,6 +24,12 @@
 
       var dr = rigidBody.physicsBody.a;
       rigidBody.dimensions.move(dr);
+
+      if (entity.components.Visual) {
+        var visual = entity.components.Visual;
+
+        visual.graphics.position = rigidBody.dimensions.origin;
+      }
     }
   }
 }());
