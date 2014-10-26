@@ -28,6 +28,7 @@
     delete this.components[name];
   };
 
+  //TODO: THIS NEEDS TO GO, put it here so we are hard wired into the PIXI rendering
   Entity.prototype.getGraphics = function() {
     return this.components.Visual.graphics;
   };
