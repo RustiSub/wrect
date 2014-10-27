@@ -15,6 +15,11 @@ window.onload = function() {
       defaultLevel: false
     });
 
+    game.systems.Mover = {
+      weight: 0,
+      system: new wrect.ECS.System.Mover()
+    };
+
     var blockGraphics = new PIXI.Graphics();
     blockGraphics.beginFill(0x0080FF);
     blockGraphics.drawCircle(100, 100, 50);
@@ -34,9 +39,5 @@ window.onload = function() {
     block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(5, 0);
 
     game.getEntityManager().addEntity(block);
-    game.systems.Mover = {
-      weight: 0,
-      system: new wrect.ECS.System.Mover()
-    };
   });
 };

@@ -19,6 +19,7 @@
    */
   Entity.prototype.addComponent = function(component) {
     this.components[component.name] = component;
+    game.getEventManager().trigger('entity.component.add', {entity: this});
   };
 
   /**
@@ -26,6 +27,7 @@
    */
   Entity.prototype.removeComponent = function(name) {
     delete this.components[name];
+    game.getEventManager().trigger('entity.component.remove', {entity: this});
   };
 
   Entity.prototype.getGraphics = function() {
