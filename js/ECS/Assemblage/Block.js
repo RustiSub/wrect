@@ -30,6 +30,7 @@
 
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
+    this.entity.addComponent(new wrect.ECS.Component.Collision());
     //entity.addComponent( new ECS.Components.Position());
     //entity.addComponent( new ECS.Components.Collision());
 

@@ -16,21 +16,36 @@ window.onload = function() {
     });
 
     game.systems.Mover = {
-      weight: 0,
       system: new wrect.ECS.System.Mover()
     };
 
-    var block = new wrect.ECS.Assemblage.Block(
-      {
+    game.systems.QuadTree = {
+      system: new wrect.ECS.System.QuadTree()
+    };
+
+    function createBlock(options) {
+      options = options || {
         x: 300,
         y: 100,
         w: 100,
         h: 40,
         color: 0xFFFFFF
-      }
-    );
-    //block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(5, 0);
+      };
+      var block = new wrect.ECS.Assemblage.Block(options);
 
-    game.getEntityManager().addEntity(block);
+      game.getEntityManager().addEntity(block);
+    }
+
+    for (var l= 0; l < 1; l++) {
+      for (var t= 0; t < 10; t++) {
+        createBlock({
+          x: 10 + (t * (50 + 1)) ,
+          y: 10 + l * (10 + 1),
+          w: 5,
+          h: 10,
+          color: 0xFFFFFF
+        });
+      }
+    }
   });
 };

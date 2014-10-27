@@ -173,7 +173,7 @@
         for (var s in self.systems) {
           var system = self.systems[s].system;
 
-          system.run(self.getEntityManager().getAllEntities());
+          system.run();
         }
 
         self.getEventManager().trigger('game.updateEnd');

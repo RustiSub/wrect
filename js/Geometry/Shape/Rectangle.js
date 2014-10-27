@@ -27,7 +27,12 @@
   wrect.Geometry.Rectangle.prototype = Object.create( wrect.Geometry.Dimensions.prototype );
   wrect.Geometry.Rectangle.prototype.constructor = wrect.Geometry.Rectangle;
 
-  wrect.Geometry.Rectangle.getBounds = function() {
-    wrect.Geometry.Dimensions.getBounds.call(this);
+  wrect.Geometry.Rectangle.prototype.getBounds = function() {
+    return {
+      topLeft: this.vertices[0],
+      topRight: this.vertices[1],
+      bottomRight: this.vertices[2],
+      bottomLeft: this.vertices[3]
+    };
   };
 }());
