@@ -20,23 +20,16 @@ window.onload = function() {
       system: new wrect.ECS.System.Mover()
     };
 
-    var blockGraphics = new PIXI.Graphics();
-    blockGraphics.beginFill(0x0080FF);
-    blockGraphics.drawCircle(100, 100, 50);
-    blockGraphics.endFill();
-
     var block = new wrect.ECS.Assemblage.Block(
       {
-        x: 400,
+        x: 300,
         y: 100,
-        w: 20,
+        w: 100,
         h: 40,
-        Visual: new wrect.ECS.Component.Visual({
-          graphics: blockGraphics
-        })
+        color: 0xFFFFFF
       }
     );
-    block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(5, 0);
+    //block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(5, 0);
 
     game.getEntityManager().addEntity(block);
   });
