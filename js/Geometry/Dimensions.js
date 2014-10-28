@@ -16,12 +16,10 @@
   };
 
   wrect.Geometry.Dimensions.prototype.move = function(v) {
-    var vertices = this.vertices;
+    for(var vertexIndex in this.vertices) {
+      var vertex = this.vertices[vertexIndex];
 
-    for(var vertexIndex in vertices) {
-      var vertex = vertices[vertexIndex];
-
-      vertex = vertex.add(v);
+      this.vertices[vertexIndex] = vertex.add(v);
     }
 
     this.origin = this.origin.add(v);

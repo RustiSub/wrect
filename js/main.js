@@ -15,30 +15,82 @@ window.onload = function() {
       defaultLevel: false
     });
 
-    var blockGraphics = new PIXI.Graphics();
-    blockGraphics.beginFill(0x0080FF);
-    blockGraphics.drawCircle(100, 100, 50);
-    blockGraphics.endFill();
-
-    var block = new wrect.ECS.Assemblage.Block(
-      {
-        x: 400,
-        y: 100,
-        w: 20,
-        h: 40,
-        Visual: new wrect.ECS.Component.Visual({
-          graphics: blockGraphics
-        })
+    game.systems = {
+      Mover: {
+        system: new wrect.ECS.System.Mover()
+      },
+      QuadTree: {
+        system: new wrect.ECS.System.QuadTree()
+      },
+      Collision: {
+        system: new wrect.ECS.System.Collision()
       }
-    );
-    block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(5, 0);
-
-    //TODO: @BDA: Game On!
-
-    game.getEntityManager().addEntity(block);
-    game.systems.Mover = {
-      weight: 0,
-      system: new wrect.ECS.System.Mover()
     };
+
+    function createBlock(options) {
+      options = options || {
+        x: 300,
+        y: 100,
+        w: 100,
+        h: 40,
+        color: 0xFFFFFF
+      };
+      var block = new wrect.ECS.Assemblage.Block(options);
+
+      game.getEntityManager().addEntity(block);
+
+      return block;
+    }
+
+    createBlock({
+      x: 10,
+      y: 10,
+      w: 5,
+      h: 300,
+      color: 0xFFFFFF
+    });
+    createBlock({
+      x: 10,
+      y: 300,
+      w: 450,
+      h: 5,
+      color: 0xFFFFFF
+    });
+    createBlock({
+      x: 10,
+      y: 10,
+      w: 450,
+      h: 5,
+      color: 0xFFFFFF
+    });
+    createBlock({
+      x: 450,
+      y: 10,
+      w: 5,
+      h: 300,
+      color: 0xFFFFFF
+    });
+
+    var block = createBlock({
+      x: 10,
+      y: 50,
+      w: 20,
+      h: 50,
+      color: 0xFFFFFF
+    });
+
+    block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 1));
+
+    //for (var l= 0; l < 1; l++) {
+    //  for (var t= 0; t < 2; t++) {
+    //    createBlock({
+    //      x: 10 + (t * (50 + 100)) ,
+    //      y: 10 + l * (10 + 1),
+    //      w: 40,
+    //      h: 100,
+    //      color: 0xFFFFFF
+    //    });
+    //  }
+    //}
   });
 };
