@@ -25,7 +25,7 @@
   wrect.ECS.System.QuadTree.prototype.name = 'QuadTree';
 
   wrect.ECS.System.QuadTree.prototype.checkDependencies = function (entity) {
-    return entity.components.RigidBody && entity.components.Collision;
+    return entity.components.RigidBody;
   };
 
   wrect.ECS.System.QuadTree.prototype.run = function() {

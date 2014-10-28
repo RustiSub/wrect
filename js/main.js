@@ -15,12 +15,16 @@ window.onload = function() {
       defaultLevel: false
     });
 
-    game.systems.Mover = {
-      system: new wrect.ECS.System.Mover()
-    };
-
-    game.systems.QuadTree = {
-      system: new wrect.ECS.System.QuadTree()
+    game.systems = {
+      Mover: {
+        system: new wrect.ECS.System.Mover()
+      },
+      QuadTree: {
+        system: new wrect.ECS.System.QuadTree()
+      },
+      Collision: {
+        system: new wrect.ECS.System.Collision()
+      }
     };
 
     function createBlock(options) {
@@ -34,18 +38,45 @@ window.onload = function() {
       var block = new wrect.ECS.Assemblage.Block(options);
 
       game.getEntityManager().addEntity(block);
+
+      return block;
     }
 
-    for (var l= 0; l < 1; l++) {
-      for (var t= 0; t < 10; t++) {
-        createBlock({
-          x: 10 + (t * (50 + 1)) ,
-          y: 10 + l * (10 + 1),
-          w: 5,
-          h: 10,
-          color: 0xFFFFFF
-        });
-      }
-    }
+    //createBlock({
+    //  x: 10,
+    //  y: 10,
+    //  w: 5,
+    //  h: 300,
+    //  color: 0xFFFFFF
+    //});
+    createBlock({
+      x: 100,
+      y: 10,
+      w: 5,
+      h: 300,
+      color: 0xFFFFFF
+    });
+
+    var block = createBlock({
+      x: 89,
+      y: 75,
+      w: 20,
+      h: 50,
+      color: 0xFFFFFF
+    });
+
+    block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(2, 0));
+
+    //for (var l= 0; l < 1; l++) {
+    //  for (var t= 0; t < 2; t++) {
+    //    createBlock({
+    //      x: 10 + (t * (50 + 100)) ,
+    //      y: 10 + l * (10 + 1),
+    //      w: 40,
+    //      h: 100,
+    //      color: 0xFFFFFF
+    //    });
+    //  }
+    //}
   });
 };

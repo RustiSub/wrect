@@ -27,6 +27,7 @@
       rigidBody.physicsBody.v = new Vector(0, 0);
 
       var dr = rigidBody.physicsBody.a;
+      //console.log(rigidBody.physicsBody.a.x);
       rigidBody.dimensions.move(dr);
 
       if (entity.components.Visual) {
