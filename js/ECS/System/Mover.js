@@ -33,7 +33,9 @@
       if (entity.components.Visual) {
         var visual = entity.components.Visual;
 
-        visual.graphics.position = rigidBody.dimensions.origin;
+        var graphicPositionVector = new Vector(visual.graphics.position.x, visual.graphics.position.y).add(dr);
+        visual.graphics.position.x = graphicPositionVector.x;
+        visual.graphics.position.y = graphicPositionVector.y;
       }
     }
   }

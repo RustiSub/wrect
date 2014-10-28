@@ -42,15 +42,15 @@ window.onload = function() {
       return block;
     }
 
-    //createBlock({
-    //  x: 10,
-    //  y: 10,
-    //  w: 5,
-    //  h: 300,
-    //  color: 0xFFFFFF
-    //});
     createBlock({
-      x: 100,
+      x: 10,
+      y: 10,
+      w: 5,
+      h: 300,
+      color: 0xFFFFFF
+    });
+    createBlock({
+      x: 450,
       y: 10,
       w: 5,
       h: 300,
@@ -59,13 +59,13 @@ window.onload = function() {
 
     var block = createBlock({
       x: 10,
-      y: 75,
+      y: 0,
       w: 20,
       h: 50,
       color: 0xFFFFFF
     });
 
-    block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(2, 0));
+    block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 0));
 
     //for (var l= 0; l < 1; l++) {
     //  for (var t= 0; t < 2; t++) {
