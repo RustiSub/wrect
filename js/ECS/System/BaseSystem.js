@@ -19,7 +19,7 @@
   };
 
   wrect.ECS.System.BaseSystem.prototype.addEntity = function(data) {
-    if (this.checkDependencies(data.entity)) {
+    if (this.checkDependencies(data.entity) && this.entities.indexOf(data.entity) === -1) {
       this.entities.push(data.entity);
     }
   };

@@ -107,8 +107,8 @@
     var axesOverlap = checkOverlap(getNormalAxes(b), a, b);
 
     if (axesOverlap.hasOverlap) {
-      console.log();
-      //shapeA.handleCollision(shapeB, axesOverlap);
+      //console.log();
+      shapeA.handleCollision(shapeB, axesOverlap);
     }
   };
 

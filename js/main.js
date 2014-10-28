@@ -58,7 +58,7 @@ window.onload = function() {
     });
 
     var block = createBlock({
-      x: 89,
+      x: 10,
       y: 75,
       w: 20,
       h: 50,
