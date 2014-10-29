@@ -18,15 +18,15 @@
   wrect.ECS.System.Gravity.prototype.name = 'Gravity';
 
   wrect.ECS.System.BaseSystem.prototype.checkDependencies = function(entity) {
-    return false; // entity.components.RigidBody ? true : false;
+    return entity.components.RigidBody ? true : false;
   };
 
   wrect.ECS.System.Gravity.prototype.perform = function(entity) {
-    if (entity.components.RigidBody) {
+    if (entity.components.RigidBody && entity.components.RigidBody.gravity) {
       var rigidBody = entity.components.RigidBody;
       //@TODO: BDA: Gravity?
       //rigidBody.physicsBody.a = rigidBody.physicsBody.a.multiply(new Vector(0, 0.9));
-      //rigidBody.physicsBody.a = rigidBody.physicsBody.a.add(0,1);
+      rigidBody.physicsBody.a = new Vector(0, 1);//rigidBody.physicsBody.a.add(0,1);
 
     }
   }

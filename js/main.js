@@ -22,11 +22,11 @@ window.onload = function() {
       QuadTree: {
         system: new wrect.ECS.System.QuadTree()
       },
-      Collision: {
-        system: new wrect.ECS.System.Collision()
-      },
       Gravity: {
         system: new wrect.ECS.System.Gravity()
+      },
+      Collision: {
+        system: new wrect.ECS.System.Collision()
       }
     };
 
@@ -81,7 +81,7 @@ window.onload = function() {
       h: 50,
       color: 0xFFFFFF
     });
-
+    block.components.RigidBody.gravity = true;
     //block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 1));
 
     //for (var l= 0; l < 1; l++) {
