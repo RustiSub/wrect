@@ -179,7 +179,7 @@
         self.getEventManager().trigger('game.updateEnd');
 
         // Needs to be last
-        self._inputHandler.update();
+        //self._inputHandler.update();
         renderer.render(stage);
 
         // Sets the element used for mouse-event tracking to the root GUI element. This fixes mouse input over GUI elements.
