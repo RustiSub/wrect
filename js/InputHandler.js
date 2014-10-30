@@ -139,12 +139,10 @@
     _onKeyup: function(event) {
       var i = this._keysToCapture.indexOf(event.keyCode);
       if (i !== -1) {
-        var index = this._pressed.indexOf(this._pressed[this._keys[event.keyCode]]);
-        console.log(index);
-        /*if (this._pressed[this._keys[event.keyCode]] !== undefined) {
-          this._pressed.splice(, 1);
-          
-        }*/
+        var index = this._pressed.indexOf(this._keys[event.keyCode]);
+        if (index !== -1) {
+          this._pressed.splice(index, 1);
+        }
       }
       /*if ((index = this._pressed.indexOf(event.keyCode)) !== -1) {
 
