@@ -72,14 +72,15 @@ window.onload = function() {
     });
 
     var block = createBlock({
-      x: 10,
+      x: 20,
       y: 50,
       w: 20,
       h: 50,
       color: 0xFFFFFF
     });
 
-    block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 1));
+    block.components.RigidBody.physicsBody.v = block.components.RigidBody.physicsBody.v.add(new wrect.Physics.Vector(10, 0));
+    block.components.RigidBody.frozen = false;
 
     //for (var l= 0; l < 1; l++) {
     //  for (var t= 0; t < 2; t++) {
