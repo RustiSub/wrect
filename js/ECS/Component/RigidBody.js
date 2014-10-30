@@ -24,7 +24,7 @@
       return speed > -1 && speed < 1 ? 0 : speed;
     }
 
-    var v = this.physicsBody.a;//.unit();
+    var v = this.physicsBody.v;//.unit();
     var n = axesOverlap.axis;//.unit();
     var vn = v.dot(n);
     var u = n.multiply(vn);
@@ -45,6 +45,6 @@
 //      v2 = v2.multiply(energyTransfer);
     }
 
-    this.physicsBody.a = v2;
+    this.physicsBody.v = v2;
   };
 }());

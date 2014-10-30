@@ -119,7 +119,7 @@
       for (var x = 0; x < branch.length; x++) {
         var mainEntity = branch[x];
 
-        if (mainEntity.components.RigidBody.physicsBody.a.x == 0 && mainEntity.components.RigidBody.physicsBody.a.y == 0) {
+        if (mainEntity.components.RigidBody.physicsBody.v.x == 0 && mainEntity.components.RigidBody.physicsBody.v.y == 0) {
           continue;
         }
 

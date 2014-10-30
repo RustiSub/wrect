@@ -24,7 +24,7 @@
   };
 
   wrect.ECS.System.Mover.prototype.perform = function(entity) {
-    var delta = game.getDelta();
+    var delta = game.getDelta() / 100;
 if (delta > 20) {return;}
     if (entity.components.RigidBody && !entity.components.RigidBody.frozen) {
       var rigidBody = entity.components.RigidBody;
@@ -36,8 +36,9 @@ if (delta > 20) {return;}
       var newPosition = rigidBody.physicsBody.v.multiply(delta).add(last_acceleration.multiply(modifier));
       var new_acceleration = rigidBody.physicsBody.a;//force / mass
       var avg_acceleration = ( last_acceleration.add(new_acceleration)).divide(2);
-      rigidBody.physicsBody.v = rigidBody.physicsBody.v.add(avg_acceleration.multiply(delta));
 
+      rigidBody.physicsBody.v = rigidBody.physicsBody.v.add(avg_acceleration.multiply(delta));
+      newPosition = new Vector(Math.ceil(newPosition.x), Math.ceil(newPosition.y));
       rigidBody.dimensions.move(newPosition);
 
       //rigidBody.physicsBody.a = new Vector(0, 0);
