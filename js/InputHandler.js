@@ -9,10 +9,10 @@
     _previousMousePos: null,
     _mouseWheel: null,
     _keys: {
-      37: 'LEFT',
-      38: 'UP',
-      39: 'RIGHT',
-      40: 'DOWN',
+      37: 'left',
+      38: 'up',
+      39: 'right',
+      40: 'down'
     },
     _singleInputKeys: [
       13,

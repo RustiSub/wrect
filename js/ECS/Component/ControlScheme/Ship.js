@@ -9,10 +9,18 @@
 
     options = options || {};
 
-    this.right = options.right || function() {};
-    this.left = options.left || function() {};
-    this.up = options.up || function() {};
-    this.down = options.down || function() {};
+    this.keyright = options.keyright || function(entity) {
+      console.log('right', entity);
+    };
+    this.keyleft = options.keyleft || function(entity) {
+      console.log('left', entity);
+    };
+    this.keyup = options.keyup || function(entity) {
+      console.log('up', entity);
+    };
+    this.keydown = options.keyDown || function(entity) {
+      console.log('down', entity);
+    };
   };
 
   wrect.ECS.Component.ControlScheme.Ship.prototype = Object.create( wrect.ECS.Component.ControlScheme.BaseScheme.prototype );
