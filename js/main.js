@@ -66,13 +66,13 @@ window.onload = function() {
       h: 5,
       color: 0xFFFFFF
     });
-    createBlock({
+    /*createBlock({
       x: 450,
       y: 10,
       w: 5,
       h: 300,
       color: 0xFFFFFF
-    });
+    });*/
 
     var block = createBlock({
       x: 50,
@@ -82,7 +82,7 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    block.addComponent(new wrect.ECS.Component.ControlScheme({
+    block.addComponent(new wrect.ECS.Component.ControlScheme.Ship({
       right: function(entity) {
         entity.components.RigidBody.physicsBody.a = entity.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(1, 0));
       }

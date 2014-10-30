@@ -24,8 +24,11 @@
 
   wrect.ECS.System.Input.prototype.perform = function(entity) {
     var controlScheme = entity.components.ControlScheme;
-
-    if (this.inputHandler.key('left') && controlScheme.left) {
+    if (this.inputHandler._pressed.length) {
+      //console.log(this.inputHandler._pressed);
+      //console.log(this.inputHandler._registeredPressed);
+    }
+ /*   if (this.inputHandler.key('left') && controlScheme.left) {
       console.log('left', entity);
     }
     if (this.inputHandler.key('right') && controlScheme.right) {
@@ -36,6 +39,6 @@
     }
     if (this.inputHandler.key('down') && controlScheme.down) {
       console.log('down', entity);
-    }
+    }*/
   }
 }());
