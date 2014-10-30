@@ -11,7 +11,8 @@
 
     this.options = options || {};
 
-    this.timeChunk = 1000;
+    this.minChunk = 0;
+    this.maxChunk = 0;
   };
 
   wrect.ECS.System.Mover.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -25,11 +26,9 @@
 
   wrect.ECS.System.Mover.prototype.perform = function(entity) {
     var delta = game.getDelta() / 100;
-if (delta > 20) {return;}
+
     if (entity.components.RigidBody && !entity.components.RigidBody.frozen) {
       var rigidBody = entity.components.RigidBody;
-
-      //var dr = rigidBody.physicsBody.a.multiply(delta / 100);
 
       var last_acceleration = rigidBody.physicsBody.a;
       var modifier = Math.pow(delta, 2) * 0.5;
@@ -38,10 +37,21 @@ if (delta > 20) {return;}
       var avg_acceleration = ( last_acceleration.add(new_acceleration)).divide(2);
 
       rigidBody.physicsBody.v = rigidBody.physicsBody.v.add(avg_acceleration.multiply(delta));
+      //console.log(rigidBody.physicsBody.v.x, newPosition.x);
+      //if (newPosition.x > 0 && newPosition.x > this.maxChunk && newPosition.x < 2) {
+      //  this.maxChunk = newPosition.x;
+      //
+      //  console.log(this.minChunk, this.maxChunk);
+      //}
+      //
+      //if (newPosition.x < 0 && newPosition.x < this.minChunk && newPosition.x > -2) {
+      //  this.minChunk = newPosition.x;
+      //
+      //  console.log(this.minChunk, this.maxChunk);
+      //}
+
       newPosition = new Vector(Math.ceil(newPosition.x), Math.ceil(newPosition.y));
       rigidBody.dimensions.move(newPosition);
-
-      //rigidBody.physicsBody.a = new Vector(0, 0);
 
       if (entity.components.Visual) {
         var visual = entity.components.Visual;

@@ -16,14 +16,14 @@ window.onload = function() {
     });
 
     game.systems = {
-      Mover: {
-        system: new wrect.ECS.System.Mover()
-      },
       QuadTree: {
         system: new wrect.ECS.System.QuadTree()
       },
       Collision: {
         system: new wrect.ECS.System.Collision()
+      },
+      Mover: {
+        system: new wrect.ECS.System.Mover()
       }
     };
 
@@ -72,14 +72,14 @@ window.onload = function() {
     });
 
     var block = createBlock({
-      x: 20,
+      x: 200,
       y: 50,
       w: 20,
       h: 50,
       color: 0xFFFFFF
     });
 
-    block.components.RigidBody.physicsBody.v = block.components.RigidBody.physicsBody.v.add(new wrect.Physics.Vector(10, 0));
+    //block.components.RigidBody.physicsBody.v = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(-10, 0));
     block.components.RigidBody.frozen = false;
 
     //for (var l= 0; l < 1; l++) {

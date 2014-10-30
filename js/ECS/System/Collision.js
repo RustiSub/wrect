@@ -104,11 +104,40 @@
       };
     }
 
+    function handleCollision(shapeA, shapeB, axesOverlap) {
+
+      function capSmallSpeed(speed) {
+        return speed > -1 && speed < 1 ? 0 : speed;
+      }
+
+      var v = shapeA.physicsBody.v;//.unit();
+      var n = axesOverlap.axis;//.unit();
+      var vn = v.dot(n);
+      var u = n.multiply(vn);
+      var w = v.subtract(u);
+      var v2 = w.subtract(u);
+
+      v2.x = capSmallSpeed(v2.x);
+      v2.y = capSmallSpeed(v2.y);
+
+      var sign = vn ? vn < 0 ? -1 : 1:0;
+      var pushOutVector = n.unit().multiply(axesOverlap.overlap * -sign);
+
+      shapeA.dimensions.move(pushOutVector);
+
+      if (!shapeB.frozen) {
+//      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
+//      v2 = v2.multiply(energyTransfer);
+      }
+
+      shapeA.physicsBody.v = v2;
+    }
+
     var axesOverlap = checkOverlap(getNormalAxes(b), a, b);
 
     if (axesOverlap.hasOverlap) {
       //console.log();
-      shapeA.handleCollision(shapeB, axesOverlap);
+      handleCollision(shapeA, shapeB, axesOverlap);
     }
   };
 
