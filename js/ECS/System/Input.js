@@ -18,7 +18,7 @@
 
   wrect.ECS.System.Input.prototype.name = 'Input';
 
-  wrect.ECS.System.BaseSystem.prototype.checkDependencies = function(entity) {
+  wrect.ECS.System.Input.prototype.checkDependencies = function(entity) {
     return entity.components.ControlScheme ? true : false;
   };
 
@@ -45,5 +45,5 @@
     if (this.inputHandler.key('down') && controlScheme.down) {
       console.log('down', entity);
     }*/
-  }
+  };
 }());
