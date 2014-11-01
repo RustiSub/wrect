@@ -180,7 +180,6 @@
 
           system.run();
         }
-
         self.getEventManager().trigger('game.updateEnd');
 
         // Needs to be last

@@ -13,6 +13,7 @@
   wrect.Geometry.Dimensions = function () {
     this.vertices = [];
     this.origin = new Vector(0, 0);
+    this.previousOrigin = null;
   };
 
   wrect.Geometry.Dimensions.prototype.move = function(v) {

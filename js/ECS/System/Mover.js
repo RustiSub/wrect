@@ -11,8 +11,6 @@
 
     this.options = options || {};
 
-    this.minChunk = 0;
-    this.maxChunk = 0;
   };
 
   wrect.ECS.System.Mover.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -26,27 +24,28 @@
 
   wrect.ECS.System.Mover.prototype.perform = function(entity) {
     var dt = game.getDelta() / 100;
-    var delta2 = game.getDeltaDelta();
-
 
     if (entity.components.RigidBody && !entity.components.RigidBody.frozen) {
       var rigidBody = entity.components.RigidBody;
+      var physicsBody = rigidBody.physicsBody;
 
-      var acceleration = rigidBody.physicsBody.a.x / 1;
-      rigidBody.physicsBody.v.x += acceleration * dt;
-      var position = rigidBody.physicsBody.v.x * dt;
+      // Symplectic Euler
+      physicsBody.v.x += (1 / physicsBody.m * physicsBody.f.x) * dt;
+      var x = physicsBody.v.x * dt;
+      var newPosition = new Vector(x, 0);
 
-      var newPosition = new Vector(position, 0);
-
+      rigidBody.dimensions.previousOrigin = rigidBody.dimensions.origin;
       rigidBody.dimensions.move(newPosition);
 
       if (entity.components.Visual) {
         var visual = entity.components.Visual;
 
         var graphicPositionVector = new Vector(visual.graphics.position.x, visual.graphics.position.y).add(newPosition);
-        visual.graphics.position.x = graphicPositionVector.x;
+        visual.graphics.position.x =  graphicPositionVector.x;
         visual.graphics.position.y = graphicPositionVector.y;
       }
+
+      rigidBody.physicsBody.f = new Vector(0, 0);
     }
   }
 }());
