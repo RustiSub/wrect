@@ -15,6 +15,8 @@ window.onload = function() {
       defaultLevel: false
     });
 
+    game.timeStepSystem = new wrect.ECS.System.TimeStep();
+
     game.systems = {
       Mover: {
         system: new wrect.ECS.System.Mover()
@@ -47,7 +49,7 @@ window.onload = function() {
 
       return block;
     }
-
+    /*
     createBlock({
       x: 10,
       y: 10,
@@ -69,7 +71,7 @@ window.onload = function() {
       h: 5,
       color: 0xFFFFFF
     });
-    /*createBlock({
+    createBlock({
       x: 450,
       y: 10,
       w: 5,
@@ -84,6 +86,8 @@ window.onload = function() {
       h: 50,
       color: 0xFFFFFF
     });
+
+    block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
 
     block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 1));
 
