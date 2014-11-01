@@ -110,7 +110,7 @@
         return speed > -1 && speed < 1 ? 0 : speed;
       }
 
-      var v = shapeA.physicsBody.a;//.unit();
+      var v = shapeA.physicsBody.v;//.unit();
       var n = axesOverlap.axis;//.unit();
       var vn = v.dot(n);
       var u = n.multiply(vn);
@@ -130,7 +130,7 @@
 //      v2 = v2.multiply(energyTransfer);
       }
 
-      shapeA.physicsBody.a = v2;
+      shapeA.physicsBody.v = v2;
     }
 
     var axesOverlap = checkOverlap(getNormalAxes(b), a, b);
@@ -148,7 +148,7 @@
       for (var x = 0; x < branch.length; x++) {
         var mainEntity = branch[x];
 
-        if (mainEntity.components.RigidBody.physicsBody.a.x == 0 && mainEntity.components.RigidBody.physicsBody.a.y == 0) {
+        if (mainEntity.components.RigidBody.physicsBody.v.x == 0 && mainEntity.components.RigidBody.physicsBody.v.y == 0) {
           continue;
         }
 
