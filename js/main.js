@@ -89,9 +89,8 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(1200, 0));
 
-    //block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(0, 9.81);
+    block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(0, 9.81);
     block.components.RigidBody.frozen = false;
 
     //for (var l= 0; l < 1; l++) {
