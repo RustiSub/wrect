@@ -15,12 +15,17 @@ window.onload = function() {
       defaultLevel: false
     });
 
+    game.timeStepSystem = new wrect.ECS.System.TimeStep();
+
     game.systems = {
-      Mover: {
-        system: new wrect.ECS.System.Mover()
+      Gravity: {
+        system: new wrect.ECS.System.Gravity()
       },
       QuadTree: {
         system: new wrect.ECS.System.QuadTree()
+      },
+      Mover: {
+        system: new wrect.ECS.System.Mover()
       },
       Collision: {
         system: new wrect.ECS.System.Collision()
@@ -46,16 +51,9 @@ window.onload = function() {
     }
 
     createBlock({
-      x: 10,
-      y: 10,
-      w: 5,
-      h: 300,
-      color: 0xFFFFFF
-    });
-    createBlock({
-      x: 10,
-      y: 300,
-      w: 450,
+      x: 50,
+      y: 500,
+      w: 700,
       h: 5,
       color: 0xFFFFFF
     });
@@ -66,40 +64,39 @@ window.onload = function() {
       h: 5,
       color: 0xFFFFFF
     });
-    /*createBlock({
+    createBlock({
       x: 450,
       y: 10,
       w: 5,
       h: 300,
       color: 0xFFFFFF
-    });*/
+    });
 
     var block = createBlock({
-      x: 50,
+      x: 10,
       y: 50,
       w: 20,
       h: 50,
       color: 0xFFFFFF
     });
 
-    block.addComponent(new wrect.ECS.Component.ControlScheme.Ship({
-      right: function(entity) {
-        entity.components.RigidBody.physicsBody.a = entity.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(1, 0));
+    block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 1));
+
+    //block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(0, 9.81);
+    //block.components.RigidBody.frozen = false;
+
+    for (var l= 0; l < 1; l++) {
+      for (var t= 0; t < 5; t++) {
+        var block = createBlock({
+          x: 200 + (t * (50 + 60)) ,
+          y: 10 + l * (10 + 1) + (50 * t),
+          w: 40,
+          h: 100,
+          color: 0xFFFFFF
+        });
+        block.components.RigidBody.gravity = true;
+        block.components.RigidBody.frozen = false;
       }
-    }));
-
-    //block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 1));
-
-    //for (var l= 0; l < 1; l++) {
-    //  for (var t= 0; t < 2; t++) {
-    //    createBlock({
-    //      x: 10 + (t * (50 + 100)) ,
-    //      y: 10 + l * (10 + 1),
-    //      w: 40,
-    //      h: 100,
-    //      color: 0xFFFFFF
-    //    });
-    //  }
-    //}
+    }
   });
 };

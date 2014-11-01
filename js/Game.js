@@ -18,6 +18,7 @@
     _camera: null,
     _eventManager: null,
     timeDelta: 0,
+    previousTimeDelta: null,
     previousTime: 0,
     debug: false,
     fpsOutInterval: 10000,
@@ -75,6 +76,10 @@
     },
     getDelta: function() {
       return this.timeDelta;
+    },
+    getDeltaDelta: function() {
+      this.previousTimeDelta = this.previousTimeDelta || this.timeDelta;
+      return this.timeDelta / this.previousTimeDelta;
     },
     getCurrentLevel: function() {
       return this._levelManager.getCurrentLevel();
@@ -137,6 +142,8 @@
       this._levelManager = new this._options.levelManagerClass(this._stage, this._options.defaultLevel);
       this._camera = new Camera(0, 0, this._options.width, this._options.height, this);
 
+      this.timeStepSystem = {};
+
       this.bootstrap();
     },
 
@@ -158,10 +165,12 @@
       var stage = this.getStage();
       var renderer = this.getRenderer();
       var self = this;
+      var pause = false;
 
       requestAnimationFrame(run);
 
       function run(timestamp) {
+        if (self.pause) {return;}
         requestAnimationFrame(run);
         self.getEventManager().trigger('game.updateStart');
         self.updateTime(timestamp);
@@ -169,11 +178,15 @@
           self.trackFps(timestamp);
         }
 
-        //TODO: Move to proper System Manager that takes weight and other flags into consideration
-        for (var s in self.systems) {
-          var system = self.systems[s].system;
+        self.timeStepSystem.run();
 
-          system.run();
+        //TODO: Move to proper System Manager that takes weight and other flags into consideration
+        for (var steps = 0; steps < self.timeStepSystem.timeSteps; steps++) {
+          for (var s in self.systems) {
+            var system = self.systems[s].system;
+
+            system.run();
+          }
         }
 
         self.getEventManager().trigger('game.updateEnd');
@@ -181,7 +194,7 @@
         // Needs to be last
         //self._inputHandler.update();
         renderer.render(stage);
-
+//self.pause = true;
         // Sets the element used for mouse-event tracking to the root GUI element. This fixes mouse input over GUI elements.
         if (stage.interactionManager.interactionDOMElement !== self._guiManager.getRoot().htmlElement) {
           stage.setInteractionDelegate(self._guiManager.guiRoot.htmlElement);
@@ -190,6 +203,7 @@
     },
 
     updateTime: function(timestamp) {
+      this.previousTimeDelta = this.timeDelta;
       this.timeDelta = timestamp - this.previousTime;
       this.previousTime = timestamp;
     },
