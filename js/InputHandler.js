@@ -221,20 +221,7 @@
      * @returns {boolean}
      */
     key: function(keyName) {
-      var keyCode = this._keys[keyName.toUpperCase()];
-      var keyFound = this._pressed.indexOf(keyCode) != -1;
-
-      if (this._singleInputKeys.indexOf(keyCode) === -1) {
-        return keyFound;
-      }
-
-      // TODO: What does _registeredPressed do?
-      if (keyFound && this._registeredPressed.indexOf(keyCode) === -1) {
-        this._registeredPressed.push(keyCode);
-        return keyFound;
-      }
-
-      return false;
+      return this._pressed.indexOf(keyName) !== -1;
     },
 
     /**
