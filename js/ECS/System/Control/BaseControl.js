@@ -19,11 +19,14 @@
   wrect.ECS.System.Control.BaseControl.prototype.name = '';
 
   wrect.ECS.System.Control.BaseControl.prototype.checkDependencies = function(entity) {
-    return entity.components.ControlScheme ? true : false;
+    return entity.components.ControlScheme && entity.components.RigidBody ? true : false;
   };
 
   wrect.ECS.System.Control.BaseControl.prototype.perform = function(entity) {
-    var scheme = entity.getComponent('ControlScheme');
-    
-  }
+    var scheme = entity.components.ControlScheme;
+    var rigidBody = entity.components.RigidBody;
+
+    rigidBody.physicsBody.a = rigidBody.physicsBody.a.add(scheme.movement);
+
+  };
 }());

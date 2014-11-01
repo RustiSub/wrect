@@ -38,5 +38,5 @@
         visual.graphics.position.y = graphicPositionVector.y;
       }
     }
-  }
+  };
 }());

@@ -27,6 +27,9 @@ window.onload = function() {
       },
       Input: {
         system: new wrect.ECS.System.Input()
+      },
+      BaseControl: {
+        system: new wrect.ECS.System.Control.BaseControl()
       }
     };
 
@@ -82,11 +85,7 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    block.addComponent(new wrect.ECS.Component.ControlScheme.Ship({
-      right: function(entity) {
-        entity.components.RigidBody.physicsBody.a = entity.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(1, 0));
-      }
-    }));
+    block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
 
     //block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 1));
 
