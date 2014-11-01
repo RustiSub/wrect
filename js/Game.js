@@ -179,8 +179,7 @@
         }
 
         self.timeStepSystem.run();
-        console.log(self.timeStepSystem.timeSteps);
-        //self.timeStepSystem.timeSteps = 10;
+
         //TODO: Move to proper System Manager that takes weight and other flags into consideration
         for (var steps = 0; steps < self.timeStepSystem.timeSteps; steps++) {
           for (var s in self.systems) {
