@@ -142,6 +142,8 @@
       this._levelManager = new this._options.levelManagerClass(this._stage, this._options.defaultLevel);
       this._camera = new Camera(0, 0, this._options.width, this._options.height, this);
 
+      this.timeStepSystem = {};
+
       this.bootstrap();
     },
 
@@ -163,10 +165,12 @@
       var stage = this.getStage();
       var renderer = this.getRenderer();
       var self = this;
+      var pause = false;
 
       requestAnimationFrame(run);
 
       function run(timestamp) {
+        if (self.pause) {return;}
         requestAnimationFrame(run);
         self.getEventManager().trigger('game.updateStart');
         self.updateTime(timestamp);
@@ -174,18 +178,24 @@
           self.trackFps(timestamp);
         }
 
+        self.timeStepSystem.run();
+        console.log(self.timeStepSystem.timeSteps);
+        //self.timeStepSystem.timeSteps = 10;
         //TODO: Move to proper System Manager that takes weight and other flags into consideration
-        for (var s in self.systems) {
-          var system = self.systems[s].system;
+        for (var steps = 0; steps < self.timeStepSystem.timeSteps; steps++) {
+          for (var s in self.systems) {
+            var system = self.systems[s].system;
 
-          system.run();
+            system.run();
+          }
         }
+
         self.getEventManager().trigger('game.updateEnd');
 
         // Needs to be last
         self._inputHandler.update();
         renderer.render(stage);
-
+//self.pause = true;
         // Sets the element used for mouse-event tracking to the root GUI element. This fixes mouse input over GUI elements.
         if (stage.interactionManager.interactionDOMElement !== self._guiManager.getRoot().htmlElement) {
           stage.setInteractionDelegate(self._guiManager.guiRoot.htmlElement);

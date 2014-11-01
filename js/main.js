@@ -15,6 +15,8 @@ window.onload = function() {
       defaultLevel: false
     });
 
+    game.timeStepSystem = new wrect.ECS.System.TimeStep();
+
     game.systems = {
       QuadTree: {
         system: new wrect.ECS.System.QuadTree()
@@ -71,6 +73,14 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
+    //createBlock({
+    //  x: 0,
+    //  y: 100,
+    //  w: 100,
+    //  h: 5,
+    //  color: 0xFFFFFF
+    //});
+
     var block = createBlock({
       x: 200,
       y: 50,
@@ -79,7 +89,8 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(4, 0));
+    block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(1200, 0));
+
     //block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(0, 9.81);
     block.components.RigidBody.frozen = false;
 

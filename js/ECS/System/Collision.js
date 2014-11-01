@@ -117,8 +117,8 @@
       var w = v.subtract(u);
       var v2 = w.subtract(u);
 
-      v2.x = capSmallSpeed(v2.x);
-      v2.y = capSmallSpeed(v2.y);
+      //v2.x = capSmallSpeed(v2.x);
+      //v2.y = capSmallSpeed(v2.y);
 
       var sign = vn ? vn < 0 ? -1 : 1:0;
       var pushOutVector = n.unit().multiply(axesOverlap.overlap * -sign);

@@ -23,7 +23,7 @@
   };
 
   wrect.ECS.System.Mover.prototype.perform = function(entity) {
-    var dt = game.getDelta() / 100;
+    var dt = 1 / 6 ;//game.getDelta() / 100;
 
     if (entity.components.RigidBody && !entity.components.RigidBody.frozen) {
       var rigidBody = entity.components.RigidBody;
@@ -53,6 +53,7 @@
       }
 
       rigidBody.physicsBody.f = new Vector(0, 0);
+      rigidBody.physicsBody.a = new Vector(0, 0);
     }
   }
 }());
