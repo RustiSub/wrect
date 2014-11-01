@@ -27,6 +27,9 @@ window.onload = function() {
     };
 
     game.systems = {
+      Gravity: {
+        system: new wrect.ECS.System.Gravity()
+      },
       Mover: {
         system: new wrect.ECS.System.Mover()
       },
@@ -90,9 +93,19 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
+    createBlock({
+      x: 50,
+      y: 500,
+      w: 700,
+      h: 5,
+      color: 0xFFFFFF
+    });
+
+
     block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
 
     //block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 0));
+    block.components.RigidBody.gravity = true;
     block.components.RigidBody.frozen = false;
   });
 };

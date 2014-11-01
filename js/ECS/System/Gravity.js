@@ -26,6 +26,7 @@
       var rigidBody = entity.components.RigidBody;
 
       rigidBody.physicsBody.a = rigidBody.physicsBody.a.add(new wrect.Physics.Vector(0, 9.81));
+      console.log(rigidBody.physicsBody.a);
     }
   }
 }());
