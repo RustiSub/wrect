@@ -53,7 +53,7 @@
       }
 
       rigidBody.physicsBody.f = new Vector(0, 0);
-      //rigidBody.physicsBody.a = new Vector(0, 0);
+      rigidBody.physicsBody.a = new Vector(0, 0);
     }
   }
 }());

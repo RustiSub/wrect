@@ -25,6 +25,7 @@
     if (entity.components.RigidBody && entity.components.RigidBody.gravity) {
       var rigidBody = entity.components.RigidBody;
 
+      rigidBody.physicsBody.a = rigidBody.physicsBody.a.add(new wrect.Physics.Vector(0, 9.81));
     }
   }
 }());
