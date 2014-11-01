@@ -17,6 +17,15 @@ window.onload = function() {
 
     game.timeStepSystem = new wrect.ECS.System.TimeStep();
 
+    game.singleSystems = {
+      Input: {
+        system: new wrect.ECS.System.Input()
+      },
+      BaseControl: {
+        system: new wrect.ECS.System.Control.BaseControl()
+      }
+    };
+
     game.systems = {
       Mover: {
         system: new wrect.ECS.System.Mover()
@@ -26,12 +35,6 @@ window.onload = function() {
       },
       Collision: {
         system: new wrect.ECS.System.Collision()
-      },
-      Input: {
-        system: new wrect.ECS.System.Input()
-      },
-      BaseControl: {
-        system: new wrect.ECS.System.Control.BaseControl()
       }
     };
 
@@ -89,20 +92,7 @@ window.onload = function() {
 
     block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
 
-    block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 1));
-
-    //block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 1));
-
-    //for (var l= 0; l < 1; l++) {
-    //  for (var t= 0; t < 2; t++) {
-    //    createBlock({
-    //      x: 10 + (t * (50 + 100)) ,
-    //      y: 10 + l * (10 + 1),
-    //      w: 40,
-    //      h: 100,
-    //      color: 0xFFFFFF
-    //    });
-    //  }
-    //}
+    //block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 0));
+    block.components.RigidBody.frozen = false;
   });
 };

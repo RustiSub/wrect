@@ -13,7 +13,7 @@
   wrect.ECS.Component.ControlScheme.Ship = function (options) {
     wrect.ECS.Component.ControlScheme.BaseScheme.call(this);
     this.movement = new Vector(0, 0);
-    this.maxSpeed = new Vector(5, 5);
+    this.maxSpeed = new Vector(100, 100);
 
     this.force = 5;
   };
