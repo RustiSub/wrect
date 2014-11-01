@@ -31,8 +31,10 @@
 
       // Symplectic Euler
       physicsBody.v.x += (1 / physicsBody.m * physicsBody.f.x) * dt;
+      physicsBody.v.y += (1 / physicsBody.m * physicsBody.f.y) * dt;
       var x = physicsBody.v.x * dt;
-      var newPosition = new Vector(x, 0);
+      var y = physicsBody.v.y * dt;
+      var newPosition = new Vector(x, y);
 
       rigidBody.dimensions.previousOrigin = rigidBody.dimensions.origin;
       rigidBody.dimensions.move(newPosition);
