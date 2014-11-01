@@ -24,9 +24,6 @@
   wrect.ECS.System.Gravity.prototype.perform = function(entity) {
     if (entity.components.RigidBody && entity.components.RigidBody.gravity) {
       var rigidBody = entity.components.RigidBody;
-      //@TODO: BDA: Gravity?
-      //rigidBody.physicsBody.a = rigidBody.physicsBody.a.multiply(new Vector(0, 0.9));
-      rigidBody.physicsBody.a = new Vector(0, 1);//rigidBody.physicsBody.a.add(0,1);
 
     }
   }
