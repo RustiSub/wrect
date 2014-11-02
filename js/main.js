@@ -30,14 +30,17 @@ window.onload = function() {
       Gravity: {
         system: new wrect.ECS.System.Gravity()
       },
-      Mover: {
-        system: new wrect.ECS.System.Mover()
-      },
       QuadTree: {
         system: new wrect.ECS.System.QuadTree()
       },
       Collision: {
         system: new wrect.ECS.System.Collision()
+      },
+      Group: {
+        system: new wrect.ECS.System.Group()
+      },
+      Mover: {
+        system: new wrect.ECS.System.Mover()
       }
     };
 
@@ -87,6 +90,14 @@ window.onload = function() {
 
     var block = createBlock({
       x: 50,
+      y: 50,
+      w: 20,
+      h: 50,
+      color: 0xFFFFFF
+    });
+
+    var childBlock = createBlock({
+      x: 100,
       y: 50,
       w: 20,
       h: 50,
