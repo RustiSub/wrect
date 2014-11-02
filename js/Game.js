@@ -178,6 +178,12 @@
           self.trackFps(timestamp);
         }
 
+        for (var ss in self.singleSystems) {
+          var system = self.singleSystems[ss].system;
+
+          system.run();
+        }
+
         self.timeStepSystem.run();
 
         //TODO: Move to proper System Manager that takes weight and other flags into consideration
@@ -192,7 +198,7 @@
         self.getEventManager().trigger('game.updateEnd');
 
         // Needs to be last
-        self._inputHandler.update();
+        //self._inputHandler.update();
         renderer.render(stage);
 //self.pause = true;
         // Sets the element used for mouse-event tracking to the root GUI element. This fixes mouse input over GUI elements.

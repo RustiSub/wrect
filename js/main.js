@@ -17,15 +17,24 @@ window.onload = function() {
 
     game.timeStepSystem = new wrect.ECS.System.TimeStep();
 
+    game.singleSystems = {
+      Input: {
+        system: new wrect.ECS.System.Input()
+      },
+      BaseControl: {
+        system: new wrect.ECS.System.Control.BaseControl()
+      }
+    };
+
     game.systems = {
       Gravity: {
         system: new wrect.ECS.System.Gravity()
       },
-      QuadTree: {
-        system: new wrect.ECS.System.QuadTree()
-      },
       Mover: {
         system: new wrect.ECS.System.Mover()
+      },
+      QuadTree: {
+        system: new wrect.ECS.System.QuadTree()
       },
       Collision: {
         system: new wrect.ECS.System.Collision()
@@ -46,6 +55,43 @@ window.onload = function() {
 
       return block;
     }
+    /*
+    createBlock({
+      x: 10,
+      y: 10,
+      w: 5,
+      h: 300,
+      color: 0xFFFFFF
+    });
+    createBlock({
+      x: 10,
+      y: 300,
+      w: 450,
+      h: 5,
+      color: 0xFFFFFF
+    });
+    createBlock({
+      x: 10,
+      y: 10,
+      w: 450,
+      h: 5,
+      color: 0xFFFFFF
+    });
+    createBlock({
+      x: 450,
+      y: 10,
+      w: 5,
+      h: 300,
+      color: 0xFFFFFF
+    });*/
+
+    var block = createBlock({
+      x: 50,
+      y: 50,
+      w: 20,
+      h: 50,
+      color: 0xFFFFFF
+    });
 
     createBlock({
       x: 50,
@@ -55,30 +101,11 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    //var block = createBlock({
-    //  x: 200,
-    //  y: 50,
-    //  w: 20,
-    //  h: 50,
-    //  color: 0xFFFFFF
-    //});
 
+    block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
 
-    //block.components.RigidBody.physicsBody.a = new wrect.Physics.Vector(0, 9.81);
-    //block.components.RigidBody.frozen = false;
-
-    for (var l= 0; l < 1; l++) {
-      for (var t= 0; t < 5; t++) {
-        var block = createBlock({
-          x: 200 + (t * (50 + 60)) ,
-          y: 10 + l * (10 + 1) + (50 * t),
-          w: 40,
-          h: 100,
-          color: 0xFFFFFF
-        });
-        block.components.RigidBody.gravity = true;
-        block.components.RigidBody.frozen = false;
-      }
-    }
+    //block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 0));
+    block.components.RigidBody.gravity = true;
+    block.components.RigidBody.frozen = false;
   });
 };
