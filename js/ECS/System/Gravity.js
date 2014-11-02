@@ -17,7 +17,7 @@
 
   wrect.ECS.System.Gravity.prototype.name = 'Gravity';
 
-  wrect.ECS.System.BaseSystem.prototype.checkDependencies = function(entity) {
+  wrect.ECS.System.Gravity.prototype.checkDependencies = function(entity) {
     return entity.components.RigidBody ? true : false;
   };
 

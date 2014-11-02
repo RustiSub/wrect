@@ -18,7 +18,7 @@
 
   wrect.ECS.System.Mover.prototype.name = 'Mover';
 
-  wrect.ECS.System.BaseSystem.prototype.checkDependencies = function(entity) {
+  wrect.ECS.System.Mover.prototype.checkDependencies = function(entity) {
     return entity.components.RigidBody ? true : false;
   };
 

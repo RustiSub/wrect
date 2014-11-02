@@ -22,7 +22,7 @@
 
   wrect.ECS.System.TimeStep.prototype.name = 'TimeStep';
 
-  wrect.ECS.System.BaseSystem.prototype.checkDependencies = function(entity) {
+  wrect.ECS.System.TimeStep.prototype.checkDependencies = function(entity) {
     return false;
   };
 
