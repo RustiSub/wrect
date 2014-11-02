@@ -190,7 +190,6 @@
         for (var steps = 0; steps < self.timeStepSystem.timeSteps; steps++) {
           for (var s in self.systems) {
             var system = self.systems[s].system;
-
             system.run();
           }
         }

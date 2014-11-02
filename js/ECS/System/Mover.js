@@ -41,6 +41,8 @@
       rigidBody.dimensions.previousOrigin = rigidBody.dimensions.origin;
       rigidBody.dimensions.move(newPosition);
 
+      console.log(entity.id, physicsBody.v);
+
       if (entity.components.Visual) {
         var visual = entity.components.Visual;
 

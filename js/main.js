@@ -104,23 +104,25 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    //createBlock({
-    //  x: 50,
-    //  y: 500,
-    //  w: 700,
-    //  h: 5,
-    //  color: 0xFFFFFF
-    //});
+    createBlock({
+      x: 50,
+      y: 500,
+      w: 30,
+      h: 5,
+      color: 0xFFFFFF
+    });
 
     block.components.RigidBody.frozen = false;
     childBlock.components.RigidBody.frozen = false;
 
     block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
     block.addComponent(new wrect.ECS.Component.Link({linkedEntity: childBlock}));
+
+    //childBlock.components.RigidBody.physicsBody = block.components.RigidBody.physicsBody;
     //childBlock.addComponent(new wrect.ECS.Component.Link({entity: block}));
 
     //block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(10, 0));
-    //block.components.RigidBody.gravity = true;
+    block.components.RigidBody.gravity = true;
     //console.log(block);
     //console.log(block);
   });
