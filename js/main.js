@@ -15,6 +15,10 @@ window.onload = function() {
       defaultLevel: false
     });
 
+    wrect.getGame = function() {
+      return game;
+    };
+
     game.timeStepSystem = new wrect.ECS.System.TimeStep();
 
     game.systems = {
@@ -80,5 +84,12 @@ window.onload = function() {
         block.components.RigidBody.frozen = false;
       }
     }
+    //block.components.RigidBody.physicsBody.a = block.components.RigidBody.physicsBody.a.add(new wrect.Physics.Vector(10, 0));
+    block.components.RigidBody.gravity = true;
+    block.components.RigidBody.frozen = false;
+
+    // TileMap stuff
+    var parser = new wrect.TileMap.Parser();
+    parser.loadTilemap('resources/levels/tilemap/tiled.json');
   });
 };
