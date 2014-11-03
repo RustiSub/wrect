@@ -178,20 +178,18 @@
           self.trackFps(timestamp);
         }
 
-        for (var ss in self.singleSystems) {
-          var system = self.singleSystems[ss].system;
+        for (var preSystemIndex in self.systems.pre) {
+          var preSystem = self.systems.pre[preSystemIndex].system;
 
-          system.run();
+          preSystem.run();
         }
 
-        self.timeStepSystem.run();
+        self.physicsEngine.run();
 
-        //TODO: Move to proper System Manager that takes weight and other flags into consideration
-        for (var steps = 0; steps < self.timeStepSystem.timeSteps; steps++) {
-          for (var s in self.systems) {
-            var system = self.systems[s].system;
-            system.run();
-          }
+        for (var postSystemIndex in self.systems.post) {
+          var postSystem = self.systems.post[postSystemIndex].system;
+
+          postSystem.run();
         }
 
         self.getEventManager().trigger('game.updateEnd');

@@ -15,34 +15,26 @@ window.onload = function() {
       defaultLevel: false
     });
 
-    game.timeStepSystem = new wrect.ECS.System.TimeStep();
-
-    game.singleSystems = {
-      Input: {
-        system: new wrect.ECS.System.Input()
-      },
-      BaseControl: {
-        system: new wrect.ECS.System.Control.BaseControl()
-      }
-    };
-
     game.systems = {
-      Gravity: {
-        system: new wrect.ECS.System.Gravity()
+      pre: {
+        Input: {
+          system: new wrect.ECS.System.Input()
+        },
+        BaseControl: {
+          system: new wrect.ECS.System.Control.BaseControl()
+        }
       },
-      QuadTree: {
-        system: new wrect.ECS.System.QuadTree()
-      },
-      Collision: {
-        system: new wrect.ECS.System.Collision()
-      },
-      Linker: {
-        system: new wrect.ECS.System.Linker()
-      },
-      Mover: {
-        system: new wrect.ECS.System.Mover()
+      post: {
+        Linker: {
+          system: new wrect.ECS.System.Linker()
+        },
+        Mover: {
+          system: new wrect.ECS.System.Mover()
+        }
       }
     };
+
+    game.physicsEngine = new wrect.ECS.Assemblage.PhysicsEngine();
 
     function createBlock(options) {
       options = options || {
@@ -123,7 +115,5 @@ window.onload = function() {
 
     //block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(10, 0));
     block.components.RigidBody.gravity = true;
-    //console.log(block);
-    //console.log(block);
   });
 };
