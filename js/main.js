@@ -25,9 +25,6 @@ window.onload = function() {
         }
       },
       post: {
-        Linker: {
-          system: new wrect.ECS.System.Linker()
-        },
         Mover: {
           system: new wrect.ECS.System.Mover()
         }
@@ -50,35 +47,43 @@ window.onload = function() {
 
       return block;
     }
-    /*
-    createBlock({
-      x: 10,
-      y: 10,
-      w: 5,
-      h: 300,
-      color: 0xFFFFFF
-    });
-    createBlock({
-      x: 10,
-      y: 300,
-      w: 450,
-      h: 5,
-      color: 0xFFFFFF
-    });
-    createBlock({
-      x: 10,
-      y: 10,
-      w: 450,
-      h: 5,
-      color: 0xFFFFFF
-    });
-    createBlock({
-      x: 450,
-      y: 10,
-      w: 5,
-      h: 300,
-      color: 0xFFFFFF
-    });*/
+
+     createBlock({
+     x: 10,
+     y: 10,
+     w: 5,
+     h: 300,
+     color: 0xFFFFFF
+     });
+     createBlock({
+     x: 10,
+     y: 300,
+     w: 450,
+     h: 5,
+     color: 0xFFFFFF
+     });
+     createBlock({
+     x: 10,
+     y: 10,
+     w: 450,
+     h: 5,
+     color: 0xFFFFFF
+     });
+     createBlock({
+     x: 450,
+     y: 10,
+     w: 5,
+     h: 300,
+     color: 0xFFFFFF
+     });
+
+    //createBlock({
+    //  x: 50,
+    //  y: 300,
+    //  w: 30,
+    //  h: 5,
+    //  color: 0xFF0000
+    //});
 
     var block = createBlock({
       x: 50,
@@ -96,24 +101,16 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    createBlock({
-      x: 50,
-      y: 500,
-      w: 30,
-      h: 5,
-      color: 0xFFFFFF
-    });
-
     block.components.RigidBody.frozen = false;
     childBlock.components.RigidBody.frozen = false;
 
-    block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
-    block.addComponent(new wrect.ECS.Component.Link({linkedEntity: childBlock}));
+    //block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
+    //block.addComponent(new wrect.ECS.Component.Link({linkedEntity: childBlock}));
 
     //childBlock.components.RigidBody.physicsBody = block.components.RigidBody.physicsBody;
     //childBlock.addComponent(new wrect.ECS.Component.Link({entity: block}));
 
-    //block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(10, 0));
-    block.components.RigidBody.gravity = true;
+    block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 100));
+    block.components.RigidBody.gravity = false;
   });
 };

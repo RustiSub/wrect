@@ -25,6 +25,12 @@
   wrect.ECS.System.Linker.prototype.perform = function(entity) {
     var linkedEntity = entity.components.Link.linkedEntity;
 
+    //if (linkedEntity.components.RigidBody.dimensions.origin.y != entity.components.RigidBody.dimensions.origin.y) {
+    //  console.log(entity.components.RigidBody.dimensions.origin.y);
+    //  console.log(linkedEntity.components.RigidBody.dimensions.origin.y);
+    //  console.log('test');
+    //}
+
     linkedEntity.components.RigidBody.move = entity.components.RigidBody.move;
   };
 }());

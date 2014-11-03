@@ -4,6 +4,8 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
+  var Vector = wrect.Physics.Vector;
+
   wrect.ECS.System.Collision = function (options) {
     wrect.ECS.System.BaseSystem.call(this);
 
@@ -123,14 +125,16 @@
       var sign = vn ? vn < 0 ? -1 : 1:0;
       var pushOutVector = n.unit().multiply(axesOverlap.overlap * -sign);
 
-      shapeA.dimensions.move(pushOutVector);
+      shapeA.pushOutMove = shapeA.pushOutMove.add(pushOutVector);
+      //console.log(pushOutVector);
 
       if (!shapeB.frozen) {
 //      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
 //      v2 = v2.multiply(energyTransfer);
       }
-
-      shapeA.physicsBody.v = v2;
+      var dt = 1 / 6 ;//game.getDelta() / 100;
+      //shapeA.physicsBody.v = v2;
+      shapeA.physicsBody.f = shapeA.physicsBody.f.add(v2).multiply(2);
     }
 
     var axesOverlap = checkOverlap(getNormalAxes(b), a, b);

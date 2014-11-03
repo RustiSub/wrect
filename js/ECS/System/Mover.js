@@ -24,19 +24,15 @@
 
   wrect.ECS.System.Mover.prototype.perform = function(entity) {
 
-    if (entity.components.RigidBody && !entity.components.RigidBody.frozen && (entity.components.RigidBody.move.x !== 0 || entity.components.RigidBody.move.y !== 0)) {
+    if (entity.components.RigidBody && !entity.components.RigidBody.frozen) {
       var rigidBody = entity.components.RigidBody;
-      var newPosition = entity.components.RigidBody.move;
-
-      rigidBody.dimensions.previousOrigin = rigidBody.dimensions.origin;
-      rigidBody.dimensions.move(newPosition);
 
       if (entity.components.Visual) {
         var visual = entity.components.Visual;
 
-        var graphicPositionVector = rigidBody.dimensions.origin;//new Vector(visual.graphics.position.x, visual.graphics.position.y).add(newPosition);
-        visual.graphics.position.x = graphicPositionVector.x;
-        visual.graphics.position.y = graphicPositionVector.y;
+        visual.graphics.position.x = rigidBody.dimensions.origin.x;
+        visual.graphics.position.y = rigidBody.dimensions.origin.y;
+        //console.log('move => ', rigidBody.dimensions.origin.y);
       }
 
       entity.components.RigidBody.move = new Vector(0, 0);
