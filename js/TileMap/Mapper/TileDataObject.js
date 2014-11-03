@@ -6,5 +6,7 @@
 
   wrect.TileMap.Mapper.TileDataObject = function() {
     this.id = 0;
+    this.flipped = {x: false, y: false};
+    this.rotation = 0;
   };
 }());

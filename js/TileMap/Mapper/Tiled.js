@@ -10,6 +10,16 @@
    */
   wrect.TileMap.Mapper.Tiled = function() {};
 
+  wrect.TileMap.Mapper.Tiled.prototype.horizontalFlipFlag = 0x80000000;
+
+  wrect.TileMap.Mapper.Tiled.prototype.verticalFlipFlag = 0x40000000;
+
+  wrect.TileMap.Mapper.Tiled.prototype.diagonalFlipFlag = 0x20000000;
+
+  wrect.TileMap.Mapper.Tiled.prototype.horizontalFlipDrawFlag = 1;
+  wrect.TileMap.Mapper.Tiled.prototype.verticalFlipDrawFlag = 2;
+  wrect.TileMap.Mapper.Tiled.prototype.diagonalFlipDrawFlag = 4;
+
   /**
    * @returns {wrect.TileMap.Mapper.TileMapDataObject}
    */
@@ -67,6 +77,54 @@
    */
   wrect.TileMap.Mapper.Tiled.prototype.mapTile = function(tileData) {
     var tile = new wrect.TileMap.Mapper.TileDataObject();
+
+
+    var realData = [];
+
+    for (var i = 0; i < tileData.length; i++) {
+      var flipAndRotateFlags = 0;
+      var t = tileData[i];
+      if ( (t & this.horizontalFlipFlag) !== 0 ) {
+        flipAndRotateFlags |= this.horizontalFlipDrawFlag;
+      }
+      if ( (t & this.verticalFlipFlag) !== 0 ) {
+        flipAndRotateFlags |= this.verticalFlipDrawFlag;
+      }
+      if ( (t & this.diagonalFlipFlag) !== 0 ) {
+        flipAndRotateFlags |= this.diagonalFlipDrawFlag;
+      }
+
+      t &= ~(this.horizontalFlipFlag |
+      this.verticalFlipFlag |
+      this.diagonalFlipFlag);
+      realData.push(t);
+      console.log(i, t, flipAndRotateFlags);
+
+      if ( (flipAndRotateFlags & this.horizontalFlipDrawFlag) !== 0 ) {
+        // Flip horizontal
+      }
+      if ( (flipAndRotateFlags & this.verticalFlipDrawFlag) !== 0 ) {
+        // Flip vertically
+      }
+      if ( (flipAndRotateFlags & this.diagonalFlipDrawFlag) !== 0 ) {
+        if ( (flipAndRotateFlags & this.horizontalFlipDrawFlag) !== 0 &&
+          (flipAndRotateFlags & this.verticalFlipDrawFlag) !== 0 ) {
+          // Rotate 90°
+          // Flip vertically
+        } else if ( (flipAndRotateFlags & this.horizontalFlipDrawFlag) !== 0 ) {
+          // Rotate -90°
+          // Flip vertically
+        } else if ( (flipAndRotateFlags & this.verticalFlipDrawFlag) !== 0 ) {
+          // Rotate 90°
+          // Flip horizontally
+        } else {
+          // Rotate -90°
+          // Flip horizontally
+        }
+      }
+    }
+
+
     tile.id = tileData;
     return tile;
   };
