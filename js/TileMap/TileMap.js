@@ -16,14 +16,6 @@
   };
   
   wrect.TileMap.TileMap.prototype.addLayer = function(layer) {
-    this.layers.push(this.parseLayer(layer));
-    if (layer.height > this.height) {
-      this.height = layer.height;
-      this.pixelHeight = layer.pixelHeight;
-    }
-    if (layer.width > this.width) {
-      this.width = layer.width;
-      this.pixelWidth = layer.pixelWidth;
-    }
+    this.layers.push(layer);
   }
 }());

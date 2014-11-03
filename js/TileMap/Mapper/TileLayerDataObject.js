@@ -12,5 +12,7 @@
     this.opacity = 1;
     this.visible = true;
     this.position = new wrect.Physics.Vector(0, 0);
+    this.pixelHeight = 0;
+    this.pixelWidth = 0;
   };
 }());

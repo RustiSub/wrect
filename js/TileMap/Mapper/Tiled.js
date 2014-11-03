@@ -29,8 +29,8 @@
     tileMapDataObject.width = data.width;
     tileMapDataObject.tileHeight = data.tileheight;
     tileMapDataObject.tileWidth = data.tilewidth;
-    tileMapDataObject.pixelHeight = data.height * data.tileHeight;
-    tileMapDataObject.pixelWidth = data.width * data.tileWidth;
+    tileMapDataObject.pixelHeight = data.height * data.tileheight;
+    tileMapDataObject.pixelWidth = data.width * data.tilewidth;
 
     return tileMapDataObject;
   };

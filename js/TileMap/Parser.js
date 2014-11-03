@@ -22,12 +22,19 @@
     var tileMapDataObject = mapper.mapMap(json);
 
     for (i = 0; i < tileMapDataObject.layers.length; i++) {
-      tileMap.layers.push(this.parseLayer(tileMapDataObject.layers[i]));
+      tileMap.addLayer(this.parseLayer(tileMapDataObject.layers[i]));
     }
 
     for (i = 0; i < tileMapDataObject.tileSets.length; i++) {
       tileMap.tileSets.push(this.parseTileSet(tileMapDataObject.tileSets[i]));
     }
+    
+    tileMap.pixelHeight = tileMapDataObject.pixelHeight;
+    tileMap.pixelWidth = tileMapDataObject.pixelWidth;
+    tileMap.width = tileMapDataObject.width;
+    tileMap.height = tileMapDataObject.height;
+    tileMap.tileWidth = tileMapDataObject.tileWidth;
+    tileMap.tileHeight = tileMapDataObject.tileHeight;
 
     console.log(tileMap);
   };
@@ -64,6 +71,6 @@
 
   wrect.TileMap.Parser.prototype.parseTile = function(tileData) {
     var tile = new wrect.TileMap.Tile();
-
+    return tile;
   };
 }());
