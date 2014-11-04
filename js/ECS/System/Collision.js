@@ -4,12 +4,8 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
-  var Vector = wrect.Physics.Vector;
-
   wrect.ECS.System.Collision = function (options) {
     wrect.ECS.System.BaseSystem.call(this);
-
-    options = options || {};
   };
 
   wrect.ECS.System.Collision.prototype = Object.create(wrect.ECS.System.BaseSystem.prototype);
@@ -17,7 +13,7 @@
 
   wrect.ECS.System.Collision.prototype.name = 'Collision';
 
-  wrect.ECS.System.Collision.prototype.checkDependencies = function (entity) {
+  wrect.ECS.System.Collision.prototype.checkDependencies = function () {
     return false;
   };
 
@@ -108,10 +104,6 @@
 
     function handleCollision(shapeA, shapeB, axesOverlap) {
 
-      function capSmallSpeed(speed) {
-        return speed > -1 && speed < 1 ? 0 : speed;
-      }
-
       var v = shapeA.components.RigidBody.physicsBody.v;//.unit();
       var n = axesOverlap.axis;//.unit();
       var vn = v.dot(n);
@@ -119,14 +111,16 @@
       var w = v.subtract(u);
       var v2 = w.subtract(u);
 
-      //v2.x = capSmallSpeed(v2.x);
-      //v2.y = capSmallSpeed(v2.y);
-
       var sign = vn ? vn < 0 ? -1 : 1:0;
       var pushOutVector = n.unit().multiply(axesOverlap.overlap * -sign);
 
       shapeA.components.RigidBody.dimensions.move(pushOutVector);
-      game.getEventManager().trigger('physics.move', {entity: shapeA, move: pushOutVector});
+
+      if (shapeB.components.BaseMaterial) {
+        var data = {entity: shapeB, force: v2};
+        game.getEventManager().trigger('physics.collide', data);
+        v2 = data.force;
+      }
 
       if (!shapeB.components.RigidBody.frozen) {
 //      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));

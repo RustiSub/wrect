@@ -10,12 +10,12 @@
    */
   var Vector = wrect.Physics.Vector;
 
-  wrect.ECS.Component.ControlScheme.Ship = function (options) {
+  wrect.ECS.Component.ControlScheme.Ship = function () {
     wrect.ECS.Component.ControlScheme.BaseScheme.call(this);
     this.movement = new Vector(0, 0);
-    this.maxSpeed = new Vector(100, 100);
+    this.maxSpeed = new Vector(10, 10);
 
-    this.force = 5;
+    this.force = 2;
   };
 
   wrect.ECS.Component.ControlScheme.Ship.prototype = Object.create(wrect.ECS.Component.ControlScheme.BaseScheme.prototype);

@@ -36,6 +36,11 @@ window.onload = function() {
 
     game.physicsEngine = new wrect.ECS.Assemblage.PhysicsEngine();
 
+    function createJumpBlock(options) {
+      var materialBlock = createBlock(options);
+      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: 0.5}));
+    }
+
     function createBlock(options) {
       options = options || {
         x: 300,
@@ -50,35 +55,6 @@ window.onload = function() {
 
       return block;
     }
-
-     createBlock({
-     x: 10,
-     y: 10,
-     w: 5,
-     h: 300,
-     color: 0xFFFFFF
-     });
-     createBlock({
-     x: 10,
-     y: 300,
-     w: 450,
-     h: 5,
-     color: 0xFFFFFF
-     });
-     createBlock({
-     x: 10,
-     y: 10,
-     w: 450,
-     h: 5,
-     color: 0xFFFFFF
-     });
-     createBlock({
-     x: 450,
-     y: 10,
-     w: 5,
-     h: 300,
-     color: 0xFFFFFF
-     });
 
     //createBlock({
     //  x: 50,
@@ -97,6 +73,22 @@ window.onload = function() {
     //  color: 0xFF0000
     //});
 
+    createJumpBlock({
+      x: 10,
+      y: 300,
+      w: 150,
+      h: 5,
+      color: 0xFFFFFF
+    });
+
+    createJumpBlock({
+      x: 500,
+      y: 300,
+      w: 150,
+      h: 5,
+      color: 0xFFFFFF
+    });
+
     var block = createBlock({
       x: 50,
       y: 60,
@@ -107,22 +99,9 @@ window.onload = function() {
 
     block.components.RigidBody.frozen = false;
 
-    var childBlock = createBlock({
-      x: 100,
-      y: 60,
-      w: 20,
-      h: 50,
-      color: 0xFFFFFF
-    });
-    childBlock.components.RigidBody.frozen = false;
-    childBlock.addComponent(new wrect.ECS.Component.Link({linkedEntity: block}));
-
     block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
-    block.addComponent(new wrect.ECS.Component.Link({linkedEntity: childBlock}));
-    childBlock.components.RigidBody.physicsBody = block.components.RigidBody.physicsBody;
-    childBlock.components.RigidBody.physicsBody.m *= 2;
 
     block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 10));
-    block.components.RigidBody.gravity = false;
+    block.components.RigidBody.gravity = true;
   });
 };
