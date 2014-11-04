@@ -126,21 +126,18 @@
       var pushOutVector = n.unit().multiply(axesOverlap.overlap * -sign);
 
       shapeA.pushOutMove = shapeA.pushOutMove.add(pushOutVector);
-      //console.log(pushOutVector);
 
       if (!shapeB.frozen) {
 //      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
 //      v2 = v2.multiply(energyTransfer);
       }
-      var dt = 1 / 6 ;//game.getDelta() / 100;
-      //shapeA.physicsBody.v = v2;
-      shapeA.physicsBody.f = shapeA.physicsBody.f.add(v2).multiply(2);
+      shapeA.physicsBody.f = shapeA.physicsBody.f.subtract(shapeA.physicsBody.v);
+      shapeA.physicsBody.f = shapeA.physicsBody.f.add(v2);
     }
 
     var axesOverlap = checkOverlap(getNormalAxes(b), a, b);
 
     if (axesOverlap.hasOverlap) {
-      //console.log();
       handleCollision(shapeA, shapeB, axesOverlap);
     }
   };

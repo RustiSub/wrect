@@ -93,24 +93,24 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    var childBlock = createBlock({
-      x: 100,
-      y: 50,
-      w: 20,
-      h: 50,
-      color: 0xFFFFFF
-    });
+    //var childBlock = createBlock({
+    //  x: 100,
+    //  y: 50,
+    //  w: 20,
+    //  h: 50,
+    //  color: 0xFFFFFF
+    //});
 
     block.components.RigidBody.frozen = false;
-    childBlock.components.RigidBody.frozen = false;
+    //childBlock.components.RigidBody.frozen = false;
 
-    //block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
+    block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
     //block.addComponent(new wrect.ECS.Component.Link({linkedEntity: childBlock}));
 
     //childBlock.components.RigidBody.physicsBody = block.components.RigidBody.physicsBody;
     //childBlock.addComponent(new wrect.ECS.Component.Link({entity: block}));
 
-    block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 100));
+    block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 40));
     block.components.RigidBody.gravity = false;
   });
 };
