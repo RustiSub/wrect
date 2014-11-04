@@ -1,18 +1,29 @@
 (function() {
   'use strict';
   var wrect = window.wrect;
+  
   wrect.TileMap = wrect.TileMap || {};
-
   wrect.TileMap.Parser = function() {};
 
+  /**
+   * 
+   * @param path
+   * @param mapper
+   */
   wrect.TileMap.Parser.prototype.loadTilemap = function(path, mapper) {
     var loader = new wrect.Loader.JsonLoader(path);
     var self = this;
     loader.load(function(xhr) {
-      self.parseTilemap(xhr.responseText, mapper);
+      var tilemap = self.parseTilemap(xhr.responseText, mapper);
+      tilemap.buildSprites();
     });
   };
 
+  /**
+   * 
+   * @param json
+   * @param mapper
+   */
   wrect.TileMap.Parser.prototype.parseTilemap = function(json, mapper) {
     var i;
     var tileMap = new wrect.TileMap.TileMap();
@@ -35,16 +46,24 @@
     tileMap.height = tileMapDataObject.height;
     tileMap.tileWidth = tileMapDataObject.tileWidth;
     tileMap.tileHeight = tileMapDataObject.tileHeight;
-
+    
     console.log(tileMap);
+    return tileMap;
   };
 
+  /**
+   * 
+   * @param layerData
+   * @returns {wrect.TileMap.TileLayer}
+   */
   wrect.TileMap.Parser.prototype.parseLayer = function(layerData) {
     var layer = new wrect.TileMap.TileLayer();
     var i;
 
     layer.height = layerData.height;
     layer.width = layerData.width;
+    layer.pixelHeight = layerData.pixelHeight;
+    layer.pixelWidth = layerData.pixelWidth;
     layer.name = layerData.name;
     layer.opacity = layerData.opacity;
     layer.visible = true;
@@ -56,8 +75,14 @@
     return layer;
   };
 
+  /**
+   * 
+   * @param tileSetData
+   * @returns {wrect.TileMap.TileSet}
+   */
   wrect.TileMap.Parser.prototype.parseTileSet = function(tileSetData) {
     var tileSet = new wrect.TileMap.TileSet();
+    
     tileSet.name = tileSetData.name;
     tileSet.imageHeight = tileSetData.imageHeight;
     tileSet.imageWidth = tileSetData.imageWidth;
@@ -65,12 +90,26 @@
     tileSet.tileWidth = tileSetData.tileWidth;
     tileSet.imagePixelWidth = tileSetData.imagePixelWidth;
     tileSet.imagePixelHeight = tileSetData.imagePixelHeight;
+    tileSet.image = new Image();
+    tileSet.image.src = 'resources/levels/tilemap/' + tileSetData.name + '.png';
 
     return tileSet;
   };
 
+  /**
+   * 
+   * @param tileData
+   * @returns {wrect.TileMap.Tile}
+   */
   wrect.TileMap.Parser.prototype.parseTile = function(tileData) {
     var tile = new wrect.TileMap.Tile();
+    
+    tile.id = tileData.id;
+    tile.rotation = tileData.rotation;
+    tile.flipped = tileData.flipped;
+    tile.height = tileData.height;
+    tile.width = tileData.width;
+    
     return tile;
   };
 }());

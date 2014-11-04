@@ -65,7 +65,7 @@
     layer.position.y = layerData.y;
 
     for (var i = 0; i < layerData.data.length; i++) {
-      layer.tiles.push(this.mapTile(layerData.data[i]));
+      layer.tiles.push(this.mapTile(layerData.data[i], tileHeight, tileWidth));
     }
 
     return layer;
@@ -75,57 +75,52 @@
    * @param tileData
    * @returns {wrect.TileMap.Mapper.TileDataObject}
    */
-  wrect.TileMap.Mapper.Tiled.prototype.mapTile = function(tileData) {
+  wrect.TileMap.Mapper.Tiled.prototype.mapTile = function(tileData, tileHeight, tileWidth) {
     var tile = new wrect.TileMap.Mapper.TileDataObject();
+    var flipAndRotateFlags = 0;
+    
+    // Flipping/rotation of sprites is done with flipping bits.
+    if ((tileData & this.horizontalFlipFlag) !== 0) {
+      flipAndRotateFlags |= this.horizontalFlipDrawFlag;
+    }
+    if ((tileData & this.verticalFlipFlag) !== 0) {
+      flipAndRotateFlags |= this.verticalFlipDrawFlag;
+    }
+    if ((tileData & this.diagonalFlipFlag) !== 0) {
+      flipAndRotateFlags |= this.diagonalFlipDrawFlag;
+    }
 
+    tileData &= ~(this.horizontalFlipFlag |
+    this.verticalFlipFlag |
+    this.diagonalFlipFlag);
+    tile.id = tileData;
 
-    var realData = [];
-
-    for (var i = 0; i < tileData.length; i++) {
-      var flipAndRotateFlags = 0;
-      var t = tileData[i];
-      if ( (t & this.horizontalFlipFlag) !== 0 ) {
-        flipAndRotateFlags |= this.horizontalFlipDrawFlag;
-      }
-      if ( (t & this.verticalFlipFlag) !== 0 ) {
-        flipAndRotateFlags |= this.verticalFlipDrawFlag;
-      }
-      if ( (t & this.diagonalFlipFlag) !== 0 ) {
-        flipAndRotateFlags |= this.diagonalFlipDrawFlag;
-      }
-
-      t &= ~(this.horizontalFlipFlag |
-      this.verticalFlipFlag |
-      this.diagonalFlipFlag);
-      realData.push(t);
-      console.log(i, t, flipAndRotateFlags);
-
-      if ( (flipAndRotateFlags & this.horizontalFlipDrawFlag) !== 0 ) {
-        // Flip horizontal
-      }
-      if ( (flipAndRotateFlags & this.verticalFlipDrawFlag) !== 0 ) {
-        // Flip vertically
-      }
-      if ( (flipAndRotateFlags & this.diagonalFlipDrawFlag) !== 0 ) {
-        if ( (flipAndRotateFlags & this.horizontalFlipDrawFlag) !== 0 &&
-          (flipAndRotateFlags & this.verticalFlipDrawFlag) !== 0 ) {
-          // Rotate 90°
-          // Flip vertically
-        } else if ( (flipAndRotateFlags & this.horizontalFlipDrawFlag) !== 0 ) {
-          // Rotate -90°
-          // Flip vertically
-        } else if ( (flipAndRotateFlags & this.verticalFlipDrawFlag) !== 0 ) {
-          // Rotate 90°
-          // Flip horizontally
-        } else {
-          // Rotate -90°
-          // Flip horizontally
-        }
+    if ( (flipAndRotateFlags & this.horizontalFlipDrawFlag) !== 0 ) {
+      tile.flipped.horizontal = true;
+    }
+    if ( (flipAndRotateFlags & this.verticalFlipDrawFlag) !== 0 ) {
+      tile.flipped.vertical = true;
+    }
+    if ((flipAndRotateFlags & this.diagonalFlipDrawFlag) !== 0 ) {
+      if ((flipAndRotateFlags & this.horizontalFlipDrawFlag) !== 0 &&
+        (flipAndRotateFlags & this.verticalFlipDrawFlag) !== 0 ) {
+        tile.rotation = Math.PI / 2;
+        tile.flipped.vertical = true;
+      } else if ( (flipAndRotateFlags & this.horizontalFlipDrawFlag) !== 0 ) {
+        tile.rotation = -Math.PI / 2;
+        tile.flipped.vertical = true;
+      } else if ( (flipAndRotateFlags & this.verticalFlipDrawFlag) !== 0 ) {
+        tile.rotation = Math.PI / 2;
+        tile.flipped.horizontal = true;
+      } else {
+        tile.rotation = -Math.PI / 2;
+        tile.horizontal = true;
       }
     }
 
-
-    tile.id = tileData;
+    tile.height = tileHeight;
+    tile.width = tileWidth;
+    
     return tile;
   };
 

@@ -8,6 +8,10 @@
     this.id = 0;
     this.height = 0;
     this.width = 0;
-    this.texture = null;
+    this.rotation = 0;
+    this.flipped = {
+      horizontal: false,
+      vertical: false
+    }
   };
 }());
