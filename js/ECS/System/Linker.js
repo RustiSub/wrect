@@ -11,6 +11,7 @@
 
     this.options = options || {};
 
+    game.getEventManager().addListener('physics.move', this.link, this);
   };
 
   wrect.ECS.System.Linker.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -22,8 +23,18 @@
     return entity.components.Link ? true : false;
   };
 
+  wrect.ECS.System.Linker.prototype.link = function(data) {
+    var entity = data.entity;
+    var move = data.move;
+
+    if (this.checkDependencies(entity)) {
+      var linkedEntity = entity.components.Link.linkedEntity;
+
+      linkedEntity.components.RigidBody.dimensions.move(move);
+    }
+  };
+
   wrect.ECS.System.Linker.prototype.perform = function(entity) {
-    var linkedEntity = entity.components.Link.linkedEntity;
 
     //if (linkedEntity.components.RigidBody.dimensions.origin.y != entity.components.RigidBody.dimensions.origin.y) {
     //  console.log(entity.components.RigidBody.dimensions.origin.y);
@@ -31,6 +42,6 @@
     //  console.log('test');
     //}
 
-    linkedEntity.components.RigidBody.move = entity.components.RigidBody.move;
+
   };
 }());

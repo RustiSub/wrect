@@ -32,7 +32,6 @@
 
         visual.graphics.position.x = rigidBody.dimensions.origin.x;
         visual.graphics.position.y = rigidBody.dimensions.origin.y;
-        //console.log('move => ', rigidBody.dimensions.origin.y);
       }
 
       entity.components.RigidBody.move = new Vector(0, 0);

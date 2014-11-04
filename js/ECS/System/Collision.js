@@ -125,6 +125,7 @@
       var sign = vn ? vn < 0 ? -1 : 1:0;
       var pushOutVector = n.unit().multiply(axesOverlap.overlap * -sign);
 
+      shapeA.pushOutMove = new Vector(0, 0);
       shapeA.pushOutMove = shapeA.pushOutMove.add(pushOutVector);
 
       if (!shapeB.frozen) {
