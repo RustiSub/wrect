@@ -28,9 +28,13 @@
     var move = data.move;
 
     if (this.checkDependencies(entity)) {
+      //console.log(entity.id);
       var linkedEntity = entity.components.Link.linkedEntity;
 
-      linkedEntity.components.RigidBody.dimensions.move(move);
+      //linkedEntity.components.RigidBody.dimensions.move(move);
+      //linkedEntity.components.RigidBody.physicsBody.v = entity.components.RigidBody.physicsBody.v;
+      //linkedEntity.components.RigidBody.physicsBody.f = entity.components.RigidBody.physicsBody.f;
+      //linkedEntity.components.RigidBody.physicsBody.a = entity.components.RigidBody.physicsBody.a;
     }
   };
 

@@ -51,50 +51,51 @@ window.onload = function() {
       return block;
     }
 
-     //createBlock({
-     //x: 10,
-     //y: 10,
-     //w: 5,
-     //h: 300,
-     //color: 0xFFFFFF
-     //});
-     //createBlock({
-     //x: 10,
-     //y: 300,
-     //w: 450,
-     //h: 5,
-     //color: 0xFFFFFF
-     //});
-     //createBlock({
-     //x: 10,
-     //y: 10,
-     //w: 450,
-     //h: 5,
-     //color: 0xFFFFFF
-     //});
-     //createBlock({
-     //x: 450,
-     //y: 10,
-     //w: 5,
-     //h: 300,
-     //color: 0xFFFFFF
-     //});
+     createBlock({
+     x: 10,
+     y: 10,
+     w: 5,
+     h: 300,
+     color: 0xFFFFFF
+     });
+     createBlock({
+     x: 10,
+     y: 300,
+     w: 450,
+     h: 5,
+     color: 0xFFFFFF
+     });
+     createBlock({
+     x: 10,
+     y: 10,
+     w: 450,
+     h: 5,
+     color: 0xFFFFFF
+     });
+     createBlock({
+     x: 450,
+     y: 10,
+     w: 5,
+     h: 300,
+     color: 0xFFFFFF
+     });
 
-    createBlock({
-      x: 50,
-      y: 300,
-      w: 30,
-      h: 5,
-      color: 0xFF0000
-    });
-
-    createBlock({
-      x: 50,
-      y: 0,
-      w: 30,
-      h: 5,
-      color: 0xFF0000
-    });
+    //createBlock({
+    //  x: 50,
+    //  y: 0,
+    //  w: 30,
+    //  h: 5,
+    //  color: 0xFF0000
+    //});
+    //
+    //createBlock({
+    //  x: 100,
+    //  //x: 50,
+    //  y: 300,
+    //  w: 30,
+    //  h: 5,
+    //  color: 0xFF0000
+    //});
 
     var block = createBlock({
       x: 50,
@@ -114,11 +115,14 @@ window.onload = function() {
       color: 0xFFFFFF
     });
     childBlock.components.RigidBody.frozen = false;
+    childBlock.addComponent(new wrect.ECS.Component.Link({linkedEntity: block}));
 
     block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
     block.addComponent(new wrect.ECS.Component.Link({linkedEntity: childBlock}));
+    childBlock.components.RigidBody.physicsBody = block.components.RigidBody.physicsBody;
+    childBlock.components.RigidBody.physicsBody.m *= 2;
 
-    block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 100));
+    block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 10));
     block.components.RigidBody.gravity = false;
   });
 };

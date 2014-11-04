@@ -22,8 +22,8 @@
   };
 
   wrect.ECS.System.Collision.prototype.satTest = function(shapeA, shapeB) {
-    var a = shapeA.dimensions;
-    var b = shapeB.dimensions;
+    var a = shapeA.components.RigidBody.dimensions;
+    var b = shapeB.components.RigidBody.dimensions;
 
     function getNormalAxes(dimensions) {
       var axes = [];
@@ -112,7 +112,7 @@
         return speed > -1 && speed < 1 ? 0 : speed;
       }
 
-      var v = shapeA.physicsBody.v;//.unit();
+      var v = shapeA.components.RigidBody.physicsBody.v;//.unit();
       var n = axesOverlap.axis;//.unit();
       var vn = v.dot(n);
       var u = n.multiply(vn);
@@ -125,15 +125,15 @@
       var sign = vn ? vn < 0 ? -1 : 1:0;
       var pushOutVector = n.unit().multiply(axesOverlap.overlap * -sign);
 
-      shapeA.pushOutMove = new Vector(0, 0);
-      shapeA.pushOutMove = shapeA.pushOutMove.add(pushOutVector);
+      shapeA.components.RigidBody.dimensions.move(pushOutVector);
+      game.getEventManager().trigger('physics.move', {entity: shapeA, move: pushOutVector});
 
-      if (!shapeB.frozen) {
+      if (!shapeB.components.RigidBody.frozen) {
 //      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
 //      v2 = v2.multiply(energyTransfer);
       }
-      shapeA.physicsBody.f = shapeA.physicsBody.f.subtract(shapeA.physicsBody.v);
-      shapeA.physicsBody.f = shapeA.physicsBody.f.add(v2);
+      shapeA.components.RigidBody.physicsBody.f = shapeA.components.RigidBody.physicsBody.f.subtract(shapeA.components.RigidBody.physicsBody.v);
+      shapeA.components.RigidBody.physicsBody.f = shapeA.components.RigidBody.physicsBody.f.add(v2);
     }
 
     var axesOverlap = checkOverlap(getNormalAxes(b), a, b);
@@ -158,7 +158,7 @@
           if (x !== y) {
             var otherEntity = branch[y];
 
-            this.satTest(mainEntity.components.RigidBody, otherEntity.components.RigidBody);
+            this.satTest(mainEntity, otherEntity);
           }
         }
       }

@@ -29,10 +29,6 @@
     if (!entity.components.RigidBody.frozen) {
       var physicsBody = rigidBody.physicsBody;
 
-      rigidBody.dimensions.move(rigidBody.pushOutMove);
-      game.getEventManager().trigger('physics.move', {entity: entity, move: rigidBody.pushOutMove});
-      rigidBody.pushOutMove = new Vector(0, 0);
-
       //physicsBody.f = physicsBody.f.add(physicsBody.a);
 
       // Symplectic Euler
@@ -40,17 +36,16 @@
       physicsBody.v.y += ((1 / physicsBody.m) * physicsBody.a.y) * dt;
 
       if (physicsBody.f.x !== 0 || physicsBody.f.y !== 0) {
-        physicsBody.v = physicsBody.v.add(physicsBody.f);
+        physicsBody.v = physicsBody.v.add(physicsBody.f.multiply((1 / physicsBody.m)));
       }
 
       var x = physicsBody.v.x * dt;
       var y = physicsBody.v.y * dt;
-      rigidBody.move = new Vector(x, y);
+      var move = new Vector(x, y);
 
-      if (rigidBody.move.x !== 0 || rigidBody.move.y !== 0) {
-        rigidBody.dimensions.move(rigidBody.move);
-        game.getEventManager().trigger('physics.move', {entity: entity, move: rigidBody.move});
-        rigidBody.move = new Vector(0, 0);
+      if (move.x !== 0 || move.y !== 0) {
+        rigidBody.dimensions.move(move);
+        //game.getEventManager().trigger('physics.move', {entity: entity, move: move});
       }
     }
 
