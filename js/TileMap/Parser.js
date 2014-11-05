@@ -37,7 +37,8 @@
     }
 
     for (i = 0; i < tileMapDataObject.tileSets.length; i++) {
-      tileMap.tileSets.push(this.parseTileSet(tileMapDataObject.tileSets[i]));
+      var tileSet = this.parseTileSet(tileMapDataObject.tileSets[i]);
+      tileMap.tileSets[tileSet.name] = tileSet;
     }
     
     tileMap.pixelHeight = tileMapDataObject.pixelHeight;
@@ -92,6 +93,8 @@
     tileSet.imagePixelHeight = tileSetData.imagePixelHeight;
     tileSet.image = new Image();
     tileSet.image.src = 'resources/levels/tilemap/' + tileSetData.name + '.png';
+    tileSet.rows = tileSetData.rows;
+    tileSet.columns = tileSetData.columns;
 
     return tileSet;
   };
@@ -109,6 +112,7 @@
     tile.flipped = tileData.flipped;
     tile.height = tileData.height;
     tile.width = tileData.width;
+    tile.tileSetName = tileData.tileSetName;
     
     return tile;
   };

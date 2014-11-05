@@ -13,5 +13,6 @@
     this.tileWidth = 0;
     this.imagePixelWidth = 0;
     this.imagePixelHeight = 0;
+    this.firstGid = 0;
   };
 }());

@@ -27,13 +27,14 @@
     var data = JSON.parse(json);
     var tileMapDataObject = new wrect.TileMap.Mapper.TileMapDataObject();
 
-    for (var i = 0; i < data.layers.length; i++) {
-      tileMapDataObject.layers.push(this.mapLayer(data.layers[i], data.tileheight, data.tilewidth));
-    }
-
     for (i = 0; i < data.tilesets.length; i++) {
       tileMapDataObject.tileSets.push(this.mapTileSet(data.tilesets[i]));
     }
+    
+    for (var i = 0; i < data.layers.length; i++) {
+      tileMapDataObject.layers.push(this.mapLayer(data.layers[i], data.tileheight, data.tilewidth, tileMapDataObject.tileSets));
+    }
+
 
     tileMapDataObject.height = data.height;
     tileMapDataObject.width = data.width;
@@ -41,7 +42,7 @@
     tileMapDataObject.tileWidth = data.tilewidth;
     tileMapDataObject.pixelHeight = data.height * data.tileheight;
     tileMapDataObject.pixelWidth = data.width * data.tilewidth;
-
+    
     return tileMapDataObject;
   };
 
@@ -49,9 +50,10 @@
    * @param layerData
    * @param tileHeight
    * @param tileWidth
+   * @param tileSets
    * @returns {wrect.TileMap.Mapper.TileLayerDataObject}
    */
-  wrect.TileMap.Mapper.Tiled.prototype.mapLayer = function(layerData, tileHeight, tileWidth) {
+  wrect.TileMap.Mapper.Tiled.prototype.mapLayer = function(layerData, tileHeight, tileWidth, tileSets) {
     var layer = new wrect.TileMap.Mapper.TileLayerDataObject();
 
     layer.height = layerData.height;
@@ -65,7 +67,7 @@
     layer.position.y = layerData.y;
 
     for (var i = 0; i < layerData.data.length; i++) {
-      layer.tiles.push(this.mapTile(layerData.data[i], tileHeight, tileWidth));
+      layer.tiles.push(this.mapTile(layerData.data[i], tileHeight, tileWidth, tileSets));
     }
 
     return layer;
@@ -73,9 +75,12 @@
 
   /**
    * @param tileData
+   * @param tileHeight
+   * @param tileWidth
+   * @param tileSets
    * @returns {wrect.TileMap.Mapper.TileDataObject}
    */
-  wrect.TileMap.Mapper.Tiled.prototype.mapTile = function(tileData, tileHeight, tileWidth) {
+  wrect.TileMap.Mapper.Tiled.prototype.mapTile = function(tileData, tileHeight, tileWidth, tileSets) {
     var tile = new wrect.TileMap.Mapper.TileDataObject();
     var flipAndRotateFlags = 0;
     
@@ -90,11 +95,11 @@
       flipAndRotateFlags |= this.diagonalFlipDrawFlag;
     }
 
-    tileData &= ~(this.horizontalFlipFlag |
-    this.verticalFlipFlag |
-    this.diagonalFlipFlag);
+    // Set the original tile ID
+    tileData &= ~(this.horizontalFlipFlag | this.verticalFlipFlag | this.diagonalFlipFlag);
     tile.id = tileData;
 
+    // Set the flip flags
     if ( (flipAndRotateFlags & this.horizontalFlipDrawFlag) !== 0 ) {
       tile.flipped.horizontal = true;
     }
@@ -118,12 +123,36 @@
       }
     }
 
+    // Dimensions
     tile.height = tileHeight;
     tile.width = tileWidth;
+    
+    // Tileset
+    var highestMatchingGid = 0;
+    var tileSet;
+    
+    for (var i = 0; i < tileSets.length; i++) {
+      tileSet = tileSets[i];
+      if (tile.id >= tileSet.firstGid && tile.id > highestMatchingGid) {
+        highestMatchingGid = tileSet.firstGid;
+      }
+    }
+    
+    for (i = 0; i < tileSets.length; i++) {
+      tileSet = tileSets[i];
+      if (tileSet.firstGid === highestMatchingGid) {
+        tile.tileSetName = tileSet.name;
+        break;
+      }
+    }
     
     return tile;
   };
 
+  /**
+   * @param tileSetData
+   * @returns {wrect.TileMap.Mapper.TileSetDataObject}
+   */
   wrect.TileMap.Mapper.Tiled.prototype.mapTileSet = function(tileSetData) {
     var tileSet = new wrect.TileMap.Mapper.TileSetDataObject();
 
@@ -135,7 +164,11 @@
     tileSet.tileHeight = tileSetData.tileheight;
     tileSet.tileWidth = tileSetData.tilewidth;
     tileSet.name = tileSetData.name;
+    tileSet.rows = tileSetData.imageheight / tileSetData.tileheight;
+    tileSet.columns = tileSetData.imagewidth / tileSetData.tilewidth;
+    tileSet.firstGid = tileSetData.firstgid;
 
     return tileSet;
   };
+  
 }());

@@ -14,5 +14,6 @@
     this.position = new wrect.Physics.Vector(0, 0);
     this.pixelHeight = 0;
     this.pixelWidth = 0;
+    this.tileSet = null;
   };
 }());

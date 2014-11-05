@@ -11,6 +11,8 @@
     this.imageWidth = 0;
     this.tileHeight = 0;
     this.tileWidth = 0;
+    this.columns = 0;
+    this.rows = 0;
     this.imagePixelWidth = 0;
     this.imagePixelHeight = 0;
   };

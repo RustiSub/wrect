@@ -9,6 +9,7 @@
     this.height = 0;
     this.width = 0;
     this.rotation = 0;
+    this.tileSetName = '';
     this.flipped = {
       horizontal: false,
       vertical: false

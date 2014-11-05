@@ -7,7 +7,7 @@
      * @class Vector
      * @param {Number} x
      * @param {Number} y
-     * @returns {Vector}
+     * @returns {wrect.Physics.Vector}
      * @constructor
      */
     wrect.Physics.Vector = function(x, y) {
@@ -30,7 +30,7 @@
 
     /**
      * subtracts vectors
-     * @param {Vector} v vector
+     * @param {wrect.Physics.Vector} v vector
      * @returns {wrect.Physics.Vector} vector
      */
     Vector.prototype.subtract = function(v) {
@@ -39,7 +39,7 @@
 
     /**
      * adds vectors
-     * @param {Vector} v vector
+     * @param {wrect.Physics.Vector} v vector
      * @returns {wrect.Physics.Vector} vector
      */
     Vector.prototype.add = function(v) {
@@ -113,7 +113,7 @@
   /**
    *
    * @param {Number} angle
-   * @param {Vector} vector
+   * @param {wrect.Physics.Vector} vector
    * @returns {wrect.Physics.Vector}
    */
     Vector.prototype.rotate = function(angle, vector) {
@@ -140,7 +140,7 @@
     /**
      *
      * calculate vector dot product
-     * @param {Vector} v
+     * @param {wrect.Physics.Vector} v
      * @returns {Number} dot product of this vector and vector v
      */
     Vector.prototype.dot = function(v){
@@ -150,7 +150,7 @@
     /**
      *
      * calculate angle between vectors
-     * @param {Vector} v
+     * @param {wrect.Physics.Vector} v
      * @returns {Number} angle between this vector and v in radians
      */
     Vector.prototype.angle=function(v){

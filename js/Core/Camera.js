@@ -29,27 +29,7 @@
      * @type {null}
      */
     this.target = null;
-
-    /**
-     * Zoom level
-     * @type {number}
-     */
-    this.zoomLevel = 1;
-
-    /**
-     * Real zoom level, incremented with smaller steps for a smoother experience
-     * @type {number}
-     * @private
-     */
-    this._realZoomLevel = 1;
-
-    /**
-     * Steps used to increment _realZoomLevel. Smaller is slower, but also smoother
-     * @type {number}
-     * @private
-     */
-    this._zoomSpeed = 0.01;
-
+    
     /**
      * Whether or not the position changed since the last update
      * @type {boolean}
@@ -96,19 +76,15 @@
 
     /**
      * Position of the camera
-     * @type {{x: number, y: number}}
+     * @type {wrect.Physics.Vector}
      */
     this.position = new Vector(x, y);
-
-    this.targetPosition = new Vector(x, y);
-
-    this.nextPosition = new Vector(x, y);
-
+    
     this.unscaledPosition = new Vector(x, y);
 
     /**
      * Bounds of the camera
-     * @type {{x: {min: number, max: number}, y: {min: number, max: number}}}
+     * @type {wrect.Physics.Vector}}
      */
     this.bounds = new Vector(width, height);
 
@@ -150,7 +126,7 @@
   Camera.prototype.getMouseWorldCoordinates = function() {
     var screenPos = this.game.getInputHandler().getMousePosition();
     if (screenPos) {
-      return screenPos.add(this.position).divide(this._realZoomLevel);
+      return screenPos.add(this.position);
     }
 
     return false;
@@ -169,17 +145,9 @@
   Camera.prototype.update = function() {
     this.changed = false;
 
-    this.updateZoom();
     this.updateFollow();
     this.updateShake();
     this.updateCameraContainer();
-
-    if (this.game.getInputHandler().mouseWheelUp()) {
-      this.zoomIn(0.05);
-    }
-    else if (this.game.getInputHandler().mouseWheelDown()) {
-      this.zoomOut(0.05);
-    }
   };
 
   /**
@@ -215,23 +183,7 @@
       this.shakeTimer.update(this.game.getDelta());
     }
   };
-
-  /**
-   * Update the zoom level for interpolation
-   */
-  Camera.prototype.updateZoom = function() {
-    if (this._realZoomLevel !== this.zoomLevel) {
-      if (this._realZoomLevel > this.zoomLevel) {
-        this._realZoomLevel -= this._zoomSpeed;
-      }
-      if (this._realZoomLevel < this.zoomLevel) {
-        this._realZoomLevel += this._zoomSpeed;
-      }
-      this.displayContainer.scale.x = this._realZoomLevel;
-      this.displayContainer.scale.y = this._realZoomLevel;
-    }
-  };
-
+  
   /**
    * Update the position of the camera
    */
@@ -243,32 +195,12 @@
 
       var halfBounds = this.bounds.scale(0.5);
 
-      center = center.scale(this._realZoomLevel);
       center = center.subtract(halfBounds);
       this.position.x = center.x;
       this.position.y = center.y;
     }
   };
-
-  /**
-   * Will be used for interpolation
-   */
-  Camera.prototype.updatePosition = function() {
-    var delta = {
-      x: this.position.x - this.targetPosition.x,
-      y: this.position.y - this.targetPosition.y
-    };
-
-    if (delta.x || delta.y) {
-      /*if (Math.abs(delta.x) > 100) {
-        //this.nextPosition.x = Math.round(this.position.x + delta.x/10);
-      }
-      if (Math.abs(delta.y) > 100) {
-        //this.nextPosition.y = Math.round(this.position.y + delta.y/10);
-      }*/
-    }
-  };
-
+  
   /**
    * Shake the camera for a certain amount of time
    * @param {int} intensity
@@ -282,72 +214,4 @@
     }
   };
 
-  /**
-   * !!THESE NEED TO BE SORTED FROM SMALL TO LARGE!!
-   * @type {{SMALLEST: number, SMALLER: number, SMALL: number, NORMAL: number, MEDIUM: number, LARGE: number, EXTRA_LARGE: number, LARGEST: number}}
-   */
-  Camera.prototype.zoomLevels = {
-    SMALLEST: 0.25,
-    SMALLER: 0.50,
-    SMALL: 0.75,
-    NORMAL: 1,
-    MEDIUM: 1.25,
-    LARGE: 1.50,
-    EXTRA_LARGE: 1.75,
-    LARGEST: 2.0
-  };
-
-  /**
-   * Min/max zoom levels
-   * @type {{min: number, max: number}}
-   */
-  Camera.prototype.zoomBounds = {
-    min: 0.25,
-    max: 2.0
-  };
-
-  /**
-   * Zoom in with the given amount
-   * @param value
-   */
-  Camera.prototype.zoomIn = function(value) {
-    var newZoomLevel = this.zoomLevel + value;
-    if (newZoomLevel >= this.zoomBounds.min && newZoomLevel <= this.zoomBounds.max) {
-      this.zoom(newZoomLevel);
-    }
-  };
-
-  /**
-   * Zoom out with the given amount
-   * @param value
-   */
-  Camera.prototype.zoomOut = function(value) {
-    var newZoomLevel = this.zoomLevel - value;
-    if (newZoomLevel >= this.zoomBounds.min && newZoomLevel <= this.zoomBounds.max) {
-      this.zoom(newZoomLevel);
-    }
-  };
-
-  /**
-   * Zoom to the given value
-   * @param value
-   */
-  Camera.prototype.zoom = function(value) {
-    this.zoomLevel = value;
-    this.updateFollow();
-  };
-
-  /**
-   * Get the name of the current zoom level. Useful for doing certain things only at a certain zoomlevel.
-   * @returns {*}
-   */
-  Camera.prototype.getCurrentZoomLevelName = function() {
-    for (var x in this.zoomLevels) {
-      var lvl = this.zoomLevels[x];
-      if (lvl > this.zoomLevel) {
-        return x;
-      }
-    }
-    return false;
-  };
 }());
