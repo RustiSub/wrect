@@ -30,7 +30,7 @@
     for (i = 0; i < data.tilesets.length; i++) {
       tileMapDataObject.tileSets.push(this.mapTileSet(data.tilesets[i]));
     }
-    
+
     for (var i = 0; i < data.layers.length; i++) {
       tileMapDataObject.layers.push(this.mapLayer(data.layers[i], data.tileheight, data.tilewidth, tileMapDataObject.tileSets));
     }
@@ -42,7 +42,7 @@
     tileMapDataObject.tileWidth = data.tilewidth;
     tileMapDataObject.pixelHeight = data.height * data.tileheight;
     tileMapDataObject.pixelWidth = data.width * data.tilewidth;
-    
+
     return tileMapDataObject;
   };
 
@@ -83,7 +83,7 @@
   wrect.TileMap.Mapper.Tiled.prototype.mapTile = function(tileData, tileHeight, tileWidth, tileSets) {
     var tile = new wrect.TileMap.Mapper.TileDataObject();
     var flipAndRotateFlags = 0;
-    
+
     // Flipping/rotation of sprites is done with flipping bits.
     if ((tileData & this.horizontalFlipFlag) !== 0) {
       flipAndRotateFlags |= this.horizontalFlipDrawFlag;
@@ -126,18 +126,18 @@
     // Dimensions
     tile.height = tileHeight;
     tile.width = tileWidth;
-    
+
     // Tileset
     var highestMatchingGid = 0;
     var tileSet;
-    
+
     for (var i = 0; i < tileSets.length; i++) {
       tileSet = tileSets[i];
       if (tile.id >= tileSet.firstGid && tile.id > highestMatchingGid) {
         highestMatchingGid = tileSet.firstGid;
       }
     }
-    
+
     for (i = 0; i < tileSets.length; i++) {
       tileSet = tileSets[i];
       if (tileSet.firstGid === highestMatchingGid) {
@@ -145,7 +145,7 @@
         break;
       }
     }
-    
+
     return tile;
   };
 
@@ -156,7 +156,7 @@
   wrect.TileMap.Mapper.Tiled.prototype.mapTileSet = function(tileSetData) {
     var tileSet = new wrect.TileMap.Mapper.TileSetDataObject();
 
-    tileSet.imagePath = tileSetData.image;
+    tileSet.imagePath = tileSetData.image.src;
     tileSet.imageHeight = tileSetData.imageheight;
     tileSet.imageWidth = tileSetData.imagewidth;
     tileSet.imagePixelHeight = tileSetData.imageheight * tileSetData.tileheight;
@@ -170,5 +170,5 @@
 
     return tileSet;
   };
-  
+
 }());

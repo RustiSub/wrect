@@ -4,8 +4,10 @@ var game;
 window.onload = function() {
 
   var loader = new PIXI.AssetLoader([
-    'resources/gui/maximize.png'
+    'resources/gui/maximize.png',
+    'resources/levels/tilemap/wood_tileset_3.png'
   ]);
+
   loader.load();
   loader.addEventListener('onComplete', function() {
     game = new Game({

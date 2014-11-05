@@ -1,12 +1,12 @@
 (function() {
   'use strict';
   var wrect = window.wrect;
-  
+
   wrect.TileMap = wrect.TileMap || {};
   wrect.TileMap.Parser = function() {};
 
   /**
-   * 
+   *
    * @param path
    * @param mapper
    */
@@ -20,7 +20,7 @@
   };
 
   /**
-   * 
+   *
    * @param json
    * @param mapper
    */
@@ -40,20 +40,20 @@
       var tileSet = this.parseTileSet(tileMapDataObject.tileSets[i]);
       tileMap.tileSets[tileSet.name] = tileSet;
     }
-    
+
     tileMap.pixelHeight = tileMapDataObject.pixelHeight;
     tileMap.pixelWidth = tileMapDataObject.pixelWidth;
     tileMap.width = tileMapDataObject.width;
     tileMap.height = tileMapDataObject.height;
     tileMap.tileWidth = tileMapDataObject.tileWidth;
     tileMap.tileHeight = tileMapDataObject.tileHeight;
-    
+
     console.log(tileMap);
     return tileMap;
   };
 
   /**
-   * 
+   *
    * @param layerData
    * @returns {wrect.TileMap.TileLayer}
    */
@@ -77,13 +77,13 @@
   };
 
   /**
-   * 
+   *
    * @param tileSetData
    * @returns {wrect.TileMap.TileSet}
    */
   wrect.TileMap.Parser.prototype.parseTileSet = function(tileSetData) {
     var tileSet = new wrect.TileMap.TileSet();
-    
+
     tileSet.name = tileSetData.name;
     tileSet.imageHeight = tileSetData.imageHeight;
     tileSet.imageWidth = tileSetData.imageWidth;
@@ -91,8 +91,7 @@
     tileSet.tileWidth = tileSetData.tileWidth;
     tileSet.imagePixelWidth = tileSetData.imagePixelWidth;
     tileSet.imagePixelHeight = tileSetData.imagePixelHeight;
-    tileSet.image = new Image();
-    tileSet.image.src = 'resources/levels/tilemap/' + tileSetData.name + '.png';
+    tileSet.imagePath = 'resources/levels/tilemap/' + tileSetData.name + '.png';
     tileSet.rows = tileSetData.rows;
     tileSet.columns = tileSetData.columns;
 
@@ -100,20 +99,20 @@
   };
 
   /**
-   * 
+   *
    * @param tileData
    * @returns {wrect.TileMap.Tile}
    */
   wrect.TileMap.Parser.prototype.parseTile = function(tileData) {
     var tile = new wrect.TileMap.Tile();
-    
+
     tile.id = tileData.id;
     tile.rotation = tileData.rotation;
     tile.flipped = tileData.flipped;
     tile.height = tileData.height;
     tile.width = tileData.width;
     tile.tileSetName = tileData.tileSetName;
-    
+
     return tile;
   };
 }());

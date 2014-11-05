@@ -5,7 +5,7 @@
   wrect.TileMap = wrect.TileMap || {};
 
   wrect.TileMap.TileSet = function() {
-    this.image = null;
+    this.imagePath = '';
     this.name = '';
     this.imageHeight = 0;
     this.imageWidth = 0;
