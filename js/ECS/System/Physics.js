@@ -39,6 +39,9 @@
         physicsBody.v = physicsBody.v.add(physicsBody.f.multiply((1 / physicsBody.m)));
       }
 
+      //TODO: FRICTION PLS
+      //physicsBody.v = physicsBody.v.multiply(0.99);
+
       var x = physicsBody.v.x * dt;
       var y = physicsBody.v.y * dt;
       var move = new Vector(x, y);
