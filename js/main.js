@@ -38,7 +38,7 @@ window.onload = function() {
 
     function createJumpBlock(options) {
       var materialBlock = createBlock(options);
-      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: 0.5}));
+      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.1, 0.5)}));
     }
 
     function createBlock(options) {
@@ -101,7 +101,7 @@ window.onload = function() {
 
     block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
 
-    block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 10));
+    //block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 5));
     block.components.RigidBody.gravity = true;
   });
 };
