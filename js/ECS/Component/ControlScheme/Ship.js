@@ -44,4 +44,9 @@
       this.movement = this.movement.add(new Vector(-this.force, 0));
     }
   };
+
+  wrect.ECS.Component.ControlScheme.Ship.prototype.idle = function() {
+    this.movement.x = 0;
+    this.movement.y = 0;
+  };
 }());

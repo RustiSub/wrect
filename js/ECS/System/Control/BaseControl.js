@@ -28,7 +28,12 @@
 
     //rigidBody.physicsBody.f = rigidBody.physicsBody.f.add(scheme.movement);
 
-    rigidBody.physicsBody.f = rigidBody.physicsBody.f.add(scheme.movement);
+    if (scheme.movement.x || scheme.movement.y) {
+      rigidBody.physicsBody.f = rigidBody.physicsBody.f.add(scheme.movement);
+    }
+    else {
+      rigidBody.physicsBody.f = rigidBody.physicsBody.v = scheme.movement;
+    }
 
     scheme.movement = new Vector(0, 0);
   };

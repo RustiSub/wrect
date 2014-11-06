@@ -35,30 +35,33 @@
 
       for (i = 0; i < self.layers.length; i++) {
         var layer = self.layers[i];
+        wrect.getGame().getCamera().displayContainer.addChildAt(new PIXI.DisplayObjectContainer(), i);
         for (j = 0; j < layer.tiles.length; j++) {
           var tile = layer.tiles[j];
           if (tile.id === 0) {
             continue;
           }
           var baseTexture = baseTextures[tile.tileSetName];
+          var tileSet = self.tileSets[tile.tileSetName];
 
-          var xcoord = (tile.id - 1) * ((baseTexture.width / tile.width) % 16);
-          var ycoord = Math.floor((tile.id - 1) / 16);
+          var xcoord = (tile.id - 1) % (tileSet.columns);
+          var ycoord = Math.floor((tile.id - 1) / tileSet.rows);
 
-          var frame = new PIXI.Texture(baseTexture, new PIXI.Rectangle(xcoord * 32, ycoord * 32, 32, 32));
-          frame.height = 32;
-          frame.width = 32;
+          var frame = new PIXI.Texture(baseTexture, new PIXI.Rectangle(xcoord * tile.width, ycoord * tile.height, tile.width, tile.height));
+          frame.height = tile.height;
+          frame.width = tile.width;
 
           var tileSprite = new PIXI.Sprite(frame);
-          tileSprite.height = 32;
-          tileSprite.width = 32;
-          tileSprite.position.x = (j % 50) * 32;
-          tileSprite.position.y = Math.floor(j / 50) * 32;
+          tileSprite.height = tile.height;
+          tileSprite.width = tile.width;
+          tileSprite.position.x = (j % self.width) * tile.width;
+          tileSprite.position.y = Math.floor(j / self.height) * tile.height;
+          tileSprite.rotation = tile.rotation;
+          tileSprite.scale.x = tile.flipped.x ? -tileSprite.scale.x : tileSprite.scale.x;
+          tileSprite.scale.y = tile.flipped.y ? -tileSprite.scale.y : tileSprite.scale.y;
 
-          wrect.getGame()._cameraContainer.addChildAt(tileSprite, i);
-          //var tile = layer.tiles[i];
-          //
-          //var tileSprite = new PIXI.Sprite()
+
+          wrect.getGame()._cameraContainer.children[i].addChild(tileSprite);
         }
       }
     }

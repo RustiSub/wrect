@@ -33,6 +33,9 @@
         }
       }
     }
+    else if(controlScheme.idle !== undefined) {
+      controlScheme.idle(entity);
+    }
  /*   if (this.inputHandler.key('left') && controlScheme.left) {
       console.log('left', entity);
     }

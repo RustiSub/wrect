@@ -92,18 +92,13 @@ window.onload = function() {
     //childBlock.components.RigidBody.physicsBody = block.components.RigidBody.physicsBody;
     //childBlock.addComponent(new wrect.ECS.Component.Link({entity: block}));
 
-    for (var l= 0; l < 1; l++) {
-      for (var t= 0; t < 5; t++) {
-        var block = createBlock({
-          x: 200 + (t * (50 + 60)) ,
-          y: 10 + l * (10 + 1) + (50 * t),
-          w: 40,
-          h: 100,
-          color: 0xFFFFFF
-        });
-        block.components.RigidBody.gravity = true;
-        block.components.RigidBody.frozen = false;
-      }
-    }
+
+    // TileMap stuff!
+    var parser = new wrect.TileMap.Parser();
+    parser.loadTilemap('resources/levels/tilemap/tiled.json');
+
+    wrect.getGame().getCamera().follow(block);
+
+
   });
 };

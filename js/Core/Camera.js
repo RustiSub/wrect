@@ -29,7 +29,7 @@
      * @type {null}
      */
     this.target = null;
-    
+
     /**
      * Whether or not the position changed since the last update
      * @type {boolean}
@@ -79,7 +79,7 @@
      * @type {wrect.Physics.Vector}
      */
     this.position = new Vector(x, y);
-    
+
     this.unscaledPosition = new Vector(x, y);
 
     /**
@@ -107,6 +107,9 @@
       x: false,
       y: false
     };
+
+    this.game.getEventManager().addListener('game.updateEnd', this.update, this);
+
   };
 
   var Camera = wrect.Core.Camera;
@@ -183,24 +186,24 @@
       this.shakeTimer.update(this.game.getDelta());
     }
   };
-  
+
   /**
    * Update the position of the camera
    */
   Camera.prototype.updateFollow = function() {
     if (this.target) {
-      var center = this.target.dimensions.center();
+      var center = this.target.components.RigidBody.dimensions.getBounds().topLeft;
       this.unscaledPosition.x = center.x - this.bounds.x/2;
       this.unscaledPosition.y = center.y - this.bounds.y/2;
 
       var halfBounds = this.bounds.scale(0.5);
 
       center = center.subtract(halfBounds);
-      this.position.x = center.x;
-      this.position.y = center.y;
+      this.position.x = Helpers.math.clamp(center.x, 0, 350);
+      this.position.y = Helpers.math.clamp(center.y, 0, 900);
     }
   };
-  
+
   /**
    * Shake the camera for a certain amount of time
    * @param {int} intensity
