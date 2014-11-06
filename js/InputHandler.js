@@ -9,25 +9,10 @@
     _previousMousePos: null,
     _mouseWheel: null,
     _keys: {
-      BACKSPACE: 8,
-      TAB:       9,
-      RETURN:   13,
-      ESC:      27,
-      SPACE:    32,
-      PAGEUP:   33,
-      PAGEDOWN: 34,
-      END:      35,
-      HOME:     36,
-      LEFT:     37,
-      UP:       38,
-      RIGHT:    39,
-      DOWN:     40,
-      INSERT:   45,
-      DELETE:   46,
-      ZERO:     48, ONE: 49, TWO: 50, THREE: 51, FOUR: 52, FIVE: 53, SIX: 54, SEVEN: 55, EIGHT: 56, NINE: 57,
-      K_ZERO:   96, K_ONE: 97, K_TWO: 98, K_THREE: 99, K_FOUR: 100, K_FIVE: 101, K_SIX: 102, K_SEVEN: 103, K_EIGHT: 104, K_NINE: 105,
-      A:        65, B: 66, C: 67, D: 68, E: 69, F: 70, G: 71, H: 72, I: 73, J: 74, K: 75, L: 76, M: 77, N: 78, O: 79, P: 80, Q: 81, R: 82, S: 83, T: 84, U: 85, V: 86, W: 87, X: 88, Y: 89, Z: 90,
-      TILDA:    192
+      37: 'left',
+      38: 'up',
+      39: 'right',
+      40: 'down'
     },
     _singleInputKeys: [
       13,
@@ -82,7 +67,7 @@
       // Register all keys in _keys as keys we should capture. Others will be ignored.
       for (var x in this._keys) {
         if (this._keys.hasOwnProperty(x)) {
-          this._keysToCapture.push(this._keys[x]);
+          this._keysToCapture.push(parseInt(x));
         }
       }
       this._mouseWheel = {
@@ -136,10 +121,12 @@
      * @private
      */
     _onKeydown: function(event) {
-      if (this._keysToCapture.indexOf(event.keyCode) !== -1
-        && this._pressed.indexOf(event.keyCode) === -1) {
-        this._pressed.push(event.keyCode);
-
+      var i = this._keysToCapture.indexOf(event.keyCode);
+      if (i !== -1) {
+        var keyName = this._keys[event.keyCode];
+        if (this._pressed.indexOf(keyName) === -1) {
+          this._pressed.push(keyName);
+        }
         event.preventDefault();
       }
     },
@@ -150,16 +137,21 @@
      * @private
      */
     _onKeyup: function(event) {
-      var index;
-      if ((index = this._pressed.indexOf(event.keyCode)) !== -1) {
-        this._pressed.splice(index, 1);
+      var i = this._keysToCapture.indexOf(event.keyCode);
+      if (i !== -1) {
+        var index = this._pressed.indexOf(this._keys[event.keyCode]);
+        if (index !== -1) {
+          this._pressed.splice(index, 1);
+        }
+      }
+      /*if ((index = this._pressed.indexOf(event.keyCode)) !== -1) {
 
         if ((this._singleInputKeys.indexOf(event.keyCode) !== -1) && (index = this._registeredPressed.indexOf(event.keyCode)) !== -1) {
           this._registeredPressed.splice(index, 1);
         }
 
         event.preventDefault();
-      }
+      }*/
     },
 
     /**
@@ -229,19 +221,7 @@
      * @returns {boolean}
      */
     key: function(keyName) {
-      var keyCode = this._keys[keyName.toUpperCase()];
-      var keyFound = this._pressed.indexOf(keyCode) != -1;
-
-      if (this._singleInputKeys.indexOf(keyCode) === -1) {
-        return keyFound;
-      }
-
-      if (keyFound && this._registeredPressed.indexOf(keyCode) === -1) {
-        this._registeredPressed.push(keyCode);
-        return keyFound;
-      }
-
-      return false;
+      return this._pressed.indexOf(keyName) !== -1;
     },
 
     /**

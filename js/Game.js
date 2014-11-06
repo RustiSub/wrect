@@ -178,21 +178,24 @@
           self.trackFps(timestamp);
         }
 
-        self.timeStepSystem.run();
+        for (var preSystemIndex in self.systems.pre) {
+          var preSystem = self.systems.pre[preSystemIndex].system;
 
-        //TODO: Move to proper System Manager that takes weight and other flags into consideration
-        for (var steps = 0; steps < self.timeStepSystem.timeSteps; steps++) {
-          for (var s in self.systems) {
-            var system = self.systems[s].system;
+          preSystem.run();
+        }
 
-            system.run();
-          }
+        self.physicsEngine.run();
+
+        for (var postSystemIndex in self.systems.post) {
+          var postSystem = self.systems.post[postSystemIndex].system;
+
+          postSystem.run();
         }
 
         self.getEventManager().trigger('game.updateEnd');
 
         // Needs to be last
-        self._inputHandler.update();
+        //self._inputHandler.update();
         renderer.render(stage);
 //self.pause = true;
         // Sets the element used for mouse-event tracking to the root GUI element. This fixes mouse input over GUI elements.

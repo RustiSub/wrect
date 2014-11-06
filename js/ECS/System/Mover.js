@@ -18,25 +18,15 @@
 
   wrect.ECS.System.Mover.prototype.name = 'Mover';
 
-  wrect.ECS.System.BaseSystem.prototype.checkDependencies = function(entity) {
+  wrect.ECS.System.Mover.prototype.checkDependencies = function(entity) {
     return entity.components.RigidBody ? true : false;
   };
 
   wrect.ECS.System.Mover.prototype.perform = function(entity) {
-    var dt = 1 / 6 ;//game.getDelta() / 100;
 
-    if (entity.components.RigidBody && !entity.components.RigidBody.frozen) {
+    if (entity.components.RigidBody && !entity.components.RigidBody.frozen && (entity.components.RigidBody.move.x !== 0 || entity.components.RigidBody.move.y !== 0)) {
       var rigidBody = entity.components.RigidBody;
-      var physicsBody = rigidBody.physicsBody;
-
-      physicsBody.f = physicsBody.f.add(physicsBody.a);
-
-      // Symplectic Euler
-      physicsBody.v.x += (1 / physicsBody.m * physicsBody.f.x) * dt;
-      physicsBody.v.y += (1 / physicsBody.m * physicsBody.f.y) * dt;
-      var x = physicsBody.v.x * dt;
-      var y = physicsBody.v.y * dt;
-      var newPosition = new Vector(x, y);
+      var newPosition = entity.components.RigidBody.move;
 
       rigidBody.dimensions.previousOrigin = rigidBody.dimensions.origin;
       rigidBody.dimensions.move(newPosition);
@@ -47,13 +37,9 @@
         var graphicPositionVector = rigidBody.dimensions.origin;//new Vector(visual.graphics.position.x, visual.graphics.position.y).add(newPosition);
         visual.graphics.position.x = graphicPositionVector.x;
         visual.graphics.position.y = graphicPositionVector.y;
-
-        visual.graphics.position.x = Math.ceil(visual.graphics.position.x);
-        visual.graphics.position.y = Math.ceil(visual.graphics.position.y);
       }
 
-      rigidBody.physicsBody.f = new Vector(0, 0);
-      rigidBody.physicsBody.a = new Vector(0, 0);
+      entity.components.RigidBody.move = new Vector(0, 0);
     }
-  }
+  };
 }());

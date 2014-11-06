@@ -10,6 +10,7 @@
     options = options || {};
     this.dimensions = options.dimensions || new wrect.Geometry.Dimensions();
     this.physicsBody = options.physicsBody || new wrect.Physics.PhysicsBody();
+    this.move = new wrect.Physics.Vector();
 
     this.frozen = options.frozen || true;
   };
