@@ -32,6 +32,17 @@
 
         visual.graphics.position.x = rigidBody.dimensions.origin.x;
         visual.graphics.position.y = rigidBody.dimensions.origin.y;
+
+        if (visual.lightGraphics) {
+          visual.lightGraphics.clear();
+          visual.lightGraphics.beginFill(0xFFFFFF, 1);
+          var center = rigidBody.dimensions.getCenter();
+          visual.lightGraphics.drawCircle(center.x, center.y, 50);
+          visual.lightGraphics.endFill();
+
+          //visual.lightGraphics.position.x = rigidBody.dimensions.origin.x;
+          //visual.lightGraphics.position.y = rigidBody.dimensions.origin.y;
+        }
       }
 
       entity.components.RigidBody.move = new Vector(0, 0);

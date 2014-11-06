@@ -38,7 +38,7 @@ window.onload = function() {
 
     function createJumpBlock(options) {
       var materialBlock = createBlock(options);
-      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.5, 0.5)}));
+      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.01, 0.5)}));
     }
 
     function createBlock(options) {
@@ -62,25 +62,13 @@ window.onload = function() {
         y: 100,
         w: 100,
         h: 40,
-        color: 0xFFFFFF
+        color: 0xFFFFFF,
+        light: true
       };
+
       var block = new wrect.ECS.Assemblage.Block(options);
 
       game.getEntityManager().addEntity(block);
-
-      var theLight = new PIXI.Graphics();
-      theLight.beginFill(0xFFFFFF, 1);
-      theLight.drawCircle(100, 300, 50);
-      theLight.endFill();
-
-      var theDark = new PIXI.Graphics();
-      theDark.beginFill(0xFFFFFF, 0.5);
-      theDark.drawRect(0, 0, 1000, 500);
-      theDark.endFill();
-
-      game.getEntityManager().cameraContainer.addChild(theDark);
-
-      game.getEntityManager().cameraContainer.mask = theLight;
 
       return block;
     }
@@ -105,7 +93,7 @@ window.onload = function() {
     createJumpBlock({
       x: 10,
       y: 300,
-      w: 150,
+      w: 350,
       h: 5,
       color: 0xFFFFFF
     });
@@ -123,7 +111,8 @@ window.onload = function() {
       y: 60,
       w: 20,
       h: 50,
-      color: 0xFFFFFF
+      color: 0xFFFFFF,
+      light: true
     });
 
     block.components.RigidBody.frozen = false;
@@ -134,12 +123,19 @@ window.onload = function() {
     //block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 5));
     block.components.RigidBody.gravity = true;
 
-    var theDark = new PIXI.Graphics();
-    theDark.beginFill(0x000000, 0.5);
-    theDark.drawRect(0, 0, 1000, 500);
-    theDark.endFill();
+    var stageDarkLayer = new PIXI.Graphics();
+    stageDarkLayer.beginFill(0x000000, 0.5);
+    stageDarkLayer.drawRect(0, 0, 1000, 500);
+    stageDarkLayer.endFill();
 
-    game.getStage().addChildAt(theDark, 1);
+    game.getStage().addChildAt(stageDarkLayer, 1);
+
+    var cameraDarkLayer = new PIXI.Graphics();
+    cameraDarkLayer.beginFill(0xFFFFFF, 0.5);
+    cameraDarkLayer.drawRect(0, 0, 1000, 500);
+    cameraDarkLayer.endFill();
+
+    game.getEntityManager().cameraContainer.addChild(cameraDarkLayer);
 
 
 //    theDark.mask = theLight;

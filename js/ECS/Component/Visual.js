@@ -9,6 +9,7 @@
 
     options = options || {};
     this.graphics = options.graphics || new PIXI.Graphics();
+    this.lightGraphics = options.lightGraphics || new PIXI.Graphics();
 
     this.color =  options.color || 0x000000;
   };

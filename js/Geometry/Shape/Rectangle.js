@@ -27,6 +27,11 @@
   wrect.Geometry.Rectangle.prototype = Object.create( wrect.Geometry.Dimensions.prototype );
   wrect.Geometry.Rectangle.prototype.constructor = wrect.Geometry.Rectangle;
 
+  wrect.Geometry.Rectangle.prototype.getCenter = function() {
+    var diagonal = this.vertices[2].subtract(this.vertices[0]);
+    return this.vertices[0].add(diagonal.scale(0.5));
+  };
+
   wrect.Geometry.Rectangle.prototype.getBounds = function() {
     return {
       topLeft: this.vertices[0],

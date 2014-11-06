@@ -25,9 +25,19 @@
     blockGraphics.drawRect(0, 0, options.w, options.h);
     blockGraphics.endFill();
 
-    var visualComponent = new wrect.ECS.Component.Visual({
+    var visualOptions = {
       graphics: blockGraphics
-    });
+    };
+
+    if (options.light) {
+      var theLight = new PIXI.Graphics();
+
+      visualOptions.lightGraphics = theLight;
+
+      game.getEntityManager().cameraContainer.mask = theLight;
+    }
+
+    var visualComponent = new wrect.ECS.Component.Visual(visualOptions);
 
     blockGraphics.position = rigidBody.dimensions.origin;
 
