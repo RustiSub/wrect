@@ -22,9 +22,9 @@
     var blockGraphics = new PIXI.Graphics();
 
     blockGraphics.beginFill(options.color || 0x000000, options.alpha || 1);
-    //blockGraphics.drawRect(options.x, options.y, options.w, options.h);
     blockGraphics.drawRect(0, 0, options.w, options.h);
     blockGraphics.endFill();
+
     var visualComponent = new wrect.ECS.Component.Visual({
       graphics: blockGraphics
     });

@@ -51,7 +51,36 @@ window.onload = function() {
       };
       var block = new wrect.ECS.Assemblage.Block(options);
 
+      game.getEntityManager().addEntity(block, false);
+
+      return block;
+    }
+
+    function createLiveBlock(options) {
+      options = options || {
+        x: 300,
+        y: 100,
+        w: 100,
+        h: 40,
+        color: 0xFFFFFF
+      };
+      var block = new wrect.ECS.Assemblage.Block(options);
+
       game.getEntityManager().addEntity(block);
+
+      var theLight = new PIXI.Graphics();
+      theLight.beginFill(0xFFFFFF, 1);
+      theLight.drawCircle(100, 300, 50);
+      theLight.endFill();
+
+      var theDark = new PIXI.Graphics();
+      theDark.beginFill(0xFFFFFF, 0.5);
+      theDark.drawRect(0, 0, 1000, 500);
+      theDark.endFill();
+
+      game.getEntityManager().cameraContainer.addChild(theDark);
+
+      game.getEntityManager().cameraContainer.mask = theLight;
 
       return block;
     }
@@ -89,7 +118,7 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    var block = createBlock({
+    var block = createLiveBlock({
       x: 50,
       y: 60,
       w: 20,
@@ -103,5 +132,31 @@ window.onload = function() {
 
     //block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 5));
     block.components.RigidBody.gravity = true;
+
+    var theDark = new PIXI.Graphics();
+    theDark.beginFill(0x000000, 0.5);
+    theDark.drawRect(0, 0, 1000, 500);
+    theDark.endFill();
+
+    game.getStage().addChildAt(theDark, 1);
+
+
+//    theDark.mask = theLight;
+//    game.getStage().mask = theLight;
+
+
+    //game.getStage().addChild(theLight);
+
+    //game.getStage().addChild(theLight);
+    //
+    ////theLight.mask = theDark;
+    //theDark.mask = theLight;
+    //
+    //var theDarkBackground = new PIXI.Graphics();
+    //theDarkBackground.beginFill(0x000000, 0.5);
+    //theDarkBackground.drawRect(0, 0, 1000, 500);
+    //theDarkBackground.endFill();
+    //
+    //game.getStage().addChild(theDarkBackground);
   });
 };

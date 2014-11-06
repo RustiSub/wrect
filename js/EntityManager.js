@@ -21,6 +21,8 @@
             this._entitiesByName[entity.name] = entity;
             if (addToWorld) {
                 this.cameraContainer.addChild(entity.getGraphics());
+            } else {
+                game.getStage().addChild(entity.getGraphics());
             }
         },
 
