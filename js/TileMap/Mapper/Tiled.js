@@ -119,7 +119,7 @@
         tile.flipped.horizontal = true;
       } else {
         tile.rotation = -Math.PI / 2;
-        tile.horizontal = true;
+        tile.flipped.horizontal = true;
       }
     }
 

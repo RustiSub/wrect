@@ -54,16 +54,31 @@
           var tileSprite = new PIXI.Sprite(frame);
           tileSprite.height = tile.height;
           tileSprite.width = tile.width;
+          tileSprite.pivot.x = tile.width / 2;
+          tileSprite.pivot.y = tile.height / 2;
           tileSprite.position.x = (j % self.width) * tile.width;
           tileSprite.position.y = Math.floor(j / self.height) * tile.height;
           tileSprite.rotation = tile.rotation;
-          tileSprite.scale.x = tile.flipped.x ? -tileSprite.scale.x : tileSprite.scale.x;
-          tileSprite.scale.y = tile.flipped.y ? -tileSprite.scale.y : tileSprite.scale.y;
+          tileSprite.scale.x = tile.flipped.horizontal ? -tileSprite.scale.x : tileSprite.scale.x;
+          tileSprite.scale.y = tile.flipped.vertical ? -tileSprite.scale.y : tileSprite.scale.y;
 
+
+          if (wrect.getGame().debugTilemap && i === 0) {
+            var border = new PIXI.Graphics();
+            border.beginFill(0xFFFFFF, 0);
+            border.lineStyle(1, 0xFF0000);
+            border.drawRect(tileSprite.position.x, tileSprite.position.y, tile.width, tile.height);
+            border.endFill();
+            var text = new PIXI.Text(j + "\n" + tile.id, { font: "bold 12px Arial", fill: "#AAAAAA", align: "center", stroke: "#000000", strokeThickness: 3 });
+            text.position = tileSprite.position;
+            wrect.getGame()._cameraContainer.addChild(border);
+            wrect.getGame()._cameraContainer.addChild(text);
+
+          }
 
           wrect.getGame()._cameraContainer.children[i].addChild(tileSprite);
         }
       }
     }
-  }
+  };
 }());

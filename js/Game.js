@@ -24,7 +24,7 @@
     fpsOutInterval: 10000,
     completeTree: [],
     treeHashes: [],
-    debugStats: [],
+    debugStats: {},
     _defaults: {
       inputHandlerClass: InputHandler,
       entityManagerClass: EntityManager,
@@ -107,6 +107,7 @@
       if (options.debug) {
         console.info('debug mode enabled');
         this.debug = true;
+        this.debugTilemap = options.debugTilemap;
         this.debugStats = {};
         if (options.fpsOutInterval) {
           this.fpsOutInterval = options.fpsOutInterval;

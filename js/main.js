@@ -12,6 +12,7 @@ window.onload = function() {
   loader.addEventListener('onComplete', function() {
     game = new Game({
       debug: true,
+      debugTilemap: false,
       width: window.innerWidth,
       height: window.innerHeight,
       defaultLevel: false
@@ -62,16 +63,16 @@ window.onload = function() {
     var block = createBlock({
       x: 50,
       y: 50,
-      w: 20,
-      h: 50,
+      w: 32,
+      h: 32,
       color: 0xFFFFFF
     });
 
     var childBlock = createBlock({
       x: 100,
       y: 50,
-      w: 20,
-      h: 50,
+      w: 32,
+      h: 32,
       color: 0xFFFFFF
     });
 
