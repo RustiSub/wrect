@@ -11,6 +11,7 @@
     options = options || {};
 
     this.right = options.right || function() {};
+    this.movement = new wrect.Physics.Vector(0, 0);
   };
 
   wrect.ECS.Component.ControlScheme.BaseScheme.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

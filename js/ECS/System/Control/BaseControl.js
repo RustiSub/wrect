@@ -26,8 +26,6 @@
     var scheme = entity.components.ControlScheme;
     var rigidBody = entity.components.RigidBody;
 
-    //rigidBody.physicsBody.f = rigidBody.physicsBody.f.add(scheme.movement);
-
     rigidBody.physicsBody.f = rigidBody.physicsBody.f.add(scheme.movement);
 
     scheme.movement = new Vector(0, 0);

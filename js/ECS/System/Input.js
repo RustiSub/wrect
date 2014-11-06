@@ -25,6 +25,7 @@
   wrect.ECS.System.Input.prototype.perform = function(entity) {
     var controlScheme = entity.components.ControlScheme;
     var keysDown = this.inputHandler._pressed;
+
     if (keysDown.length) {
       for (var i = 0, l = keysDown.length; i < l; i++) {
         var funcName = 'key' + keysDown[i];
@@ -33,17 +34,5 @@
         }
       }
     }
- /*   if (this.inputHandler.key('left') && controlScheme.left) {
-      console.log('left', entity);
-    }
-    if (this.inputHandler.key('right') && controlScheme.right) {
-      controlScheme.right(entity);
-    }
-    if (this.inputHandler.key('up') && controlScheme.up) {
-      console.log('up', entity);
-    }
-    if (this.inputHandler.key('down') && controlScheme.down) {
-      console.log('down', entity);
-    }*/
   };
 }());

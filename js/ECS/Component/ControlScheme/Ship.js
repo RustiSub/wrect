@@ -23,7 +23,7 @@
 
   wrect.ECS.Component.ControlScheme.Ship.prototype.keyup = function() {
     if (Math.abs(this.movement.y) < this.maxSpeed.y) {
-      this.movement = this.movement.add(new Vector(0, -this.force));
+      //this.movement = this.movement.add(new Vector(0, -this.force));
     }
   };
 
@@ -35,7 +35,7 @@
 
   wrect.ECS.Component.ControlScheme.Ship.prototype.keydown = function() {
     if (Math.abs(this.movement.y) < this.maxSpeed.y) {
-      this.movement = this.movement.add(new Vector(0, this.force));
+      //this.movement = this.movement.add(new Vector(0, this.force));
     }
   };
 

@@ -9,6 +9,7 @@
     _previousMousePos: null,
     _mouseWheel: null,
     _keys: {
+      32: 'space',
       37: 'left',
       38: 'up',
       39: 'right',

@@ -77,6 +77,9 @@
     getDelta: function() {
       return this.timeDelta;
     },
+    getPreviousTime: function() {
+      return this.previousTime;
+    },
     getDeltaDelta: function() {
       this.previousTimeDelta = this.previousTimeDelta || this.timeDelta;
       return this.timeDelta / this.previousTimeDelta;
