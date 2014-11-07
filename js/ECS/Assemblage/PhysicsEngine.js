@@ -27,7 +27,7 @@
 
   wrect.ECS.Assemblage.PhysicsEngine.prototype.run = function() {
     this.timeStepSystem.run();
-
+    this.timeStepSystem.timeSteps = 1;
     for (var steps = 0; steps < this.timeStepSystem.timeSteps; steps++) {
       for (var s in this.systems) {
         var system = this.systems[s].system;

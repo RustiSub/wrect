@@ -35,6 +35,8 @@
       visualOptions.lightGraphics = theLight;
 
       game.getEntityManager().cameraContainer.mask = theLight;
+
+      this.entity.addComponent(new wrect.ECS.Component.Light());
     }
 
     var visualComponent = new wrect.ECS.Component.Visual(visualOptions);

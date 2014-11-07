@@ -30,6 +30,9 @@ window.onload = function() {
       post: {
         Mover: {
           system: new wrect.ECS.System.Mover()
+        },
+        RayCaster: {
+          system: new wrect.ECS.System.RayCaster()
         }
       }
     };
@@ -94,7 +97,15 @@ window.onload = function() {
       x: 10,
       y: 300,
       w: 350,
-      h: 5,
+      h: 50,
+      color: 0xFFFFFF
+    });
+
+    createJumpBlock({
+      x: 200,
+      y: 200,
+      w: 20,
+      h: 100,
       color: 0xFFFFFF
     });
 
@@ -102,7 +113,7 @@ window.onload = function() {
       x: 500,
       y: 300,
       w: 150,
-      h: 5,
+      h: 50,
       color: 0xFFFFFF
     });
 
