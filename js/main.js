@@ -93,8 +93,40 @@ window.onload = function() {
     //  color: 0xFF0000
     //});
 
+    //createJumpBlock({
+    //  x: 10,
+    //  y: 10,
+    //  w: 750,
+    //  h: 5,
+    //  color: 0xFFFFFF
+    //});
+    //
+    //createJumpBlock({
+    //  x: 10,
+    //  y: 500,
+    //  w: 750,
+    //  h: 5,
+    //  color: 0xFFFFFF
+    //});
+    //
+    //createJumpBlock({
+    //  x: 10,
+    //  y: 15,
+    //  w: 5,
+    //  h: 490,
+    //  color: 0xFFFFFF
+    //});
+    //
+    //createJumpBlock({
+    //  x: 755,
+    //  y: 15,
+    //  w: 5,
+    //  h: 490,
+    //  color: 0xFFFFFF
+    //});
+
     createJumpBlock({
-      x: 10,
+      x: 50,
       y: 300,
       w: 350,
       h: 50,
@@ -109,13 +141,21 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    createJumpBlock({
-      x: 500,
-      y: 300,
-      w: 150,
-      h: 50,
-      color: 0xFFFFFF
-    });
+    //createJumpBlock({
+    //  x: 370,
+    //  y: 150,
+    //  w: 20,
+    //  h: 150,
+    //  color: 0xFFFFFF
+    //});
+
+    //createJumpBlock({
+    //  x: 500,
+    //  y: 300,
+    //  w: 150,
+    //  h: 50,
+    //  color: 0xFFFFFF
+    //});
 
     var block = createLiveBlock({
       x: 50,
@@ -148,23 +188,11 @@ window.onload = function() {
 
     game.getEntityManager().cameraContainer.addChild(cameraDarkLayer);
 
-
-//    theDark.mask = theLight;
-//    game.getStage().mask = theLight;
-
-
-    //game.getStage().addChild(theLight);
-
-    //game.getStage().addChild(theLight);
-    //
-    ////theLight.mask = theDark;
-    //theDark.mask = theLight;
-    //
-    //var theDarkBackground = new PIXI.Graphics();
-    //theDarkBackground.beginFill(0x000000, 0.5);
-    //theDarkBackground.drawRect(0, 0, 1000, 500);
-    //theDarkBackground.endFill();
-    //
-    //game.getStage().addChild(theDarkBackground);
+    game.systems.post.RayCaster.system.getLineIntersection(
+      new wrect.Physics.Vector(0, 0),
+      new wrect.Physics.Vector(20, 20),
+      new wrect.Physics.Vector(10, 0),
+      new wrect.Physics.Vector(0, 10)
+    );
   });
 };
