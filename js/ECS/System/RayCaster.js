@@ -44,8 +44,10 @@
       var center = sourceEntity.components.RigidBody.dimensions.getCenter();
       visual.lightGraphics.clear();
       visual.lightGraphics.beginFill(0xFFFFFF, 1);
+      visual.lightGraphics.lineStyle(1, 0xFFFFFF, 1);
       //visual.lightGraphics.moveTo(center.x, center.y);
 
+      //Cast a ray to every possible vertex
       for (var e = 0; e < this.entities.length; e++) {
         var entity = this.entities[e];
 
@@ -54,25 +56,33 @@
         }
 
         var vertices = entity.components.RigidBody.dimensions.vertices;
+        var minRay;
+        var maxRay;
+        visual.lightGraphics.moveTo(center.x, center.y);
         for (var v = 0; v < vertices.length; v++) {
+          var vector = vertices[v];
 
+          var ray = vector.subtract(center);
+          var projectRay = ray.perpendicular().unit();
+          var ownProjection = vector.dot(projectRay);
+          var smallerCount = 0;
 
-          var ray = vertices[v].subtract(center);
+          for (var p = 0; p < vertices.length; p++) {
+            var projection = vertices[p].dot(projectRay);
+            smallerCount += (ownProjection - projection < 0);
+          }
 
-          //visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y);
+          if (smallerCount == vertices.length - 1) {
+            maxRay = vector;
+          }
 
-
-          visual.lightGraphics.moveTo(center.x, center.y);
-          visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y);
-          visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y + 5);
-          visual.lightGraphics.lineTo(center.x, center.y);
-
-          visual.lightGraphics.drawCircle(center.x, center.y, 50);
-
-
-          //visual.lightGraphics.dra
-          //vertices[v]
+          if (smallerCount == 0) {
+            minRay = vector;
+          }
         }
+        visual.lightGraphics.lineTo(maxRay.x, maxRay.y);
+        visual.lightGraphics.lineTo(minRay.x, minRay.y);
+        visual.lightGraphics.lineTo(center.x, center.y);
       }
       visual.lightGraphics.endFill();
 
