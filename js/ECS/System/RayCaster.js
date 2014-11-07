@@ -43,8 +43,10 @@
       var visual = sourceEntity.components.Visual;
       var center = sourceEntity.components.RigidBody.dimensions.getCenter();
       visual.lightGraphics.clear();
+
       visual.lightGraphics.beginFill(0xFFFFFF, 1);
-      //visual.lightGraphics.moveTo(center.x, center.y);
+      visual.lightGraphics.drawCircle(center.x, center.y, 50);
+
 
       for (var e = 0; e < this.entities.length; e++) {
         var entity = this.entities[e];
@@ -54,20 +56,26 @@
         }
 
         var vertices = entity.components.RigidBody.dimensions.vertices;
+        var triangleCount = 0;
+        visual.lightGraphics.moveTo(center.x, center.y);
         for (var v = 0; v < vertices.length; v++) {
 
-
-          var ray = vertices[v].subtract(center);
-
-          //visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y);
-
-
-          visual.lightGraphics.moveTo(center.x, center.y);
           visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y);
-          visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y + 5);
-          visual.lightGraphics.lineTo(center.x, center.y);
+          triangleCount += 1;
 
-          visual.lightGraphics.drawCircle(center.x, center.y, 50);
+          if (triangleCount === 2) {
+            visual.lightGraphics.lineTo(center.x, center.y);
+            visual.lightGraphics.moveTo(center.x, center.y);
+            triangleCount = 0;
+            //break;
+          }
+
+          //visual.lightGraphics.moveTo(center.x, center.y);
+          //visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y);
+          //visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y + 5);
+          //visual.lightGraphics.lineTo(center.x, center.y);
+
+
 
 
           //visual.lightGraphics.dra

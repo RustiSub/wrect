@@ -109,13 +109,13 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    createJumpBlock({
-      x: 500,
-      y: 300,
-      w: 150,
-      h: 50,
-      color: 0xFFFFFF
-    });
+    //createJumpBlock({
+    //  x: 500,
+    //  y: 300,
+    //  w: 150,
+    //  h: 50,
+    //  color: 0xFFFFFF
+    //});
 
     var block = createLiveBlock({
       x: 50,
