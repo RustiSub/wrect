@@ -26,7 +26,7 @@
       var ts = this.tileSets[x];
       baseTextures[ts.name] = PIXI.BaseTexture.fromImage(ts.imagePath);
     }
-
+console.log(baseTextures, this.tileSets);
     buildSpriteTiles();
 
     function buildSpriteTiles() {
@@ -44,8 +44,8 @@
           var baseTexture = baseTextures[tile.tileSetName];
           var tileSet = self.tileSets[tile.tileSetName];
 
-          var xcoord = (tile.id - 1) % (tileSet.columns);
-          var ycoord = Math.floor((tile.id - 1) / tileSet.rows);
+          var xcoord = (tile.id - tileSet.firstGid) % (tileSet.columns);
+          var ycoord = Math.floor((tile.id - tileSet.firstGid) / tileSet.columns);
 
           var frame = new PIXI.Texture(baseTexture, new PIXI.Rectangle(xcoord * tile.width, ycoord * tile.height, tile.width, tile.height));
           frame.height = tile.height;
@@ -61,6 +61,7 @@
           tileSprite.rotation = tile.rotation;
           tileSprite.scale.x = tile.flipped.horizontal ? -tileSprite.scale.x : tileSprite.scale.x;
           tileSprite.scale.y = tile.flipped.vertical ? -tileSprite.scale.y : tileSprite.scale.y;
+          tileSprite.alpha = layer.opacity;
 
 
           if (wrect.getGame().debugTilemap && i === 0) {

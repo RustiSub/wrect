@@ -156,11 +156,11 @@
   wrect.TileMap.Mapper.Tiled.prototype.mapTileSet = function(tileSetData) {
     var tileSet = new wrect.TileMap.Mapper.TileSetDataObject();
 
-    tileSet.imagePath = tileSetData.image.src;
-    tileSet.imageHeight = tileSetData.imageheight;
-    tileSet.imageWidth = tileSetData.imagewidth;
-    tileSet.imagePixelHeight = tileSetData.imageheight * tileSetData.tileheight;
-    tileSet.imagePixelWidth = tileSetData.imagewidth * tileSetData.tilewidth;
+    tileSet.imagePath = 'resources/levels/tilemap/' + tileSetData.name + '.png';
+    tileSet.imageHeight = tileSetData.imageheight / tileSetData.tileheight;
+    tileSet.imageWidth = tileSetData.imagewidth / tileSetData.tilewidth;
+    tileSet.imagePixelHeight = tileSetData.imageheight;
+    tileSet.imagePixelWidth = tileSetData.imagewidth;
     tileSet.tileHeight = tileSetData.tileheight;
     tileSet.tileWidth = tileSetData.tilewidth;
     tileSet.name = tileSetData.name;

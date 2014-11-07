@@ -48,7 +48,6 @@
     tileMap.tileWidth = tileMapDataObject.tileWidth;
     tileMap.tileHeight = tileMapDataObject.tileHeight;
 
-    console.log(tileMap);
     return tileMap;
   };
 
@@ -83,7 +82,6 @@
    */
   wrect.TileMap.Parser.prototype.parseTileSet = function(tileSetData) {
     var tileSet = new wrect.TileMap.TileSet();
-
     tileSet.name = tileSetData.name;
     tileSet.imageHeight = tileSetData.imageHeight;
     tileSet.imageWidth = tileSetData.imageWidth;
@@ -91,9 +89,10 @@
     tileSet.tileWidth = tileSetData.tileWidth;
     tileSet.imagePixelWidth = tileSetData.imagePixelWidth;
     tileSet.imagePixelHeight = tileSetData.imagePixelHeight;
-    tileSet.imagePath = 'resources/levels/tilemap/' + tileSetData.name + '.png';
+    tileSet.imagePath = tileSetData.imagePath;
     tileSet.rows = tileSetData.rows;
     tileSet.columns = tileSetData.columns;
+    tileSet.firstGid = tileSetData.firstGid;
 
     return tileSet;
   };

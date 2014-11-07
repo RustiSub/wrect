@@ -5,7 +5,8 @@ window.onload = function() {
 
   var loader = new PIXI.AssetLoader([
     'resources/gui/maximize.png',
-    'resources/levels/tilemap/wood_tileset_3.png'
+    'resources/levels/tilemap/wood_tileset_3.png',
+    'resources/levels/tilemap/collision.png'
   ]);
 
   loader.load();
