@@ -121,12 +121,15 @@
         //}
 
         for (var i = 0; i < ray.interSections.length ; i++) {
-          //visual.lightGraphics.lineTo(ray.interSections[i].x, ray.interSections[i].y, 5);
-          //visual.lightGraphics.lineTo(center.x, center.y);
-          visual.lightGraphics.drawCircle(ray.interSections[i].x, ray.interSections[i].y, 5);
+          visual.lightGraphics.lineTo(ray.interSections[i].x, ray.interSections[i].y, 5);
+          visual.lightGraphics.lineTo(center.x, center.y);
+          triangleCount += 1;
+          //visual.lightGraphics.drawCircle(ray.interSections[i].x, ray.interSections[i].y, 5);
 
-          //visual.lightGraphics.lineTo(ray.interSections[i].x, ray.interSections[i].y);
-          //triangleCount += 1;
+          if (triangleCount === 2) {
+            triangleCount = 0;
+            //visual.lightGraphics.lineTo(center.x, center.y);
+          }
         }
 
         //visual.lightGraphics.moveTo(center.x, center.y);
@@ -155,7 +158,6 @@
 
       if (endPoint == otherEdge.minR || endPoint == otherEdge.maxR) {
         ray.originIntersect = this.getLineIntersection(origin, rayEndPoint, otherEdge.minR, otherEdge.maxR);
-        //debugger;
         continue;
       }
 
