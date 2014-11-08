@@ -44,6 +44,7 @@
       var sourceEntity = this.sourceEntities[se];
       var visual = sourceEntity.components.Visual;
       var center = sourceEntity.components.RigidBody.dimensions.getCenter();
+      var rays = [];
 
       //Cast a ray to every possible vertex
       for (var e = 0; e < this.entities.length; e++) {
@@ -62,8 +63,7 @@
         for (var v = 0; v < vertices.length; v++) {
           var vector = vertices[v];
 
-          var ray = vector.subtract(center);
-          var projectRay = ray.perpendicular().unit();
+          var projectRay = vector.subtract(center).perpendicular().unit();
           var ownProjection = vector.dot(projectRay);
           var smallerCount = 0;
 
@@ -84,79 +84,57 @@
         }
         edges.push({
           minR: minRay,
-          maxR: maxRay,
-          minP: minP,
-          maxP: maxP
+          maxR: maxRay
         });
-        //Move line to border
-        //visual.lightGraphics.lineTo(maxRay.x, maxRay.y);
-        //visual.lightGraphics.lineTo(minRay.x, minRay.y);
-        //visual.lightGraphics.lineTo(center.x, center.y);
       }
 
-      edges.sort(function (a,b) {
-        if (a.minP < b.minP)
-          return -1;
-        if (a.minP > b.minP)
-          return 1;
-        return 0;
-      });
+      for (var edg = 0; edg < edges.length ; edg++) {
+        var edge = edges[edg];
 
-      //edges.sort(function (a,b) {
-      //  if (a.minP < b.minP)
-      //    return -1;
-      //  if (a.minP > b.minP)
-      //    return 1;
-      //  return 0;
-      //});
+        rays.push(this.castRayAtEdges(edges, center, edge.minR.subtract(center).unitScalar(500).add(center)));
+        rays.push(this.castRayAtEdges(edges, center, edge.maxR.subtract(center).unitScalar(500).add(center)));
+      }
 
+      //Draw lines to all shortest ray intersections
       visual.lightGraphics.clear();
       visual.lightGraphics.beginFill(0xFFFFFF, 1);
       visual.lightGraphics.lineStyle(1, 0xFFFFFF, 1);
       visual.lightGraphics.moveTo(center.x, center.y);
 
-      for (var edg = 0; edg < edges.length ; edg++) {
-        var edge = edges[edg];
+      for (var r = 0; r < rays.length ; r++) {
+        var ray = rays[r];
 
-        var rayMin = edge.minR.subtract(center).unitScalar(500).add(center);
-        var rayMax = edge.maxR.subtract(center).unitScalar(500).add(center);
-
-
-        this.castRay(center, edges, edge, visual, rayMin);
         visual.lightGraphics.moveTo(center.x, center.y);
-        visual.lightGraphics.lineTo(rayMin.x, rayMin.y);
-
-        this.castRay(center, edges, edge, visual, rayMax);
-        visual.lightGraphics.moveTo(center.x, center.y);
-        visual.lightGraphics.lineTo(rayMax.x, rayMax.y);
+        visual.lightGraphics.lineTo(ray.shortestIntersection.x, ray.shortestIntersection.y);
+        visual.lightGraphics.drawCircle(ray.shortestIntersection.x, ray.shortestIntersection.y, 5);
       }
 
       visual.lightGraphics.endFill();
     }
   };
 
-  wrect.ECS.System.RayCaster.prototype.castRay = function(center, edges, edge, visual, ray) {
-    var shortestIntersection = new Vector(0, 0);
-    var intersections = [];
-    visual.lightGraphics.drawCircle(ray.x, ray.y, 5);
+  wrect.ECS.System.RayCaster.prototype.castRayAtEdges = function(edges, origin, endPoint) {
+    var ray = {
+      origin: origin,
+      endPoint: endPoint,
+      interSections: [],
+      shortestIntersection: endPoint
+    };
+
     for (var otherEdg = 0; otherEdg < edges.length ; otherEdg++) {
       var otherEdge = edges[otherEdg];
-      if (edge === otherEdge) { continue; }
 
-      var intersect = this.getLineIntersection(center, ray, otherEdge.minR, otherEdge.maxR);
+      var intersect = this.getLineIntersection(origin, endPoint, otherEdge.minR, otherEdge.maxR);
 
       if (intersect) {
-        //if (intersect.subtract(center).len() < shortestIntersection.subtract(center).len()) {
-        //  shortestIntersection = intersect;
-        //}
-        //intersections.push(intersect);
-        visual.lightGraphics.drawCircle(intersect.x, intersect.y, 5);
+        ray.interSections.push(intersect);
+        if (intersect.subtract(origin).len() < ray.shortestIntersection.subtract(origin).len()) {
+          ray.shortestIntersection = intersect;
+        }
       }
     }
 
-    //ray = ray.subtract(center).unitScalar(500).add(center);
-
-    return intersections;
+    return ray;
   };
 
   wrect.ECS.System.RayCaster.prototype.getLineIntersection = function(a, b, c, d) {
