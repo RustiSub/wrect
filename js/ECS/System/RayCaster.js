@@ -59,7 +59,9 @@
 
         var vertices = entity.components.RigidBody.dimensions.vertices;
         var minRay;
+        var minP;
         var maxRay;
+        var maxP;
         visual.lightGraphics.moveTo(center.x, center.y);
         for (var v = 0; v < vertices.length; v++) {
           var vector = vertices[v];
@@ -76,15 +78,19 @@
 
           if (smallerCount == vertices.length - 1) {
             maxRay = vector;
+            maxP = ownProjection;
           }
 
           if (smallerCount == 0) {
             minRay = vector;
+            minP = ownProjection;
           }
         }
         edges.push({
           min: minRay,
-          max: maxRay
+          max: maxRay,
+          minP: minP,
+          maxP: maxP
         });
         //Move line to border
         visual.lightGraphics.lineTo(maxRay.x, maxRay.y);
@@ -93,15 +99,24 @@
       }
       visual.lightGraphics.endFill();
 
-      for (var e = 0; e < edges.length ; e++) {
-        var edge = edges[e];
+      edges.sort(function (a,b) {
+        if (a.minP < b.minP)
+          return -1;
+        if (a.minP > b.minP)
+          return 1;
+        return 0;
+      });
+
+      for (var edg = 0; edg < edges.length ; edg++) {
+        var edge = edges[edg];
 
 
       }
+      debugger;
     }
   };
 
-  wrect.ECS.System.RayCaster.prototype.moveToBorder = function(vector) {
+  wrect.ECS.System.RayCaster.prototype.moveToBorder = function(origin, vector) {
 
   };
 
