@@ -128,7 +128,7 @@ window.onload = function() {
     createJumpBlock({
       x: 50,
       y: 300,
-      w: 350,
+      w: 100,
       h: 50,
       color: 0xFFFFFF
     });
@@ -140,6 +140,14 @@ window.onload = function() {
       h: 100,
       color: 0xFFFFFF
     });
+
+    //createJumpBlock({
+    //  x: 370,
+    //  y: 250,
+    //  w: 20,
+    //  h: 120,
+    //  color: 0xFFFFFF
+    //});
 
     //createJumpBlock({
     //  x: 370,
