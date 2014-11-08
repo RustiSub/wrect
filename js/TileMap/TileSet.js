@@ -4,6 +4,10 @@
   var wrect = window.wrect;
   wrect.TileMap = wrect.TileMap || {};
 
+  /**
+   * @constructor
+   * @class wrect.TileMap.TileSet
+   */
   wrect.TileMap.TileSet = function() {
     this.imagePath = '';
     this.name = '';

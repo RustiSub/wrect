@@ -157,8 +157,8 @@
    * Update the camera container position
    */
   Camera.prototype.updateCameraContainer = function() {
-    this.displayContainer.position.x = -this.position.x;
-    this.displayContainer.position.y = -this.position.y;
+    this.displayContainer.position.x = Math.round(-this.position.x);
+    this.displayContainer.position.y = Math.round(-this.position.y);
   };
 
   /**

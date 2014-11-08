@@ -15,7 +15,8 @@
     var self = this;
     loader.load(function(xhr) {
       var tilemap = self.parseTilemap(xhr.responseText, mapper);
-      tilemap.buildSprites();
+      tilemap.init();
+      tilemap.build();
     });
   };
 
@@ -67,6 +68,9 @@
     layer.name = layerData.name;
     layer.opacity = layerData.opacity;
     layer.visible = true;
+    if (layerData.name === 'collision') {
+      layer.isCollisionLayer = true;
+    }
 
     for (i = 0; i < layerData.tiles.length; i++) {
       layer.tiles.push(this.parseTile(layerData.tiles[i]));

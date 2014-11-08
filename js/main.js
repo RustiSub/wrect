@@ -69,14 +69,6 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    var childBlock = createBlock({
-      x: 100,
-      y: 50,
-      w: 32,
-      h: 32,
-      color: 0xFFFFFF
-    });
-
     createBlock({
       x: 50,
       y: 500,
@@ -86,10 +78,8 @@ window.onload = function() {
     });
 
     block.components.RigidBody.frozen = false;
-    childBlock.components.RigidBody.frozen = false;
 
     block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
-    block.addComponent(new wrect.ECS.Component.Link({linkedEntity: childBlock}));
 
     //childBlock.components.RigidBody.physicsBody = block.components.RigidBody.physicsBody;
     //childBlock.addComponent(new wrect.ECS.Component.Link({entity: block}));

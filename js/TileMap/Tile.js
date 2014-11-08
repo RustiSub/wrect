@@ -4,6 +4,10 @@
 
   wrect.TileMap = wrect.TileMap || {};
 
+  /**
+   * @constructor
+   * @class wrect.TileMap.Tile
+   */
   wrect.TileMap.Tile = function() {
     this.id = 0;
     this.height = 0;
@@ -13,6 +17,10 @@
     this.flipped = {
       horizontal: false,
       vertical: false
-    }
+    };
+    this.sprite = {};
+
+    // Mock an entity for collisions
+    this.components = {};
   };
 }());

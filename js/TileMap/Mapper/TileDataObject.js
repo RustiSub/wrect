@@ -13,6 +13,6 @@
     this.flipped = {
       horizontal: false,
       vertical: false
-    }
+    };
   };
 }());

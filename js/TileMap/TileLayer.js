@@ -4,6 +4,10 @@
 
   wrect.TileMap = wrect.TileMap || {};
 
+  /**
+   * @constructor
+   * @class wrect.TileMap.TileLayer
+   */
   wrect.TileMap.TileLayer = function() {
     this.height = 0;
     this.width = 0;
@@ -14,5 +18,6 @@
     this.visible = true;
     this.position = new wrect.Physics.Vector(0, 0);
     this.tiles = [];
+    this.isCollisionLayer = false;
   };
 }());
