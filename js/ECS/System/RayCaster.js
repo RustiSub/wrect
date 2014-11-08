@@ -101,6 +101,8 @@
       visual.lightGraphics.lineStyle(1, 0xFFFFFF, 1);
       visual.lightGraphics.moveTo(center.x, center.y);
 
+      var triangleCount = 0;
+
       for (var r = 0; r < rays.length ; r++) {
         var ray = rays[r];
 
@@ -108,7 +110,15 @@
         //visual.lightGraphics.drawCircle(ray.endPoint.x, ray.endPoint.y, 5);
 
         //visual.lightGraphics.lineTo(ray.shortestIntersection.x, ray.shortestIntersection.y, 5);
-        visual.lightGraphics.drawCircle(ray.shortestIntersection.x, ray.shortestIntersection.y, 5);
+        //visual.lightGraphics.drawCircle(ray.shortestIntersection.x, ray.shortestIntersection.y, 5);
+
+        //if (ray.interSections.length > 0) {
+        //  var interSection = ray.interSections[0];
+        //
+        //  if (interSection.subtract(center).len() < ray.shortestIntersection.subtract(center).len()) {
+        //
+        //  }
+        //}
 
         for (var i = 0; i < ray.interSections.length ; i++) {
           //visual.lightGraphics.lineTo(ray.interSections[i].x, ray.interSections[i].y, 5);
@@ -135,6 +145,7 @@
     var ray = {
       origin: origin,
       endPoint: rayEndPoint,
+      originIntersect: {},
       interSections: [],
       shortestIntersection: endPoint
     };
@@ -142,18 +153,33 @@
     for (var otherEdg = 0; otherEdg < edges.length ; otherEdg++) {
       var otherEdge = edges[otherEdg];
 
-      var intersect = this.getLineIntersection(origin, rayEndPoint, otherEdge.minR, otherEdge.maxR);
       if (endPoint == otherEdge.minR || endPoint == otherEdge.maxR) {
+        ray.originIntersect = this.getLineIntersection(origin, rayEndPoint, otherEdge.minR, otherEdge.maxR);
+        //debugger;
         continue;
       }
+
+      var intersect = this.getLineIntersection(origin, rayEndPoint, otherEdge.minR, otherEdge.maxR);
+
       if (intersect) {
         ray.interSections.push(intersect);
         if (intersect.subtract(origin).len() <= ray.shortestIntersection.subtract(origin).len()) {
           ray.shortestIntersection = intersect;
-          //debugger;
         }
       }
     }
+
+    if (ray.originIntersect && ray.shortestIntersection.subtract(origin).len() >= ray.originIntersect.subtract(origin).len()) {
+      ray.interSections.push(ray.originIntersect);
+    }
+
+    ray.interSections.sort(function(a, b) {
+      if (a.subtract(origin).len() < b.subtract(origin).len())
+        return -1;
+      if (a.subtract(origin).len() > b.subtract(origin).len())
+        return 1;
+      return 0;
+    });
 
     return ray;
   };
