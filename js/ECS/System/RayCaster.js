@@ -91,8 +91,8 @@
       for (var edg = 0; edg < edges.length ; edg++) {
         var edge = edges[edg];
 
-        rays.push(this.castRayAtEdges(edges, center, edge.minR.subtract(center).unitScalar(500).add(center)));
-        rays.push(this.castRayAtEdges(edges, center, edge.maxR.subtract(center).unitScalar(500).add(center)));
+        rays.push(this.castRayAtEdges(edges, center, edge.minR));
+        rays.push(this.castRayAtEdges(edges, center, edge.maxR));
       }
 
       //Draw lines to all shortest ray intersections
@@ -104,32 +104,46 @@
       for (var r = 0; r < rays.length ; r++) {
         var ray = rays[r];
 
+        visual.lightGraphics.lineTo(ray.endPoint.x, ray.endPoint.y);
+        //visual.lightGraphics.drawCircle(ray.endPoint.x, ray.endPoint.y, 5);
+        //visual.lightGraphics.drawCircle(ray.shortestIntersection.x, ray.shortestIntersection.y, 5);
+
+        for (var i = 0; i < ray.interSections.length ; i++) {
+          visual.lightGraphics.drawCircle(ray.interSections[i].x, ray.interSections[i].y, 5);
+        }
+
         visual.lightGraphics.moveTo(center.x, center.y);
-        visual.lightGraphics.lineTo(ray.shortestIntersection.x, ray.shortestIntersection.y);
-        visual.lightGraphics.drawCircle(ray.shortestIntersection.x, ray.shortestIntersection.y, 5);
       }
+      //visual.lightGraphics.lineTo(center.x, center.y);
 
       visual.lightGraphics.endFill();
+      //console.log(rays);
+      //debugger;
     }
   };
 
   wrect.ECS.System.RayCaster.prototype.castRayAtEdges = function(edges, origin, endPoint) {
+    //.minR.subtract(center).unitScalar(500).add(center))
+    var rayEndPoint = endPoint.subtract(origin).unitScalar(500).add(origin);
     var ray = {
       origin: origin,
-      endPoint: endPoint,
+      endPoint: rayEndPoint,
       interSections: [],
-      shortestIntersection: endPoint
+      shortestIntersection: rayEndPoint
     };
 
     for (var otherEdg = 0; otherEdg < edges.length ; otherEdg++) {
       var otherEdge = edges[otherEdg];
 
-      var intersect = this.getLineIntersection(origin, endPoint, otherEdge.minR, otherEdge.maxR);
-
+      var intersect = this.getLineIntersection(origin, rayEndPoint, otherEdge.minR, otherEdge.maxR);
+      //if (endPoint == otherEdge.minR || endPoint == otherEdge.maxR) {
+      //  continue;
+      //}
       if (intersect) {
         ray.interSections.push(intersect);
-        if (intersect.subtract(origin).len() < ray.shortestIntersection.subtract(origin).len()) {
+        if (intersect.subtract(origin).len() <= ray.shortestIntersection.subtract(origin).len()) {
           ray.shortestIntersection = intersect;
+          //debugger;
         }
       }
     }
