@@ -42,6 +42,38 @@
     return edges;
   };
 
+  wrect.Geometry.Dimensions.prototype.getVisibleEdges = function(origin) {
+    var edges = [];
+    var vertices = this.vertices;
+    var minRay;
+    var maxRay;
+
+    for (var v = 0; v < vertices.length; v++) {
+      var vector = vertices[v];
+
+      var projectRay = vector.subtract(origin).perpendicular().unit();
+      var ownProjection = vector.dot(projectRay);
+      var smallerCount = 0;
+
+      for (var p = 0; p < vertices.length; p++) {
+        var projection = vertices[p].dot(projectRay);
+        smallerCount += (ownProjection - projection < 0);
+      }
+
+      if (smallerCount == vertices.length - 1) {
+        maxRay = vector;
+      }
+
+      if (smallerCount == 0) {
+        minRay = vector;
+      }
+    }
+
+    edges.push(new Line(minRay, maxRay));
+
+    return edges;
+  };
+
   wrect.Geometry.Dimensions.prototype.rotate = function() {};
   wrect.Geometry.Dimensions.prototype.getBounds = function() {};
   wrect.Geometry.Dimensions.prototype.getCenter = function() {};

@@ -44,22 +44,27 @@
 
     //Gather RayTargets
     //All edges provide 2 ray targets
+    function adjustVertex(vertex, targetCenter) {
+      var distanceToCenter = targetCenter.subtract(vertex).len();
+      vertex = targetCenter.subtract(vertex).unitScalar(distanceToCenter - 1).add(targetCenter);
+
+      return vertex;
+    }
+
     for (var entityIndex = 0; entityIndex < this.targetEntities.length; entityIndex++) {
       var targetEntity = this.targetEntities[entityIndex];
-      var vertices = targetEntity.components.RigidBody.dimensions.vertices;
+      var edges = entity.components.RigidBody.dimensions.getEdges();//getVisibleEdges(center);
+
       var targetCenter = targetEntity.components.RigidBody.dimensions.getCenter();
       //Loop edges
-      for (var v = 0; v < vertices.length; v++) {
-        var vertex = vertices[v];
-        var distanceToCenter = targetCenter.subtract(vertex).len();
-        vertex = targetCenter.subtract(vertex).unitScalar(distanceToCenter - 1).add(targetCenter);
+      for (var edgeIndex = 0; edgeIndex < edges.length; edgeIndex++) {
+        var edge = edges[edgeIndex];
 
-        targetPoints.push(vertex);
+        targetPoints.push(adjustVertex(edge.point1, targetCenter));
+        targetPoints.push(adjustVertex(edge.point2, targetCenter));
       }
     }
     //The four corners of the container provide a target each
-
-    //Only get the closest intersection of each ray
 
     //Draw triangles with all intersections
     this.rayCaster.rayGraphics.clear();

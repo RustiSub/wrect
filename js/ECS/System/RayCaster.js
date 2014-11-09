@@ -52,10 +52,11 @@
       }
 
       var edges = entity.components.RigidBody.dimensions.getEdges();
+      //var edges = entity.components.RigidBody.dimensions.getVisibleEdges(origin);
       //Loop edges
       for (var edgeIndex = 0; edgeIndex < edges.length; edgeIndex++) {
         var edge = edges[edgeIndex];
-        //Get Intersections bewteen ray and edge
+        //Get Intersections between ray and edge
         var intersection = rayLine.getIntersections(edge);
 
         var existingFound = false;
@@ -73,6 +74,10 @@
         }
       }
     }
+
+    //ray.intersections.sort(function(a, b) {
+    //
+    //});
 
     return ray;
   };
