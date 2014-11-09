@@ -4,6 +4,7 @@
   wrect.Geometry = wrect.Geometry || {};
 
   var Vector = wrect.Physics.Vector;
+  var Line = wrect.Geometry.Line;
 
   /**
    *
@@ -12,6 +13,7 @@
    */
   wrect.Geometry.Dimensions = function () {
     this.vertices = [];
+    this.edges = [];
     this.origin = new Vector(0, 0);
     this.previousOrigin = null;
   };
@@ -25,6 +27,14 @@
 
     this.origin = this.origin.add(v);
   };
+
+  /**
+   * @returns {wrect.Geometry.Line}
+   */
+  wrect.Geometry.Dimensions.prototype.getEdges = function() {
+    return this.edges;
+  };
+
   wrect.Geometry.Dimensions.prototype.rotate = function() {};
   wrect.Geometry.Dimensions.prototype.getBounds = function() {};
   wrect.Geometry.Dimensions.prototype.getCenter = function() {};

@@ -141,13 +141,13 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    //createJumpBlock({
-    //  x: 370,
-    //  y: 50,
-    //  w: 20,
-    //  h: 370,
-    //  color: 0xFFFFFF
-    //});
+    createJumpBlock({
+      x: 370,
+      y: 50,
+      w: 20,
+      h: 370,
+      color: 0xFFFFFF
+    });
 
     //createJumpBlock({
     //  x: 370,

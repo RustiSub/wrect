@@ -38,6 +38,7 @@
   };
 
   wrect.ECS.System.RayCaster.prototype.run = function() {
+    return;
     var edges = [];
 
     for (var se = 0; se < this.sourceEntities.length; se++) {
@@ -140,6 +141,12 @@
       //console.log(rays);
       //debugger;
     }
+  };
+
+  wrect.ECS.System.RayCaster.prototype.castRay = function(origin, direction, size) {
+    var ray = {
+
+    };
   };
 
   wrect.ECS.System.RayCaster.prototype.castRayAtEdges = function(edges, origin, endPoint) {

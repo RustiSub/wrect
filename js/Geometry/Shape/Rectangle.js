@@ -22,6 +22,16 @@
       options.origin.add(width).add(height),
       options.origin.add(height)
     ];
+
+    this.edges = [];
+
+    for(var vertexIndex in this.vertices) {
+      var nextPointIndex = (vertexIndex + 1);
+      if (vertexIndex === this.vertices.length) {
+        nextPointIndex = 0;
+      }
+      this.edges.push(new Line(this.vertices[vertexIndex], this.vertices[nextPointIndex]));
+    }
   };
 
   wrect.Geometry.Rectangle.prototype = Object.create( wrect.Geometry.Dimensions.prototype );
