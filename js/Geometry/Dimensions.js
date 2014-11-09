@@ -4,6 +4,7 @@
   wrect.Geometry = wrect.Geometry || {};
 
   var Vector = wrect.Physics.Vector;
+  var Line = wrect.Geometry.Line;
 
   /**
    *
@@ -27,11 +28,18 @@
     this.origin = this.origin.add(v);
   };
 
-  /**
-   * @returns {wrect.Geometry.Line}
-   */
   wrect.Geometry.Dimensions.prototype.getEdges = function() {
-    return this.edges;
+    var edges = [];
+
+    for(var vertexIndex = 0; vertexIndex < this.vertices.length; vertexIndex++) {
+      var nextPointIndex = (vertexIndex + 1);
+      if (nextPointIndex === this.vertices.length) {
+        nextPointIndex = 0;
+      }
+      edges.push(new Line(this.vertices[vertexIndex], this.vertices[nextPointIndex]));
+    }
+
+    return edges;
   };
 
   wrect.Geometry.Dimensions.prototype.rotate = function() {};

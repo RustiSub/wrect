@@ -51,7 +51,7 @@
       var entity = this.entities[entityIndex];
       var edges = entity.components.RigidBody.dimensions.getEdges();
       //Loop edges
-      for (var edgeIndex = 0; edgeIndex < edges.length; edges++) {
+      for (var edgeIndex = 0; edgeIndex < edges.length; edgeIndex++) {
         var edge = edges[edgeIndex];
         //Get Intersections bewteen ray and edge
         var intersection = rayLine.getIntersections(edge);

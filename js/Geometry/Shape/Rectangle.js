@@ -2,7 +2,6 @@
   "use strict";
 
   var Vector = wrect.Physics.Vector;
-  var Line = wrect.Geometry.Line;
 
   /**
    *
@@ -23,16 +22,6 @@
       options.origin.add(width).add(height),
       options.origin.add(height)
     ];
-
-    this.edges = [];
-
-    for(var vertexIndex = 0; vertexIndex < this.vertices.length; vertexIndex++) {
-      var nextPointIndex = (vertexIndex + 1);
-      if (nextPointIndex === this.vertices.length) {
-        nextPointIndex = 0;
-      }
-      this.edges.push(new Line(this.vertices[vertexIndex], this.vertices[nextPointIndex]));
-    }
   };
 
   wrect.Geometry.Rectangle.prototype = Object.create( wrect.Geometry.Dimensions.prototype );

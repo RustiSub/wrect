@@ -167,22 +167,22 @@ window.onload = function() {
     //  color: 0xFFFFFF
     //});
 
-    var block = createLiveBlock({
-      x: 50,
-      y: 250,
-      w: 20,
-      h: 50,
-      color: 0xFFFFFF,
-      light: true
-    });
-
-    block.components.RigidBody.frozen = false;
-
-
-    block.addComponent(new wrect.ECS.Component.ControlScheme.Player());
-
-    //block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 5));
-    block.components.RigidBody.gravity = true;
+    //var block = createLiveBlock({
+    //  x: 50,
+    //  y: 250,
+    //  w: 20,
+    //  h: 50,
+    //  color: 0xFFFFFF,
+    //  light: true
+    //});
+    //
+    //block.components.RigidBody.frozen = false;
+    //
+    //
+    //block.addComponent(new wrect.ECS.Component.ControlScheme.Player());
+    //
+    ////block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 5));
+    //block.components.RigidBody.gravity = true;
 
     var stageDarkLayer = new PIXI.Graphics();
     stageDarkLayer.beginFill(0x000000, 0.5);
@@ -198,7 +198,7 @@ window.onload = function() {
 
     game.getEntityManager().cameraContainer.addChild(cameraDarkLayer);
 
-    var ray = game.systems.post.RayCaster.system.castRay(new Vector(0, 0), new Vector(1, 1), 1000);
+    var ray = game.systems.post.RayCaster.system.castRay(new Vector(0, 220), new Vector(100, 230), 500);
     game.systems.post.RayCaster.system.drawRay(ray);
   });
 };
