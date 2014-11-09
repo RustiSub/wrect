@@ -33,7 +33,8 @@
     }
   };
 
-  wrect.ECS.System.RayCaster.prototype.castRay = function(origin, direction, size) {
+  wrect.ECS.System.RayCaster.prototype.castRay = function(origin, direction, size, excludedTargets) {
+    excludedTargets = excludedTargets || [];
     //Define ray
     var endPoint = direction.subtract(origin).unitScalar(size).add(origin);
     var rayLine = new Line(origin, endPoint);
@@ -45,6 +46,11 @@
     //Loop all relevant entities (that contain Dimensions (~= RigidBody)
     for (var entityIndex = 0; entityIndex < this.entities.length; entityIndex++) {
       var entity = this.entities[entityIndex];
+
+      if (excludedTargets.indexOf(entity) !== -1) {
+        continue;
+      }
+
       var edges = entity.components.RigidBody.dimensions.getEdges();
       //Loop edges
       for (var edgeIndex = 0; edgeIndex < edges.length; edgeIndex++) {
@@ -63,9 +69,9 @@
   };
 
   wrect.ECS.System.RayCaster.prototype.drawRay = function(ray) {
-    this.rayGraphics.clear();
-    this.rayGraphics.beginFill(0xFFFFFF, 1);
-    this.rayGraphics.lineStyle(1, 0xFFFFFF, 1);
+    //this.rayGraphics.clear();
+    //this.rayGraphics.beginFill(0xFFFFFF, 1);
+    //this.rayGraphics.lineStyle(1, 0xFFFFFF, 1);
 
     this.rayGraphics.moveTo(ray.line.point1.x, ray.line.point1.y);
     this.rayGraphics.lineTo(ray.line.point2.x, ray.line.point2.y);
@@ -75,6 +81,6 @@
       this.rayGraphics.drawCircle(intersection.point.x, intersection.point.y, 5);
     }
 
-    this.rayGraphics.endFill();
+    //this.rayGraphics.endFill();
   };
 }());
