@@ -4,7 +4,7 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
-  var Vector = wrect.Physics.Vector;
+  var Line = wrect.Geometry.Line;
 
   wrect.ECS.System.RayCaster = function (options) {
     wrect.ECS.System.BaseSystem.call(this);
@@ -35,6 +35,53 @@
     if (this.checkSourceDependencies(data.entity) && this.sourceEntities.indexOf(data.entity) === -1) {
       this.sourceEntities.push(data.entity);
     }
+  };
+
+  wrect.ECS.System.RayCaster.prototype.castRay = function(origin, direction, size) {
+    //Define ray
+    var endPoint = direction.subtract(origin).unitScalar(size).add(origin);
+    var rayLine = new Line(origin, endPoint);
+    var ray = {
+      line: rayLine,
+      intersections: []
+    };
+
+    //Loop all relevant entities (that contain Dimensions (~= RigidBody)
+    for (var entityIndex = 0; entityIndex < this.entities.length; entityIndex++) {
+      var entity = this.entities[entityIndex];
+      var edges = entity.components.RigidBody.dimensions.getEdges();
+      //Loop edges
+      for (var edgeIndex = 0; edgeIndex < edges.length; edges++) {
+        var edge = edges[edgeIndex];
+        //Get Intersections bewteen ray and edge
+        var intersection = rayLine.getIntersections(edge);
+        //Store intersection as Ray-Entity-Edge-Vector/Line
+        ray.intersections.push({
+          entity: entity,
+          point: intersection
+        });
+      }
+    }
+
+    return ray;
+  };
+
+  wrect.ECS.System.RayCaster.prototype.drawRay = function(ray) {
+    var rayGraphics = new PIXI.Graphics();
+    rayGraphics.beginFill(0xFFFFFF, 1);
+    rayGraphics.lineStyle(1, 0xFFFFFF, 1);
+
+    rayGraphics.moveTo(ray.line.point1.x, ray.line.point1.y);
+    rayGraphics.lineTo(ray.line.point2.x, ray.line.point2.y);
+
+    for (var i = 0; i < ray.intersections.length; i++) {
+      var intersection = ray.intersections[i];
+      rayGraphics.drawCircle(intersection.point.x, intersection.point.y, 5);
+    }
+
+    rayGraphics.endFill();
+
+    game.getEntityManager().cameraContainer.addChild(rayGraphics);
   };
 
   wrect.ECS.System.RayCaster.prototype.run = function() {
@@ -143,12 +190,6 @@
     }
   };
 
-  wrect.ECS.System.RayCaster.prototype.castRay = function(origin, direction, size) {
-    var ray = {
-
-    };
-  };
-
   wrect.ECS.System.RayCaster.prototype.castRayAtEdges = function(edges, origin, endPoint) {
     //.minR.subtract(center).unitScalar(500).add(center))
     var rayEndPoint = endPoint.subtract(origin).unitScalar(500).add(origin);
@@ -191,34 +232,6 @@
     });
 
     return ray;
-  };
-
-  wrect.ECS.System.RayCaster.prototype.getLineIntersection = function(a, b, c, d) {
-    var CmP = c.subtract(a);
-    var r = b.subtract(a);
-    var s = d.subtract(c);
-
-    var CmPxr = CmP.cross(r);
-    var CmPxs = CmP.cross(s);
-    var rxs = r.cross(s);
-
-    if (rxs === 0) { return false; }
-
-    var rxsr = 1 / rxs;
-    var t = CmPxs * rxsr;
-    var u = CmPxr * rxsr;
-
-    //console.log(t, u);
-    var ptr = a.add(r.multiply(t));
-    var qus = c.add(s.multiply(u));
-    //p + t r = q + u s.
-    //console.log(ptr, qus);
-
-    if ((t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)) {
-      return qus;
-    }
-
-    return false;
   };
 
   wrect.ECS.System.RayCaster.prototype.perform = function(entity) {

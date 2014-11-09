@@ -2,6 +2,7 @@
   "use strict";
 
   var Vector = wrect.Physics.Vector;
+  var Line = wrect.Geometry.Line;
 
   /**
    *
@@ -25,9 +26,9 @@
 
     this.edges = [];
 
-    for(var vertexIndex in this.vertices) {
+    for(var vertexIndex = 0; vertexIndex < this.vertices.length; vertexIndex++) {
       var nextPointIndex = (vertexIndex + 1);
-      if (vertexIndex === this.vertices.length) {
+      if (nextPointIndex === this.vertices.length) {
         nextPointIndex = 0;
       }
       this.edges.push(new Line(this.vertices[vertexIndex], this.vertices[nextPointIndex]));

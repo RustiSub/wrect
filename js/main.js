@@ -8,6 +8,8 @@ window.onload = function() {
   ]);
   loader.load();
   loader.addEventListener('onComplete', function() {
+    var Vector = wrect.Physics.Vector;
+
     game = new Game({
       debug: true,
       width: window.innerWidth,
@@ -196,11 +198,7 @@ window.onload = function() {
 
     game.getEntityManager().cameraContainer.addChild(cameraDarkLayer);
 
-    game.systems.post.RayCaster.system.getLineIntersection(
-      new wrect.Physics.Vector(0, 0),
-      new wrect.Physics.Vector(20, 20),
-      new wrect.Physics.Vector(10, 0),
-      new wrect.Physics.Vector(0, 10)
-    );
+    var ray = game.systems.post.RayCaster.system.castRay(new Vector(0, 0), new Vector(1, 1), 1000);
+    game.systems.post.RayCaster.system.drawRay(ray);
   });
 };

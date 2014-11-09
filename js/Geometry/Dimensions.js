@@ -4,7 +4,6 @@
   wrect.Geometry = wrect.Geometry || {};
 
   var Vector = wrect.Physics.Vector;
-  var Line = wrect.Geometry.Line;
 
   /**
    *
