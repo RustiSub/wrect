@@ -47,9 +47,12 @@
     for (var entityIndex = 0; entityIndex < this.targetEntities.length; entityIndex++) {
       var targetEntity = this.targetEntities[entityIndex];
       var vertices = targetEntity.components.RigidBody.dimensions.vertices;
+      var targetCenter = targetEntity.components.RigidBody.dimensions.getCenter();
       //Loop edges
       for (var v = 0; v < vertices.length; v++) {
         var vertex = vertices[v];
+        var distanceToCenter = targetCenter.subtract(vertex).len();
+        vertex = targetCenter.subtract(vertex).unitScalar(distanceToCenter - 1).add(targetCenter);
 
         targetPoints.push(vertex);
       }

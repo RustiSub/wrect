@@ -57,11 +57,20 @@
         var edge = edges[edgeIndex];
         //Get Intersections bewteen ray and edge
         var intersection = rayLine.getIntersections(edge);
-        //Store intersection as Ray-Entity-Edge-Vector/Line
-        ray.intersections.push({
-          entity: entity,
-          point: intersection
-        });
+
+        var existingFound = false;
+        for (var existingIndex = 0; existingIndex < ray.intersections.length; existingIndex++) {
+          var existingIntersection = ray.intersections[existingIndex];
+          if (existingIntersection.x === intersection.x && existingIntersection.y === intersection.y) {
+            existingFound = true;
+            break;
+          }
+        }
+
+        if (intersection && !existingFound) {
+          //Store intersection as Ray-Entity-Edge-Vector/Line
+          ray.intersections.push(intersection);
+        }
       }
     }
 
@@ -78,7 +87,7 @@
 
     for (var i = 0; i < ray.intersections.length; i++) {
       var intersection = ray.intersections[i];
-      this.rayGraphics.drawCircle(intersection.point.x, intersection.point.y, 5);
+      this.rayGraphics.drawCircle(intersection.x, intersection.y, 5);
     }
 
     //this.rayGraphics.endFill();
