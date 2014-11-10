@@ -4,9 +4,7 @@ var game;
 window.onload = function() {
 
   var loader = new PIXI.AssetLoader([
-    'resources/gui/maximize.png',
-    'resources/levels/tilemap/wood_tileset_3.png',
-    'resources/levels/tilemap/collision.png'
+    'resources/gui/maximize.png'
   ]);
 
   loader.load();
@@ -81,13 +79,8 @@ window.onload = function() {
 
     block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
 
-    //childBlock.components.RigidBody.physicsBody = block.components.RigidBody.physicsBody;
-    //childBlock.addComponent(new wrect.ECS.Component.Link({entity: block}));
-
-
     // TileMap stuff!
-    var parser = new wrect.TileMap.Parser();
-    parser.loadTilemap('resources/levels/tilemap/tiled.json');
+    wrect.getGame()._tileMapManager.loadMap('resources/levels/tilemap/tiled.json');
 
     wrect.getGame().getCamera().follow(block);
 

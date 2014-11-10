@@ -142,6 +142,7 @@
       //this._builder = new this._options.builder();
       this._levelManager = new this._options.levelManagerClass(this._stage, this._options.defaultLevel);
       this._camera = new Camera(0, 0, this._options.width, this._options.height, this);
+      this._tileMapManager = new wrect.TileMap.TileMapManager(this);
 
       this.timeStepSystem = {};
 

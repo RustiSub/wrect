@@ -18,6 +18,8 @@
     this.pixelHeight = 0;
     this.tileWidth = 0;
     this.tileHeight = 0;
+    this.assets = null;
+    this.visibleTiles = [];
   };
 
   /**
@@ -48,7 +50,8 @@
   /**
    * Builds the sprites and rigid bodies and adds them to the game.
    */
-  wrect.TileMap.TileMap.prototype.build = function() {
+  wrect.TileMap.TileMap.prototype.build = function(dimensions) {
+    // Build the tiles within the dimensions once, then on update check which ones need to be moved and swapped.
     for (var i = 0; i < this.layers.length; i++) {
       var layer = this.layers[i];
       var pixiLayerContainer = new PIXI.DisplayObjectContainer();
@@ -91,13 +94,14 @@
         dimensions: dimensions
       });
 
-      var border = new PIXI.Graphics();
-      border.beginFill(0xFFFFFF, 0);
-      border.lineStyle(1, 0xFF0000);
-      border.drawRect(x, y, tile.width, tile.height);
-      border.endFill();
-      wrect.getGame()._cameraContainer.addChild(border);
-
+      if (wrect.getGame().debug) {
+        var border = new PIXI.Graphics();
+        border.beginFill(0xFFFFFF, 0);
+        border.lineStyle(1, 0xFF0000);
+        border.drawRect(x, y, tile.width, tile.height);
+        border.endFill();
+        wrect.getGame()._cameraContainer.addChild(border);
+      }
 
       var physicsEngine;
       if (physicsEngine = wrect.getGame().physicsEngine) {
@@ -170,5 +174,19 @@
     text.position = tile.sprite.position;
     wrect.getGame()._cameraContainer.addChild(border);
     wrect.getGame()._cameraContainer.addChild(text);
+  };
+
+  /**
+   * @returns {Array}
+   */
+  wrect.TileMap.TileMap.prototype.getAssets = function() {
+    if (this.assets === null) {
+      this.assets = [];
+      for (var i in this.tileSets) {
+        this.assets.push(this.tileSets[i].imagePath);
+      }
+    }
+
+    return this.assets;
   };
 }());

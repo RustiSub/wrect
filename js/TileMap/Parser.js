@@ -6,17 +6,21 @@
   wrect.TileMap.Parser = function() {};
 
   /**
-   *
    * @param path
-   * @param mapper
+   * @param callback
+   * @param context
+   * @param [mapper]
    */
-  wrect.TileMap.Parser.prototype.loadTilemap = function(path, mapper) {
+  wrect.TileMap.Parser.prototype.loadTilemap = function(path, callback, context, mapper) {
     var loader = new wrect.Loader.JsonLoader(path);
     var self = this;
     loader.load(function(xhr) {
       var tilemap = self.parseTilemap(xhr.responseText, mapper);
-      tilemap.init();
-      tilemap.build();
+      wrect.Loader.AssetLoader(tilemap.getAssets(), function() {
+        if (typeof callback === 'function') {
+          callback.call(context, tilemap);
+        }
+      });
     });
   };
 

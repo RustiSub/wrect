@@ -88,6 +88,12 @@
      */
     this.bounds = new Vector(width, height);
 
+    this.dimensions = new wrect.Geometry.Rectangle({
+      width: this.game.getWidth(),
+      height: this.game.getHeight(),
+      origin: this.position
+    });
+
     var curLvl = this.game.getCurrentLevel();
 
     /**
@@ -120,6 +126,14 @@
    */
   Camera.prototype.follow = function(entity) {
     this.target = entity;
+  };
+
+  /**
+   * Returns the position and bounds of the camera.
+   * @returns {wrect.Geometry.Rectangle|*}
+   */
+  Camera.prototype.getDimensions = function() {
+    return this.dimensions;
   };
 
   /**
