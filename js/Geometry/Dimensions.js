@@ -52,6 +52,7 @@
       var vector = vertices[v];
 
       var projectRay = vector.subtract(origin).perpendicular().unit();
+      //var projectRay = new Vector(1, 1);
       var ownProjection = vector.dot(projectRay);
       var smallerCount = 0;
 
@@ -60,16 +61,18 @@
         smallerCount += (ownProjection - projection < 0);
       }
 
-      if (smallerCount == vertices.length - 1) {
+      if (smallerCount === vertices.length - 1) {
         maxRay = vector;
       }
 
-      if (smallerCount == 0) {
+      if (smallerCount === 0) {
         minRay = vector;
       }
     }
 
-    edges.push(new Line(minRay, maxRay));
+    if (minRay && maxRay) {
+      edges.push(new Line(minRay, maxRay));
+    }
 
     return edges;
   };

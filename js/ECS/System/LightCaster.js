@@ -45,15 +45,15 @@
     //Gather RayTargets
     //All edges provide 2 ray targets
     function adjustVertex(vertex, targetCenter) {
-      var distanceToCenter = targetCenter.subtract(vertex).len();
-      vertex = targetCenter.subtract(vertex).unitScalar(distanceToCenter - 1).add(targetCenter);
+      var distanceToCenter = vertex.subtract(targetCenter).len();
+      vertex = vertex.subtract(targetCenter).unitScalar(distanceToCenter - 0.1).add(targetCenter);
 
       return vertex;
     }
 
     for (var entityIndex = 0; entityIndex < this.targetEntities.length; entityIndex++) {
       var targetEntity = this.targetEntities[entityIndex];
-      var edges = entity.components.RigidBody.dimensions.getEdges();//getVisibleEdges(center);
+      var edges = targetEntity.components.RigidBody.dimensions.getVisibleEdges(center);
 
       var targetCenter = targetEntity.components.RigidBody.dimensions.getCenter();
       //Loop edges
@@ -62,6 +62,8 @@
 
         targetPoints.push(adjustVertex(edge.point1, targetCenter));
         targetPoints.push(adjustVertex(edge.point2, targetCenter));
+        //targetPoints.push(edge.point1);
+        //targetPoints.push(edge.point2);
       }
     }
     //The four corners of the container provide a target each
