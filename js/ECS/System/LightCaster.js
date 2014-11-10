@@ -67,15 +67,63 @@
     //The four corners of the container provide a target each
 
     //Draw triangles with all intersections
-    this.rayCaster.rayGraphics.clear();
-    this.rayCaster.rayGraphics.beginFill(0xFFFFFF, 1);
-    this.rayCaster.rayGraphics.lineStyle(1, 0xFFFFFF, 1);
+    var rayGraphics = this.rayCaster.rayGraphics;
+
+
+    var triangleCount = 0;
+
+    targetPoints.sort(function(a, b) {
+      var aP = a.dot(center);
+      var bP = b.dot(center);
+      if (aP < bP)
+        return -1;
+      if (aP > bP)
+        return 1;
+      return 0;
+    });
+
+    var drawPoints = [];
 
     for (var t = 0; t < targetPoints.length; t++) {
-     var ray = this.rayCaster.castRay(center, targetPoints[t], 500, [entity]);
-     this.rayCaster.drawRay(ray);
+      var ray = this.rayCaster.castRay(center, targetPoints[t], 500, [entity]);
+      var rayPoints = [];
+
+      for (var i = 0; i < ray.intersections.length; i++) {
+        rayPoints.push(ray.intersections[i]);
+        if (!ray.intersections[i].passThrough) {
+          break;
+        }
+      }
+
+      rayPoints.reverse();
+      drawPoints.push.apply(drawPoints, rayPoints);
     }
 
-    this.rayCaster.rayGraphics.endFill();
+    rayGraphics.clear();
+    rayGraphics.beginFill(0xFFFFFF, 1);
+    rayGraphics.lineStyle(1, 0xFFFFFF, 1);
+    rayGraphics.moveTo(center.x, center.y);
+
+    for (var d = 0; d < drawPoints.length; d++) {
+      var drawPoint = drawPoints[d];
+
+      rayGraphics.drawCircle(drawPoint.point.x, drawPoint.point.y, 5);
+
+      //rayGraphics.lineTo(drawPoint.point.x, drawPoint.point.y);
+      //triangleCount += 1;
+      //
+      //if (triangleCount === 2) {
+      //  rayGraphics.lineTo(center.x, center.y);
+      //  //rayGraphics.endFill();
+      //  //rayGraphics.beginFill(0xFFFFFF, 1);
+      //  //rayGraphics.lineStyle(1, 0xFFFFFF, 1);
+      //}
+    }
+
+    rayGraphics.endFill();
+  };
+
+  wrect.ECS.System.LightCaster.prototype.drawArea = function(ray) {
+
   };
 }());

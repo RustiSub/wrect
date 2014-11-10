@@ -99,11 +99,7 @@
 
     for (var i = 0; i < ray.intersections.length; i++) {
       var intersection = ray.intersections[i];
-      if (intersection.passThrough) {
-
-      } else {
-        this.rayGraphics.drawCircle(intersection.point.x, intersection.point.y, 5);
-      }
+      this.rayGraphics.drawCircle(intersection.point.x, intersection.point.y, 5);
     }
 
     //this.rayGraphics.endFill();
