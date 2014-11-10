@@ -46,7 +46,7 @@
     //All edges provide 2 ray targets
     function adjustVertex(vertex, targetCenter) {
       var distanceToCenter = vertex.subtract(targetCenter).len();
-      vertex = vertex.subtract(targetCenter).unitScalar(distanceToCenter - 0.1).add(targetCenter);
+      vertex = vertex.subtract(targetCenter).unitScalar(distanceToCenter - 0.001).add(targetCenter);
 
       return vertex;
     }
@@ -62,8 +62,6 @@
 
         targetPoints.push(adjustVertex(edge.point1, targetCenter));
         targetPoints.push(adjustVertex(edge.point2, targetCenter));
-        //targetPoints.push(edge.point1);
-        //targetPoints.push(edge.point2);
       }
     }
     //The four corners of the container provide a target each

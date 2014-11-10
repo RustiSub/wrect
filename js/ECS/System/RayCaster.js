@@ -51,8 +51,8 @@
         continue;
       }
 
-      var edges = entity.components.RigidBody.dimensions.getEdges();
-      //var edges = entity.components.RigidBody.dimensions.getVisibleEdges(origin);
+      //var edges = entity.components.RigidBody.dimensions.getEdges();
+      var edges = entity.components.RigidBody.dimensions.getVisibleEdges(origin);
       //Loop edges
       for (var edgeIndex = 0; edgeIndex < edges.length; edgeIndex++) {
         var edge = edges[edgeIndex];
@@ -70,14 +70,21 @@
 
         if (intersection && !existingFound) {
           //Store intersection as Ray-Entity-Edge-Vector/Line
-          ray.intersections.push(intersection);
+          var passThrough = false;
+          //console.log(intersection.x, direction.x, intersection.y, direction.y);
+          if (intersection.x >= direction.x - 0.01 && intersection.x <= direction.x + 0.01) {
+            if (intersection.y >= direction.y - 0.01 && intersection.y <= direction.y + 0.01) {
+              passThrough = true;
+            }
+          }
+
+          ray.intersections.push({
+            point: intersection,
+            passThrough: passThrough
+          });
         }
       }
     }
-
-    //ray.intersections.sort(function(a, b) {
-    //
-    //});
 
     return ray;
   };
@@ -92,7 +99,11 @@
 
     for (var i = 0; i < ray.intersections.length; i++) {
       var intersection = ray.intersections[i];
-      this.rayGraphics.drawCircle(intersection.x, intersection.y, 5);
+      if (intersection.passThrough) {
+
+      } else {
+        this.rayGraphics.drawCircle(intersection.point.x, intersection.point.y, 5);
+      }
     }
 
     //this.rayGraphics.endFill();
