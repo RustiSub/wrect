@@ -82,6 +82,11 @@
             point: intersection,
             passThrough: passThrough
           });
+        } else {
+          ray.intersections.push({
+            point: direction,
+            passThrough: true
+          });
         }
       }
     }
@@ -93,6 +98,8 @@
     //this.rayGraphics.clear();
     //this.rayGraphics.beginFill(0xFFFFFF, 1);
     //this.rayGraphics.lineStyle(1, 0xFFFFFF, 1);
+
+
 
     this.rayGraphics.moveTo(ray.line.point1.x, ray.line.point1.y);
     this.rayGraphics.lineTo(ray.line.point2.x, ray.line.point2.y);

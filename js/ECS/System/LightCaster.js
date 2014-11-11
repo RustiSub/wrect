@@ -64,18 +64,20 @@
         targetPoints.push(adjustVertex(edge.point2, targetCenter));
       }
     }
-    //The four corners of the container provide a target each
 
     //Draw triangles with all intersections
     var rayGraphics = this.rayCaster.rayGraphics;
 
-
-    var triangleCount = 0;
+    //The four corners of the container provide a target each
+    //targetPoints.push(new Vector(0, 0));
+    //targetPoints.push(new Vector(1000, 0));
+    //targetPoints.push(new Vector(1000, 500));
+    //targetPoints.push(new Vector(0, 500));
 
     //Sort target points by angle
     targetPoints.sort(function(a, b) {
-      var aP = a.dot(center);
-      var bP = b.dot(center);
+      var aP = center.angle(a);
+      var bP = center.angle(b);
       if (aP < bP)
         return -1;
       if (aP > bP)
@@ -85,11 +87,34 @@
 
     var drawPoints = [];
 
-    for (var t = 0; t < targetPoints.length; t++) {
-      var ray = this.rayCaster.castRay(center, targetPoints[t], 500, [entity]);
+    rayGraphics.clear();
+    rayGraphics.beginFill(0xFFFFFF, 1);
+    rayGraphics.lineStyle(1, 0xFFFFFF, 1);
+    rayGraphics.moveTo(center.x, center.y);
+
+    //targetPoints.reverse();
+
+    var rays = [];
+
+    for (var t = 0; t < 4; t++) { //targetPoints.length
+
+      var castRay = this.rayCaster.castRay(center, targetPoints[t], 500, [entity]);
+
+      if (castRay.intersections.length === 0) {
+        continue;
+      }
+      //console.log(targetPoints[t], targetPoints[t].angle(center));
+      //console.log(targetPoints[t].angle(center), targetPoints[t].angle(center) * 180 / Math.PI);
+      //rayGraphics.beginFill(0xFFFFFF, 1);
+      //rayGraphics.lineStyle(t * 5 + 1, 0xFFFFFF, 1);
+      //rayGraphics.moveTo(center.x, center.y);
+      ////rayGraphics.moveTo(0, 0);
+      //rayGraphics.lineTo(targetPoints[t].x, targetPoints[t].y);
+      //rayGraphics.endFill();
+
       var rayPoints = [];
 
-      ray.intersections.sort(function(a, b) {
+      castRay.intersections.sort(function(a, b) {
         var aL = center.subtract(a.point).len();
         var bL = center.subtract(b.point).len();
         if (aL < bL)
@@ -100,37 +125,57 @@
       });
 
       //Sort intersections from closest to farthest
-      if (ray.intersections[0].passThrough) {
-        for (var i = 0; i < ray.intersections.length; i++) {
-          rayPoints.push(ray.intersections[i]);
+      if (castRay.intersections[0].passThrough) {
+        for (var i = 0; i < castRay.intersections.length; i++) {
+          rayPoints.push(castRay.intersections[i]);
         }
       }
 
-      rayPoints.reverse();
-      drawPoints.push.apply(drawPoints, rayPoints);
+      if (rayPoints.length > 0) {
+        rays.push({
+          ray: castRay,
+          points: rayPoints
+        });
+      }
     }
 
-    rayGraphics.clear();
-    rayGraphics.beginFill(0xFFFFFF, 1);
-    rayGraphics.lineStyle(1, 0xFFFFFF, 1);
-    rayGraphics.moveTo(center.x, center.y);
+    var openTriangle = false;
+    var pointSize = 1;
 
-    for (var d = 0; d < drawPoints.length; d++) {
-      var drawPoint = drawPoints[d];
+    //rays.reverse();
+    var triangleCount = 0;
+    var endOfTheLine = false;
+    for (var rayIndex = 0; rayIndex < 2; rayIndex++) {//rays.length - 1
+      var points = rays[rayIndex].points;
 
-      rayGraphics.drawCircle(drawPoint.point.x, drawPoint.point.y, 5);
+      if (endOfTheLine) {
+        points.reverse();
+      }
 
-      //rayGraphics.lineTo(drawPoint.point.x, drawPoint.point.y);
-      //triangleCount += 1;
+      for (var pIndex = 0; pIndex < points.length; pIndex++) {
+        rayGraphics.lineTo(points[pIndex].point.x, points[pIndex].point.y);
+        //rayGraphics.drawCircle(points[pIndex].point.x, points[pIndex].point.y, 2 * (rayIndex + 1));
+      }
+
+      if (!endOfTheLine) {
+        endOfTheLine = true;
+      }
+
+      var openingPoint = rays[rayIndex].points[0];
+      //var closingClosing = rays[rayIndex + 1].points[rays[rayIndex + 1].points.length - 1];
+
+      //rayGraphics.drawCircle(openingPoint.point.x, openingPoint.point.y, 2 * (rayIndex + 1));
+      //rayGraphics.drawCircle(closingClosing.point.x, closingClosing.point.y, 4 * (rayIndex + 1));
+
+      //rayGraphics.lineTo(openingPoint.point.x, openingPoint.point.y);
+      //rayGraphics.lineTo(closingClosing.point.x, closingClosing.point.y);
+      //rayGraphics.lineTo(center.x, center.y);
       //
-      //if (triangleCount === 2) {
-      //  rayGraphics.lineTo(center.x, center.y);
-      //  //rayGraphics.endFill();
-      //  //rayGraphics.beginFill(0xFFFFFF, 1);
-      //  //rayGraphics.lineStyle(1, 0xFFFFFF, 1);
-      //}
+      //rayGraphics.endFill();
+      //rayGraphics.beginFill(0xFFFFFF, 1);
+      //rayGraphics.lineStyle(1, 0xFFFFFF, 1);
     }
-
+//debugger;
     rayGraphics.endFill();
   };
 
