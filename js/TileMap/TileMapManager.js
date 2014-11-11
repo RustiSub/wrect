@@ -29,7 +29,7 @@
   };
 
   wrect.TileMap.TileMapManager.prototype.updateTiles = function() {
-    this.currentTileMap.build(this.visibleDimensions);
+    this.currentTileMap.updateTiles(this.visibleDimensions);
   };
 
   wrect.TileMap.TileMapManager.prototype.getCurrentTileMap = function() {

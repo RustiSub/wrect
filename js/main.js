@@ -60,8 +60,8 @@ window.onload = function() {
     }
 
     var block = createBlock({
-      x: 50,
-      y: 50,
+      x: 510,
+      y: 900,
       w: 32,
       h: 32,
       color: 0xFFFFFF
@@ -78,12 +78,10 @@ window.onload = function() {
     block.components.RigidBody.frozen = false;
 
     block.addComponent(new wrect.ECS.Component.ControlScheme.Ship());
+    wrect.getGame().getCamera().follow(block);
 
     // TileMap stuff!
     wrect.getGame()._tileMapManager.loadMap('resources/levels/tilemap/tiled.json');
-
-    wrect.getGame().getCamera().follow(block);
-
 
   });
 };

@@ -14,6 +14,7 @@
     this.width = 0;
     this.rotation = 0;
     this.tileSetName = '';
+    this.position = new wrect.Physics.Vector(0, 0);
     this.flipped = {
       horizontal: false,
       vertical: false

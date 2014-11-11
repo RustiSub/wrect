@@ -2,7 +2,7 @@
   "use strict";
 
   var Vector = wrect.Physics.Vector;
-
+// TODO: revert this
   /**
    *
    * @class wrect.Geometry.Rectangle
@@ -13,14 +13,14 @@
 
     this.origin = options.origin;
 
-    var width = new Vector(options.width, 0);
-    var height = new Vector(0, options.height);
+    this.width = new Vector(options.width, 0);
+    this.height = new Vector(0, options.height);
 
     this.vertices = [
       options.origin,
-      options.origin.add(width),
-      options.origin.add(width).add(height),
-      options.origin.add(height)
+      options.origin.add(this.width),
+      options.origin.add(this.width).add(this.height),
+      options.origin.add(this.height)
     ];
   };
 
@@ -28,6 +28,12 @@
   wrect.Geometry.Rectangle.prototype.constructor = wrect.Geometry.Rectangle;
 
   wrect.Geometry.Rectangle.prototype.getBounds = function() {
+    this.vertices = [
+      this.origin,
+      this.origin.add(this.width),
+      this.origin.add(this.width).add(this.height),
+      this.origin.add(this.height)
+    ];
     return {
       topLeft: this.vertices[0],
       topRight: this.vertices[1],
