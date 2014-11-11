@@ -72,6 +72,7 @@
 
     var triangleCount = 0;
 
+    //Sort target points by angle
     targetPoints.sort(function(a, b) {
       var aP = a.dot(center);
       var bP = b.dot(center);
@@ -88,10 +89,20 @@
       var ray = this.rayCaster.castRay(center, targetPoints[t], 500, [entity]);
       var rayPoints = [];
 
-      for (var i = 0; i < ray.intersections.length; i++) {
-        rayPoints.push(ray.intersections[i]);
-        if (!ray.intersections[i].passThrough) {
-          break;
+      ray.intersections.sort(function(a, b) {
+        var aL = center.subtract(a.point).len();
+        var bL = center.subtract(b.point).len();
+        if (aL < bL)
+          return -1;
+        if (aL > bL)
+          return 1;
+        return 0;
+      });
+
+      //Sort intersections from closest to farthest
+      if (ray.intersections[0].passThrough) {
+        for (var i = 0; i < ray.intersections.length; i++) {
+          rayPoints.push(ray.intersections[i]);
         }
       }
 
