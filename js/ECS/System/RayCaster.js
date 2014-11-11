@@ -71,7 +71,7 @@
         if (intersection && !existingFound) {
           //Store intersection as Ray-Entity-Edge-Vector/Line
           var passThrough = false;
-          //console.log(intersection.x, direction.x, intersection.y, direction.y);
+
           if (intersection.x >= direction.x - 0.01 && intersection.x <= direction.x + 0.01) {
             if (intersection.y >= direction.y - 0.01 && intersection.y <= direction.y + 0.01) {
               passThrough = true;
@@ -80,12 +80,14 @@
 
           ray.intersections.push({
             point: intersection,
-            passThrough: passThrough
+            passThrough: passThrough,
+            entity: entity
           });
         } else {
           ray.intersections.push({
             point: direction,
-            passThrough: true
+            passThrough: true,
+            entity: entity
           });
         }
       }
