@@ -25,6 +25,15 @@
 
     this.origin = this.origin.add(v);
   };
+
+  wrect.Geometry.Dimensions.prototype.setOrigin = function(v) {
+    this.origin = v;
+    this.updateVertices();
+  };
+
+  wrect.Geometry.Dimensions.prototype.updateVertices = function() {
+  };
+
   wrect.Geometry.Dimensions.prototype.rotate = function() {};
   wrect.Geometry.Dimensions.prototype.getBounds = function() {};
   wrect.Geometry.Dimensions.prototype.getCenter = function() {};

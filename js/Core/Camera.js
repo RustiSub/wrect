@@ -215,7 +215,7 @@
       center = center.subtract(halfBounds);
       this.position.x = Helpers.math.clamp(center.x, 0, 350);
       this.position.y = Helpers.math.clamp(center.y, 0, 900);
-      //this.dimensions.move(this.position);
+      this.dimensions.setOrigin(this.position);
     }
   };
 
