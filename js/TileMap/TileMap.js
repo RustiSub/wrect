@@ -20,7 +20,7 @@
     this.tileWidth = 0;
     this.tileHeight = 0;
     this.assets = null;
-    this.visibleSprites = [];
+    this.visibleTiles = [];
     this.tileIds = [];
   };
 
@@ -133,7 +133,7 @@
     var tileHelper = wrect.TileMap.TileHelper;
 
     var i = tileHelper.toTileIndex(bounds.topLeft, this.tileWidth, this.tileHeight, this.width);
-    var length = tileHelper.toTileIndex(bounds.bottomRight, this.tileWidth, this.tileHeight, this.width);
+    var length = tileHelper.toTileIndexCeil(bounds.bottomRight, this.tileWidth, this.tileHeight, this.width);
 
     for (; i < length; i++) {
       var tile = layer.tiles[i];
@@ -174,7 +174,7 @@
         this.debug(tile, i, displayContainer, false);
       }
 
-      this.visibleSprites.push(tile.sprite);
+      this.visibleTiles.push(tile);
       displayContainer.addChild(tile.sprite);
     }
   };
@@ -191,35 +191,79 @@
     var startIndex = tileHelper.toTileIndex(bounds.topLeft, this.tileWidth, this.tileHeight, this.width);
     var stopIndex = tileHelper.toTileIndex(bounds.bottomRight, this.tileWidth, this.tileHeight, this.width);
 
-    var changeableSprites = [];
+    var changeableTiles = [];
     var positionsToFill = [];
 
     for (i = startIndex; i < stopIndex; i++) {
       positionsToFill.push(i);
     }
 
-    for (var i = 0; i < this.visibleSprites.length; i++) {
-      var sprite = this.visibleSprites[i];
-      if (!sprite) {
+    var spliceCounter = positionsToFill.length;
+    var changeCounter = 0;
+    for (var i = 0; i < this.visibleTiles.length; i++) {
+      var tile = this.visibleTiles[i];
+      if (!tile) {
         continue;
       }
 
+      var sprite = tile.sprite;
       var indexToFill = positionsToFill.indexOf(sprite.tileIndex);
 
       if (indexToFill !== -1) {
+        spliceCounter--;
         positionsToFill.splice(indexToFill, 1);
       }
       else {
-        changeableSprites.push(sprite);
+        changeCounter++;
+        changeableTiles.push(tile);
       }
     }
 
     for (i = 0; i < positionsToFill.length; i++) {
-      var tile = changeableSprites.splice(0, 1)[0];
-      var newTileData = layer.tiles[i];
+      var positionIndex = positionsToFill[i];
+      var newTileData = layer.tiles[positionIndex];
+      tile = changeableTiles.splice(0, 1)[0];
+      if (!tile) {
+        console.warn('short', positionsToFill.length - i, ' tiles to change! Report!');
+        break;
+      }
+      if (newTileData.id === 0) {
+        tile.sprite.visible = false;
+        tile.sprite.position.x = (positionIndex % this.width) * tile.width;
+        tile.sprite.position.y = Math.floor(i / this.height) * tile.height;
+        continue;
+      }
 
-      // Refactor so that layer contains set
       var tileSet = this.tileSets[newTileData.tileSetName];
+
+      tile.id = newTileData.id;
+      var x = (tile.id - tileSet.firstGid) % (tileSet.columns);
+      var y = Math.floor((tile.id - tileSet.firstGid) / tileSet.columns);
+
+      tile.width = newTileData.width;
+      tile.height = newTileData.height;
+      tile.rotation = newTileData.rotation;
+      tile.flipped.horizontal = newTileData.flipped.horizontal;
+      tile.flipped.vertical = newTileData.flipped.vertical;
+      tile.tileSetName = newTileData.tileSetName;
+      tile.sprite.visible = true;
+      tile.sprite.alpha = layer.opacity;
+
+      var frame = new PIXI.Texture(this.baseTextures[tile.tileSetName], new PIXI.Rectangle(x * tile.width, y * tile.height, tile.width, tile.height));
+      frame.height = tile.height;
+      frame.width = tile.width;
+
+      // UPDATE, DON'T LMAKE NEW
+      tile.sprite = new PIXI.Sprite(frame);
+      tile.sprite.texture.frame.x = x * tile.width;
+      tile.sprite.texture.frame.y = y * tile.height;
+      tile.sprite.position.x = (positionIndex % this.width) * tile.width;
+      tile.sprite.position.y = Math.floor(i / this.height) * tile.height;
+      tile.sprite.pivot.x = tile.width / 2;
+      tile.sprite.pivot.y = tile.height / 2;
+      tile.sprite.rotation = tile.rotation;
+      tile.sprite.scale.x = tile.flipped.horizontal ? -tile.sprite.scale.x : tile.sprite.scale.x;
+      tile.sprite.scale.y = tile.flipped.vertical ? -tile.sprite.scale.y : tile.sprite.scale.y;
 
     }
 
