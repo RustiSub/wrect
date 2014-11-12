@@ -22,6 +22,8 @@
     this.assets = null;
     this.visibleTiles = [];
     this.tileIds = [];
+    this._debugContainer = null;
+    this._debugContainerText = null;
   };
 
   /**
@@ -29,6 +31,10 @@
    */
   wrect.TileMap.TileMap.prototype.init = function() {
     this.buildBaseTextures();
+    if (wrect.getGame().debugTilemap) {
+      this._debugContainer = new PIXI.DisplayObjectContainer();
+      this._debugContainerText = new PIXI.DisplayObjectContainer();
+    }
   };
 
   /**
@@ -53,7 +59,7 @@
    * Builds the sprites and rigid bodies and adds them to the game.
    */
   wrect.TileMap.TileMap.prototype.build = function(dimensions) {
-    for (var i = 0; i < this.layers.length; i++) {
+    for (var i = 0; i < 1/*this.layers.length*/; i++) {
       var layer = this.layers[i];
       var pixiLayerContainer = new PIXI.DisplayObjectContainer();
       wrect.getGame().getCamera().displayContainer.addChildAt(pixiLayerContainer, i);
@@ -78,51 +84,6 @@
   };
 
   /**
-   * Build the collision bodies
-   * @param {wrect.TileMap.TileLayer} layer
-   */
-  wrect.TileMap.TileMap.prototype.buildCollisionBodies = function(layer) {
-    for (var i = 0; i < layer.tiles.length; i++) {
-      var tile = layer.tiles[i];
-
-      if (tile.id === 0) {
-        continue;
-      }
-
-      var x = (i % this.width) * tile.width;
-      var y = Math.floor(i / this.height) * tile.height;
-
-      x -= tile.width / 2;
-      y -= tile.height / 2;
-
-      var dimensions = new wrect.Geometry.Rectangle({
-        origin: new wrect.Physics.Vector(x, y),
-        width: tile.width,
-        height: tile.height
-      });
-
-      var body = new wrect.ECS.Component.TileBody({
-        dimensions: dimensions
-      });
-
-      if (wrect.getGame().debug) {
-        var border = new PIXI.Graphics();
-        border.beginFill(0xFFFFFF, 0);
-        border.lineStyle(1, 0xFF0000);
-        border.drawRect(x, y, tile.width, tile.height);
-        border.endFill();
-        wrect.getGame()._cameraContainer.addChild(border);
-      }
-
-      var physicsEngine;
-      if (physicsEngine = wrect.getGame().physicsEngine) {
-        tile.components.RigidBody = tile.components.TileBody = body;
-        physicsEngine.systems.QuadTree.system.addEntity({entity: tile});
-      }
-    }
-  };
-
-  /**
    * Builds sprites of the tiles in the given layer and adds them to the passed displayContainer
    * @param {wrect.TileMap.TileLayer} layer
    * @param {wrect.Geometry.Rectangle} dimensions
@@ -132,17 +93,19 @@
     var bounds = dimensions.getBounds();
     var tileHelper = wrect.TileMap.TileHelper;
 
-    var i = tileHelper.toTileIndex(bounds.topLeft, this.tileWidth, this.tileHeight, this.width);
-    var length = tileHelper.toTileIndexCeil(bounds.bottomRight, this.tileWidth, this.tileHeight, this.width);
+    var indexesToFill = this.getIndexesToFill(dimensions);
+    console.log(indexesToFill);
+    var i;
 
-    for (; i < length; i++) {
-      var tile = layer.tiles[i];
+    for (i = 0; i < indexesToFill.length; i++) {
+      var tilePosition = indexesToFill[i];
+      var tile = layer.tiles[tilePosition];
       if (!tile || tile.id === 0) {
         continue;
       }
 
-      tile.position.x = (i % this.width) * tile.width;
-      tile.position.y = Math.floor(i / this.height) * tile.height;
+      tile.position.x = (tilePosition % this.width) * tile.width;
+      tile.position.y = Math.floor(tilePosition / this.height) * tile.height;
 
       var baseTexture = this.baseTextures[tile.tileSetName];
       var tileSet = this.tileSets[tile.tileSetName];
@@ -151,8 +114,6 @@
       var y = Math.floor((tile.id - tileSet.firstGid) / tileSet.columns);
 
       var frame = new PIXI.Texture(baseTexture, new PIXI.Rectangle(x * tile.width, y * tile.height, tile.width, tile.height));
-      frame.height = tile.height;
-      frame.width = tile.width;
 
       var tileSprite = new wrect.TileMap.TileSprite(frame);
       tileSprite.height = tile.height;
@@ -165,18 +126,49 @@
       tileSprite.scale.x = tile.flipped.horizontal ? -tileSprite.scale.x : tileSprite.scale.x;
       tileSprite.scale.y = tile.flipped.vertical ? -tileSprite.scale.y : tileSprite.scale.y;
       tileSprite.alpha = layer.opacity;
-      tileSprite.tilePosition.x = (i % this.width);
-      tileSprite.tilePosition.y = Math.floor(i / this.height);
-      tileSprite.tileIndex = tileHelper.toTileIndex(tile.position, tile.width, tile.height, this.width);
+      tileSprite.tilePosition.x = (tilePosition % this.width);
+      tileSprite.tilePosition.y = Math.floor(tilePosition / this.height);
+      tileSprite.tileIndex = tilePosition;
       tile.sprite = tileSprite;
-
-      if (wrect.getGame().debugTilemap === true) {
-        this.debug(tile, i, displayContainer, false);
-      }
 
       this.visibleTiles.push(tile);
       displayContainer.addChild(tile.sprite);
+      if (wrect.getGame().debugTilemap === true) {
+        this.debug(tile, tilePosition, displayContainer, false);
+      }
     }
+
+    if (wrect.getGame().debugTilemap) {
+      displayContainer.addChild(this._debugContainerText);
+      displayContainer.addChild(this._debugContainer);
+    }
+  };
+
+  /**
+   * Returns the tilemap positions that need to be filled based on the given dimensions.
+   * @param dimensions
+   * @returns {Array}
+   */
+  wrect.TileMap.TileMap.prototype.getIndexesToFill = function(dimensions) {
+    var bounds = dimensions.getBounds();
+    var tileHelper = wrect.TileMap.TileHelper;
+
+    var startIndex = tileHelper.toTileIndex(bounds.topLeft, this.tileWidth, this.tileHeight, this.width);
+    var topRightIndex = tileHelper.toTileIndex(bounds.topRight, this.tileWidth, this.tileHeight, this.width);
+    var stopIndex = tileHelper.toTileIndex(bounds.bottomRight, this.tileWidth, this.tileHeight, this.width);
+    var xRange = topRightIndex - startIndex;
+    var indexesToFill = [];
+
+    var counter = 0;
+    for (var i = startIndex; i <= stopIndex; i++) {
+      counter++;
+      indexesToFill.push(i);
+      if (counter && counter % (xRange+1) === 0) {
+        i += this.width - (xRange+1);
+      }
+    }
+
+    return indexesToFill;
   };
 
   /**
@@ -185,46 +177,36 @@
    * @param {wrect.Geometry.Rectangle} dimensions
    */
   wrect.TileMap.TileMap.prototype.updateTileSprites = function(layer, dimensions) {
-    var bounds = dimensions.getBounds();
-    var tileHelper = wrect.TileMap.TileHelper;
-
-    var startIndex = tileHelper.toTileIndex(bounds.topLeft, this.tileWidth, this.tileHeight, this.width);
-    var stopIndex = tileHelper.toTileIndex(bounds.bottomRight, this.tileWidth, this.tileHeight, this.width);
-
+    var indexesToFill = this.getIndexesToFill(dimensions);
     var changeableTiles = [];
-    var positionsToFill = [];
+    var tile;
 
-    for (i = startIndex; i < stopIndex; i++) {
-      positionsToFill.push(i);
-    }
-
-    var spliceCounter = positionsToFill.length;
-    var changeCounter = 0;
+console.log(indexesToFill.length);
     for (var i = 0; i < this.visibleTiles.length; i++) {
-      var tile = this.visibleTiles[i];
+      tile = this.visibleTiles[i];
       if (!tile) {
         continue;
       }
 
       var sprite = tile.sprite;
-      var indexToFill = positionsToFill.indexOf(sprite.tileIndex);
+      var indexToFill = indexesToFill.indexOf(sprite.tileIndex);
 
       if (indexToFill !== -1) {
-        spliceCounter--;
-        positionsToFill.splice(indexToFill, 1);
+        indexesToFill.splice(indexToFill, 1);
       }
       else {
-        changeCounter++;
         changeableTiles.push(tile);
       }
     }
+    console.log(indexesToFill.length, changeableTiles.length);
 
-    for (i = 0; i < positionsToFill.length; i++) {
-      var positionIndex = positionsToFill[i];
+    for (i = 0; i < indexesToFill.length; i++) {
+      var positionIndex = indexesToFill[i];
       var newTileData = layer.tiles[positionIndex];
       tile = changeableTiles.splice(0, 1)[0];
       if (!tile) {
-        console.warn('short', positionsToFill.length - i, ' tiles to change! Report!');
+        // TODO: make new tile
+        console.warn('short', indexesToFill.length - i, ' tiles to change! Aborting loop! Report!');
         break;
       }
       if (newTileData.id === 0) {
@@ -250,13 +232,10 @@
       tile.sprite.alpha = layer.opacity;
 
       var frame = new PIXI.Texture(this.baseTextures[tile.tileSetName], new PIXI.Rectangle(x * tile.width, y * tile.height, tile.width, tile.height));
-      frame.height = tile.height;
-      frame.width = tile.width;
 
-      // UPDATE, DON'T LMAKE NEW
-      tile.sprite = new PIXI.Sprite(frame);
-      tile.sprite.texture.frame.x = x * tile.width;
-      tile.sprite.texture.frame.y = y * tile.height;
+      tile.sprite.setTexture(frame);
+      //tile.sprite.texture.frame.x = x * tile.width;
+      //tile.sprite.texture.frame.y = y * tile.height;
       tile.sprite.position.x = (positionIndex % this.width) * tile.width;
       tile.sprite.position.y = Math.floor(i / this.height) * tile.height;
       tile.sprite.pivot.x = tile.width / 2;
@@ -308,19 +287,21 @@
    * @param {Boolean} once
    */
   wrect.TileMap.TileMap.prototype.debug = function(tile, index, displayContainer, once) {
+
     if (once === undefined || once) {
       // Only debug the first layer so the browser doesn't blow up.
       wrect.getGame().debugTilemap = false;
     }
+
     var border = new PIXI.Graphics();
     border.beginFill(0xFFFFFF, 0);
     border.lineStyle(1, 0xFF0000);
     border.drawRect(tile.sprite.position.x, tile.sprite.position.y, tile.width, tile.height);
     border.endFill();
-    var text = new PIXI.Text(index + "\n" + tile.id, { font: "bold 12px Arial", fill: "#AAAAAA", align: "center", stroke: "#000000", strokeThickness: 3 });
+    var text = new PIXI.Text(index, { font: "bold 12px Arial", fill: "#AAAAAA", align: "center", stroke: "#000000", strokeThickness: 3 });
     text.position = tile.sprite.position;
-    //displayContainer.addChild(border);
-    displayContainer.addChild(text);
+    this._debugContainer.addChild(border);
+    this._debugContainerText.addChild(text);
   };
 
   /**
@@ -335,5 +316,50 @@
     }
 
     return this.assets;
+  };
+
+  /**
+   * Build the collision bodies
+   * @param {wrect.TileMap.TileLayer} layer
+   */
+  wrect.TileMap.TileMap.prototype.buildCollisionBodies = function(layer) {
+    for (var i = 0; i < layer.tiles.length; i++) {
+      var tile = layer.tiles[i];
+
+      if (tile.id === 0) {
+        continue;
+      }
+
+      var x = (i % this.width) * tile.width;
+      var y = Math.floor(i / this.height) * tile.height;
+
+      x -= tile.width / 2;
+      y -= tile.height / 2;
+
+      var dimensions = new wrect.Geometry.Rectangle({
+        origin: new wrect.Physics.Vector(x, y),
+        width: tile.width,
+        height: tile.height
+      });
+
+      var body = new wrect.ECS.Component.TileBody({
+        dimensions: dimensions
+      });
+
+      if (wrect.getGame().debug) {
+        var border = new PIXI.Graphics();
+        border.beginFill(0xFFFFFF, 0);
+        border.lineStyle(1, 0xFF0000);
+        border.drawRect(x, y, tile.width, tile.height);
+        border.endFill();
+        wrect.getGame()._cameraContainer.addChild(border);
+      }
+
+      var physicsEngine;
+      if (physicsEngine = wrect.getGame().physicsEngine) {
+        tile.components.RigidBody = tile.components.TileBody = body;
+        physicsEngine.systems.QuadTree.system.addEntity({entity: tile});
+      }
+    }
   };
 }());

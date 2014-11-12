@@ -213,7 +213,7 @@
       var halfBounds = this.bounds.scale(0.5);
 
       center = center.subtract(halfBounds);
-      this.position.x = Helpers.math.clamp(center.x, 0, 350);
+      this.position.x = Helpers.math.clamp(center.x, 0, 900);
       this.position.y = Helpers.math.clamp(center.y, 0, 900);
       this.dimensions.setOrigin(this.position);
     }
