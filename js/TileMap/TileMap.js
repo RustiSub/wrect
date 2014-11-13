@@ -2,6 +2,7 @@
   'use strict';
   var PIXI = window.PIXI;
   var wrect = window.wrect;
+  var Vector = wrect.Physics.Vector;
   wrect.TileMap = wrect.TileMap || {};
 
   /**
@@ -75,7 +76,7 @@
 
   wrect.TileMap.TileMap.prototype.updateTiles = function(dimensions) {
     // Build the tiles within the dimensions once, then on update check which ones need to be moved and swapped.
-    for (var i = 0; i < this.layers.length; i++) {
+    for (var i = 0; i < 1/*this.layers.length*/; i++) {
       var layer = this.layers[i];
       if (!layer.isCollisionLayer) {
         this.updateTileSprites(layer, dimensions);
@@ -93,7 +94,7 @@
     var bounds = dimensions.getBounds();
     var tileHelper = wrect.TileMap.TileHelper;
 
-    var indexesToFill = this.getIndexesToFill(dimensions);
+    var indexesToFill = this.getIndexesToFill(dimensions, 2, 2);
     console.log(indexesToFill);
     var i;
 
@@ -147,19 +148,29 @@
   /**
    * Returns the tilemap positions that need to be filled based on the given dimensions.
    * @param dimensions
+   * @param [extraColumns]
+   * @param [extraRows]
    * @returns {Array}
    */
-  wrect.TileMap.TileMap.prototype.getIndexesToFill = function(dimensions) {
+  wrect.TileMap.TileMap.prototype.getIndexesToFill = function(dimensions, extraColumns, extraRows) {
     var bounds = dimensions.getBounds();
     var tileHelper = wrect.TileMap.TileHelper;
+
+    extraColumns = extraColumns || 0;
+    extraRows = extraRows || 0;
+    extraRows *= this.tileHeight;
+    extraColumns *= this.tileWidth;
+    bounds.topLeft = bounds.topLeft.add(new Vector(-extraColumns, -extraRows));
+    bounds.topRight = bounds.topRight.add(new Vector(extraColumns, -extraRows));
+    bounds.bottomRight = bounds.bottomRight.add(new Vector(extraColumns, extraRows));
 
     var startIndex = tileHelper.toTileIndex(bounds.topLeft, this.tileWidth, this.tileHeight, this.width);
     var topRightIndex = tileHelper.toTileIndex(bounds.topRight, this.tileWidth, this.tileHeight, this.width);
     var stopIndex = tileHelper.toTileIndex(bounds.bottomRight, this.tileWidth, this.tileHeight, this.width);
     var xRange = topRightIndex - startIndex;
     var indexesToFill = [];
-
     var counter = 0;
+
     for (var i = startIndex; i <= stopIndex; i++) {
       counter++;
       indexesToFill.push(i);
@@ -177,11 +188,10 @@
    * @param {wrect.Geometry.Rectangle} dimensions
    */
   wrect.TileMap.TileMap.prototype.updateTileSprites = function(layer, dimensions) {
-    var indexesToFill = this.getIndexesToFill(dimensions);
+    var indexesToFill = this.getIndexesToFill(dimensions, 1, 1);
     var changeableTiles = [];
     var tile;
 
-console.log(indexesToFill.length);
     for (var i = 0; i < this.visibleTiles.length; i++) {
       tile = this.visibleTiles[i];
       if (!tile) {
@@ -198,11 +208,13 @@ console.log(indexesToFill.length);
         changeableTiles.push(tile);
       }
     }
-    console.log(indexesToFill.length, changeableTiles.length);
 
     for (i = 0; i < indexesToFill.length; i++) {
       var positionIndex = indexesToFill[i];
       var newTileData = layer.tiles[positionIndex];
+      if (!newTileData) {
+        continue;
+      }
       tile = changeableTiles.splice(0, 1)[0];
       if (!tile) {
         // TODO: make new tile
