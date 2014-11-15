@@ -94,8 +94,7 @@
     var bounds = dimensions.getBounds();
     var tileHelper = wrect.TileMap.TileHelper;
 
-    var indexesToFill = this.getIndexesToFill(dimensions, 2, 2);
-    console.log(indexesToFill);
+    var indexesToFill = this.getIndexesToFill(dimensions, 0, 0);
     var i;
 
     for (i = 0; i < indexesToFill.length; i++) {
@@ -188,18 +187,17 @@
    * @param {wrect.Geometry.Rectangle} dimensions
    */
   wrect.TileMap.TileMap.prototype.updateTileSprites = function(layer, dimensions) {
-    var indexesToFill = this.getIndexesToFill(dimensions, 1, 1);
+    var indexesToFill = this.getIndexesToFill(dimensions, -1, -1);
     var changeableTiles = [];
     var tile;
 
+    // Check where we need to draw and where we can clip.
     for (var i = 0; i < this.visibleTiles.length; i++) {
       tile = this.visibleTiles[i];
       if (!tile) {
         continue;
       }
-
-      var sprite = tile.sprite;
-      var indexToFill = indexesToFill.indexOf(sprite.tileIndex);
+      var indexToFill = indexesToFill.indexOf(tile.sprite.tileIndex);
 
       if (indexToFill !== -1) {
         indexesToFill.splice(indexToFill, 1);
@@ -209,30 +207,37 @@
       }
     }
 
+    // Fill new indexes with offscreen tiles.
     for (i = 0; i < indexesToFill.length; i++) {
-      var positionIndex = indexesToFill[i];
-      var newTileData = layer.tiles[positionIndex];
+      if (indexesToFill.length > changeableTiles.length) {
+        console.warn('short', indexesToFill.length - i, ' tiles to change! Aborting loop!');
+        break;
+      }
+      var tilePosition = indexesToFill[i];
+      var newTileData = layer.tiles[tilePosition];
       if (!newTileData) {
         continue;
       }
       tile = changeableTiles.splice(0, 1)[0];
-      if (!tile) {
-        // TODO: make new tile
-        console.warn('short', indexesToFill.length - i, ' tiles to change! Aborting loop! Report!');
-        break;
-      }
       if (newTileData.id === 0) {
         tile.sprite.visible = false;
-        tile.sprite.position.x = (positionIndex % this.width) * tile.width;
-        tile.sprite.position.y = Math.floor(i / this.height) * tile.height;
+        tile.sprite.position.x = (tilePosition % this.width) * tile.width;
+        tile.sprite.position.y = Math.floor(tilePosition / this.height) * tile.height;
         continue;
       }
 
       var tileSet = this.tileSets[newTileData.tileSetName];
+      var x = 0;
+      var y = 0;
 
       tile.id = newTileData.id;
-      var x = (tile.id - tileSet.firstGid) % (tileSet.columns);
-      var y = Math.floor((tile.id - tileSet.firstGid) / tileSet.columns);
+      x = (tile.id - tileSet.firstGid) % (tileSet.columns);
+      y = Math.floor((tile.id - tileSet.firstGid) / tileSet.columns);
+
+      // Reset necessary properties
+      tile.sprite.visible = true;
+      tile.sprite.scale.x = Math.abs(tile.sprite.scale.x);
+      tile.sprite.scale.y = Math.abs(tile.sprite.scale.y);
 
       tile.width = newTileData.width;
       tile.height = newTileData.height;
@@ -240,7 +245,6 @@
       tile.flipped.horizontal = newTileData.flipped.horizontal;
       tile.flipped.vertical = newTileData.flipped.vertical;
       tile.tileSetName = newTileData.tileSetName;
-      tile.sprite.visible = true;
       tile.sprite.alpha = layer.opacity;
 
       var frame = new PIXI.Texture(this.baseTextures[tile.tileSetName], new PIXI.Rectangle(x * tile.width, y * tile.height, tile.width, tile.height));
@@ -248,47 +252,15 @@
       tile.sprite.setTexture(frame);
       //tile.sprite.texture.frame.x = x * tile.width;
       //tile.sprite.texture.frame.y = y * tile.height;
-      tile.sprite.position.x = (positionIndex % this.width) * tile.width;
-      tile.sprite.position.y = Math.floor(i / this.height) * tile.height;
+      tile.sprite.position.x = (tilePosition % this.width) * tile.width;
+      tile.sprite.position.y = Math.floor(tilePosition / this.height) * tile.height;
       tile.sprite.pivot.x = tile.width / 2;
       tile.sprite.pivot.y = tile.height / 2;
       tile.sprite.rotation = tile.rotation;
       tile.sprite.scale.x = tile.flipped.horizontal ? -tile.sprite.scale.x : tile.sprite.scale.x;
       tile.sprite.scale.y = tile.flipped.vertical ? -tile.sprite.scale.y : tile.sprite.scale.y;
-
+      tile.sprite.tileIndex = tilePosition;
     }
-
-      //// change sprite.texture.frame.x & .y
-      //// change sprite.position.x & .y
-      //
-      //var baseTexture = this.baseTextures[tile.tileSetName];
-      //var tileSet = this.tileSets[tile.tileSetName];
-      //
-      //var x = (tile.id - tileSet.firstGid) % (tileSet.columns);
-      //var y = Math.floor((tile.id - tileSet.firstGid) / tileSet.columns);
-      //
-      //var frame = new PIXI.Texture(baseTexture, new PIXI.Rectangle(x * tile.width, y * tile.height, tile.width, tile.height));
-      //frame.height = tile.height;
-      //frame.width = tile.width;
-      //
-      //var tileSprite = new PIXI.Sprite(frame);
-      //tileSprite.height = tile.height;
-      //tileSprite.width = tile.width;
-      //tileSprite.pivot.x = tile.width / 2;
-      //tileSprite.pivot.y = tile.height / 2;
-      //tileSprite.position.x = (i % this.width) * tile.width;
-      //tileSprite.position.y = Math.floor(i / this.height) * tile.height;
-      //tileSprite.rotation = tile.rotation;
-      //tileSprite.scale.x = tile.flipped.horizontal ? -tileSprite.scale.x : tileSprite.scale.x;
-      //tileSprite.scale.y = tile.flipped.vertical ? -tileSprite.scale.y : tileSprite.scale.y;
-      //tileSprite.alpha = layer.opacity;
-      //tile.sprite = tileSprite;
-      //
-      //if (wrect.getGame().debugTilemap === true) {
-      //  this.debug(tile, i, displayContainer, false);
-      //}
-      //
-      //displayContainer.addChild(tile.sprite);
   };
 
   /**
