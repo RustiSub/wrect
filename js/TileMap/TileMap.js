@@ -25,6 +25,7 @@
     this.tileIds = [];
     this._debugContainer = null;
     this._debugContainerText = null;
+    this.built = false;
   };
 
   /**
@@ -72,8 +73,14 @@
         //this.buildCollisionBodies(layer);
       }
     }
+    this.updateTiles(dimensions);
+    this.built = true;
   };
 
+  /**
+   * Updates the tiles for the current position
+   * @param dimensions
+   */
   wrect.TileMap.TileMap.prototype.updateTiles = function(dimensions) {
     // Build the tiles within the dimensions once, then on update check which ones need to be moved and swapped.
     for (var i = 0; i < 1/*this.layers.length*/; i++) {
@@ -91,10 +98,7 @@
    * @param {PIXI.DisplayObjectContainer} displayContainer
    */
   wrect.TileMap.TileMap.prototype.buildTileSprites = function(layer, dimensions, displayContainer) {
-    var bounds = dimensions.getBounds();
-    var tileHelper = wrect.TileMap.TileHelper;
-
-    var indexesToFill = this.getIndexesToFill(dimensions, 0, 0);
+    var indexesToFill = this.getIndexesToFill(dimensions, 2, 2);
     var i;
 
     for (i = 0; i < indexesToFill.length; i++) {
@@ -104,35 +108,14 @@
         continue;
       }
 
-      tile.position.x = (tilePosition % this.width) * tile.width;
-      tile.position.y = Math.floor(tilePosition / this.height) * tile.height;
-
       var baseTexture = this.baseTextures[tile.tileSetName];
-      var tileSet = this.tileSets[tile.tileSetName];
+      var frame = new PIXI.Texture(baseTexture, new PIXI.Rectangle(0, 0, tile.width, tile.height));
 
-      var x = (tile.id - tileSet.firstGid) % (tileSet.columns);
-      var y = Math.floor((tile.id - tileSet.firstGid) / tileSet.columns);
-
-      var frame = new PIXI.Texture(baseTexture, new PIXI.Rectangle(x * tile.width, y * tile.height, tile.width, tile.height));
-
-      var tileSprite = new wrect.TileMap.TileSprite(frame);
-      tileSprite.height = tile.height;
-      tileSprite.width = tile.width;
-      tileSprite.pivot.x = tile.width / 2;
-      tileSprite.pivot.y = tile.height / 2;
-      tileSprite.position.x = tile.position.x;
-      tileSprite.position.y = tile.position.y;
-      tileSprite.rotation = tile.rotation;
-      tileSprite.scale.x = tile.flipped.horizontal ? -tileSprite.scale.x : tileSprite.scale.x;
-      tileSprite.scale.y = tile.flipped.vertical ? -tileSprite.scale.y : tileSprite.scale.y;
-      tileSprite.alpha = layer.opacity;
-      tileSprite.tilePosition.x = (tilePosition % this.width);
-      tileSprite.tilePosition.y = Math.floor(tilePosition / this.height);
-      tileSprite.tileIndex = tilePosition;
-      tile.sprite = tileSprite;
-
+      tile.sprite = new wrect.TileMap.TileSprite(frame);
+      tile.sprite.tileIndex = 0;
       this.visibleTiles.push(tile);
       displayContainer.addChild(tile.sprite);
+
       if (wrect.getGame().debugTilemap === true) {
         this.debug(tile, tilePosition, displayContainer, false);
       }
@@ -187,32 +170,38 @@
    * @param {wrect.Geometry.Rectangle} dimensions
    */
   wrect.TileMap.TileMap.prototype.updateTileSprites = function(layer, dimensions) {
-    var indexesToFill = this.getIndexesToFill(dimensions, -1, -1);
+    var indexesToFill = this.getIndexesToFill(dimensions, 1, 1);
     var changeableTiles = [];
     var tile;
+    var i;
 
-    // Check where we need to draw and where we can clip.
-    for (var i = 0; i < this.visibleTiles.length; i++) {
-      tile = this.visibleTiles[i];
-      if (!tile) {
-        continue;
-      }
-      var indexToFill = indexesToFill.indexOf(tile.sprite.tileIndex);
+    if (this.built) {
+      // Check where we need to draw and where we can clip.
+      for (i = 0; i < this.visibleTiles.length; i++) {
+        tile = this.visibleTiles[i];
+        if (!tile) {
+          continue;
+        }
+        var indexToFill = indexesToFill.indexOf(tile.sprite.tileIndex);
 
-      if (indexToFill !== -1) {
-        indexesToFill.splice(indexToFill, 1);
-      }
-      else {
-        changeableTiles.push(tile);
+        if (indexToFill !== -1) {
+          indexesToFill.splice(indexToFill, 1);
+        }
+        else {
+          changeableTiles.push(tile);
+        }
       }
     }
+    else {
+      changeableTiles = this.visibleTiles.slice();
+    }
 
+    /*if (indexesToFill.length > changeableTiles.length) {
+      console.warn('short', indexesToFill.length - i, ' tiles to change! Aborting loop!');
+      return;
+    }*/
     // Fill new indexes with offscreen tiles.
     for (i = 0; i < indexesToFill.length; i++) {
-      if (indexesToFill.length > changeableTiles.length) {
-        console.warn('short', indexesToFill.length - i, ' tiles to change! Aborting loop!');
-        break;
-      }
       var tilePosition = indexesToFill[i];
       var newTileData = layer.tiles[tilePosition];
       if (!newTileData) {
@@ -248,7 +237,6 @@
       tile.sprite.alpha = layer.opacity;
 
       var frame = new PIXI.Texture(this.baseTextures[tile.tileSetName], new PIXI.Rectangle(x * tile.width, y * tile.height, tile.width, tile.height));
-
       tile.sprite.setTexture(frame);
       //tile.sprite.texture.frame.x = x * tile.width;
       //tile.sprite.texture.frame.y = y * tile.height;
@@ -260,6 +248,12 @@
       tile.sprite.scale.x = tile.flipped.horizontal ? -tile.sprite.scale.x : tile.sprite.scale.x;
       tile.sprite.scale.y = tile.flipped.vertical ? -tile.sprite.scale.y : tile.sprite.scale.y;
       tile.sprite.tileIndex = tilePosition;
+    }
+
+    for (i = 0; i < changeableTiles.length; i++) {
+      var changeableTile = changeableTiles[i];
+      changeableTile.sprite.visible = false;
+      changeableTile.sprite.tileIndex = 0;
     }
   };
 

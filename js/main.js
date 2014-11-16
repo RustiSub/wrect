@@ -60,8 +60,8 @@ window.onload = function() {
     }
 
     var block = createBlock({
-      x: 600,
-      y: 600,
+      x: 0,
+      y: 0,
       w: 32,
       h: 32,
       color: 0xFFFFFF
