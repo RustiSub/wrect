@@ -13,7 +13,8 @@
     this.move = new wrect.Physics.Vector(0, 0);
     this.pushOutMove = new wrect.Physics.Vector(0, 0);
 
-    this.frozen = options.frozen || true;
+    this.frozen = options.frozen;
+    this.solid = true;
   };
 
   wrect.ECS.Component.RigidBody.prototype = Object.create(wrect.ECS.Component.BaseComponent.prototype);

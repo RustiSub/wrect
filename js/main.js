@@ -79,5 +79,13 @@ window.onload = function() {
 
     //block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 5));
     player.components.RigidBody.gravity = true;
+
+    var sword = new wrect.ECS.Assemblage.Sword({});
+    game.getEntityManager().addEntity(sword);
+
+    player.addComponent(new wrect.ECS.Component.Link({
+      linkedEntity: sword,
+      joint: new wrect.Physics.Vector(100, 50)
+    }));
   });
 };

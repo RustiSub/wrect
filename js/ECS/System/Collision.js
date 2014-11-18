@@ -126,8 +126,11 @@
 //      collisionShape.physicsBody.v = collisionShape.physicsBody.v.add(v.multiply(energyTransfer));
 //      v2 = v2.multiply(energyTransfer);
       }
-      shapeA.components.RigidBody.physicsBody.f = shapeA.components.RigidBody.physicsBody.f.subtract(shapeA.components.RigidBody.physicsBody.v);
-      shapeA.components.RigidBody.physicsBody.f = shapeA.components.RigidBody.physicsBody.f.add(v2);
+
+      if (shapeB.components.RigidBody.solid && shapeA.components.RigidBody.solid) {
+        shapeA.components.RigidBody.physicsBody.f = shapeA.components.RigidBody.physicsBody.f.subtract(shapeA.components.RigidBody.physicsBody.v);
+        shapeA.components.RigidBody.physicsBody.f = shapeA.components.RigidBody.physicsBody.f.add(v2);
+      }
     }
 
     var axesOverlap = checkOverlap(getNormalAxes(b), a, b);

@@ -23,7 +23,6 @@
   };
 
   wrect.ECS.System.Mover.prototype.perform = function(entity) {
-
     if (entity.components.RigidBody && !entity.components.RigidBody.frozen) {
       var rigidBody = entity.components.RigidBody;
 
