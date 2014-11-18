@@ -154,8 +154,7 @@
      * @returns {Number} angle between this vector and v in radians
      */
     Vector.prototype.angle=function(v){
-        var perpDot = this.x * v.y - this.y * v.x;
-        return Math.atan2(perpDot, this.dot(v));
+        return Math.atan2(v.y - this.y, v.x - this.x);
     };
 
     /**

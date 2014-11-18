@@ -4,7 +4,7 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
-  var Vector = wrect.Physics.Vector;
+  var Line = wrect.Geometry.Line;
 
   wrect.ECS.System.RayCaster = function (options) {
     wrect.ECS.System.BaseSystem.call(this);
@@ -12,6 +12,10 @@
     this.sourceEntities = [];
     this.options = options || {};
 
+    this.rayGraphics = new PIXI.Graphics();
+
+    //TODO: Add a container that can hold 'debugger' graphics?
+    game.getEntityManager().cameraContainer.addChild(this.rayGraphics);
   };
 
   wrect.ECS.System.RayCaster.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -23,71 +27,90 @@
     return entity.components.RigidBody ? true : false;
   };
 
-  wrect.ECS.System.RayCaster.prototype.checkSourceDependencies = function(entity) {
-    return entity.components.Light ? true : false;
-  };
-
   wrect.ECS.System.RayCaster.prototype.addEntity = function(data) {
     if (this.checkDependencies(data.entity) && this.entities.indexOf(data.entity) === -1) {
       this.entities.push(data.entity);
     }
-
-    if (this.checkSourceDependencies(data.entity) && this.sourceEntities.indexOf(data.entity) === -1) {
-      this.sourceEntities.push(data.entity);
-    }
   };
 
-  wrect.ECS.System.RayCaster.prototype.run = function() {
-    for (var se = 0; se < this.sourceEntities.length; se++) {
-      var sourceEntity = this.sourceEntities[se];
-      var visual = sourceEntity.components.Visual;
-      var center = sourceEntity.components.RigidBody.dimensions.getCenter();
-      visual.lightGraphics.clear();
+  wrect.ECS.System.RayCaster.prototype.castRay = function(origin, direction, size, excludedTargets) {
+    excludedTargets = excludedTargets || [];
+    //Define ray
+    var endPoint = direction.subtract(origin).unitScalar(size).add(origin);
+    var rayLine = new Line(origin, endPoint);
+    var ray = {
+      line: rayLine,
+      intersections: []
+    };
 
-      visual.lightGraphics.beginFill(0xFFFFFF, 1);
-      visual.lightGraphics.drawCircle(center.x, center.y, 50);
+    //Loop all relevant entities (that contain Dimensions (~= RigidBody)
+    for (var entityIndex = 0; entityIndex < this.entities.length; entityIndex++) {
+      var entity = this.entities[entityIndex];
 
+      if (excludedTargets.indexOf(entity) !== -1) {
+        continue;
+      }
 
-      for (var e = 0; e < this.entities.length; e++) {
-        var entity = this.entities[e];
+      //var edges = entity.components.RigidBody.dimensions.getEdges();
+      var edges = entity.components.RigidBody.dimensions.getVisibleEdges(origin);
+      //Loop edges
+      for (var edgeIndex = 0; edgeIndex < edges.length; edgeIndex++) {
+        var edge = edges[edgeIndex];
+        //Get Intersections between ray and edge
+        var intersection = rayLine.getIntersections(edge);
 
-        if (entity.id === sourceEntity.id) {
-          continue;
+        var existingFound = false;
+        for (var existingIndex = 0; existingIndex < ray.intersections.length; existingIndex++) {
+          var existingIntersection = ray.intersections[existingIndex];
+          if (existingIntersection.x === intersection.x && existingIntersection.y === intersection.y) {
+            existingFound = true;
+            break;
+          }
         }
 
-        var vertices = entity.components.RigidBody.dimensions.vertices;
-        var triangleCount = 0;
-        visual.lightGraphics.moveTo(center.x, center.y);
-        for (var v = 0; v < vertices.length; v++) {
+        if (intersection && !existingFound) {
+          //Store intersection as Ray-Entity-Edge-Vector/Line
+          var passThrough = false;
 
-          visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y);
-          triangleCount += 1;
-
-          if (triangleCount === 2) {
-            visual.lightGraphics.lineTo(center.x, center.y);
-            visual.lightGraphics.moveTo(center.x, center.y);
-            triangleCount = 0;
-            //break;
+          if (intersection.x >= direction.x - 0.01 && intersection.x <= direction.x + 0.01) {
+            if (intersection.y >= direction.y - 0.01 && intersection.y <= direction.y + 0.01) {
+              passThrough = true;
+            }
           }
 
-          //visual.lightGraphics.moveTo(center.x, center.y);
-          //visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y);
-          //visual.lightGraphics.lineTo(vertices[v].x, vertices[v].y + 5);
-          //visual.lightGraphics.lineTo(center.x, center.y);
-
-
-
-
-          //visual.lightGraphics.dra
-          //vertices[v]
+          ray.intersections.push({
+            point: intersection,
+            passThrough: passThrough,
+            entity: entity
+          });
+        } else {
+          ray.intersections.push({
+            point: direction,
+            passThrough: true,
+            entity: entity
+          });
         }
       }
-      visual.lightGraphics.endFill();
-
     }
+
+    return ray;
   };
 
-  wrect.ECS.System.RayCaster.prototype.perform = function(entity) {
+  wrect.ECS.System.RayCaster.prototype.drawRay = function(ray) {
+    //this.rayGraphics.clear();
+    //this.rayGraphics.beginFill(0xFFFFFF, 1);
+    //this.rayGraphics.lineStyle(1, 0xFFFFFF, 1);
 
-  }
+
+
+    this.rayGraphics.moveTo(ray.line.point1.x, ray.line.point1.y);
+    this.rayGraphics.lineTo(ray.line.point2.x, ray.line.point2.y);
+
+    for (var i = 0; i < ray.intersections.length; i++) {
+      var intersection = ray.intersections[i];
+      this.rayGraphics.drawCircle(intersection.point.x, intersection.point.y, 5);
+    }
+
+    //this.rayGraphics.endFill();
+  };
 }());

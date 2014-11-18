@@ -8,6 +8,8 @@ window.onload = function() {
   ]);
   loader.load();
   loader.addEventListener('onComplete', function() {
+    var Vector = wrect.Physics.Vector;
+
     game = new Game({
       debug: true,
       width: window.innerWidth,
@@ -31,6 +33,11 @@ window.onload = function() {
         Mover: {
           system: new wrect.ECS.System.Mover()
         },
+        LightCaster: {
+          system: new wrect.ECS.System.LightCaster()
+        }
+      },
+      single: {
         RayCaster: {
           system: new wrect.ECS.System.RayCaster()
         }
@@ -93,10 +100,42 @@ window.onload = function() {
     //  color: 0xFF0000
     //});
 
+    //createJumpBlock({
+    //  x: 10,
+    //  y: 10,
+    //  w: 750,
+    //  h: 5,
+    //  color: 0xFFFFFF
+    //});
+    //
+    //createJumpBlock({
+    //  x: 10,
+    //  y: 500,
+    //  w: 750,
+    //  h: 5,
+    //  color: 0xFFFFFF
+    //});
+    //
+    //createJumpBlock({
+    //  x: 10,
+    //  y: 15,
+    //  w: 5,
+    //  h: 490,
+    //  color: 0xFFFFFF
+    //});
+    //
+    //createJumpBlock({
+    //  x: 755,
+    //  y: 15,
+    //  w: 5,
+    //  h: 490,
+    //  color: 0xFFFFFF
+    //});
+
     createJumpBlock({
-      x: 10,
+      x: 50,
       y: 300,
-      w: 350,
+      w: 20,
       h: 50,
       color: 0xFFFFFF
     });
@@ -110,6 +149,31 @@ window.onload = function() {
     });
 
     //createJumpBlock({
+    //  x: 370,
+    //  y: 50,
+    //  w: 20,
+    //  h: 370,
+    //  color: 0xFFFFFF
+    //});
+    //
+    //createJumpBlock({
+    //  x: 500,
+    //  y: 200,
+    //  w: 20,
+    //  h: 100,
+    //  color: 0xFFFFFF
+    //});
+
+
+    //createJumpBlock({
+    //  x: 370,
+    //  y: 150,
+    //  w: 20,
+    //  h: 150,
+    //  color: 0xFFFFFF
+    //});
+
+    //createJumpBlock({
     //  x: 500,
     //  y: 300,
     //  w: 150,
@@ -119,7 +183,7 @@ window.onload = function() {
 
     var block = createLiveBlock({
       x: 50,
-      y: 60,
+      y: 250,
       w: 20,
       h: 50,
       color: 0xFFFFFF,
@@ -147,24 +211,5 @@ window.onload = function() {
     cameraDarkLayer.endFill();
 
     game.getEntityManager().cameraContainer.addChild(cameraDarkLayer);
-
-
-//    theDark.mask = theLight;
-//    game.getStage().mask = theLight;
-
-
-    //game.getStage().addChild(theLight);
-
-    //game.getStage().addChild(theLight);
-    //
-    ////theLight.mask = theDark;
-    //theDark.mask = theLight;
-    //
-    //var theDarkBackground = new PIXI.Graphics();
-    //theDarkBackground.beginFill(0x000000, 0.5);
-    //theDarkBackground.drawRect(0, 0, 1000, 500);
-    //theDarkBackground.endFill();
-    //
-    //game.getStage().addChild(theDarkBackground);
   });
 };
