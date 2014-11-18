@@ -38,7 +38,7 @@ window.onload = function() {
 
     function createJumpBlock(options) {
       var materialBlock = createBlock(options);
-      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.5, 0.5)}));
+      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.1, 0.9)}));
     }
 
     function createBlock(options) {
@@ -56,53 +56,28 @@ window.onload = function() {
       return block;
     }
 
-    //createBlock({
-    //  x: 50,
-    //  y: 0,
-    //  w: 30,
-    //  h: 5,
-    //  color: 0xFF0000
-    //});
-    //
-    //createBlock({
-    //  x: 100,
-    //  //x: 50,
-    //  y: 300,
-    //  w: 30,
-    //  h: 5,
-    //  color: 0xFF0000
-    //});
-
     createJumpBlock({
       x: 10,
-      y: 300,
-      w: 150,
+      y: 500,
+      w: 1500,
       h: 5,
       color: 0xFFFFFF
     });
 
-    createJumpBlock({
+    var player = createBlock({
       x: 500,
-      y: 300,
-      w: 150,
-      h: 5,
+      y: 0,
+      w: 100,
+      h: 150,
       color: 0xFFFFFF
     });
 
-    var block = createBlock({
-      x: 50,
-      y: 60,
-      w: 20,
-      h: 50,
-      color: 0xFFFFFF
-    });
-
-    block.components.RigidBody.frozen = false;
+    player.components.RigidBody.frozen = false;
 
 
-    block.addComponent(new wrect.ECS.Component.ControlScheme.Player());
+    player.addComponent(new wrect.ECS.Component.ControlScheme.Player());
 
     //block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 5));
-    block.components.RigidBody.gravity = true;
+    player.components.RigidBody.gravity = true;
   });
 };

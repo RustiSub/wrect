@@ -19,7 +19,7 @@
     this.lastJump = game.getPreviousTime();
     this.lastMove = game.getPreviousTime();
 
-    this.jumpForce = 50;
+    this.jumpForce = 25;
     this.moveForce = 5;
   };
 
