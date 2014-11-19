@@ -72,20 +72,29 @@ window.onload = function() {
       color: 0xFFFFFF
     });
 
-    player.components.RigidBody.frozen = false;
+    var enemy = createBlock({
+      x: 800,
+      y: 0,
+      w: 100,
+      h: 150,
+      color: 0xFFFF00
+    });
 
+    enemy.components.RigidBody.frozen = false;
+    enemy.components.RigidBody.gravity = true;
+    player.components.RigidBody.frozen = false;
+    player.components.RigidBody.gravity = true;
 
     player.addComponent(new wrect.ECS.Component.ControlScheme.Player());
-
-    //block.components.RigidBody.physicsBody.f = block.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 5));
-    player.components.RigidBody.gravity = true;
 
     var sword = new wrect.ECS.Assemblage.Sword({});
     game.getEntityManager().addEntity(sword);
 
-    player.addComponent(new wrect.ECS.Component.Link({
-      linkedEntity: sword,
-      joint: new wrect.Physics.Vector(100, 50)
-    }));
+    sword.addComponent(new wrect.ECS.Component.ControlScheme.Sword());
+
+    //player.addComponent(new wrect.ECS.Component.Link({
+    //  linkedEntity: sword,
+    //  joint: new wrect.Physics.Vector(100, 50)
+    //}));
   });
 };

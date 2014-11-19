@@ -104,6 +104,10 @@
 
     function handleCollision(shapeA, shapeB, axesOverlap) {
 
+      if (!shapeB.components.RigidBody.solid || !shapeA.components.RigidBody.solid) {
+        return;
+      }
+
       var v = shapeA.components.RigidBody.physicsBody.v;//.unit();
       var n = axesOverlap.axis;//.unit();
       var vn = v.dot(n);
@@ -127,10 +131,9 @@
 //      v2 = v2.multiply(energyTransfer);
       }
 
-      if (shapeB.components.RigidBody.solid && shapeA.components.RigidBody.solid) {
-        shapeA.components.RigidBody.physicsBody.f = shapeA.components.RigidBody.physicsBody.f.subtract(shapeA.components.RigidBody.physicsBody.v);
-        shapeA.components.RigidBody.physicsBody.f = shapeA.components.RigidBody.physicsBody.f.add(v2);
-      }
+      shapeA.components.RigidBody.physicsBody.f = shapeA.components.RigidBody.physicsBody.f.subtract(shapeA.components.RigidBody.physicsBody.v);
+      shapeA.components.RigidBody.physicsBody.f = shapeA.components.RigidBody.physicsBody.f.add(v2);
+
     }
 
     var axesOverlap = checkOverlap(getNormalAxes(b), a, b);

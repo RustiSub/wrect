@@ -13,7 +13,8 @@
       37: 'left',
       38: 'up',
       39: 'right',
-      40: 'down'
+      40: 'down',
+      68: 'attack'
     },
     _singleInputKeys: [
       13,

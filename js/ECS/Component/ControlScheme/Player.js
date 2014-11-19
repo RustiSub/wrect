@@ -20,7 +20,7 @@
     this.lastMove = game.getPreviousTime();
 
     this.jumpForce = 25;
-    this.moveForce = 5;
+    this.moveForce = 10;
   };
 
   wrect.ECS.Component.ControlScheme.Player.prototype = Object.create(wrect.ECS.Component.ControlScheme.BaseScheme.prototype);
