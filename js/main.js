@@ -25,6 +25,9 @@ window.onload = function() {
         },
         BaseControl: {
           system: new wrect.ECS.System.Control.BaseControl()
+        },
+        Attack: {
+          system: new wrect.ECS.System.Control.Attack()
         }
       },
       post: {
@@ -89,8 +92,6 @@ window.onload = function() {
 
     var sword = new wrect.ECS.Assemblage.Sword({});
     game.getEntityManager().addEntity(sword);
-
-    sword.addComponent(new wrect.ECS.Component.ControlScheme.Sword());
 
     //player.addComponent(new wrect.ECS.Component.Link({
     //  linkedEntity: sword,

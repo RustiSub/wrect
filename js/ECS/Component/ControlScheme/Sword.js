@@ -26,9 +26,15 @@
   wrect.ECS.Component.ControlScheme.Sword.prototype.keyattack = function() {
     if (this.lastStab === 0 || game.getPreviousTime() - this.lastStab >= this.stabCooldown) {
       this.lastStab = game.getPreviousTime();
-      console.log('stab');
-      //this.movement = this.movement.add(new Vector(this.moveForce, 0));
+      this.stab = true;
+      this.stabbing = false;
+    } else {
+      this.stab = false;
     }
+  };
+
+  wrect.ECS.Component.ControlScheme.Sword.animation = function() {
+
   };
 }());
 

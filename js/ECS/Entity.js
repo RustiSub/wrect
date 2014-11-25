@@ -20,6 +20,7 @@
    * @param component
    */
   Entity.prototype.addComponent = function(component) {
+    //TODO: What should happen when a 'subcomponent' was added? Split up the name?
     this.components[component.name] = component;
     game.getEventManager().trigger('entity.component.add', {entity: this});
   };

@@ -42,8 +42,15 @@
 
     SwordGraphics.position = rigidBody.dimensions.origin;
 
+    var sword = new wrect.ECS.Component.ControlScheme.Sword();
+
+    sword.animation = function(entity) {
+
+    };
+
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
+    this.entity.addComponent(sword);
 
     return this.entity;
   };
