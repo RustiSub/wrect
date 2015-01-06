@@ -28,6 +28,9 @@ window.onload = function() {
         },
         Attack: {
           system: new wrect.ECS.System.Control.Attack()
+        },
+        Animator: {
+          system: new wrect.ECS.System.Animator()
         }
       },
       post: {
@@ -89,6 +92,8 @@ window.onload = function() {
     player.components.RigidBody.gravity = true;
 
     player.addComponent(new wrect.ECS.Component.ControlScheme.Player());
+    var animation = new wrect.ECS.Component.Animation();
+    player.addComponent(animation);
 
     var sword = new wrect.ECS.Assemblage.Sword({});
     game.getEntityManager().addEntity(sword);
