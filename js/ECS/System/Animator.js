@@ -29,12 +29,40 @@
     this.currentFrame = game.getPreviousTime();
 
     for (var e = 0; e < this.entities.length; e++) {
-      var animation = this.entities[e].components.Animation;
+      var entity = this.entities[e];
+      var animation = entity.components.Animation;
+
+      animation.timer += game.getDelta();
+
 
       for (var s = 0; s < animation.playingAnimationIds.length; s++) {
         var scriptedAnimation = animation.scriptedAnimations[animation.playingAnimationIds[s]];
 
-        this.perform(scriptedAnimation);
+        for (var actionIndex in scriptedAnimation.actions) {
+          var action = scriptedAnimation.actions[actionIndex];
+
+          if (animation.timer >= actionIndex && action.state === 0) {
+            //console.log(actionIndex);
+            //console.log(animation.timer);
+            action.perform(entity);
+            action.state = 1;
+          }
+        }
+      }
+
+      if (animation.timer >= animation.endTime) {
+        console.log('animation done');
+        console.log('resetting');
+        animation.timer = 0;
+        for (var actionIndex in scriptedAnimation.actions) {
+          var action = scriptedAnimation.actions[actionIndex];
+
+          if (action.state === 1) {
+            action.state = 0;
+          }
+          //console.log('checking action :', actionIndex);
+          //console.log(this.interval % actionIndex);
+        }
       }
     }
   };
@@ -43,12 +71,7 @@
    * @param {wrect.ECS.Component.ScriptedAnimation} scriptedAnimation
    */
   wrect.ECS.System.Animator.prototype.perform = function(scriptedAnimation) {
-    for (var actionIndex in scriptedAnimation.actions) {
-      var action = scriptedAnimation.actions[actionIndex];
 
-      //console.log('checking action :', actionIndex);
-      //console.log(this.interval % actionIndex);
-    }
   };
 
   /**
