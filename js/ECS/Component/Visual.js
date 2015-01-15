@@ -11,6 +11,24 @@
     this.graphics = options.graphics || new PIXI.Graphics();
 
     this.color =  options.color || 0x000000;
+
+    if (this.options.useSprite) {
+      var frames = [
+        "walk2.001.png", "walk2.003.png", "walk2.005.png", "walk2.007.png", "walk2.009.png", "walk2.011.png", "walk2.013.png"
+      ];
+      var sprite = PIXI.MovieClip.fromFrames(frames);
+      //sprite.animationSpeed = 0.12;
+
+      sprite.scale.x = sprite.scale.y = 0.30;
+      //game.getStage().addChild(sprite);
+
+      sprite.gotoAndPlay(0);
+
+      this.sprite = sprite;
+
+      game.getStage().addChild(this.sprite);
+      console.log(this.sprite);
+    }
   };
 
   wrect.ECS.Component.Visual.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

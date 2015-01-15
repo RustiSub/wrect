@@ -4,8 +4,13 @@ var game;
 window.onload = function() {
 
   var loader = new PIXI.AssetLoader([
-    'resources/gui/maximize.png'
+    'resources/gui/maximize.png',
+    'resources/images/spritesheet/spriteSheetWalk.json'
   ]);
+  loader.onComplete = makeSprites.bind(this);
+  function makeSprites() {
+
+  }
   loader.load();
   loader.addEventListener('onComplete', function() {
     game = new Game({
@@ -75,7 +80,8 @@ window.onload = function() {
       y: 0,
       w: 100,
       h: 150,
-      color: 0xFFFFFF
+      color: 0xFFFFFF,
+      useSprite: true
     });
 
     var enemy = createBlock({
@@ -92,15 +98,18 @@ window.onload = function() {
     player.components.RigidBody.gravity = true;
 
     player.addComponent(new wrect.ECS.Component.ControlScheme.Player());
-    var animation = new wrect.ECS.Component.Animation();
-    player.addComponent(animation);
-
-    var sword = new wrect.ECS.Assemblage.Sword({});
-    game.getEntityManager().addEntity(sword);
+    //var animation = new wrect.ECS.Component.Animation();
+    //player.addComponent(animation);
+    //
+    //var sword = new wrect.ECS.Assemblage.Sword({});
+    //game.getEntityManager().addEntity(sword);
 
     //player.addComponent(new wrect.ECS.Component.Link({
     //  linkedEntity: sword,
     //  joint: new wrect.Physics.Vector(100, 50)
     //}));
+
+
+
   });
 };

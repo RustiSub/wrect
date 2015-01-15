@@ -125,7 +125,7 @@
      * Builds up the default components. See _defaults to overwrite default classes.
      */
     buildComponents: function() {
-      this._stage = new PIXI.Stage(0x5E5E5E);
+      this._stage = new PIXI.Stage(0xFFFFFF);//0x5E5E5E);
       this._renderer = new PIXI.autoDetectRenderer(this._options.width, this._options.height);
       global.document.body.querySelector('.canvasContainer').appendChild(this._renderer.view);
       // Required for fading

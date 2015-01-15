@@ -24,7 +24,8 @@
       graphics: new PIXI.Graphics(),
       origin: rigidBody.dimensions.origin,
       w: options.w,
-      h: options.h
+      h: options.h,
+      useSprite: options.useSprite
     });
 
     visualComponent.draw(rigidBody.dimensions.origin);
