@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename></filename>
+        <filename>spriteSheetWalk.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -88,7 +88,7 @@
             <key>width</key>
             <int>2048</int>
             <key>height</key>
-            <int>2048</int>
+            <int>4096</int>
         </QSize>
         <key>fixedTextureSize</key>
         <QSize>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename></filename>
+                <filename>spriteSheetWalk.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -197,6 +197,8 @@
             <filename>walk2.013.png</filename>
             <filename>walk2.015.png</filename>
             <filename>walk2.017.png</filename>
+            <filename>../walkidleclean/walkidleclean.023.png</filename>
+            <filename>../walkidleclean/walkidleclean.025.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -14,15 +14,22 @@
 
     if (this.options.useSprite) {
       var frames = [
-        "walk2.001.png", "walk2.003.png", "walk2.005.png", "walk2.007.png", "walk2.009.png", "walk2.011.png", "walk2.013.png"
+        "walkidleclean.023.png","walkidleclean.025.png", "walk2.001.png", "walk2.003.png", "walk2.005.png", "walk2.007.png", "walk2.009.png", "walk2.011.png", "walk2.013.png"
       ];
       var sprite = PIXI.MovieClip.fromFrames(frames);
       //sprite.animationSpeed = 0.12;
 
+      sprite.anchor.x = 0.5;
+      sprite.anchor.y = 0;
       sprite.scale.x = sprite.scale.y = 0.30;
       //game.getStage().addChild(sprite);
 
-      sprite.gotoAndPlay(0);
+      sprite.gotoAndPlay(2);
+
+      sprite.loop = false;
+      sprite.onComplete = function() {
+        this.gotoAndPlay(2);
+      };
 
       this.sprite = sprite;
 

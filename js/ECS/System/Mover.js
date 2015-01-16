@@ -41,6 +41,16 @@
       if (entity.components.Visual.sprite) {
         //console.log(Math.abs(Math.round(rigidBody.physicsBody.v.x)));
         entity.components.Visual.sprite.animationSpeed = Math.abs(Math.round(rigidBody.physicsBody.v.x)) / 75;//Math.abs(rigidBody.physicsBody.v.x) / 5;
+
+        if (rigidBody.physicsBody.v.x < 0) {
+          entity.components.Visual.sprite.scale.x = -0.30;
+        } else {
+          entity.components.Visual.sprite.scale.x = 0.30;
+        }
+
+        if (entity.components.Visual.sprite.animationSpeed < 0.01) {
+          entity.components.Visual.sprite.gotoAndPlay(0);
+        }
       }
 
       entity.components.RigidBody.move = new Vector(0, 0);

@@ -76,7 +76,7 @@ window.onload = function() {
     });
 
     var player = createBlock({
-      x: 500,
+      x: 100,
       y: 0,
       w: 100,
       h: 150,
