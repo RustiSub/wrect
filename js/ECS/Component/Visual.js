@@ -4,24 +4,30 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.Component = wrect.ECS.Component || {};
 
+  var Vector = wrect.Physics.Vector;
+
   wrect.ECS.Component.Visual = function (options) {
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};
     this.graphics = options.graphics || new PIXI.Graphics();
 
-    this.color =  options.color || 0x000000;
+    if (this.options.alpha == undefined) {
+      this.options.alpha = 1;
+    }
 
     if (this.options.useSprite) {
       var frames = [
-        "walkidleclean.023.png","walkidleclean.025.png", "walk2.001.png", "walk2.003.png", "walk2.005.png", "walk2.007.png", "walk2.009.png", "walk2.011.png", "walk2.013.png"
+        "Image.001.png","Image.002.png","Image.003.png","Image.004.png","Image.005.png","Image.006.png","Image.007.png","Image.008.png"
       ];
       var sprite = PIXI.MovieClip.fromFrames(frames);
       //sprite.animationSpeed = 0.12;
 
+      this.spriteOffset = new Vector(100, 0);
       sprite.anchor.x = 0.5;
       sprite.anchor.y = 0;
       sprite.scale.x = sprite.scale.y = 0.30;
+
       //game.getStage().addChild(sprite);
 
       sprite.gotoAndPlay(2);
@@ -34,7 +40,6 @@
       this.sprite = sprite;
 
       game.getStage().addChild(this.sprite);
-      console.log(this.sprite);
     }
   };
 
@@ -44,7 +49,8 @@
 
   wrect.ECS.Component.Visual.prototype.draw = function(origin) {
     this.graphics.clear();
-    this.graphics.beginFill(this.options.color || 0x000000, this.options.alpha || 1);
+
+    this.graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
     this.graphics.drawRect(0, 0, this.options.w, this.options.h);
     this.graphics.endFill();
 

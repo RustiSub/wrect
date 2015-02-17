@@ -21,6 +21,7 @@
 
     var visualComponent = new wrect.ECS.Component.Visual({
       color: options.color,
+      alpha: options.alpha,
       graphics: new PIXI.Graphics(),
       origin: rigidBody.dimensions.origin,
       w: options.w,

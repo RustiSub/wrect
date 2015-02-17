@@ -72,7 +72,7 @@ window.onload = function() {
       y: 500,
       w: 1500,
       h: 5,
-      color: 0xFFFFFF
+      color: 0x000000
     });
 
     var player = createBlock({
@@ -81,7 +81,8 @@ window.onload = function() {
       w: 100,
       h: 150,
       color: 0xFFFFFF,
-      useSprite: true
+      useSprite: true,
+      alpha: 0.5
     });
 
     var enemy = createBlock({
