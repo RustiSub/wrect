@@ -12,6 +12,7 @@
    */
   wrect.Geometry.Dimensions = function () {
     this.vertices = [];
+    this.originalVertices = [];
     this.origin = new Vector(0, 0);
     this.previousOrigin = null;
   };
@@ -22,7 +23,7 @@
 
       this.vertices[vertexIndex] = vertex.add(v);
     }
-
+    
     this.origin = this.origin.add(v);
   };
   wrect.Geometry.Dimensions.prototype.rotate = function() {};

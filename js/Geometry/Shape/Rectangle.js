@@ -22,6 +22,13 @@
       options.origin.add(width).add(height),
       options.origin.add(height)
     ];
+
+    this.offsetVertices = [
+      new Vector(0, 0),
+      new Vector(0, 0),
+      new Vector(0, 0),
+      new Vector(0, 0)
+    ]
   };
 
   wrect.Geometry.Rectangle.prototype = Object.create( wrect.Geometry.Dimensions.prototype );

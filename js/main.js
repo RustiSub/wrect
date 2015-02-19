@@ -39,6 +39,9 @@ window.onload = function() {
         }
       },
       post: {
+        Transformer: {
+          system: new wrect.ECS.System.Transformer()
+        },
         Mover: {
           system: new wrect.ECS.System.Mover()
         }

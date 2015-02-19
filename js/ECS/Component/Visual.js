@@ -51,10 +51,35 @@
     this.graphics.clear();
 
     this.graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
-    this.graphics.drawRect(0, 0, this.options.w, this.options.h);
+    this.graphics.moveTo(0, 0);
+    this.graphics.lineTo(this.options.w, 0);
+    this.graphics.lineTo(this.options.w, this.options.h);
+    this.graphics.lineTo(0, this.options.h);
+
     this.graphics.endFill();
 
     this.graphics.position = origin;
+  };
+
+  wrect.ECS.Component.Visual.prototype.reDraw = function(origin, dimensions) {
+    this.graphics.clear();
+
+    this.graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
+
+    this.graphics.moveTo(0, 0);
+    //this.graphics.lineTo(50, 0);
+    //this.graphics.lineTo(50, 100);
+    //this.graphics.lineTo(0, 100);
+    //this.graphics.moveTo(origin.x, origin.y);
+    for (var d = 0; d < dimensions.length; d++) {
+      this.graphics.lineTo(dimensions[d].x, dimensions[d].y);
+    }
+    //this.graphics.lineTo(dimensions[0].x, dimensions[0].y);
+    this.graphics.lineTo(0, 0);
+
+    this.graphics.endFill();
+
+    //this.graphics.position = origin;
   };
 
   wrect.ECS.Component.Visual.prototype.clear = function(origin) {
