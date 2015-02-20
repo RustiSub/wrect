@@ -58,7 +58,7 @@
 
     this.graphics.endFill();
 
-    this.graphics.position = origin;
+    //this.graphics.position = origin;
   };
 
   wrect.ECS.Component.Visual.prototype.reDraw = function(origin, dimensions) {
@@ -66,20 +66,12 @@
 
     this.graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
 
-    this.graphics.moveTo(0, 0);
-    //this.graphics.lineTo(50, 0);
-    //this.graphics.lineTo(50, 100);
-    //this.graphics.lineTo(0, 100);
-    //this.graphics.moveTo(origin.x, origin.y);
+    this.graphics.moveTo(dimensions[0].x - origin.x, dimensions[0].y - origin.y);
     for (var d = 0; d < dimensions.length; d++) {
-      this.graphics.lineTo(dimensions[d].x, dimensions[d].y);
+      this.graphics.lineTo(dimensions[d].x - origin.x, dimensions[d].y - origin.y);
     }
-    //this.graphics.lineTo(dimensions[0].x, dimensions[0].y);
-    this.graphics.lineTo(0, 0);
-
+    this.graphics.lineTo(dimensions[0].x - origin.x, dimensions[0].y - origin.y);
     this.graphics.endFill();
-
-    //this.graphics.position = origin;
   };
 
   wrect.ECS.Component.Visual.prototype.clear = function(origin) {

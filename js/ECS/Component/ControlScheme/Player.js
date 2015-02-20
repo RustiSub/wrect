@@ -21,6 +21,8 @@
 
     this.jumpForce = 55;
     this.moveForce = 10;
+
+    this.transform = new Vector(0, 0);
   };
 
   wrect.ECS.Component.ControlScheme.Player.prototype = Object.create(wrect.ECS.Component.ControlScheme.BaseScheme.prototype);
@@ -30,6 +32,7 @@
     if (this.lastJump === 0 || game.getPreviousTime() - this.lastJump >= this.jumpCooldown) {
       this.lastJump = game.getPreviousTime();
       this.movement = this.movement.add(new Vector(0, -this.jumpForce));
+      debugger;
     }
   };
 
@@ -37,6 +40,8 @@
     if (this.lastMove === 0 || game.getPreviousTime() - this.lastMove >= this.moveCooldown) {
       this.lastMove = game.getPreviousTime();
       this.movement = this.movement.add(new Vector(this.moveForce, 0));
+
+      this.transform = this.transform.add(new Vector(1, 0));
     }
   };
 
@@ -44,6 +49,8 @@
     if (this.lastMove === 0 || game.getPreviousTime() - this.lastMove >= this.moveCooldown) {
       this.lastMove = game.getPreviousTime();
       this.movement = this.movement.add(new Vector(-this.moveForce, 0));
+
+      this.transform = this.transform.add(new Vector(-1, 0));
     }
   };
 }());

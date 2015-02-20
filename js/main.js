@@ -39,11 +39,11 @@ window.onload = function() {
         }
       },
       post: {
-        Transformer: {
-          system: new wrect.ECS.System.Transformer()
-        },
         Mover: {
           system: new wrect.ECS.System.Mover()
+        },
+        Transformer: {
+          system: new wrect.ECS.System.Transformer()
         }
       }
     };
@@ -52,7 +52,7 @@ window.onload = function() {
 
     function createJumpBlock(options) {
       var materialBlock = createBlock(options);
-      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.1, 0.9)}));
+      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0, 0.9)}));
     }
 
     function createBlock(options) {
@@ -95,6 +95,22 @@ window.onload = function() {
       h: 150,
       color: 0xFFFF00
     });
+
+    //createJumpBlock({
+    //  x: 800,
+    //  y: 350,
+    //  w: 100,
+    //  h: 150,
+    //  color: 0xFFFF00
+    //});
+    //
+    //createJumpBlock({
+    //  x: 50,
+    //  y: 350,
+    //  w: 100,
+    //  h: 150,
+    //  color: 0xFFFF00
+    //});
 
     enemy.components.RigidBody.frozen = false;
     enemy.components.RigidBody.gravity = true;
