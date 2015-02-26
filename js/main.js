@@ -5,7 +5,8 @@ window.onload = function() {
 
   var loader = new PIXI.AssetLoader([
     'resources/gui/maximize.png',
-    'resources/images/spritesheet/spriteSheetWalk.json'
+    'resources/images/spritesheet/spriteSheetWalk.json',
+    'resources/images/backgrounds/background_2.png'
   ]);
   loader.onComplete = makeSprites.bind(this);
   function makeSprites() {
@@ -52,7 +53,7 @@ window.onload = function() {
 
     function createJumpBlock(options) {
       var materialBlock = createBlock(options);
-      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0, 0.9)}));
+      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.1, 0.9)}));
     }
 
     function createBlock(options) {
@@ -72,10 +73,11 @@ window.onload = function() {
 
     createJumpBlock({
       x: 10,
-      y: 500,
-      w: 1500,
+      y: 620,
+      w: 3000,
       h: 5,
-      color: 0x000000
+      color: 0x000000,
+      alpha: 0
     });
 
     var player = createBlock({
@@ -85,16 +87,19 @@ window.onload = function() {
       h: 150,
       color: 0xFFFFFF,
       useSprite: true,
-      alpha: 0.5
+      alpha: 0
     });
 
-    var enemy = createBlock({
-      x: 800,
-      y: 0,
-      w: 100,
-      h: 150,
-      color: 0xFFFF00
-    });
+    //var enemy = createBlock({
+    //  x: 800,
+    //  y: 0,
+    //  w: 100,
+    //  h: 150,
+    //  color: 0xFFFF00
+    //});
+
+    //enemy.components.RigidBody.frozen = false;
+    //enemy.components.RigidBody.gravity = true;
 
     //createJumpBlock({
     //  x: 800,
@@ -112,8 +117,7 @@ window.onload = function() {
     //  color: 0xFFFF00
     //});
 
-    enemy.components.RigidBody.frozen = false;
-    enemy.components.RigidBody.gravity = true;
+
     player.components.RigidBody.frozen = false;
     player.components.RigidBody.gravity = true;
 
@@ -128,8 +132,5 @@ window.onload = function() {
     //  linkedEntity: sword,
     //  joint: new wrect.Physics.Vector(100, 50)
     //}));
-
-
-
   });
 };

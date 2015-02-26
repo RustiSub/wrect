@@ -126,6 +126,22 @@
      */
     buildComponents: function() {
       this._stage = new PIXI.Stage(0xABA493);//0xFFFFFF);//
+
+      var texture = PIXI.Texture.fromImage("resources/images/backgrounds/background_2.png");
+      // create a new Sprite using the texture
+      var background = new PIXI.Sprite(texture);
+
+      // center the sprites anchor point
+      background.anchor.x = 0;
+      background.anchor.y = 0;
+      background.scale.x = background.scale.y = 1.5;
+
+      // move the sprite t the center of the screen
+      background.position.x = -150;
+      background.position.y = -300;
+
+      this._stage.addChild(background);
+
       this._renderer = new PIXI.autoDetectRenderer(this._options.width, this._options.height);
       global.document.body.querySelector('.canvasContainer').appendChild(this._renderer.view);
       // Required for fading

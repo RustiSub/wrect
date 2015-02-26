@@ -32,7 +32,6 @@
     if (this.lastJump === 0 || game.getPreviousTime() - this.lastJump >= this.jumpCooldown) {
       this.lastJump = game.getPreviousTime();
       this.movement = this.movement.add(new Vector(0, -this.jumpForce));
-      debugger;
     }
   };
 
