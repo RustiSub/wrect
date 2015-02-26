@@ -66,8 +66,10 @@
     layer.position.x = layerData.x;
     layer.position.y = layerData.y;
 
-    for (var i = 0; i < layerData.data.length; i++) {
-      layer.tiles.push(this.mapTile(layerData.data[i], tileHeight, tileWidth, tileSets));
+    if (layerData.data) {
+      for (var i = 0; i < layerData.data.length; i++) {
+        layer.tiles.push(this.mapTile(layerData.data[i], tileHeight, tileWidth, tileSets));
+      }
     }
 
     return layer;

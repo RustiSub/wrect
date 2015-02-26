@@ -5,8 +5,7 @@ window.onload = function() {
 
   var loader = new PIXI.AssetLoader([
     'resources/gui/maximize.png',
-    'resources/images/spritesheet/spriteSheetWalk.json',
-    'resources/images/backgrounds/background_2.png'
+    'resources/images/spritesheet/spriteSheetWalk.json'
   ]);
   loader.onComplete = makeSprites.bind(this);
   function makeSprites() {
@@ -139,5 +138,9 @@ window.onload = function() {
     //  linkedEntity: sword,
     //  joint: new wrect.Physics.Vector(100, 50)
     //}));
+
+    // TileMap stuff!
+    wrect.getGame()._tileMapManager.loadMap('resources/levels/tilemap/background_2.json');
+
   });
 };

@@ -122,12 +122,7 @@
       }
     },
 
-    /**
-     * Builds up the default components. See _defaults to overwrite default classes.
-     */
-    buildComponents: function() {
-      this._stage = new PIXI.Stage(0xABA493);//0xFFFFFF);//
-
+    setBackground:function (){
       var texture = PIXI.Texture.fromImage("resources/images/backgrounds/background_2.png");
       // create a new Sprite using the texture
       var background = new PIXI.Sprite(texture);
@@ -141,7 +136,16 @@
       background.position.x = -150;
       background.position.y = -300;
 
+
       this._stage.addChild(background);
+
+          return background;
+      }, /**
+     * Builds up the default components. See _defaults to overwrite default classes.
+     */
+    buildComponents: function() {
+      this._stage = new PIXI.Stage(0xABA493);//0xFFFFFF);//
+      //this.setBackground();
 
       this._renderer = new PIXI.autoDetectRenderer(this._options.width, this._options.height);
       global.document.body.querySelector('.canvasContainer').appendChild(this._renderer.view);

@@ -35,6 +35,7 @@
     if (!mapper) {
       mapper = new wrect.TileMap.Mapper.Tiled();
     }
+
     var tileMapDataObject = mapper.mapMap(json);
 
     for (i = 0; i < tileMapDataObject.layers.length; i++) {
