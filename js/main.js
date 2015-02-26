@@ -16,10 +16,17 @@ window.onload = function() {
   loader.addEventListener('onComplete', function() {
     game = new Game({
       debug: true,
+      debugTilemap: false,
       width: window.innerWidth,
       height: window.innerHeight,
       defaultLevel: false
     });
+
+    wrect.getGame = function() {
+      return game;
+    };
+
+    game.timeStepSystem = new wrect.ECS.System.TimeStep();
 
     game.systems = {
       pre: {

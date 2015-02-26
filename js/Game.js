@@ -24,7 +24,7 @@
     fpsOutInterval: 10000,
     completeTree: [],
     treeHashes: [],
-    debugStats: [],
+    debugStats: {},
     _defaults: {
       inputHandlerClass: InputHandler,
       entityManagerClass: EntityManager,
@@ -110,6 +110,7 @@
       if (options.debug) {
         console.info('debug mode enabled');
         this.debug = true;
+        this.debugTilemap = options.debugTilemap;
         this.debugStats = {};
         if (options.fpsOutInterval) {
           this.fpsOutInterval = options.fpsOutInterval;
@@ -160,6 +161,7 @@
       //this._builder = new this._options.builder();
       this._levelManager = new this._options.levelManagerClass(this._stage, this._options.defaultLevel);
       this._camera = new Camera(0, 0, this._options.width, this._options.height, this);
+      this._tileMapManager = new wrect.TileMap.TileMapManager(this);
 
       this.timeStepSystem = {};
 
