@@ -140,7 +140,7 @@ window.onload = function() {
     //}));
 
     // TileMap stuff!
-    wrect.getGame()._tileMapManager.loadMap('resources/levels/tilemap/background_2.json');
+    wrect.getGame()._tileMapManager.loadMap('resources/levels/tilemap/kitchen.json');
 
   });
 };
