@@ -138,8 +138,8 @@
     var bounds = dimensions.getBounds();
     var tileHelper = wrect.TileMap.TileHelper;
 
-    extraColumns = extraColumns || 0;
-    extraRows = extraRows || 0;
+    extraColumns = 0; //extraColumns || 0;
+    extraRows = 0; //extraRows || 0;
     extraRows *= this.tileHeight;
     extraColumns *= this.tileWidth;
     bounds.topLeft = bounds.topLeft.add(new Vector(-extraColumns, -extraRows));
@@ -210,7 +210,7 @@
       tile = changeableTiles.splice(0, 1)[0];
       var yPosition = Math.floor(tilePosition / this.width) * tile.height;
       var xPosition = (tilePosition % this.width) * tile.width;
-        if (newTileData.id === 0) {
+      if (newTileData.id === 0) {
         tile.sprite.visible = false;
         tile.sprite.position.x = xPosition;
         tile.sprite.position.y = yPosition;
@@ -252,11 +252,11 @@
       tile.sprite.tileIndex = tilePosition;
     }
 
-    //for (i = 0; i < changeableTiles.length; i++) {
-    //  var changeableTile = changeableTiles[i];
-    //  changeableTile.sprite.visible = false;
-    //  changeableTile.sprite.tileIndex = 0;
-    //}
+    for (i = 0; i < changeableTiles.length; i++) {
+      var changeableTile = changeableTiles[i];
+      changeableTile.sprite.visible = false;
+      changeableTile.sprite.tileIndex = 0;
+    }
   };
 
   /**
