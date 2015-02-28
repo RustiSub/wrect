@@ -208,10 +208,12 @@
         continue;
       }
       tile = changeableTiles.splice(0, 1)[0];
-      if (newTileData.id === 0) {
+      var yPosition = Math.floor(tilePosition / this.width) * tile.height;
+      var xPosition = (tilePosition % this.width) * tile.width;
+        if (newTileData.id === 0) {
         tile.sprite.visible = false;
-        tile.sprite.position.x = (tilePosition % this.width) * tile.width;
-        tile.sprite.position.y = Math.floor(tilePosition / this.height) * tile.height;
+        tile.sprite.position.x = xPosition;
+        tile.sprite.position.y = yPosition;
         continue;
       }
 
@@ -240,8 +242,8 @@
       tile.sprite.setTexture(frame);
       //tile.sprite.texture.frame.x = x * tile.width;
       //tile.sprite.texture.frame.y = y * tile.height;
-      tile.sprite.position.x = (tilePosition % this.width) * tile.width;
-      tile.sprite.position.y = Math.floor(tilePosition / this.height) * tile.height;
+      tile.sprite.position.x = xPosition;
+      tile.sprite.position.y = yPosition;
       tile.sprite.pivot.x = tile.width / 2;
       tile.sprite.pivot.y = tile.height / 2;
       tile.sprite.rotation = tile.rotation;
@@ -250,11 +252,11 @@
       tile.sprite.tileIndex = tilePosition;
     }
 
-    for (i = 0; i < changeableTiles.length; i++) {
-      var changeableTile = changeableTiles[i];
-      changeableTile.sprite.visible = false;
-      changeableTile.sprite.tileIndex = 0;
-    }
+    //for (i = 0; i < changeableTiles.length; i++) {
+    //  var changeableTile = changeableTiles[i];
+    //  changeableTile.sprite.visible = false;
+    //  changeableTile.sprite.tileIndex = 0;
+    //}
   };
 
   /**
