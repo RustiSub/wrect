@@ -38,7 +38,7 @@
         }
       }
 
-      if (entity.components.Visual.sprite) {
+      if (entity.components.Visual && entity.components.Visual.sprite) {
         //console.log(Math.abs(Math.round(rigidBody.physicsBody.v.x)));
         entity.components.Visual.sprite.animationSpeed = Math.abs(Math.round(rigidBody.physicsBody.v.x)) / 75;//Math.abs(rigidBody.physicsBody.v.x) / 5;
 

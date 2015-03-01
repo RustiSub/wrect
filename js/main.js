@@ -59,7 +59,7 @@ window.onload = function() {
 
     function createJumpBlock(options) {
       var materialBlock = createBlock(options);
-      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.1, 0.9)}));
+      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0, 0.9)}));
     }
 
     function createBlock(options) {
@@ -77,70 +77,30 @@ window.onload = function() {
       return block;
     }
 
-    createJumpBlock({
-      x: 10,
-      y: 620,
-      w: 3000,
-      h: 5,
-      color: 0x000000,
-      alpha: 0
-    });
+    function createBall(options) {
+      options = options || {
+        x: 300,
+        y: 100,
+        radius: 10,
+        color: 0xFFFFFF
+      };
+      var ball = new wrect.ECS.Assemblage.Ball(options);
 
-    var player = createBlock({
-      x: 100,
-      y: 0,
-      w: 100,
-      h: 150,
-      color: 0xFFFFFF,
-      useSprite: true,
-      alpha: 0
-    });
+      game.getEntityManager().addEntity(ball);
 
-    //var enemy = createBlock({
-    //  x: 800,
-    //  y: 0,
-    //  w: 100,
-    //  h: 150,
-    //  color: 0xFFFF00
-    //});
+      return ball;
+    }
 
-    //enemy.components.RigidBody.frozen = false;
-    //enemy.components.RigidBody.gravity = true;
+    createBall();
 
     //createJumpBlock({
-    //  x: 800,
-    //  y: 350,
-    //  w: 100,
-    //  h: 150,
-    //  color: 0xFFFF00
+    //  x: 10,
+    //  y: 620,
+    //  w: 500,
+    //  h: 5,
+    //  color: 0x000000,
+    //  alpha: 1
     //});
-    //
-    //createJumpBlock({
-    //  x: 50,
-    //  y: 350,
-    //  w: 100,
-    //  h: 150,
-    //  color: 0xFFFF00
-    //});
-
-
-    player.components.RigidBody.frozen = false;
-    player.components.RigidBody.gravity = true;
-
-    player.addComponent(new wrect.ECS.Component.ControlScheme.Player());
-    //var animation = new wrect.ECS.Component.Animation();
-    //player.addComponent(animation);
-    //
-    //var sword = new wrect.ECS.Assemblage.Sword({});
-    //game.getEntityManager().addEntity(sword);
-
-    //player.addComponent(new wrect.ECS.Component.Link({
-    //  linkedEntity: sword,
-    //  joint: new wrect.Physics.Vector(100, 50)
-    //}));
-
-    // TileMap stuff!
-    wrect.getGame()._tileMapManager.loadMap('resources/levels/tilemap/kitchen.json');
 
   });
 };

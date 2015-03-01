@@ -38,4 +38,5 @@
   wrect.Geometry.Dimensions.prototype.rotate = function() {};
   wrect.Geometry.Dimensions.prototype.getBounds = function() {};
   wrect.Geometry.Dimensions.prototype.getCenter = function() {};
+  wrect.Geometry.Dimensions.prototype.draw = function() {};
 }());

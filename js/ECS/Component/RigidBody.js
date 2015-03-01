@@ -11,7 +11,6 @@
     this.dimensions = options.dimensions || new wrect.Geometry.Dimensions();
     this.physicsBody = options.physicsBody || new wrect.Physics.PhysicsBody();
     this.move = new wrect.Physics.Vector(0, 0);
-    this.pushOutMove = new wrect.Physics.Vector(0, 0);
 
     this.frozen = options.frozen;
     this.solid = true;
