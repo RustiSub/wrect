@@ -59,7 +59,7 @@ window.onload = function() {
 
     function createJumpBlock(options) {
       var materialBlock = createBlock(options);
-      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.1, 0.9)}));
+      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0, 0)}));
     }
 
     function createBlock(options) {
@@ -77,70 +77,66 @@ window.onload = function() {
       return block;
     }
 
+    function createBall(options) {
+      var ball = new wrect.ECS.Assemblage.Ball(options);
+
+      game.getEntityManager().addEntity(ball);
+
+      return ball;
+    }
+
+    var ball = createBall({
+      x: 300,
+      y: 100,
+      radius: 50,
+      color: 0xFFFFFF
+    });
+
+    //var block = createBlock({
+    //  x: 300,
+    //  y: 250,
+    //  w: 100,
+    //  h: 40,
+    //  color: 0xFFFFFF
+    //});
+
+    ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(100, 20));
+
     createJumpBlock({
       x: 10,
-      y: 620,
-      w: 3000,
+      y: 10,
+      w: 1000,
       h: 5,
       color: 0x000000,
-      alpha: 0
+      alpha: 1
     });
 
-    var player = createBlock({
-      x: 100,
-      y: 0,
-      w: 100,
-      h: 150,
-      color: 0xFFFFFF,
-      useSprite: true,
-      alpha: 0
+    createJumpBlock({
+      x: 1005,
+      y: 10,
+      w: 5,
+      h: 495,
+      color: 0x000000,
+      alpha: 1
     });
 
-    //var enemy = createBlock({
-    //  x: 800,
-    //  y: 0,
-    //  w: 100,
-    //  h: 150,
-    //  color: 0xFFFF00
-    //});
+    createJumpBlock({
+      x: 10,
+      y: 500,
+      w: 1000,
+      h: 5,
+      color: 0x000000,
+      alpha: 1
+    });
 
-    //enemy.components.RigidBody.frozen = false;
-    //enemy.components.RigidBody.gravity = true;
-
-    //createJumpBlock({
-    //  x: 800,
-    //  y: 350,
-    //  w: 100,
-    //  h: 150,
-    //  color: 0xFFFF00
-    //});
-    //
-    //createJumpBlock({
-    //  x: 50,
-    //  y: 350,
-    //  w: 100,
-    //  h: 150,
-    //  color: 0xFFFF00
-    //});
-
-
-    player.components.RigidBody.frozen = false;
-    player.components.RigidBody.gravity = true;
-
-    player.addComponent(new wrect.ECS.Component.ControlScheme.Player());
-    //var animation = new wrect.ECS.Component.Animation();
-    //player.addComponent(animation);
-    //
-    //var sword = new wrect.ECS.Assemblage.Sword({});
-    //game.getEntityManager().addEntity(sword);
-
-    //player.addComponent(new wrect.ECS.Component.Link({
-    //  linkedEntity: sword,
-    //  joint: new wrect.Physics.Vector(100, 50)
-    //}));
-
-    // TileMap stuff!
-    wrect.getGame()._tileMapManager.loadMap('resources/levels/tilemap/kitchen.json');
+    createJumpBlock({
+      x: 10,
+      y: 10,
+      w: 5,
+      h: 495,
+      color: 0x000000,
+      alpha: 1
+    });
 
   });
 };
