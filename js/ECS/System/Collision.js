@@ -42,7 +42,7 @@
 
     function project(dimensions, axis) {
       axis = axis.unit();
-      var vertices = dimensions.vertices;
+      var vertices = dimensions.getCollisionVertices(axis);
       var min = axis.dot(vertices[0]);
       var max = min;
       var projections = [];
