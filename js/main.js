@@ -59,7 +59,7 @@ window.onload = function() {
 
     function createJumpBlock(options) {
       var materialBlock = createBlock(options);
-      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0, 0.9)}));
+      materialBlock.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0, 0)}));
     }
 
     function createBlock(options) {
@@ -78,12 +78,6 @@ window.onload = function() {
     }
 
     function createBall(options) {
-      options = options || {
-        x: 300,
-        y: 100,
-        radius: 10,
-        color: 0xFFFFFF
-      };
       var ball = new wrect.ECS.Assemblage.Ball(options);
 
       game.getEntityManager().addEntity(ball);
@@ -93,12 +87,20 @@ window.onload = function() {
 
     var ball = createBall({
       x: 300,
-      y: 150,
-      radius: 10,
+      y: 100,
+      radius: 50,
       color: 0xFFFFFF
     });
 
-    ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 10));
+    //var block = createBlock({
+    //  x: 300,
+    //  y: 250,
+    //  w: 100,
+    //  h: 40,
+    //  color: 0xFFFFFF
+    //});
+
+    ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(100, 20));
 
     createJumpBlock({
       x: 10,

@@ -23,7 +23,8 @@
 
   wrect.Geometry.Circle.prototype.getBounds = function() {
     var topLeft = this.vertices[0].subtract(new Vector(this.radius, 0)).subtract(new Vector(0, this.radius));
-      return {
+
+    return {
       topLeft: topLeft,
       topRight: topLeft.add(new Vector(this.radius * 2, 0)),
       bottomRight: topLeft.add(new Vector(this.radius * 2, 0)).add(new Vector(0, this.radius * 2)),
@@ -47,7 +48,8 @@
     graphics.clear();
 
     graphics.beginFill(options.color || 0x000000, options.alpha);
-    graphics.drawCircle(options.origin.x, options.origin.y, options.radius);
+    //graphics.drawCircle(options.origin.x, options.origin.y, options.radius);
+    graphics.drawCircle(0, 0, options.radius);
 
     graphics.endFill();
   };

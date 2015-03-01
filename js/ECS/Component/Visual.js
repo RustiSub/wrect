@@ -53,19 +53,19 @@
   };
 
   wrect.ECS.Component.Visual.prototype.reDraw = function(origin, dimensions) {
-    this.graphics.clear();
-
-    this.graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
-
-    this.graphics.moveTo(dimensions[0].x - origin.x, dimensions[0].y - origin.y);
-    for (var d = 0; d < dimensions.length; d++) {
-      this.graphics.lineTo(dimensions[d].x - origin.x, dimensions[d].y - origin.y);
-    }
-    this.graphics.lineTo(dimensions[0].x - origin.x, dimensions[0].y - origin.y);
-    this.graphics.endFill();
+    //this.graphics.clear();
+    //
+    //this.graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
+    //
+    //this.graphics.moveTo(dimensions[0].x - origin.x, dimensions[0].y - origin.y);
+    //for (var d = 0; d < dimensions.length; d++) {
+    //  this.graphics.lineTo(dimensions[d].x - origin.x, dimensions[d].y - origin.y);
+    //}
+    //this.graphics.lineTo(dimensions[0].x - origin.x, dimensions[0].y - origin.y);
+    //this.graphics.endFill();
   };
 
-  wrect.ECS.Component.Visual.prototype.clear = function(origin) {
+  wrect.ECS.Component.Visual.prototype.clear = function() {
     this.graphics.clear();
   }
 }());

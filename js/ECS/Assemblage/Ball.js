@@ -19,8 +19,6 @@
       dimensions: circle
     });
 
-    this.entity.addComponent(rigidBody);
-
     var visualComponent = new wrect.ECS.Component.Visual({
       color: options.color,
       alpha: options.alpha,
@@ -31,6 +29,7 @@
       shape: circle
     });
 
+    this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
 
     visualComponent.draw(visualComponent.graphics, visualComponent.options);

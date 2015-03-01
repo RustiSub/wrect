@@ -43,7 +43,9 @@
     };
   };
 
-  wrect.Geometry.Rectangle.prototype.getCollisionVertices = wrect.Geometry.Rectangle.prototype.getBounds;
+  wrect.Geometry.Rectangle.prototype.getCollisionVertices = function() {
+    return this.vertices;
+  };
 
   wrect.Geometry.Rectangle.prototype.draw = function(graphics, options) {
     graphics.clear();
