@@ -31,6 +31,18 @@
     };
   };
 
+  wrect.Geometry.Circle.prototype.getCollisionVertices = function(axis) {
+    if (typeof axis != 'undefined') {
+      return [
+        this.origin.add(axis.unitScalar(this.radius)),
+        this.origin,
+        this.origin.add(axis.unitScalar(-this.radius))
+      ];
+    }
+
+    return [this.origin];
+  };
+
   wrect.Geometry.Circle.prototype.draw = function(graphics, options) {
     graphics.clear();
 
@@ -38,5 +50,5 @@
     graphics.drawCircle(options.origin.x, options.origin.y, options.radius);
 
     graphics.endFill();
-  }
+  };
 }());

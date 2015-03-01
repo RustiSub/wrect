@@ -26,10 +26,11 @@
       origin: rigidBody.dimensions.origin,
       w: options.w,
       h: options.h,
-      useSprite: options.useSprite
+      useSprite: options.useSprite,
+      shape: rigidBody.dimensions
     });
 
-    visualComponent.draw(rigidBody.dimensions.origin);
+    visualComponent.draw(visualComponent.graphics, visualComponent.options);
 
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);

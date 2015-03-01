@@ -91,16 +91,50 @@ window.onload = function() {
       return ball;
     }
 
-    createBall();
+    var ball = createBall({
+      x: 300,
+      y: 150,
+      radius: 10,
+      color: 0xFFFFFF
+    });
 
-    //createJumpBlock({
-    //  x: 10,
-    //  y: 620,
-    //  w: 500,
-    //  h: 5,
-    //  color: 0x000000,
-    //  alpha: 1
-    //});
+    ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(0, 10));
+
+    createJumpBlock({
+      x: 10,
+      y: 10,
+      w: 1000,
+      h: 5,
+      color: 0x000000,
+      alpha: 1
+    });
+
+    createJumpBlock({
+      x: 1005,
+      y: 10,
+      w: 5,
+      h: 495,
+      color: 0x000000,
+      alpha: 1
+    });
+
+    createJumpBlock({
+      x: 10,
+      y: 500,
+      w: 1000,
+      h: 5,
+      color: 0x000000,
+      alpha: 1
+    });
+
+    createJumpBlock({
+      x: 10,
+      y: 10,
+      w: 5,
+      h: 495,
+      color: 0x000000,
+      alpha: 1
+    });
 
   });
 };

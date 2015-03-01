@@ -25,7 +25,7 @@
       var axes = [];
 // loop over the vertices
       //for (int i = 0; i < shape.vertices.length; i++) {
-      var vertices = dimensions.vertices;
+      var vertices = dimensions.getCollisionVertices();
       for (var i = 0; i < vertices.length ; i++) {
         // get the current vertex
         var p1 = vertices[i];
