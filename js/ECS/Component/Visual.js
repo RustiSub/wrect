@@ -11,6 +11,7 @@
 
     this.options = options || {};
     this.graphics = options.graphics || new PIXI.Graphics();
+    this.shape = options.shape;
 
     if (this.options.alpha == undefined) {
       this.options.alpha = 1;
@@ -47,34 +48,24 @@
   wrect.ECS.Component.Visual.prototype.constructor = wrect.ECS.Component.Visual;
   wrect.ECS.Component.Visual.prototype.name = 'Visual';
 
-  wrect.ECS.Component.Visual.prototype.draw = function(origin) {
-    this.graphics.clear();
-
-    this.graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
-    this.graphics.moveTo(0, 0);
-    this.graphics.lineTo(this.options.w, 0);
-    this.graphics.lineTo(this.options.w, this.options.h);
-    this.graphics.lineTo(0, this.options.h);
-
-    this.graphics.endFill();
-
-    //this.graphics.position = origin;
+  wrect.ECS.Component.Visual.prototype.draw = function(graphics, options) {
+    this.shape.draw(graphics, options);
   };
 
   wrect.ECS.Component.Visual.prototype.reDraw = function(origin, dimensions) {
-    this.graphics.clear();
-
-    this.graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
-
-    this.graphics.moveTo(dimensions[0].x - origin.x, dimensions[0].y - origin.y);
-    for (var d = 0; d < dimensions.length; d++) {
-      this.graphics.lineTo(dimensions[d].x - origin.x, dimensions[d].y - origin.y);
-    }
-    this.graphics.lineTo(dimensions[0].x - origin.x, dimensions[0].y - origin.y);
-    this.graphics.endFill();
+    //this.graphics.clear();
+    //
+    //this.graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
+    //
+    //this.graphics.moveTo(dimensions[0].x - origin.x, dimensions[0].y - origin.y);
+    //for (var d = 0; d < dimensions.length; d++) {
+    //  this.graphics.lineTo(dimensions[d].x - origin.x, dimensions[d].y - origin.y);
+    //}
+    //this.graphics.lineTo(dimensions[0].x - origin.x, dimensions[0].y - origin.y);
+    //this.graphics.endFill();
   };
 
-  wrect.ECS.Component.Visual.prototype.clear = function(origin) {
+  wrect.ECS.Component.Visual.prototype.clear = function() {
     this.graphics.clear();
   }
 }());

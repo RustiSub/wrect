@@ -6,17 +6,17 @@
 
   var Entity = wrect.ECS.Entity;
   var Vector = wrect.Physics.Vector;
-  var Rectangle = wrect.Geometry.Rectangle;
+  var Circle = wrect.Geometry.Circle;
 
-  wrect.ECS.Assemblage.Block = function (options) {
+  wrect.ECS.Assemblage.Ball = function (options) {
     this.entity = new Entity();
 
+    var circle = new Circle({
+      origin: new Vector(options.x, options.y),
+      radius: options.radius
+        });
     var rigidBody = new wrect.ECS.Component.RigidBody({
-      dimensions: new Rectangle({
-        origin: new Vector(options.x, options.y),
-        width: options.w,
-        height: options.h
-      })
+      dimensions: circle
     });
 
     var visualComponent = new wrect.ECS.Component.Visual({
@@ -24,18 +24,15 @@
       alpha: options.alpha,
       graphics: new PIXI.Graphics(),
       origin: rigidBody.dimensions.origin,
-      w: options.w,
-      h: options.h,
+      radius: rigidBody.dimensions.radius,
       useSprite: options.useSprite,
-      shape: rigidBody.dimensions
+      shape: circle
     });
-
-    visualComponent.draw(visualComponent.graphics, visualComponent.options);
 
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
-    //entity.addComponent( new ECS.Components.Position());
-    //entity.addComponent( new ECS.Components.Collision());
+
+    visualComponent.draw(visualComponent.graphics, visualComponent.options);
 
     return this.entity;
   };

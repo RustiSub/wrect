@@ -6,16 +6,14 @@
 
   var Entity = wrect.ECS.Entity;
   var Vector = wrect.Physics.Vector;
-  var Rectangle = wrect.Geometry.Rectangle;
+  var Polygon = wrect.Geometry.Polygon;
 
-  wrect.ECS.Assemblage.Block = function (options) {
+  wrect.ECS.Assemblage.LineShape = function (options) {
     this.entity = new Entity();
 
     var rigidBody = new wrect.ECS.Component.RigidBody({
-      dimensions: new Rectangle({
-        origin: new Vector(options.x, options.y),
-        width: options.w,
-        height: options.h
+      dimensions: new Polygon({
+        vertices: options.vertices
       })
     });
 
@@ -23,9 +21,6 @@
       color: options.color,
       alpha: options.alpha,
       graphics: new PIXI.Graphics(),
-      origin: rigidBody.dimensions.origin,
-      w: options.w,
-      h: options.h,
       useSprite: options.useSprite,
       shape: rigidBody.dimensions
     });
@@ -36,6 +31,8 @@
     this.entity.addComponent(visualComponent);
     //entity.addComponent( new ECS.Components.Position());
     //entity.addComponent( new ECS.Components.Collision());
+
+    rigidBody.dimensions.move(options.origin || new Vector(0, 0));
 
     return this.entity;
   };
