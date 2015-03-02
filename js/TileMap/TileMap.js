@@ -208,8 +208,10 @@
         continue;
       }
       tile = changeableTiles.splice(0, 1)[0];
+
+      var xPosition =  Math.floor((tilePosition % this.width) * tile.width);
       var yPosition = Math.floor(tilePosition / this.width) * tile.height;
-      var xPosition = (tilePosition % this.width) * tile.width;
+
       if (newTileData.id === 0) {
         tile.sprite.visible = false;
         tile.sprite.position.x = xPosition;
@@ -222,7 +224,7 @@
       var y = 0;
 
       tile.id = newTileData.id;
-      x = (tile.id - tileSet.firstGid) % (tileSet.columns);
+      x = Math.floor((tile.id - tileSet.firstGid) % (tileSet.columns));
       y = Math.floor((tile.id - tileSet.firstGid) / tileSet.columns);
 
       // Reset necessary properties

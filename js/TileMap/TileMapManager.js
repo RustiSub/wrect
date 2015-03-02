@@ -58,7 +58,7 @@
       color: 0xF0E000
     });
     game.getEntityManager().addEntity(ball);
-    ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(50,45));
+    //ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(50,45));
   };
 
   wrect.TileMap.TileMapManager.prototype.destroyCurrentTileMap = function() {

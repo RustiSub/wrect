@@ -101,41 +101,41 @@ window.onload = function() {
     //  color: 0xFFFFFF
     //});
 
-      createJumpBlock({
-      x: 0,
-      y: 0,
-      w: 1500,
-      h: 5,
-      color: 0x000000,
-      alpha: 1
-    });
-
-    createJumpBlock({
-      x: 1500,
-      y: 0,
-      w: 5,
-      h: 600,
-      color: 0x000000,
-      alpha: 1
-    });
-
-    createJumpBlock({
-      x: 0,
-      y: 600,
-      w: 1500,
-      h: 5,
-      color: 0x000000,
-      alpha: 1
-    });
-
-    createJumpBlock({
-      x: 0,
-      y: 0,
-      w: 5,
-      h: 600,
-      color: 0x000000,
-      alpha: 1
-    });
+    //  createJumpBlock({
+    //  x: 0,
+    //  y: 0,
+    //  w: 1500,
+    //  h: 5,
+    //  color: 0x000000,
+    //  alpha: 1
+    //});
+    //
+    //createJumpBlock({
+    //  x: 1500,
+    //  y: 0,
+    //  w: 5,
+    //  h: 600,
+    //  color: 0x000000,
+    //  alpha: 1
+    //});
+    //
+    //createJumpBlock({
+    //  x: 0,
+    //  y: 600,
+    //  w: 1500,
+    //  h: 5,
+    //  color: 0x000000,
+    //  alpha: 1
+    //});
+    //
+    //createJumpBlock({
+    //  x: 0,
+    //  y: 0,
+    //  w: 5,
+    //  h: 600,
+    //  color: 0x000000,
+    //  alpha: 1
+    //});
 
     wrect.getGame()._tileMapManager.loadMap('resources/levels/tilemap/kitchen.json');
 
