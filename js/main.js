@@ -86,14 +86,20 @@ window.onload = function() {
       return polygon;
     }
 
-    var ball = createBall({
-      x: 1200,
-      y: 200,
-      radius: 25,
-      color: 0xFFFFFF
-    });
+    //var ball = createBall({
+    //  x: 1200,
+    //  y: 200,
+    //  radius: 25,
+    //  color: 0xFFFFFF
+    //});
 
-    ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(30, 0));
+    //var ball = createBlock({
+    //  x: 1200,
+    //  y: 200,
+    //  w: 25,
+    //  h: 25,
+    //  color: 0xFFFFFF
+    //});
 
       createJumpBlock({
       x: 0,

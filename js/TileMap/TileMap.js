@@ -311,8 +311,8 @@
       }
 
       var polygon = new wrect.ECS.Assemblage.LineShape({
-        origin: object.origin,
-        shape: object.dimensions,
+        origin: object.dimensions.origin,
+        vertices: object.dimensions.vertices,
         color: 0xFFFFFF
       });
 
