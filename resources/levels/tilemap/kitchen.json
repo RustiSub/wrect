@@ -18,38 +18,6 @@
          "objects":[
                 {
                  "height":0,
-                 "id":6,
-                 "name":"counter",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":701,
-                         "y":-2
-                        }, 
-                        {
-                         "x":693,
-                         "y":201
-                        }, 
-                        {
-                         "x":4,
-                         "y":208
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":318,
-                 "y":413
-                }, 
-                {
-                 "height":0,
                  "id":7,
                  "name":"cabinets",
                  "polygon":[
@@ -79,111 +47,8 @@
                  "width":0,
                  "x":579,
                  "y":120
-                }, 
-                {
-                 "height":0,
-                 "id":8,
-                 "name":"hood",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":63,
-                         "y":-82
-                        }, 
-                        {
-                         "x":154,
-                         "y":-74
-                        }, 
-                        {
-                         "x":194,
-                         "y":7
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":325,
-                 "y":241
-                }, 
-                {
-                 "height":0,
-                 "id":9,
-                 "name":"trash_round",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":16,
-                         "y":-15
-                        }, 
-                        {
-                         "x":71,
-                         "y":-14
-                        }, 
-                        {
-                         "x":89,
-                         "y":3
-                        }, 
-                        {
-                         "x":85,
-                         "y":162
-                        }, 
-                        {
-                         "x":0,
-                         "y":162
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1071,
-                 "y":450
-                }, 
-                {
-                 "height":0,
-                 "id":10,
-                 "name":"trash_rect",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":-1,
-                         "y":136
-                        }, 
-                        {
-                         "x":76,
-                         "y":135
-                        }, 
-                        {
-                         "x":77,
-                         "y":1
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1169,
-                 "y":476
-                }],
+                }
+         ],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
