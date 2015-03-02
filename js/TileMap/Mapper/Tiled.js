@@ -57,6 +57,7 @@
   wrect.TileMap.Mapper.Tiled.prototype.mapLayer = function(layerData, tileHeight, tileWidth, tileSets) {
     var layer = new wrect.TileMap.Mapper.TileLayerDataObject();
 
+    layer.type = layerData.type;
     layer.height = layerData.height;
     layer.width = layerData.width;
     layer.pixelHeight = layerData.height * tileHeight;

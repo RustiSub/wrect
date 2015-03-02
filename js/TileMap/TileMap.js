@@ -61,7 +61,7 @@
    * Builds the sprites and rigid bodies and adds them to the game.
    */
   wrect.TileMap.TileMap.prototype.build = function(dimensions) {
-    for (var i = 0; i < 1/*this.layers.length*/; i++) {
+    for (var i = 0; i < this.layers.length; i++) {
       var layer = this.layers[i];
       var pixiLayerContainer = new PIXI.DisplayObjectContainer();
       wrect.getGame().getCamera().displayContainer.addChildAt(pixiLayerContainer, i);
@@ -70,7 +70,7 @@
         this.buildTileSprites(layer, dimensions, pixiLayerContainer);
       }
       else {
-        //this.buildCollisionBodies(layer);
+        this.buildCollisionBodies(layer);
       }
     }
     this.updateTiles(dimensions);
@@ -303,43 +303,51 @@
    * @param {wrect.TileMap.TileLayer} layer
    */
   wrect.TileMap.TileMap.prototype.buildCollisionBodies = function(layer) {
-    for (var i = 0; i < layer.tiles.length; i++) {
-      var tile = layer.tiles[i];
+    for (var i = 0; i < layer.objects.length; i++) {
+      var object = layer.objects[i];
 
-      if (tile.id === 0) {
+      if (object.id === 0) {
         continue;
       }
 
-      var x = (i % this.width) * tile.width;
-      var y = Math.floor(i / this.height) * tile.height;
-
-      x -= tile.width / 2;
-      y -= tile.height / 2;
-
-      var dimensions = new wrect.Geometry.Rectangle({
-        origin: new wrect.Physics.Vector(x, y),
-        width: tile.width,
-        height: tile.height
+      var polygon = new wrect.ECS.Assemblage.LineShape({
+        origin: object.origin,
+        shape: object.dimensions,
+        color: 0xFFFFFF
       });
 
-      var body = new wrect.ECS.Component.TileBody({
-        dimensions: dimensions
-      });
+      game.getEntityManager().addEntity(polygon);
 
-      if (wrect.getGame().debug) {
-        var border = new PIXI.Graphics();
-        border.beginFill(0xFFFFFF, 0);
-        border.lineStyle(1, 0xFF0000);
-        border.drawRect(x, y, tile.width, tile.height);
-        border.endFill();
-        wrect.getGame()._cameraContainer.addChild(border);
-      }
-
-      var physicsEngine;
-      if (physicsEngine = wrect.getGame().physicsEngine) {
-        tile.components.RigidBody = tile.components.TileBody = body;
-        physicsEngine.systems.QuadTree.system.addEntity({entity: tile});
-      }
+      //var x = (i % this.width) * tile.width;
+      //var y = Math.floor(i / this.height) * tile.height;
+      //
+      //x -= tile.width / 2;
+      //y -= tile.height / 2;
+      //
+      //var dimensions = new wrect.Geometry.Rectangle({
+      //  origin: new wrect.Physics.Vector(x, y),
+      //  width: tile.width,
+      //  height: tile.height
+      //});
+      //
+      //var body = new wrect.ECS.Component.TileBody({
+      //  dimensions: dimensions
+      //});
+      //
+      //if (wrect.getGame().debug) {
+      //  var border = new PIXI.Graphics();
+      //  border.beginFill(0xFFFFFF, 0);
+      //  border.lineStyle(1, 0xFF0000);
+      //  border.drawRect(x, y, tile.width, tile.height);
+      //  border.endFill();
+      //  wrect.getGame()._cameraContainer.addChild(border);
+      //}
+      //
+      //var physicsEngine;
+      //if (physicsEngine = wrect.getGame().physicsEngine) {
+      //  tile.components.RigidBody = tile.components.TileBody = body;
+      //  physicsEngine.systems.QuadTree.system.addEntity({entity: tile});
+      //}
     }
   };
 }());

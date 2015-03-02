@@ -12,7 +12,7 @@
     wrect.Geometry.Dimensions.call(this);
 
     this.vertices = options.vertices || [];
-    this.origin = new Vector(0, 0);
+    this.origin = options.origin || new Vector(0, 0);
     this.offsetVertices = [];
   };
 

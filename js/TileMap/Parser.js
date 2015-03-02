@@ -80,7 +80,7 @@
     if (layerData.type && layerData.name === 'collision') {
       layer.objects = [];
       for (var o = 0; o < layerData.objects.length; o++) {
-        layer.objects.push(this.parseObject(layerData));
+        layer.objects.push(this.parseObject(layerData.objects[o]));
       }
     }
 
@@ -141,6 +141,8 @@
     object.id = tileSetData.id;
     object.name = tileSetData.name;
     object.dimensions = tileSetData.dimensions;
+
+
 
     return object;
   };

@@ -11,10 +11,9 @@
   wrect.ECS.Assemblage.LineShape = function (options) {
     this.entity = new Entity();
 
+    var polygon = options.shape || new Polygon({vertices: options.vertices});
     var rigidBody = new wrect.ECS.Component.RigidBody({
-      dimensions: new Polygon({
-        vertices: options.vertices
-      })
+      dimensions: polygon
     });
 
     var visualComponent = new wrect.ECS.Component.Visual({
