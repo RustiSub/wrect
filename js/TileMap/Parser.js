@@ -77,10 +77,10 @@
       layer.isCollisionLayer = true;
     }
 
-    if (layerData.type && layerData.type === 'objectgroup') {
+    if (layerData.type && layerData.name === 'collision') {
       layer.objects = [];
       for (var o = 0; o < layerData.objects.length; o++) {
-        layer.objects.push(this.mapObject(layerData));
+        layer.objects.push(this.parseObject(layerData));
       }
     }
 
@@ -135,7 +135,7 @@
    * @param tileSetData
    * @returns {wrect.TileMap.Mapper.TileDataObject}
    */
-  wrect.TileMap.Mapper.Tiled.prototype.parseObject = function(tileSetData) {
+  wrect.TileMap.Parser.prototype.parseObject = function(tileSetData) {
     var object = new wrect.TileMap.Mapper.TileDataObject();
 
     object.id = tileSetData.id;

@@ -70,7 +70,7 @@
     if (layerData.type && layerData.type === 'objectgroup') {
       layer.objects = [];
       for (var o = 0; o < layerData.objects.length; o++) {
-        layer.objects.push(this.mapObject(layerData));
+        layer.objects.push(this.mapObject(layerData.objects[o]));
       }
     }
 
