@@ -13,8 +13,8 @@
   wrect.ECS.Component.ControlScheme.Player = function () {
     wrect.ECS.Component.ControlScheme.BaseScheme.call(this);
 
-    this.jumpCooldown = 500;
-    this.moveCooldown = 100;
+    this.jumpCooldown = 250;
+    this.moveCooldown = 50;
 
     this.lastJump = game.getPreviousTime();
     this.lastMove = game.getPreviousTime();

@@ -42,8 +42,21 @@
       //TODO: FRICTION PLS
       //physicsBody.v = physicsBody.v.multiply(0.99);
 
-      var x = physicsBody.v.x * dt;
-      var y = physicsBody.v.y * dt;
+      var maxSpeed = 50;
+      if (physicsBody.v.x > maxSpeed) {
+        physicsBody.v.x = maxSpeed;
+      } else if (physicsBody.v.x < -maxSpeed) {
+        physicsBody.v.x = -maxSpeed;
+      }
+
+      if (physicsBody.v.y > maxSpeed) {
+        physicsBody.v.y = maxSpeed;
+      } else if (physicsBody.v.y < -maxSpeed) {
+        physicsBody.v.y = -maxSpeed;
+      }
+
+      var x = (physicsBody.v.x * dt);
+      var y = (physicsBody.v.y * dt);
       var move = new Vector(x, y);
 
       if (move.x !== 0 || move.y !== 0) {
