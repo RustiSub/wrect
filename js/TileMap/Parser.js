@@ -77,6 +77,13 @@
       layer.isCollisionLayer = true;
     }
 
+    if (layerData.type && layerData.name === 'collision') {
+      layer.objects = [];
+      for (var o = 0; o < layerData.objects.length; o++) {
+        layer.objects.push(this.parseObject(layerData.objects[o]));
+      }
+    }
+
     for (i = 0; i < layerData.tiles.length; i++) {
       layer.tiles.push(this.parseTile(layerData.tiles[i]));
     }
@@ -123,4 +130,21 @@
 
     return tile;
   };
+
+  /**
+   * @param tileSetData
+   * @returns {wrect.TileMap.Mapper.TileDataObject}
+   */
+  wrect.TileMap.Parser.prototype.parseObject = function(tileSetData) {
+    var object = new wrect.TileMap.Mapper.TileDataObject();
+
+    object.id = tileSetData.id;
+    object.name = tileSetData.name;
+    object.dimensions = tileSetData.dimensions;
+
+
+
+    return object;
+  };
+
 }());

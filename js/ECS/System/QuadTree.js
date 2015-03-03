@@ -12,8 +12,8 @@
     this.range = {
       x: 0,
       y: 0,
-      width : options.width || 1280,
-      height: options.height || 720,
+      width : options.width || 1500,
+      height: options.height || 1500,
       level: 0,
       quadLevel : 0
     };

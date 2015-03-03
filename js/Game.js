@@ -121,26 +121,7 @@
         this.bootstrap(options);
       }
     },
-
-    setBackground:function (){
-      var texture = PIXI.Texture.fromImage("resources/images/backgrounds/background_2.png");
-      // create a new Sprite using the texture
-      var background = new PIXI.Sprite(texture);
-
-      // center the sprites anchor point
-      background.anchor.x = 0;
-      background.anchor.y = 0;
-      background.scale.x = background.scale.y = 1.5;
-
-      // move the sprite t the center of the screen
-      background.position.x = -150;
-      background.position.y = -300;
-
-
-      this._stage.addChild(background);
-
-          return background;
-      }, /**
+      /**
      * Builds up the default components. See _defaults to overwrite default classes.
      */
     buildComponents: function() {

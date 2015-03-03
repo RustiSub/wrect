@@ -3,6 +3,7 @@
   var wrect = window.wrect;
 
   wrect.TileMap.Mapper = wrect.TileMap.Mapper || {};
+  var Vector = wrect.Physics.Vector;
 
   /**
    * Mapper to map the Tiled editor's .json format to common DataObjects.
@@ -56,6 +57,7 @@
   wrect.TileMap.Mapper.Tiled.prototype.mapLayer = function(layerData, tileHeight, tileWidth, tileSets) {
     var layer = new wrect.TileMap.Mapper.TileLayerDataObject();
 
+    layer.type = layerData.type;
     layer.height = layerData.height;
     layer.width = layerData.width;
     layer.pixelHeight = layerData.height * tileHeight;
@@ -65,6 +67,13 @@
     layer.visible = layerData.visible;
     layer.position.x = layerData.x;
     layer.position.y = layerData.y;
+
+    if (layerData.type && layerData.type === 'objectgroup') {
+      layer.objects = [];
+      for (var o = 0; o < layerData.objects.length; o++) {
+        layer.objects.push(this.mapObject(layerData.objects[o]));
+      }
+    }
 
     if (layerData.data) {
       for (var i = 0; i < layerData.data.length; i++) {
@@ -171,6 +180,29 @@
     tileSet.firstGid = tileSetData.firstgid;
 
     return tileSet;
+  };
+
+  /**
+   * @param tileSetData
+   * @returns {wrect.TileMap.Mapper.TileDataObject}
+   */
+  wrect.TileMap.Mapper.Tiled.prototype.mapObject = function(tileSetData) {
+    var object = new wrect.TileMap.Mapper.TileDataObject();
+
+    object.id = tileSetData.id;
+    object.name = tileSetData.name;
+
+    if (tileSetData.polygon) {
+      object.dimensions = new wrect.Geometry.Polygon({
+        origin: new Vector(tileSetData.x, tileSetData.y)
+      });
+      for (var p = 0; p < tileSetData.polygon.length; p++) {
+        var point = new Vector(tileSetData.polygon[p].x, tileSetData.polygon[p].y);
+        object.dimensions.vertices.push(point);
+      }
+    }
+
+    return object;
   };
 
 }());
