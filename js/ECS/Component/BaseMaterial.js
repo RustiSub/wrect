@@ -15,15 +15,33 @@
     game.getEventManager().addListener('physics.collide', function(data) {
       //data.force = data.force.multiply(new Vector(1, 1).subtract(this.absorb));
 
-      var sign = data.force.x <= 0 ? -1 : 1;
+      var signX = data.force.x <= 0 ? -1 : 1;
+      var signY = data.force.y <= 0 ? -1 : 1;
 
-      var frictionForce = 0.025 * data.entity.components.RigidBody.physicsBody.m;
-      var friction = -sign * frictionForce;
-      if (Math.abs(data.force.x) > frictionForce) {
-        data.force = data.force.add(new Vector(friction, - data.force.y));
+      var frictionForce = 1 * data.entity.components.RigidBody.physicsBody.m;
+
+      //how much of this friction should be applied to x and y?
+      //surface horizontal: apply everything to x
+      //surface vertical: apply everything to y
+      var surfaceFriction = data.surface.multiply(frictionForce);
+
+      surfaceFriction.x = surfaceFriction.x * signX;
+      surfaceFriction.x = surfaceFriction.y * signY;
+      //console.log(data.surface.unit(), surfaceFriction);
+      //debugger;
+
+      if (Math.abs(data.force.x) > surfaceFriction.x) {
+        data.force = data.force.add(new Vector(surfaceFriction.x, 0));
       } else {
-        data.force = new Vector(0, 0); // data.force.add(new Vector(0, - data.force.y));
+        data.force.x = 0;
       }
+
+      if (Math.abs(data.force.y) > surfaceFriction.y) {
+        data.force = data.force.add(new Vector(0, surfaceFriction.y));
+      } else {
+        data.force.y = 0;
+      }
+
     }, this);
   };
 

@@ -121,7 +121,7 @@
       shapeA.components.RigidBody.dimensions.move(pushOutVector);
 
       if (shapeB.components.BaseMaterial) {
-        var data = {entity: shapeB, force: v2, surface: n};
+        var data = {entity: shapeB, force: v2, surface: n.perpendicular()};
         game.getEventManager().trigger('physics.collide', data);
         v2 = data.force;
       }
