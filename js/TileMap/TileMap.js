@@ -209,7 +209,7 @@
       }
       tile = changeableTiles.splice(0, 1)[0];
 
-      var xPosition =  Math.floor((tilePosition % this.width) * tile.width);
+      var xPosition = (tilePosition % this.width) * tile.width;
       var yPosition = Math.floor(tilePosition / this.width) * tile.height;
 
       if (newTileData.id === 0) {
@@ -224,7 +224,8 @@
       var y = 0;
 
       tile.id = newTileData.id;
-      x = Math.floor((tile.id - tileSet.firstGid) % (tileSet.columns));
+
+      x = (tile.id - tileSet.firstGid) % (tileSet.columns);
       y = Math.floor((tile.id - tileSet.firstGid) / tileSet.columns);
 
       // Reset necessary properties
@@ -246,8 +247,8 @@
       //tile.sprite.texture.frame.y = y * tile.height;
       tile.sprite.position.x = xPosition;
       tile.sprite.position.y = yPosition;
-      tile.sprite.pivot.x = tile.width / 2;
-      tile.sprite.pivot.y = tile.height / 2;
+      //tile.sprite.pivot.x = tile.width / 2;
+      //tile.sprite.pivot.y = tile.height / 2;
       tile.sprite.rotation = tile.rotation;
       tile.sprite.scale.x = tile.flipped.horizontal ? -tile.sprite.scale.x : tile.sprite.scale.x;
       tile.sprite.scale.y = tile.flipped.vertical ? -tile.sprite.scale.y : tile.sprite.scale.y;
@@ -315,7 +316,8 @@
       var polygon = new wrect.ECS.Assemblage.LineShape({
         origin: object.dimensions.origin,
         vertices: object.dimensions.vertices,
-        color: 0xFFFFFF
+        color: 0x00FFFF,
+        alpha: 0.5
       });
 
       game.getEntityManager().addEntity(polygon);
