@@ -62,7 +62,7 @@
     ball.components.RigidBody.gravity = true;
     ball.addComponent(new wrect.ECS.Component.ControlScheme.Player());
 
-    ball.components.RigidBody.physicsBody.m = 5;
+    ball.components.RigidBody.physicsBody.m = 100;
     //ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(50,45));
   };
 

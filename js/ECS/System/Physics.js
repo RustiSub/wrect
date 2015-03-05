@@ -29,13 +29,18 @@
     if (!entity.components.RigidBody.frozen) {
       var physicsBody = rigidBody.physicsBody;
 
-      //physicsBody.f = physicsBody.f.add(physicsBody.a);
-
       if (physicsBody.f.x !== 0 || physicsBody.f.y !== 0) {
         physicsBody.v = physicsBody.v.add(physicsBody.f);
       }
 
+//var rho = 1.2;
+//var C_d = 0.47;
+//var r = rigidBody.dimensions.radius;
+//var A = Math.PI * r * r / 10000;
+//      physicsBody.v.y += -1 * 0.5 * rho * C_d * A * physicsBody.v.y * physicsBody.v.y;
+
       var oldV = physicsBody.v;
+      physicsBody.a = physicsBody.a.divide(physicsBody.m);
       physicsBody.v.x = physicsBody.v.x + physicsBody.a.x * dt;
       physicsBody.v.y = physicsBody.v.y + physicsBody.a.y * dt;
       var move = new Vector(
@@ -43,16 +48,7 @@
           (oldV.y + physicsBody.v.y) * 0.5 * dt
       );
 
-      // Symplectic Euler
-      //physicsBody.v.x += (physicsBody.a.x) * dt;
-      //physicsBody.v.y += (physicsBody.a.y) * dt;
-      //
-
-
-      //TODO: FRICTION PLS
-      //physicsBody.v = physicsBody.v.multiply(0.99);
-
-      //var maxSpeed = 50;
+      //var maxSpeed = 100;
       //if (physicsBody.v.x > maxSpeed) {
       //  physicsBody.v.x = maxSpeed;
       //} else if (physicsBody.v.x < -maxSpeed) {
@@ -64,10 +60,6 @@
       //} else if (physicsBody.v.y < -maxSpeed) {
       //  physicsBody.v.y = -maxSpeed;
       //}
-
-      //var x = (physicsBody.v.x * dt);
-      //var y = (physicsBody.v.y * dt);
-      //var move = new Vector(x, y);
 
       if (move.x !== 0 || move.y !== 0) {
         rigidBody.dimensions.move(move);
