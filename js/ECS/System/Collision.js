@@ -74,7 +74,7 @@
       for (var i = 0; i < axes.length ; i++) {
         var axis = axes[i];
         if (axes.length === 1 && axis.x === 0 && axis.y === 0) {
-          axis = b.center().subtract(a.center()).unit();
+          axis = b.getCenter().subtract(a.getCenter()).unit();
         }
 
         // project both shapes onto the axis
