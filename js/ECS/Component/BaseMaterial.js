@@ -13,34 +13,20 @@
     this.absorb = this.options.absorb || new Vector(0, 0);
 
     game.getEventManager().addListener('physics.collide', function(data) {
-      //data.force = data.force.multiply(new Vector(1, 1).subtract(this.absorb));
-return;
-      var signX = data.force.x <= 0 ? -1 : 1;
-      var signY = data.force.y <= 0 ? -1 : 1;
+      this.absorb = new Vector();
+      //console.log(data.surface, data.force);
 
-      var frictionForce = 1 * data.entity.components.RigidBody.physicsBody.m;
+      //Split the force into perpendicular force and parallel force
+      //1. Project the vector onto the perpendicular vector of the surface
+      var perpProjectionVector = data.force.dot(data.surface.perpendicular());
+      var perpForce = data.surface.perpendicular().unitScalar(perpProjectionVector);
 
-      //how much of this friction should be applied to x and y?
-      //surface horizontal: apply everything to x
-      //surface vertical: apply everything to y
-      var surfaceFriction = data.surface.multiply(frictionForce);
+      var parProjectionVector = data.force.dot(data.surface);
+      var parForce = data.surface.unitScalar(parProjectionVector);
 
-      surfaceFriction.x = surfaceFriction.x * signX;
-      surfaceFriction.x = surfaceFriction.y * signY;
-      //console.log(data.surface.unit(), surfaceFriction);
-      //debugger;
-
-      if (Math.abs(data.force.x) > surfaceFriction.x) {
-        data.force = data.force.add(new Vector(surfaceFriction.x, 0));
-      } else {
-        data.force.x = 0;
-      }
-
-      if (Math.abs(data.force.y) > surfaceFriction.y) {
-        data.force = data.force.add(new Vector(0, surfaceFriction.y));
-      } else {
-        data.force.y = 0;
-      }
+      data.force = data.force.subtract(perpForce);
+      data.force = data.force.subtract(parForce);
+      //Damp both forces according to type of material's absorb factor
 
     }, this);
   };

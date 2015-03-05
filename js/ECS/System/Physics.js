@@ -33,12 +33,6 @@
         physicsBody.v = physicsBody.v.add(physicsBody.f);
       }
 
-//var rho = 1.2;
-//var C_d = 0.47;
-//var r = rigidBody.dimensions.radius;
-//var A = Math.PI * r * r / 10000;
-//      physicsBody.v.y += -1 * 0.5 * rho * C_d * A * physicsBody.v.y * physicsBody.v.y;
-
       var oldV = physicsBody.v;
       physicsBody.a = physicsBody.a.divide(physicsBody.m);
       physicsBody.v.x = physicsBody.v.x + physicsBody.a.x * dt;
