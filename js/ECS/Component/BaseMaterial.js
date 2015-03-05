@@ -14,7 +14,7 @@
 
     game.getEventManager().addListener('physics.collide', function(data) {
       //data.force = data.force.multiply(new Vector(1, 1).subtract(this.absorb));
-
+return;
       var signX = data.force.x <= 0 ? -1 : 1;
       var signY = data.force.y <= 0 ? -1 : 1;
 

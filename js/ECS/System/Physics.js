@@ -31,33 +31,43 @@
 
       //physicsBody.f = physicsBody.f.add(physicsBody.a);
 
-      // Symplectic Euler
-      physicsBody.v.x += ((1 / physicsBody.m) * physicsBody.a.x) * dt;
-      physicsBody.v.y += ((1 / physicsBody.m) * physicsBody.a.y) * dt;
-
       if (physicsBody.f.x !== 0 || physicsBody.f.y !== 0) {
-        physicsBody.v = physicsBody.v.add(physicsBody.f.multiply((1 / physicsBody.m)));
+        physicsBody.v = physicsBody.v.add(physicsBody.f);
       }
+
+      var oldV = physicsBody.v;
+      physicsBody.v.x = physicsBody.v.x + physicsBody.a.x * dt;
+      physicsBody.v.y = physicsBody.v.y + physicsBody.a.y * dt;
+      var move = new Vector(
+          (oldV.x + physicsBody.v.x) * 0.5 * dt,
+          (oldV.y + physicsBody.v.y) * 0.5 * dt
+      );
+
+      // Symplectic Euler
+      //physicsBody.v.x += (physicsBody.a.x) * dt;
+      //physicsBody.v.y += (physicsBody.a.y) * dt;
+      //
+
 
       //TODO: FRICTION PLS
       //physicsBody.v = physicsBody.v.multiply(0.99);
 
-      var maxSpeed = 50;
-      if (physicsBody.v.x > maxSpeed) {
-        physicsBody.v.x = maxSpeed;
-      } else if (physicsBody.v.x < -maxSpeed) {
-        physicsBody.v.x = -maxSpeed;
-      }
+      //var maxSpeed = 50;
+      //if (physicsBody.v.x > maxSpeed) {
+      //  physicsBody.v.x = maxSpeed;
+      //} else if (physicsBody.v.x < -maxSpeed) {
+      //  physicsBody.v.x = -maxSpeed;
+      //}
+      //
+      //if (physicsBody.v.y > maxSpeed) {
+      //  physicsBody.v.y = maxSpeed;
+      //} else if (physicsBody.v.y < -maxSpeed) {
+      //  physicsBody.v.y = -maxSpeed;
+      //}
 
-      if (physicsBody.v.y > maxSpeed) {
-        physicsBody.v.y = maxSpeed;
-      } else if (physicsBody.v.y < -maxSpeed) {
-        physicsBody.v.y = -maxSpeed;
-      }
-
-      var x = (physicsBody.v.x * dt);
-      var y = (physicsBody.v.y * dt);
-      var move = new Vector(x, y);
+      //var x = (physicsBody.v.x * dt);
+      //var y = (physicsBody.v.y * dt);
+      //var move = new Vector(x, y);
 
       if (move.x !== 0 || move.y !== 0) {
         rigidBody.dimensions.move(move);
