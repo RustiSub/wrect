@@ -10,23 +10,26 @@
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};
-    this.absorb = this.options.absorb || new Vector(0, 0);
+    this.bounce = options.bounce || 1/8;
+    this.friction = options.friction || 0.07;
 
     game.getEventManager().addListener('physics.collide', function(data) {
-      this.absorb = new Vector();
-      //console.log(data.surface, data.force);
-
-      //Split the force into perpendicular force and parallel force
-      //1. Project the vector onto the perpendicular vector of the surface
-      var perpProjectionVector = data.force.dot(data.surface.perpendicular());
-      var perpForce = data.surface.perpendicular().unitScalar(perpProjectionVector);
-
-      var parProjectionVector = data.force.dot(data.surface);
-      var parForce = data.surface.unitScalar(parProjectionVector);
-
+      var perpProjection = data.force.dot(data.surface.perpendicular());
+      var perpForce = data.surface.perpendicular().unitScalar(perpProjection * this.bounce);
       data.force = data.force.subtract(perpForce);
+
+      var parProjection = data.force.dot(data.surface);
+      var surfaceFrictionSign = parProjection > 0 ? 1 : -1;
+      var surfaceFriction = this.friction * surfaceFrictionSign;
+
+      if ((parProjection > 0 && parProjection > surfaceFriction)) {
+        parProjection = surfaceFriction;
+      } else if ((parProjection < 0 && parProjection < surfaceFriction)) {
+        parProjection = surfaceFriction;
+      }
+
+      var parForce = data.surface.unitScalar(parProjection);
       data.force = data.force.subtract(parForce);
-      //Damp both forces according to type of material's absorb factor
 
     }, this);
   };
