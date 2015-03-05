@@ -52,13 +52,18 @@
     tileMap.build(this.visibleDimensions);
 
     var ball = new wrect.ECS.Assemblage.Ball({
-      x: 600,
-      y: 270,
+      x: 500,
+      y: 300,
       radius: 25,
       color: 0xF0E000
     });
     game.getEntityManager().addEntity(ball);
-    ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(50,45));
+
+    ball.components.RigidBody.gravity = true;
+    ball.addComponent(new wrect.ECS.Component.ControlScheme.Player());
+
+    ball.components.RigidBody.physicsBody.m = 100;
+    //ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(50,45));
   };
 
   wrect.TileMap.TileMapManager.prototype.destroyCurrentTileMap = function() {

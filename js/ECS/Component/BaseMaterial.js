@@ -10,10 +10,27 @@
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};
-    this.absorb = this.options.absorb || new Vector(0, 0);
+    this.bounce = options.bounce || 1/8;
+    this.friction = options.friction || 0.07;
 
     game.getEventManager().addListener('physics.collide', function(data) {
-      data.force = data.force.multiply(new Vector(1, 1).subtract(this.absorb));
+      var perpProjection = data.force.dot(data.surface.perpendicular());
+      var perpForce = data.surface.perpendicular().unitScalar(perpProjection * this.bounce);
+      data.force = data.force.subtract(perpForce);
+
+      var parProjection = data.force.dot(data.surface);
+      var surfaceFrictionSign = parProjection > 0 ? 1 : -1;
+      var surfaceFriction = this.friction * surfaceFrictionSign;
+
+      if ((parProjection > 0 && parProjection > surfaceFriction)) {
+        parProjection = surfaceFriction;
+      } else if ((parProjection < 0 && parProjection < surfaceFriction)) {
+        parProjection = surfaceFriction;
+      }
+
+      var parForce = data.surface.unitScalar(parProjection);
+      data.force = data.force.subtract(parForce);
+
     }, this);
   };
 

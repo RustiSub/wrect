@@ -32,6 +32,10 @@
     };
   };
 
+  wrect.Geometry.Circle.prototype.getCenter = function() {
+    return this.origin;
+  };
+
   wrect.Geometry.Circle.prototype.getCollisionVertices = function(axis) {
     if (typeof axis != 'undefined') {
       return [
