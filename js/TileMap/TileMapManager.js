@@ -53,8 +53,8 @@
 
     var ball = new wrect.ECS.Assemblage.Ball({
       x: 500,
-      y: 300,
-      radius: 25,
+      y: 500,
+      radius: 20,
       color: 0xF0E000
     });
     game.getEntityManager().addEntity(ball);

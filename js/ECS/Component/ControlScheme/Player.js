@@ -14,13 +14,13 @@
     wrect.ECS.Component.ControlScheme.BaseScheme.call(this);
 
     this.jumpCooldown = 250;
-    this.moveCooldown = 50;
+    this.moveCooldown = 0;
 
     this.lastJump = game.getPreviousTime();
     this.lastMove = game.getPreviousTime();
 
     this.jumpForce = 55;
-    this.moveForce = 10;
+    this.moveForce = 3;
 
     this.transform = new Vector(0, 0);
   };
