@@ -52,7 +52,7 @@
     tileMap.build(this.visibleDimensions);
 
     var ball = new wrect.ECS.Assemblage.Ball({
-      x: 500,
+      x: 460,
       y: 300,
       radius: 20,
       color: 0xF0E000
