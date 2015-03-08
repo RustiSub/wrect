@@ -53,7 +53,7 @@
 
     var ball = new wrect.ECS.Assemblage.Ball({
       x: 500,
-      y: 500,
+      y: 300,
       radius: 20,
       color: 0xF0E000
     });

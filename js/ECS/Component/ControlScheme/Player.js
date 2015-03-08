@@ -13,13 +13,25 @@
   wrect.ECS.Component.ControlScheme.Player = function () {
     wrect.ECS.Component.ControlScheme.BaseScheme.call(this);
 
-    this.jumpCooldown = 250;
-    this.moveCooldown = 0;
-
     this.lastJump = game.getPreviousTime();
-    this.lastMove = game.getPreviousTime();
+    this.jumpCooldown = 250;
+    this.jumpForce = 40;
 
-    this.jumpForce = 55;
+    game.getEventManager().addListener('physics.collide', function(data) {
+      var entityA = data.entity.components.ControlScheme;
+      var entityB = data.otherEntity.components.ControlScheme;
+
+      var controlScheme = entityA ? entityA : (entityB ? entityB : false);
+
+      if (controlScheme && controlScheme.jumpMovement) {
+        controlScheme.jumpMovement = false;
+
+        controlScheme.movement = controlScheme.movement.add(new Vector(0, -controlScheme.jumpForce));
+      }
+    });
+
+    this.moveCooldown = 0;
+    this.lastMove = game.getPreviousTime();
     this.moveForce = 3;
 
     this.transform = new Vector(0, 0);
@@ -31,7 +43,7 @@
   wrect.ECS.Component.ControlScheme.Player.prototype.keyspace = function() {
     if (this.lastJump === 0 || game.getPreviousTime() - this.lastJump >= this.jumpCooldown) {
       this.lastJump = game.getPreviousTime();
-      this.movement = this.movement.add(new Vector(0, -this.jumpForce));
+      this.jumpMovement = this.jumpForce;
     }
   };
 
