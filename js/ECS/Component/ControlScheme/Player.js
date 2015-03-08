@@ -16,6 +16,16 @@
     this.lastJump = game.getPreviousTime();
     this.jumpCooldown = 250;
     this.jumpForce = 60;
+    this.jumpMovement = false;
+    this.jumpDecayTimer = new wrect.Core.Timer(500);
+    this.jumpDecayTimer.pause();
+    game.getEventManager().addListener('game.updateEnd', function () {
+      if (this.jumpDecayTimer.delta() <= 0) {
+        this.jumpDecayTimer.stop();
+        this.jumpMovement = false;
+      }
+
+    }, this);
 
     game.getEventManager().addListener('physics.collide', function(data) {
       var entityA = data.entity.components.ControlScheme;
@@ -48,6 +58,7 @@
     if (this.lastJump === 0 || game.getPreviousTime() - this.lastJump >= this.jumpCooldown) {
       this.lastJump = game.getPreviousTime();
       this.jumpMovement = true;
+      this.jumpDecayTimer.unpause();
     }
   };
 
