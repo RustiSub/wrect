@@ -10,7 +10,7 @@
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};
-    this.bounce = options.bounce || 1/8;
+    this.bounce = options.bounce || 1;
     this.friction = options.friction || 0.07;
 
     game.getEventManager().addListener('physics.collide', function(data) {

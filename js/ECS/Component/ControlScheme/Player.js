@@ -22,7 +22,7 @@
     game.getEventManager().addListener('game.updateEnd', function () {
       if (this.jumpDecayTimer.delta() <= 0) {
         this.jumpDecayTimer.stop();
-        this.jumpMovement = false;
+        //this.jumpMovement = false;
       }
 
     }, this);
@@ -38,6 +38,7 @@
 
         var perpSurface = data.surface.perpendicular();
         var forceSign = data.force.dot(perpSurface) > 0 ? 1 : -1;
+        console.log(data.force, forceSign);
         var jumpVector = perpSurface.unitScalar(forceSign *controlScheme.jumpForce);
 
         controlScheme.movement = controlScheme.movement.add(jumpVector);
