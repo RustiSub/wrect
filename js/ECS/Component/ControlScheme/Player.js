@@ -27,7 +27,9 @@
         controlScheme.jumpMovement = false;
 
         var perpSurface = data.surface.perpendicular();
-        var jumpVector = perpSurface.unitScalar(-controlScheme.jumpForce);
+        var forceSign = data.force.dot(perpSurface) > 0 ? 1 : -1;
+        var jumpVector = perpSurface.unitScalar(forceSign *controlScheme.jumpForce);
+
         controlScheme.movement = controlScheme.movement.add(jumpVector);
       }
     });
