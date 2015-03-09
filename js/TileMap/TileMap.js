@@ -209,6 +209,12 @@
       }
       tile = changeableTiles.splice(0, 1)[0];
 
+      if (!tile) {
+        //console.log(tile);
+        //debugger;
+        continue;
+      }
+
       var xPosition = (tilePosition % this.width) * tile.width;
       var yPosition = Math.floor(tilePosition / this.width) * tile.height;
 
