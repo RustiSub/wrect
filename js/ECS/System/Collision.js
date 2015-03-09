@@ -122,7 +122,8 @@
 
       if (shapeB.components.BaseMaterial) {
         var data = {entity: shapeB, otherEntity: shapeA, force: v2, surface: n.perpendicular()};
-        game.getEventManager().trigger('physics.collide', data);
+        game.getEventManager().trigger('physics.collide.trigger', data);
+        game.getEventManager().trigger('physics.collide.absorb', data);
         v2 = data.force;
       }
 

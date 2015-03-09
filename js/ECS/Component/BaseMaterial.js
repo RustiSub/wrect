@@ -10,10 +10,10 @@
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};
-    this.bounce = options.bounce || 1;
+    this.bounce = options.bounce || 1/8;
     this.friction = options.friction || 0.07;
 
-    game.getEventManager().addListener('physics.collide', function(data) {
+    game.getEventManager().addListener('physics.collide.absorb', function(data) {
       var perpProjection = data.force.dot(data.surface.perpendicular());
       var perpForce = data.surface.perpendicular().unitScalar(perpProjection * this.bounce);
       data.force = data.force.subtract(perpForce);

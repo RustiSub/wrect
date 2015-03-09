@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" nextobjectid="55">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" nextobjectid="58">
  <tileset firstgid="1" name="background" tilewidth="32" tileheight="32">
   <image source="kitchen.png" width="1440" height="960"/>
  </tileset>
@@ -24,15 +24,6 @@
   <object id="45" x="318" y="441">
    <polygon points="0,0 703,-1 703,11 1,12"/>
   </object>
-  <object id="46" x="325" y="276">
-   <polygon points="0,0 65,-87 65,-72 14,0"/>
-  </object>
-  <object id="47" x="391" y="192">
-   <polygon points="0,0 88,3 81,15 -1,13"/>
-  </object>
-  <object id="48" x="474" y="210">
-   <polygon points="0,0 39,71 49,71 6,-12"/>
-  </object>
   <object id="50" x="580" y="149">
    <polygon points="0,0 421,7 422,14 0,10"/>
   </object>
@@ -44,6 +35,9 @@
   </object>
   <object id="54" x="45" y="203">
    <polygon points="0,0 204,3 205,16 -2,15"/>
+  </object>
+  <object id="57" x="325.333" y="274.667">
+   <polygon points="0,0 64,-82.6667 152,-77.3333 195.333,3.33333"/>
   </object>
  </objectgroup>
 </map>

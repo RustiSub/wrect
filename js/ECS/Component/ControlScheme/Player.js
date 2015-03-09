@@ -27,7 +27,7 @@
 
     }, this);
 
-    game.getEventManager().addListener('physics.collide', function(data) {
+    game.getEventManager().addListener('physics.collide.trigger', function(data) {
       var entityA = data.entity.components.ControlScheme;
       var entityB = data.otherEntity.components.ControlScheme;
 
@@ -38,9 +38,8 @@
 
         var perpSurface = data.surface.perpendicular();
         var forceSign = data.force.dot(perpSurface) > 0 ? 1 : -1;
-        console.log(data.force, forceSign);
-        var jumpVector = perpSurface.unitScalar(forceSign *controlScheme.jumpForce);
 
+        var jumpVector = perpSurface.unitScalar(forceSign * controlScheme.jumpForce);
         controlScheme.movement = controlScheme.movement.add(jumpVector);
       }
     });

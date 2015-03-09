@@ -210,8 +210,6 @@
       tile = changeableTiles.splice(0, 1)[0];
 
       if (!tile) {
-        //console.log(tile);
-        //debugger;
         continue;
       }
 
