@@ -52,9 +52,9 @@
     tileMap.build(this.visibleDimensions);
 
     var ball = new wrect.ECS.Assemblage.Ball({
-      x: 500,
-      y: 300,
-      radius: 25,
+      x: 460,
+      y: 200,
+      radius: 20,
       color: 0xF0E000
     });
     game.getEntityManager().addEntity(ball);
