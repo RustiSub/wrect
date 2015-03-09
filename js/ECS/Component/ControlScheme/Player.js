@@ -15,14 +15,14 @@
 
     this.lastJump = game.getPreviousTime();
     this.jumpCooldown = 250;
-    this.jumpForce = 60;
+    this.jumpForce = 65;
     this.jumpMovement = false;
-    this.jumpDecayTimer = new wrect.Core.Timer(500);
+    this.jumpDecayTimer = new wrect.Core.Timer(100);
     this.jumpDecayTimer.pause();
     game.getEventManager().addListener('game.updateEnd', function () {
       if (this.jumpDecayTimer.delta() <= 0) {
         this.jumpDecayTimer.stop();
-        //this.jumpMovement = false;
+        this.jumpMovement = false;
       }
 
     }, this);
@@ -42,7 +42,7 @@
         var jumpVector = perpSurface.unitScalar(forceSign * controlScheme.jumpForce);
         controlScheme.movement = controlScheme.movement.add(jumpVector);
       }
-    });
+    }, this);
 
     this.moveCooldown = 0;
     this.lastMove = game.getPreviousTime();

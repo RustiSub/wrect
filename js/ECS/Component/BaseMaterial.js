@@ -10,14 +10,28 @@
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};
-    this.bounce = options.bounce || 1/8;
-    this.friction = options.friction || 0.07;
+    this.bounce = options.bounce || 1/1.5;
+    this.bounceFriction =  options.bounceFriction || 0;
+    this.friction = options.friction || 1;
 
     game.getEventManager().addListener('physics.collide.absorb', function(data) {
-      var perpProjection = data.force.dot(data.surface.perpendicular());
-      var perpForce = data.surface.perpendicular().unitScalar(perpProjection * this.bounce);
+      if (this !== data.material) {
+        return;
+      }
+
+      var perpSurface = data.surface.perpendicular();
+      var forceProjection = data.force.dot(perpSurface);
+      var sign = forceProjection >= 0 ? 1 : -1;
+
+      //Absorb gravity
+      var gravityForce = perpSurface.unitScalar(sign * data.otherEntity.components.RigidBody.physicsBody.a.y);
+      //data.force = data.force.subtract(gravityForce);
+
+      //Absorb perpendicular movement
+      var perpForce = data.surface.perpendicular().unitScalar(forceProjection * this.bounce);
       data.force = data.force.subtract(perpForce);
 
+      //Absorb parallel movement
       var parProjection = data.force.dot(data.surface);
       var surfaceFrictionSign = parProjection > 0 ? 1 : -1;
       var surfaceFriction = this.friction * surfaceFrictionSign;

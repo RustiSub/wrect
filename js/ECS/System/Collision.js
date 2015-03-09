@@ -109,11 +109,13 @@
       }
 
       var v = shapeA.components.RigidBody.physicsBody.v;//.unit();
+
       var n = axesOverlap.axis;//.unit();
       var vn = v.dot(n);
       var u = n.multiply(vn);
       var w = v.subtract(u);
       var v2 = w.subtract(u);
+
 
       var sign = vn ? vn < 0 ? -1 : 1:0;
       var pushOutVector = n.unit().multiply(axesOverlap.overlap * -sign);
@@ -121,7 +123,13 @@
       shapeA.components.RigidBody.dimensions.move(pushOutVector);
 
       if (shapeB.components.BaseMaterial) {
-        var data = {entity: shapeB, otherEntity: shapeA, force: v2, surface: n.perpendicular()};
+        var data = {
+          material: shapeB.components.BaseMaterial,
+          entity: shapeB,
+          otherEntity: shapeA,
+          force: v2,
+          surface: n.perpendicular()
+        };
         game.getEventManager().trigger('physics.collide.trigger', data);
         game.getEventManager().trigger('physics.collide.absorb', data);
         v2 = data.force;

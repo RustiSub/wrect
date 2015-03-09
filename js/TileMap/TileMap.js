@@ -321,7 +321,7 @@
         origin: object.dimensions.origin,
         vertices: object.dimensions.vertices,
         color: 0x00FFFF,
-        alpha: 0
+        alpha: 0.25
       });
 
       polygon.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.001, 0.1)}));
