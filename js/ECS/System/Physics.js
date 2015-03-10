@@ -34,34 +34,13 @@
       }
 
       var oldV = physicsBody.v;
-      //physicsBody.a = physicsBody.a.divide(physicsBody.m);
-      //physicsBody.v.x = physicsBody.v.x + physicsBody.a.x * dt;
-      //physicsBody.v.y = physicsBody.v.y + physicsBody.a.y * dt;
-      //physicsBody.v = physicsBody.v.multiply(dt);
       var move = new Vector(
           (oldV.x + physicsBody.v.x) * 0.5 * dt,
           (oldV.y + physicsBody.v.y) * 0.5 * dt
       );
-      //move = physicsBody.v.multiply(dt);
-
-      //console.log(physicsBody.v.y);
-
-      //var maxSpeed = 100;
-      //if (physicsBody.v.x > maxSpeed) {
-      //  physicsBody.v.x = maxSpeed;
-      //} else if (physicsBody.v.x < -maxSpeed) {
-      //  physicsBody.v.x = -maxSpeed;
-      //}
-      //
-      //if (physicsBody.v.y > maxSpeed) {
-      //  physicsBody.v.y = maxSpeed;
-      //} else if (physicsBody.v.y < -maxSpeed) {
-      //  physicsBody.v.y = -maxSpeed;
-      //}
 
       if (move.x !== 0 || move.y !== 0) {
         rigidBody.dimensions.move(move);
-        //game.getEventManager().trigger('physics.move', {entity: entity, move: move});
       }
     }
 

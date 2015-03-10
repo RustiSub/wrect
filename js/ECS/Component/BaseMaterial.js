@@ -12,7 +12,7 @@
     this.options = options || {};
     this.bounce = options.bounce || 1/2;
     this.bounceFriction =  options.bounceFriction || 0;
-    this.friction = options.friction || 0;
+    this.friction = options.friction || 20;
 
     game.getEventManager().addListener('physics.collide.absorb', function(data) {
       if (this !== data.material) {
@@ -36,7 +36,7 @@
       //Absorb parallel movement
       var forceParProjection = data.force.dot(data.surface);
       var parForce = data.surface.unitScalar(forceParProjection * this.bounce);
-      data.force = data.force.subtract(parForce);
+      //data.force = data.force.subtract(parForce);
 
       var parProjection = data.force.dot(data.surface);
       var surfaceFrictionSign = parProjection > 0 ? 1 : -1;
@@ -51,7 +51,7 @@
       var frictionForce = data.surface.unitScalar(parProjection);
       data.force = data.force.subtract(frictionForce);
 
-      data.Force = new Vector(0, 0);
+      ///data.Force = new Vector(0, 0);
     }, this);
   };
 

@@ -15,7 +15,7 @@
 
     this.lastJump = game.getPreviousTime();
     this.jumpCooldown = 250;
-    this.jumpForce = 65;
+    this.jumpForce = 75;
     this.jumpMovement = false;
     this.jumpDecayTimer = new wrect.Core.Timer(100);
     this.jumpDecayTimer.pause();
@@ -46,7 +46,7 @@
 
     this.moveCooldown = 0;
     this.lastMove = game.getPreviousTime();
-    this.moveForce = 3;
+    this.moveForce = 50;
 
     this.transform = new Vector(0, 0);
   };
@@ -67,7 +67,7 @@
       this.lastMove = game.getPreviousTime();
       this.movement = this.movement.add(new Vector(this.moveForce, 0));
 
-      this.transform = this.transform.add(new Vector(1, 0));
+      //this.transform = this.transform.add(new Vector(1, 0));
     }
   };
 
@@ -76,7 +76,7 @@
       this.lastMove = game.getPreviousTime();
       this.movement = this.movement.add(new Vector(-this.moveForce, 0));
 
-      this.transform = this.transform.add(new Vector(-1, 0));
+      //this.transform = this.transform.add(new Vector(-1, 0));
     }
   };
 }());
