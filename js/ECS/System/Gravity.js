@@ -26,7 +26,8 @@
       var rigidBody = entity.components.RigidBody;
 
       var gravity = new wrect.Physics.Vector(0, 9.81).multiply(rigidBody.physicsBody.m);
-      rigidBody.physicsBody.a = rigidBody.physicsBody.a.add(gravity);
+      //gravity = gravity.multiply(10);
+      rigidBody.physicsBody.f = rigidBody.physicsBody.f.add(gravity);
     }
   }
 }());

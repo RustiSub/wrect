@@ -23,7 +23,7 @@
   };
 
   wrect.ECS.System.Physics.prototype.perform = function(entity) {
-    var dt = 1 / 6 ;//game.getDelta() / 100;
+    var dt = game.getDelta() / 100;
     var rigidBody = entity.components.RigidBody;
 
     if (!entity.components.RigidBody.frozen) {
@@ -34,13 +34,17 @@
       }
 
       var oldV = physicsBody.v;
-      physicsBody.a = physicsBody.a.divide(physicsBody.m);
-      physicsBody.v.x = physicsBody.v.x + physicsBody.a.x * dt;
-      physicsBody.v.y = physicsBody.v.y + physicsBody.a.y * dt;
+      //physicsBody.a = physicsBody.a.divide(physicsBody.m);
+      //physicsBody.v.x = physicsBody.v.x + physicsBody.a.x * dt;
+      //physicsBody.v.y = physicsBody.v.y + physicsBody.a.y * dt;
+      //physicsBody.v = physicsBody.v.multiply(dt);
       var move = new Vector(
           (oldV.x + physicsBody.v.x) * 0.5 * dt,
           (oldV.y + physicsBody.v.y) * 0.5 * dt
       );
+      //move = physicsBody.v.multiply(dt);
+
+      //console.log(physicsBody.v.y);
 
       //var maxSpeed = 100;
       //if (physicsBody.v.x > maxSpeed) {
