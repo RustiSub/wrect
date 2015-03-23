@@ -50,20 +50,6 @@
     this.visibleDimensions = this.game.getCamera().getDimensions();
     this.previousVisibleDimensions = Helpers.object.copy(this.visibleDimensions);
     tileMap.build(this.visibleDimensions);
-
-    var ball = new wrect.ECS.Assemblage.Ball({
-      x: 260,
-      y: 350,
-      radius: 20,
-      color: 0xF0E000
-    });
-    game.getEntityManager().addEntity(ball);
-
-    ball.components.RigidBody.gravity = true;
-    ball.addComponent(new wrect.ECS.Component.ControlScheme.Player());
-
-    ball.components.RigidBody.physicsBody.m = 1;
-    //ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(50,45));
   };
 
   wrect.TileMap.TileMapManager.prototype.destroyCurrentTileMap = function() {

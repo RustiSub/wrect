@@ -125,28 +125,16 @@
      * Builds up the default components. See _defaults to overwrite default classes.
      */
     buildComponents: function() {
-      this._stage = new PIXI.Stage(0xABA493);//0xFFFFFF);//
-      //this.setBackground();
+      this._stage = new THREE.Scene();
+      this._camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
-      this._renderer = new PIXI.autoDetectRenderer(this._options.width, this._options.height);
-      global.document.body.querySelector('.canvasContainer').appendChild(this._renderer.view);
-      // Required for fading
-      this._renderer.view.style.opacity = 1;
-      this._cameraContainer = new PIXI.DisplayObjectContainer();
-      this._cameraContainer.width = this._options.width;
-      this._cameraContainer.height = this._options.height;
-      this._stage.addChild(this._cameraContainer);
+      this._renderer = new THREE.WebGLRenderer();
+      this._renderer.setSize( window.innerWidth, window.innerHeight );
+      document.body.appendChild( this._renderer.domElement );
 
       this._eventManager = new EventManager();
       this._inputHandler = new this._options.inputHandlerClass();
       this._entityManager = new this._options.entityManagerClass(this._stage);
-      this._collisionManager = new this._options.collisionManagerClass();
-      this._guiManager = new this._options.guiManagerClass();
-      this._gravityManager = new this._options.gravityManagerClass();
-      //this._builder = new this._options.builder();
-      this._levelManager = new this._options.levelManagerClass(this._stage, this._options.defaultLevel);
-      this._camera = new Camera(0, 0, this._options.width, this._options.height, this);
-      this._tileMapManager = new wrect.TileMap.TileMapManager(this);
 
       this.timeStepSystem = {};
 
@@ -173,11 +161,20 @@
       var self = this;
       var pause = false;
 
+      var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+      var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+      var cube = new THREE.Mesh( geometry, material );
+      this._stage.add( cube );
+      this._camera.position.z = 3;
+
       requestAnimationFrame(run);
 
       function run(timestamp) {
         if (self.pause) {return;}
         requestAnimationFrame(run);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+
         self.getEventManager().trigger('game.updateStart');
         self.updateTime(timestamp);
         if (self.debug) {
@@ -199,15 +196,8 @@
         }
 
         self.getEventManager().trigger('game.updateEnd');
-
         // Needs to be last
-        //self._inputHandler.update();
-        renderer.render(stage);
-//self.pause = true;
-        // Sets the element used for mouse-event tracking to the root GUI element. This fixes mouse input over GUI elements.
-        if (stage.interactionManager.interactionDOMElement !== self._guiManager.getRoot().htmlElement) {
-          stage.setInteractionDelegate(self._guiManager.guiRoot.htmlElement);
-        }
+        self._renderer.render(self._stage, self._camera);
       }
     },
 
