@@ -1,20 +1,26 @@
-/**
- * @augments MovableEntity
- * @type {void|*}
- */
-var Player = MovableEntity.extend({
-    _className: 'Player',
-    init: function(){
-      this._super();
-    },
-    update: function(){
+(function() {
+  "use strict";
+
+  wrect.Entities = wrect.Entities || {};
+
+  /**
+   * @augments MovableEntity
+   * @type {void|*}
+   */
+  wrect.Entities.Player = wrect.Entities.MovableEntity.extend({
+      _className: 'Player',
+      init: function(){
         this._super();
-        var inputHandler = Container.getComponent('InputHandler');
-        if (inputHandler.key('left')) {
-            this.moveLeft();
-        }
-        if (inputHandler.key('right')) {
-            this.moveRight();
-        }
-    }
-});
+      },
+      update: function(){
+          this._super();
+          var inputHandler = Container.getComponent('InputHandler');
+          if (inputHandler.key('left')) {
+              this.moveLeft();
+          }
+          if (inputHandler.key('right')) {
+              this.moveRight();
+          }
+      }
+  });
+}());

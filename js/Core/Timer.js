@@ -1,13 +1,17 @@
 (function() {
+  "use strict";
+
+  wrect.Core = wrect.Core || {};
 
   /**
    * Basic timer functionality
    * @param {int} time - time in ms
    * @param {function} [callback] - Callback to trigger on reaching 0
    * @param {boolean} [once] - If callback should only be called once or if it should reset
+   * @class wrect.Core.Timer
    * @constructor
    */
-  window.Timer = function(time, callback, once) {
+  wrect.Core.Timer = function(time, callback, once) {
 
     /**
      * Target time
@@ -40,13 +44,13 @@
      */
     this.once = !!once;
 
-    this.game.getEventManager().addListener('game.updateStart', this.update);
+    this.game.getEventManager().addListener('game.updateStart', this.update, this);
   };
 
   /**
    * Update the timer.
    */
-  window.Timer.prototype.update = function() {
+  wrect.Core.Timer.prototype.update = function() {
     if (this.paused) {
       return;
     }
@@ -54,7 +58,7 @@
     this._currentTime += this.game.getDelta();
 
     if (this.callback && (this.targetTime - this._currentTime) < 0) {
-      this.callback();
+      this.callback(this);
       if (this.once) {
         this.stop();
       }
@@ -64,7 +68,7 @@
   /**
    * Returns the difference between the current and the target time.
    */
-  window.Timer.prototype.delta = function() {
+  wrect.Core.Timer.prototype.delta = function() {
     return this.targetTime - this._currentTime;
   };
 
@@ -72,35 +76,35 @@
    * Set the target time
    * @param {int} targetTime - time in ms to reach
    */
-  window.Timer.prototype.set = function(targetTime) {
+  wrect.Core.Timer.prototype.set = function(targetTime) {
     this.targetTime = targetTime;
   };
 
   /**
    * Resets the timer
    */
-  window.Timer.prototype.reset = function() {
+  wrect.Core.Timer.prototype.reset = function() {
     this._currentTime = 0;
   };
 
   /**
    * Pauses the timer
    */
-  window.Timer.prototype.pause = function() {
+  wrect.Core.Timer.prototype.pause = function() {
     this.paused = true;
   };
 
   /**
    * Unpause the timer
    */
-  window.Timer.prototype.unpause = function() {
+  wrect.Core.Timer.prototype.unpause = function() {
     this.paused = false;
   };
 
   /**
    * Stops the timer
    */
-  window.Timer.prototype.stop = function() {
+  wrect.Core.Timer.prototype.stop = function() {
     this.pause();
     this.reset();
   };

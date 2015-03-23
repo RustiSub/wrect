@@ -134,6 +134,17 @@
          */
         toRadians: function (degrees) {
           return degrees * (Math.PI / 180);
+        },
+
+        /**
+         * Return whatever value is highest
+         * @param value
+         * @param min
+         * @param max
+         * @returns {number}
+         */
+        clamp: function(value, min, max) {
+          return Math.min(Math.max(value, min), max);
         }
       },
 

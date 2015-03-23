@@ -1,24 +1,26 @@
 (function() {
     "use strict";
 
+    wrect.Physics = wrect.Physics || {};
+
     /**
-     * Vector constructor
+     * @class Vector
      * @param {Number} x
      * @param {Number} y
-     * @returns {Vector}
+     * @returns {wrect.Physics.Vector}
      * @constructor
      */
-    window.Vector = function(x, y) {
+    wrect.Physics.Vector = function(x, y) {
         this.x = x;
         this.y = y;
         return this;
     };
 
-    var Vector = window.Vector;
+    var Vector = wrect.Physics.Vector;
 
     /**
      * Calculates the distance between 2 vectors.
-     * @param {Vector} v
+     * @param {wrect.Physics.Vector} v
      * @returns {Number}
      */
     Vector.prototype.distance = function (v) {
@@ -28,8 +30,8 @@
 
     /**
      * subtracts vectors
-     * @param {Vector} v vector
-     * @returns {Vector} vector
+     * @param {wrect.Physics.Vector} v vector
+     * @returns {wrect.Physics.Vector} vector
      */
     Vector.prototype.subtract = function(v) {
         return new Vector(this.x - v.x, this.y - v.y);
@@ -37,8 +39,8 @@
 
     /**
      * adds vectors
-     * @param {Vector} v vector
-     * @returns {Vector} vector
+     * @param {wrect.Physics.Vector} v vector
+     * @returns {wrect.Physics.Vector} vector
      */
     Vector.prototype.add = function(v) {
         return new Vector(this.x + v.x, this.y + v.y);
@@ -47,7 +49,7 @@
     /**
     *
     * @param {Number} s
-    * @returns {Vector}
+    * @returns {wrect.Physics.Vector}
     */
     Vector.prototype.scale = function(s) {
       return new Vector(this.x * s, this.y * s);
@@ -55,8 +57,8 @@
 
     /**
      * multiply vector with scalar or other vector
-     * @param {Number|Vector} v vector or number
-     * @returns {Number|Vector} result
+     * @param {Number|wrect.Physics.Vector} v vector or number
+     * @returns {Number|wrect.Physics.Vector} result
      */
     Vector.prototype.multiply = function(v) {
         if (typeof v === 'number') {
@@ -85,7 +87,7 @@
 
     /**
      * normalize vector to unit vector
-     * @returns {Vector} unit vector [v0, v1]
+     * @returns {wrect.Physics.Vector} unit vector [v0, v1]
      */
     Vector.prototype.unit = function() {
         var l = this.len();
@@ -98,7 +100,7 @@
     /**
      *
      * @param scalar
-     * @returns {Number|Vector}
+     * @returns {Number|wrect.Physics.Vector}
      */
       Vector.prototype.unitScalar = function(scalar) {
         return this.unit().multiply(scalar);
@@ -111,23 +113,23 @@
   /**
    *
    * @param {Number} angle
-   * @param {Vector} vector
-   * @returns {Vector}
+   * @param {wrect.Physics.Vector} vector
+   * @returns {wrect.Physics.Vector}
    */
     Vector.prototype.rotate = function(angle, vector) {
       var x = this.x - vector.x;
       var y = this.y - vector.y;
 
-      var x_prime = vector.x + ((x * Math.cos(angle)) - (y * Math.sin(angle)));
-      var y_prime = vector.y + ((x * Math.sin(angle)) + (y * Math.cos(angle)));
-
-      return new Vector(x_prime, y_prime);
+      return new Vector(
+          vector.x + ((x * Math.cos(angle)) - (y * Math.sin(angle))),
+          vector.y + ((x * Math.sin(angle)) + (y * Math.cos(angle)))
+      );
     };
 
     /**
      * rotate vector
      * @param {Number} angle to rotate vector by, radians. can be negative
-     * @returns {Vector} rotated vector
+     * @returns {wrect.Physics.Vector} rotated vector
      */
     Vector.prototype.rotateAngle = function(angle){
       angle = window.game.getHelpers().math.normaliseRadians(angle);
@@ -138,17 +140,20 @@
     /**
      *
      * calculate vector dot product
-     * @param {Vector} v
+     * @param {wrect.Physics.Vector} v
      * @returns {Number} dot product of this vector and vector v
      */
     Vector.prototype.dot = function(v){
+      if (!v) {
+        debugger;
+      }
         return (this.x * v.x) + (this.y * v.y);
     };
 
     /**
      *
      * calculate angle between vectors
-     * @param {Vector} v
+     * @param {wrect.Physics.Vector} v
      * @returns {Number} angle between this vector and v in radians
      */
     Vector.prototype.angle=function(v){
@@ -157,7 +162,7 @@
     };
 
     /**
-     * @returns {Vector} vector with max length as specified.
+     * @returns {wrect.Physics.Vector} vector with max length as specified.
      */
     Vector.prototype.truncate = function(maxLength) {
         if (this.len() > maxLength) {
@@ -169,8 +174,7 @@
 
   /**
    * Get the perpendicular vector to this edge.
-   * @param vector
-   * @returns {Vector}
+   * @returns {wrect.Physics.Vector}
    */
     Vector.prototype.perpendicular = function() {
       return new Vector(-this.y, this.x);
