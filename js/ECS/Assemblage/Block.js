@@ -8,6 +8,11 @@
   var Vector = wrect.Physics.Vector;
   var Rectangle = wrect.Geometry.Rectangle;
 
+  /**
+   * @param options
+   * @returns {wrect.ECS.Entity|*}
+   * @constructor
+   */
   wrect.ECS.Assemblage.Block = function (options) {
     this.entity = new Entity({
       eventManager: options.eventManager
@@ -38,7 +43,5 @@
     this.entity.addComponent(visualComponent);
     //entity.addComponent( new ECS.Components.Position());
     //entity.addComponent( new ECS.Components.Collision());
-
-    return this.entity;
   };
 }());

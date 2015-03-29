@@ -9,26 +9,19 @@
    */
   wrect.Core.EntityManager = function() {
     this._entities = [];
+    this._entitiesByName = {};
   };
 
   wrect.Core.EntityManager.prototype.init = function(stage){
       this._stage = stage;
-      this.cameraContainer = Container.getGame()._cameraContainer;
   };
 
   /**
    * @param {BaseEntity} entity
-   * @param {Boolean} [addToWorld]
    */
-  wrect.Core.EntityManager.prototype.addEntity = function(entity, addToWorld){
-    if (addToWorld === undefined){
-      addToWorld = true;
-    }
+  wrect.Core.EntityManager.prototype.addEntity = function(entity){
     this._entities.push(entity);
-    this._entitiesByName[entity.name] = entity;
-    if (addToWorld) {
-      this.cameraContainer.addChild(entity.getGraphics());
-    }
+    this._entitiesByName[entity.getId()] = entity;
   };
 
   /**
@@ -97,10 +90,6 @@
   wrect.Core.EntityManager.prototype.clearEntities = function(clearStage) {
     this._entities = [];
     this._entitiesByName = {};
-    if (clearStage) {
-      Container.getGame()._builder.clearRooms(this.getAllEntities());
-      this.cameraContainer.removeChildren();
-    }
   };
 
   /**

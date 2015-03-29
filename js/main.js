@@ -6,7 +6,7 @@ window.onload = function() {
   game.bootstrap();
   game.run();
 
-  new wrect.ECS.Assemblage.Block({
+  var blockAssemblage = new wrect.ECS.Assemblage.Block({
     x: 0,
     y: 0,
     w: 100,
@@ -16,4 +16,6 @@ window.onload = function() {
     renderer: game.getRenderer(),
     eventManager: game.getEventManager()
   });
+
+  game.getEntityManager().addEntity(blockAssemblage.entity);
 };
