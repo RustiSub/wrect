@@ -47,20 +47,16 @@ window.onload = function() {
 
   game.physicsEngine = new wrect.ECS.Assemblage.PhysicsEngine();
 
-  function createBlock(options) {
-    var block = new wrect.ECS.Assemblage.Block(options);
+  var cube = new wrect.ECS.Assemblage.LineShape3D({
+    vertices: [
+      new wrect.Physics.Vector3D(0, 0, 0),
+      new wrect.Physics.Vector3D(10, 0, 0),
+      new wrect.Physics.Vector3D(10, 10, 0),
+      new wrect.Physics.Vector3D(0, 10, 0)
+    ]
+  });
 
-    game.getEntityManager().addEntity(block);
+  //game.getEntityManager().addEntity(block);
 
-    return block;
-  }
-
-  //createBlock({
-  //  x: 100,
-  //  y: 100,
-  //  w: 100,
-  //  h: 150,
-  //  color: 0xFFFFFF,
-  //  alpha: 1
-  //});
+  game.getStage().add(cube.components.Visual3D.graphics);
 };

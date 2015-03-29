@@ -1,7 +1,6 @@
 (function(global) {
 
   var EventManager = wrect.Core.EventManager;
-  var Camera = wrect.Core.Camera;
 
   /**
    * @Class Game
@@ -59,12 +58,6 @@
     getEntityManager: function() {
       return this._entityManager;
     },
-    getCollisionManager: function() {
-      return this._collisionManager;
-    },
-    getLevelManager: function() {
-      return this._levelManager;
-    },
     getGuiManager: function() {
       return this._guiManager;
     },
@@ -80,24 +73,8 @@
     getPreviousTime: function() {
       return this.previousTime;
     },
-    getDeltaDelta: function() {
-      this.previousTimeDelta = this.previousTimeDelta || this.timeDelta;
-      return this.timeDelta / this.previousTimeDelta;
-    },
     getCurrentLevel: function() {
       return this._levelManager.getCurrentLevel();
-    },
-    initSystemBags: function() {
-      var entities = this.getEntityManager().getAllEntities();
-      for (var e = 0; e < entities.length; e++) {
-        var entity = entities[e];
-
-        for (var s in this.systems) {
-          var system = this.systems[s].system;
-
-          system.addEntity(entity);
-        }
-      }
     },
 
     /**
@@ -156,24 +133,23 @@
      * Creates the stage and renderer and starts the game loop.
      */
     bootstrap: function() {
-      var stage = this.getStage();
-      var renderer = this.getRenderer();
       var self = this;
-      var pause = false;
 
-      var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-      var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-      var cube = new THREE.Mesh( geometry, material );
-      this._stage.add( cube );
       this._camera.position.z = 3;
 
       requestAnimationFrame(run);
 
+      //Test object for renderer
+      //var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+      //var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+      //var cube = new THREE.Mesh( geometry, material );
+      //this._stage.add( cube );
+
       function run(timestamp) {
         if (self.pause) {return;}
         requestAnimationFrame(run);
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
+        //cube.rotation.x += 0.01;
+        //cube.rotation.y += 0.01;
 
         self.getEventManager().trigger('game.updateStart');
         self.updateTime(timestamp);
@@ -181,16 +157,18 @@
           self.trackFps(timestamp);
         }
 
-        for (var preSystemIndex in self.systems.pre) {
-          var preSystem = self.systems.pre[preSystemIndex].system;
+        var preSystems = self.systems.pre;
+          for (var preSystemIndex in  preSystems) if (preSystems.hasOwnProperty(preSystemIndex)) {
+          var preSystem = preSystems[preSystemIndex].system;
 
           preSystem.run();
         }
 
         self.physicsEngine.run();
 
-        for (var postSystemIndex in self.systems.post) {
-          var postSystem = self.systems.post[postSystemIndex].system;
+        var postSystems = self.systems.post;
+          for (var postSystemIndex in  postSystems) if (postSystems.hasOwnProperty(postSystemIndex)) {
+          var postSystem = postSystems[postSystemIndex].system;
 
           postSystem.run();
         }
@@ -222,26 +200,6 @@
           return self;
         }
       };
-    },
-
-    selectEntity: function(direction) {
-      var entities = this.getEntityManager().getAllEntities();
-      if (entities.length === 0) {
-        return false;
-      }
-      if (direction === 1 && this._builder.selectedEntityIndex >= entities.length - 1) {
-        this._builder.selectedEntityIndex = -1;
-      }
-      if (direction === -1 && this._builder.selectedEntityIndex <= 0) {
-        this._builder.selectedEntityIndex = entities.length;
-      }
-      this._builder.selectedEntityIndex += direction;
-
-      var entity = entities[this._builder.selectedEntityIndex];
-
-      this.getEntityManager().deselectAll();
-      entity.select();
-      return true;
     },
 
     addEntity: function(entity) {
@@ -276,46 +234,6 @@
       }
     },
 
-    /**
-     * @param [element]
-     */
-    goFullscreen: function(element) {
-      var isInFullScreen = (document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
-          (document.mozFullScreen || document.webkitIsFullScreen);
-
-      var docElm = element ? element : document.body;
-      if (!isInFullScreen) {
-
-        if (docElm.requestFullscreen) {
-          docElm.requestFullscreen();
-        }
-        else if (docElm.mozRequestFullScreen) {
-          docElm.mozRequestFullScreen();
-        }
-        else if (docElm.webkitRequestFullScreen) {
-          docElm.webkitRequestFullScreen();
-        }
-        var self = this;
-        setTimeout(function() {
-          self._renderer.resize(screen.width, screen.height);
-        }, 40);
-      }
-      else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
-        else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        }
-        else if (document.webkitExitFullscreen) {
-          document.webkitCancelFullscreen();
-        }
-        else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-      }
-    },
-
     getHeight: function() {
       return this.getRenderer().view.height;
     },
@@ -344,4 +262,4 @@
       }
     }
   });
-})(this);
+})();
