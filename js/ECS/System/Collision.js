@@ -5,7 +5,7 @@
   wrect.ECS.System = wrect.ECS.System || {};
 
   wrect.ECS.System.Collision = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
   };
 
   wrect.ECS.System.Collision.prototype = Object.create(wrect.ECS.System.BaseSystem.prototype);

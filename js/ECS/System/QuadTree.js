@@ -5,7 +5,7 @@
   wrect.ECS.System = wrect.ECS.System || {};
 
   wrect.ECS.System.QuadTree = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
 
     options = options || {};
 

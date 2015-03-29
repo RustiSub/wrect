@@ -4,10 +4,8 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
-  var Vector = wrect.Physics.Vector;
-
   wrect.ECS.System.TimeStep = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
     this.systems = [];
@@ -22,11 +20,11 @@
 
   wrect.ECS.System.TimeStep.prototype.name = 'TimeStep';
 
-  wrect.ECS.System.TimeStep.prototype.checkDependencies = function(entity) {
+  wrect.ECS.System.TimeStep.prototype.checkDependencies = function() {
     return false;
   };
 
-  wrect.ECS.System.TimeStep.prototype.run = function(entity) {
+  wrect.ECS.System.TimeStep.prototype.run = function() {
     this.remainder += game.getDelta() % this.fixedTimeStep;
     this.timeSteps = Math.round(game.getDelta() / this.fixedTimeStep);
 

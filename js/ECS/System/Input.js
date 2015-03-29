@@ -4,13 +4,11 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
-  var Vector = wrect.Physics.Vector;
-
   wrect.ECS.System.Input = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
-    this.inputHandler = Container.getComponent('InputHandler');
+    this.inputHandler = options.inputHandler;
   };
 
   wrect.ECS.System.Input.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );

@@ -4,10 +4,8 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
-  var Vector = wrect.Physics.Vector;
-
   wrect.ECS.System.Linker = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
 
@@ -25,14 +23,7 @@
 
   wrect.ECS.System.Linker.prototype.link = function(data) {
     var entity = data.entity;
-    var move = data.move;
     if (this.checkDependencies(entity)) {
-      var linkedEntity = entity.components.Link.linkedEntity;
-
-      //linkedEntity.components.RigidBody.dimensions.move(move);
-      //linkedEntity.components.RigidBody.physicsBody.v = entity.components.RigidBody.physicsBody.v;
-      //linkedEntity.components.RigidBody.physicsBody.f = entity.components.RigidBody.physicsBody.f;
-      //linkedEntity.components.RigidBody.physicsBody.a = entity.components.RigidBody.physicsBody.a;
     }
   };
 

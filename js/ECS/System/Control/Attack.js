@@ -5,10 +5,8 @@
   wrect.ECS.System = wrect.ECS.System || {};
   wrect.ECS.System.Control = wrect.ECS.System.Control || {};
 
-  var Vector = wrect.Physics.Vector;
-
   wrect.ECS.System.Control.Attack = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
   };
@@ -23,11 +21,5 @@
   };
 
   wrect.ECS.System.Control.Attack.prototype.perform = function(entity) {
-    var scheme = entity.components.Sword;
-    var rigidBody = entity.components.RigidBody;
-
-    //if (scheme.stab) {
-    //  rigidBody.dimensions.move(new Vector(10, 0));
-    //}
   };
 }());

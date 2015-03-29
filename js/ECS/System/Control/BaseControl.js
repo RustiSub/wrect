@@ -8,7 +8,7 @@
   var Vector = wrect.Physics.Vector;
 
   wrect.ECS.System.Control.BaseControl = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
     this.maxPlayerSpeed = this.options.maxPlayerSpeed || 50;

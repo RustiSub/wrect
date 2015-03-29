@@ -4,10 +4,8 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
-  var Vector = wrect.Physics.Vector;
-
   wrect.ECS.System.Animator = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
     this.lastFrame = 0;
@@ -37,9 +35,13 @@
 
       for (var s = 0; s < animation.playingAnimationIds.length; s++) {
         var scriptedAnimation = animation.scriptedAnimations[animation.playingAnimationIds[s]];
+        /**
+         * @type {actions}
+         */
+        var actions = scriptedAnimation.actions;
 
-        for (var actionIndex in scriptedAnimation.actions) {
-          var action = scriptedAnimation.actions[actionIndex];
+        for (var actionIndex in actions) if (actions.hasOwnProperty(actionIndex)) {
+          var action = actions[actionIndex];
 
           if (animation.timer >= actionIndex && action.state === 0) {
             //console.log(actionIndex);
@@ -54,11 +56,17 @@
         console.log('animation done');
         console.log('resetting');
         animation.timer = 0;
-        for (var actionIndex in scriptedAnimation.actions) {
-          var action = scriptedAnimation.actions[actionIndex];
 
-          if (action.state === 1) {
-            action.state = 0;
+        /**
+         * @type {actions}
+         */
+        var actionsEnd = scriptedAnimation.actions;
+
+        for (var actionIndexEnd in actionsEnd) if (actionsEnd.hasOwnProperty(actionIndexEnd)) {
+          var actionEnd = actionsEnd[actionIndexEnd];
+
+          if (actionEnd.state === 1) {
+            actionEnd.state = 0;
           }
           //console.log('checking action :', actionIndex);
           //console.log(this.interval % actionIndex);

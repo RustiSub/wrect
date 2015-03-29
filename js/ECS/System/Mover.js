@@ -7,7 +7,7 @@
   var Vector = wrect.Physics.Vector;
 
   wrect.ECS.System.Mover = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
 
