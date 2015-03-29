@@ -5,11 +5,13 @@
    * @constructor
    */
   wrect.Game = function() {
-    this.entityManager = new wrect.Core.EntityManager();
-    this.eventManager = new wrect.Core.EventManager();
   };
 
   wrect.Game.prototype.bootstrap = function() {
+    this.entityManager = new wrect.Core.EntityManager();
+    this.eventManager = new wrect.Core.EventManager();
+    this.gameTime = new wrect.Core.GameTime();
+
     this.systems = {
       pre: {
         Linker: {
@@ -43,6 +45,37 @@
         //}
       }
     };
+  };
+
+  wrect.Game.prototype.run = function() {
+    var self = this;
+
+    requestAnimationFrame(run);
+
+    function run(timestamp) {
+      if (self.pause) {return;}
+      requestAnimationFrame(run);
+
+      self.gameTime.updateTime(timestamp);
+
+      self.getEventManager().trigger('game.updateStart');
+
+      runSystemGroup(self.systems.pre);
+      runSystemGroup(self.systems.main);
+      runSystemGroup(self.systems.post);
+
+      self.getEventManager().trigger('game.updateEnd');
+
+      //self.getRenderer().render(self._stage, self._camera);
+    }
+
+    function runSystemGroup(systems) {
+      for (var systemIndex in  systems) if (systems.hasOwnProperty(systemIndex)) {
+        var preSystem = systems[systemIndex].system;
+
+        preSystem.run();
+      }
+    }
   };
 
   /**

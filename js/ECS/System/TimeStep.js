@@ -25,8 +25,10 @@
   };
 
   wrect.ECS.System.TimeStep.prototype.run = function() {
-    this.remainder += game.getDelta() % this.fixedTimeStep;
-    this.timeSteps = Math.round(game.getDelta() / this.fixedTimeStep);
+    var gameTime = this.options.game.gameTime;
+
+    this.remainder += gameTime.getDelta() % this.fixedTimeStep;
+    this.timeSteps = Math.round(gameTime.getDelta() / this.fixedTimeStep);
 
     if (this.remainder >= this.fixedTimeStep) {
       this.timeSteps += 1;

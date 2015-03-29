@@ -23,14 +23,16 @@
   };
 
   wrect.ECS.System.Animator.prototype.run = function() {
-    this.interval = game.getPreviousTime() - this.lastFrame;
-    this.currentFrame = game.getPreviousTime();
+    var gameTime = this.options.game.gameTime;
+
+    this.interval = gameTime.getPreviousTime() - this.lastFrame;
+    this.currentFrame = gameTime.getPreviousTime();
 
     for (var e = 0; e < this.entities.length; e++) {
       var entity = this.entities[e];
       var animation = entity.components.Animation;
 
-      animation.timer += game.getDelta();
+      animation.timer += gameTime.getDelta();
 
 
       for (var s = 0; s < animation.playingAnimationIds.length; s++) {
