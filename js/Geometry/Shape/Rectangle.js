@@ -12,15 +12,17 @@
     wrect.Geometry.Dimensions.call(this);
 
     this.origin = options.origin;
+    this.width = options.width;
+    this.height = options.height;
 
-    var width = new Vector(options.width, 0);
-    var height = new Vector(0, options.height);
+    var widthVector = new Vector(options.width, 0);
+    var heightVector = new Vector(0, options.height);
 
     this.vertices = [
       options.origin,
-      options.origin.add(width),
-      options.origin.add(width).add(height),
-      options.origin.add(height)
+      options.origin.add(widthVector),
+      options.origin.add(widthVector).add(heightVector),
+      options.origin.add(heightVector)
     ];
 
     this.offsetVertices = [
