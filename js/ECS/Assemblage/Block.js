@@ -9,7 +9,9 @@
   var Rectangle = wrect.Geometry.Rectangle;
 
   wrect.ECS.Assemblage.Block = function (options) {
-    this.entity = new Entity();
+    this.entity = new Entity({
+      eventManager: options.eventManager
+    });
 
     var rigidBody = new wrect.ECS.Component.RigidBody({
       dimensions: new Rectangle({
@@ -22,15 +24,15 @@
     var visualComponent = new wrect.ECS.Component.Visual({
       color: options.color,
       alpha: options.alpha,
-      graphics: new PIXI.Graphics(),
       origin: rigidBody.dimensions.origin,
       w: options.w,
       h: options.h,
       useSprite: options.useSprite,
-      shape: rigidBody.dimensions
+      shape: rigidBody.dimensions,
+      renderer: options.renderer
     });
 
-    visualComponent.draw(visualComponent.graphics, visualComponent.options);
+    //visualComponent.create(visualComponent.graphics);
 
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);

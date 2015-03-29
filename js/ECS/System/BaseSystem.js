@@ -13,6 +13,7 @@
      * @type {wrect.ECS.Entity[]}
      */
     this.entities = [];
+    this.options = options;
     var game = options.game;
     game.getEventManager().addListener('entity.component.add', this.addEntity, this);
     game.getEventManager().addListener('entity.component.remove', this.removeEntity, this);

@@ -10,7 +10,7 @@
     wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
-
+    this.gameTime = options.game.getGameTime();
   };
 
   wrect.ECS.System.Physics.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -23,7 +23,7 @@
   };
 
   wrect.ECS.System.Physics.prototype.perform = function(entity) {
-    var dt = game.getDelta() / 100;
+    var dt = this.gameTime.getDelta() / 100;
     var rigidBody = entity.components.RigidBody;
 
     if (!entity.components.RigidBody.frozen) {

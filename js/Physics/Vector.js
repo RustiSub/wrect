@@ -7,7 +7,7 @@
      * @class Vector
      * @param {Number} x
      * @param {Number} y
-     * @returns {wrect.Physics.Vector}
+     * @returns {Vector}
      * @constructor
      */
     wrect.Physics.Vector = function(x, y) {

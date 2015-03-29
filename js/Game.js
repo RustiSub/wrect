@@ -11,6 +11,7 @@
     this.entityManager = new wrect.Core.EntityManager();
     this.eventManager = new wrect.Core.EventManager();
     this.gameTime = new wrect.Core.GameTime();
+    this.renderer = new wrect.Core.Renderer();
 
     this.systems = {
       pre: {
@@ -92,6 +93,20 @@
   wrect.Game.prototype.getEntityManager = function() {
     return this.entityManager;
   };
+
+  /**
+   * @returns {wrect.Core.Renderer|*}
+   */
+  wrect.Game.prototype.getRenderer = function() {
+    return this.renderer;
+  };
+
+  /**
+   * @returns {wrect.Core.GameTime|*}
+   */
+  wrect.Game.prototype.getGameTime = function() {
+    return this.gameTime;
+  }
 }());
 //
 //

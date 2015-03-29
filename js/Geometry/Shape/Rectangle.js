@@ -47,15 +47,15 @@
     return this.vertices;
   };
 
-  wrect.Geometry.Rectangle.prototype.draw = function(graphics, options) {
-    graphics.clear();
-
-    graphics.beginFill(options.color || 0x000000, options.alpha);
-    graphics.moveTo(0, 0);
-    graphics.lineTo(options.w, 0);
-    graphics.lineTo(options.w, options.h);
-    graphics.lineTo(0, options.h);
-
-    graphics.endFill();
+  wrect.Geometry.Rectangle.prototype.draw = function(renderer) {
+    //graphics.clear();
+    //
+    //graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
+    //graphics.moveTo(0, 0);
+    //graphics.lineTo(this.options.w, 0);
+    //graphics.lineTo(this.options.w, this.options.h);
+    //graphics.lineTo(0, this.options.h);
+    //
+    //graphics.endFill();
   };
 }());
