@@ -17,10 +17,14 @@
       this.options.alpha = 1;
     }
 
-    this.options.renderer.draw(this.shape);
+    this.graphics = this.options.renderer.draw(this.shape);
   };
 
   wrect.ECS.Component.Visual.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
   wrect.ECS.Component.Visual.prototype.constructor = wrect.ECS.Component.Visual;
   wrect.ECS.Component.Visual.prototype.name = 'Visual';
+
+  wrect.ECS.Component.Visual.prototype.getGraphics = function() {
+    return this.graphics;
+  };
 }());

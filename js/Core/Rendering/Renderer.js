@@ -2,16 +2,31 @@
   "use strict";
 
   wrect.Core = wrect.Core || {};
+  wrect.Core.Rendering = wrect.Core.Rendering || {};
 
-  wrect.Core.Renderer = function (options) {
+  wrect.Core.Rendering.Renderer = function (options) {
     this.options = options || {};
+
+    this.options = options || {};
+    this.sceneManager = options.sceneManager;
+    this.camera = options.camera;
+
+    this.create();
   };
 
   /**
    * @param {wrect.Geometry.Dimensions} shape
    */
-  wrect.Core.Renderer.prototype.draw = function(shape) {
-    shape.draw();
+  wrect.Core.Rendering.Renderer.prototype.draw = function(shape) {
+    return shape.draw();
+  };
+
+  wrect.Core.Rendering.Renderer.prototype.create = function () {
+    console.log(('This needs to be implemented'));
+  };
+
+  wrect.Core.Rendering.Renderer.prototype.render = function() {
+    console.log(('This needs to be implemented'));
   };
 
   ///**

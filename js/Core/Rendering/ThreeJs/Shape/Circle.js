@@ -1,7 +1,11 @@
 (function() {
   "use strict";
 
+  /**
+   * @return {THREE.Mesh}
+   */
   wrect.Geometry.Circle.prototype.draw = function() {
-    console.log('ThreeJs implemented Circle Draw');
+    console.log(('not implemented yet'));
+    debugger;
   };
 }());

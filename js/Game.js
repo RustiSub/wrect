@@ -8,10 +8,15 @@
   };
 
   wrect.Game.prototype.bootstrap = function() {
-    this.entityManager = new wrect.Core.EntityManager();
     this.eventManager = new wrect.Core.EventManager();
+    this.entityManager = new wrect.Core.EntityManager({eventManager: this.eventManager});
     this.gameTime = new wrect.Core.GameTime();
-    this.renderer = new wrect.Core.Renderer();
+    this.sceneManager = new wrect.Core.Rendering.SceneManager({eventManager: this.eventManager});
+    this.camera = new wrect.Core.Rendering.Camera();
+    this.renderer = new wrect.Core.Rendering.Renderer({
+      sceneManager: this.sceneManager,
+      camera: this.camera
+    });
 
     this.systems = {
       pre: {
@@ -67,7 +72,7 @@
 
       self.getEventManager().trigger('game.updateEnd');
 
-      //self.getRenderer().render(self._stage, self._camera);
+      self.getRenderer().render();
     }
 
     function runSystemGroup(systems) {
@@ -102,11 +107,18 @@
   };
 
   /**
+   * @returns {wrect.Core.SceneManager|*}
+   */
+  wrect.Game.prototype.getSceneManager = function() {
+    return this.sceneManager;
+  };
+
+  /**
    * @returns {wrect.Core.GameTime|*}
    */
   wrect.Game.prototype.getGameTime = function() {
     return this.gameTime;
-  }
+  };
 }());
 //
 //
