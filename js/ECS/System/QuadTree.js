@@ -29,6 +29,8 @@
   };
 
   wrect.ECS.System.QuadTree.prototype.run = function() {
+    var game = this.options.game;
+
     function mapQuadTree(entities, range) {
       var localTree = [];
       for (var e = 0; e < entities.length; e++) {

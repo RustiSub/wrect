@@ -28,9 +28,7 @@
 
       if (entity.components.Visual) {
         var visual = entity.components.Visual;
-
-        visual.position.x = rigidBody.dimensions.origin.x;
-        visual.position.y = rigidBody.dimensions.origin.y;
+        visual.setPosition(rigidBody.dimensions.origin.x, rigidBody.dimensions.origin.y);
       }
 
       entity.components.RigidBody.move = new Vector(0, 0);

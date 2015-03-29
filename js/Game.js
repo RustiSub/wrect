@@ -8,6 +8,10 @@
   };
 
   wrect.Game.prototype.bootstrap = function() {
+
+    this.completeTree = [];
+    this.treeHashes = [];
+
     this.eventManager = new wrect.Core.EventManager();
     this.entityManager = new wrect.Core.EntityManager({eventManager: this.eventManager});
     this.gameTime = new wrect.Core.GameTime();

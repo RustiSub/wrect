@@ -27,4 +27,9 @@
   wrect.ECS.Component.Visual.prototype.getGraphics = function() {
     return this.graphics;
   };
+
+  wrect.ECS.Component.Visual.prototype.setPosition = function(x, y) {
+    this.graphics.position.set(x, y, 0);
+    this.graphics.rotation.x += 0.1;
+  }
 }());

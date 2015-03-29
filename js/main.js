@@ -6,16 +6,28 @@ window.onload = function() {
   game.bootstrap();
   game.run();
 
-  var blockAssemblage = new wrect.ECS.Assemblage.Block({
+  function createBlock(options) {
+    var block = new wrect.ECS.Assemblage.Block({
+      x: options.x,
+      y: options.y,
+      w: options.w,
+      h: options.h,
+      color: 0x000000,
+      alpha: 1,
+      renderer: game.getRenderer(),
+      eventManager: game.getEventManager()
+    });
+    game.getEntityManager().addEntity(block.entity);
+
+    return block.entity;
+  }
+
+  var block = createBlock({
     x: 0,
     y: 0,
-    w: 100,
-    h: 100,
-    color: 0x000000,
-    alpha: 1,
-    renderer: game.getRenderer(),
-    eventManager: game.getEventManager()
+    w: 50,
+    h: 30
   });
 
-  game.getEntityManager().addEntity(blockAssemblage.entity);
+  block.components.RigidBody.physicsBody.f = new wrect.Physics.Vector(0, 0);
 };
