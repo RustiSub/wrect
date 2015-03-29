@@ -29,7 +29,6 @@
   };
 
   wrect.ECS.Component.Visual.prototype.setPosition = function(x, y) {
-    this.graphics.position.set(x, y, 0);
-    this.graphics.rotation.x += 0.1;
+    console.log('This needs to be implemented');
   }
 }());

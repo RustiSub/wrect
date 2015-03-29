@@ -22,12 +22,40 @@ window.onload = function() {
     return block.entity;
   }
 
-  var block = createBlock({
+  createBlock({
     x: 0,
     y: 0,
-    w: 50,
-    h: 30
+    w: 100,
+    h: 5
   });
 
-  block.components.RigidBody.physicsBody.f = new wrect.Physics.Vector(0, 0);
+  createBlock({
+    x: 0 - (5/2) + 50,
+    y: (0 - (100/2) + 100) * -1,
+    w: 5,
+    h: 100
+  });
+
+  createBlock({
+    x: 0,
+    y: -100,
+    w: 100,
+    h: 5
+  });
+
+  createBlock({
+    x: -50,
+    y: (0 - (100/2) + 100) * -1,
+    w: 5,
+    h: 100
+  });
+
+  var block = createBlock({
+    x: 10,
+    y: -10,
+    w: 5,
+    h: 5
+  });
+
+  block.components.RigidBody.physicsBody.f = new wrect.Physics.Vector(0, 5);
 };

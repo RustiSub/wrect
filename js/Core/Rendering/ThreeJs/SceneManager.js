@@ -5,24 +5,18 @@
 
   wrect.Core.Rendering.SceneManager.prototype.createScene = function() {
     this.scene = new THREE.Scene();
-    //var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+    //var light = new THREE.PointLight( 0xff0000, 1, 100 );
+    //light.position.set( 50, 50, 50 );
     //this.scene.add( light );
-    //
-    //// white spotlight shining from the side, casting shadow
-    //
-    //var spotLight = new THREE.SpotLight( 0xffffff );
-    //spotLight.position.set( 100, 1000, 100 );
-    //
-    //spotLight.castShadow = true;
-    //
-    //spotLight.shadowMapWidth = 1024;
-    //spotLight.shadowMapHeight = 1024;
-    //
-    //spotLight.shadowCameraNear = 500;
-    //spotLight.shadowCameraFar = 4000;
-    //spotLight.shadowCameraFov = 30;
-    //
-    //this.scene.add( spotLight );
+
+    // add subtle blue ambient lighting
+    var ambientLight = new THREE.AmbientLight(0x000000);
+    this.scene.add(ambientLight);
+
+    // directional lighting
+    var directionalLight = new THREE.DirectionalLight(0xffffff);
+    directionalLight.position.set(1, 1, 1).normalize();
+    this.scene.add(directionalLight);
   };
 
   /**
