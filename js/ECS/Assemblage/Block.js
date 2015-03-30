@@ -23,7 +23,8 @@
         origin: new Vector(options.x, options.y),
         width: options.w,
         height: options.h
-      })
+      }),
+      frozen: options.frozen
     });
 
     var visualComponent = new wrect.ECS.Component.Visual({

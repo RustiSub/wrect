@@ -10,8 +10,8 @@
     options = options || {};
 
     this.range = {
-      x: 0,
-      y: 0,
+      x: -options.width || -1500,
+      y: -options.height || -1500,
       width : options.width || 1500,
       height: options.height || 1500,
       level: 0,
@@ -37,6 +37,7 @@
         var entity = entities[e];
         var bounds = entity.components.RigidBody.dimensions.getBounds();
         var speed = entity.components.RigidBody.physicsBody.v;
+        console.log(bounds);
         var outOfRangeSpeed =
           (bounds.topRight.x + speed.x) < range.x || (bounds.bottomLeft + speed.y) < range.y
           ||
@@ -113,5 +114,7 @@
     }
 
     mapQuadTree(this.entities, this.range);
+    console.log(game.completeTree);
+    debugger;
   }
 }());

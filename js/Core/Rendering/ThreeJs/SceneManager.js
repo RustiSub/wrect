@@ -10,8 +10,8 @@
     //this.scene.add( light );
 
     // add subtle blue ambient lighting
-    var ambientLight = new THREE.AmbientLight(0x000000);
-    this.scene.add(ambientLight);
+    var ambientLight = new THREE.AmbientLight(0xffffff);
+    //this.scene.add(ambientLight);
 
     // directional lighting
     var directionalLight = new THREE.DirectionalLight(0xffffff);
