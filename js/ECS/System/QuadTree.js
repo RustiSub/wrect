@@ -10,10 +10,10 @@
     options = options || {};
 
     this.range = {
-      x: -options.width || -1500,
-      y: -options.height || -1500,
-      width : options.width || 1500,
-      height: options.height || 1500,
+      x: 0,
+      y: 0,
+      width : options.width || 500,
+      height: options.height || 500,
       level: 0,
       quadLevel : 0
     };
@@ -32,19 +32,21 @@
     var game = this.options.game;
 
     function mapQuadTree(entities, range) {
+      debugQuadTree(game, range);
       var localTree = [];
       for (var e = 0; e < entities.length; e++) {
         var entity = entities[e];
-        var bounds = entity.components.RigidBody.dimensions.getBounds();
+        var vertices = entity.components.RigidBody.dimensions.getVertices();
         var speed = entity.components.RigidBody.physicsBody.v;
-        console.log(bounds);
-        var outOfRangeSpeed =
-          (bounds.topRight.x + speed.x) < range.x || (bounds.bottomLeft + speed.y) < range.y
-          ||
-          (bounds.topLeft.x + speed.x) > range.x + range.width || (bounds.topLeft.y + speed.y) > range.y + range.width;
+
+        var outOfRangeSpeed = true;
+        //    (bounds.topRight.x + speed.x) < range.x || (bounds.bottomLeft + speed.y) < range.y
+        //    ||
+        //    (bounds.topLeft.x + speed.x) > range.x + range.width || (bounds.topLeft.y + speed.y) > range.y + range.width;
         if (!outOfRangeSpeed) {
           localTree.push(entity);
         }
+
       }
       if (localTree.length > 256) {
         var quadWidth = range.width / 2;
@@ -114,7 +116,29 @@
     }
 
     mapQuadTree(this.entities, this.range);
-    console.log(game.completeTree);
-    debugger;
+  };
+
+  var debugQuadTree = function(game, range) {
+    var selectedObject = game.getSceneManager().getScene().getObjectByName('quadTreeDebugLines');
+
+    if (selectedObject) {
+      //console.log('remove');
+      game.getSceneManager().getScene().remove( selectedObject );
+    }
+
+    var material = new THREE.LineBasicMaterial({
+      color: 0xFFFFFF
+    });
+
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(range.x, range.y, 0));
+    geometry.vertices.push(new THREE.Vector3(range.x + range.width, range.y, 0));
+    geometry.vertices.push(new THREE.Vector3(range.x + range.width, range.y + range.height, 0));
+    geometry.vertices.push(new THREE.Vector3(range.x, range.y + range.height, 0));
+
+    var line = new THREE.Line(geometry, material);
+    line.name = 'quadTreeDebugLines';
+
+    game.getSceneManager().getScene().add(line);
   }
 }());

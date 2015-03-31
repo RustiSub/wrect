@@ -23,13 +23,15 @@ window.onload = function() {
     return block.entity;
   }
 
-  createBlock({
+  var borderTop = createBlock({
     x: 0,
     y: 0,
     w: 100,
     h: 5,
     frozen: 1
   });
+
+  console.log(borderTop);
 
   //createBlock({
   //  x: 0 - (5/2) + 50,
@@ -61,5 +63,12 @@ window.onload = function() {
     h: 5
   });
 
-  block.components.RigidBody.physicsBody.f = new wrect.Physics.Vector(0, -1);
+  var centerBlock = createBlock({
+    x: 0,
+    y: 0,
+    w: 5,
+    h: 5
+  });
+
+  //block.components.RigidBody.physicsBody.f = new wrect.Physics.Vector(0, -1);
 };
