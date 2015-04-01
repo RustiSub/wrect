@@ -144,9 +144,6 @@
      * @returns {Number} dot product of this vector and vector v
      */
     Vector.prototype.dot = function(v){
-      if (!v) {
-        debugger;
-      }
         return (this.x * v.x) + (this.y * v.y);
     };
 

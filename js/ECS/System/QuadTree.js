@@ -4,16 +4,20 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
+  var Vector = wrect.Physics.Vector;
+
   wrect.ECS.System.QuadTree = function (options) {
     wrect.ECS.System.BaseSystem.call(this, options);
 
     options = options || {};
 
+    var quadTreeSize = 100;
+
     this.range = {
-      x: 0,
-      y: 0,
-      width : options.width || 500,
-      height: options.height || 500,
+      x: -quadTreeSize,
+      y: -quadTreeSize,
+      width : quadTreeSize * 2,
+      height: quadTreeSize * 2,
       level: 0,
       quadLevel : 0
     };
@@ -32,21 +36,41 @@
     var game = this.options.game;
 
     function mapQuadTree(entities, range) {
+      function checkProjectionInRange(min, projection, max) {
+        return min < projection && projection < max;
+      }
+      function checkObjectInQuad (vertices, range) {
+        var inQuad = true;
+
+        for (var v = 0; v < vertices.length; v++) {
+          var vertex = vertices[v];
+
+          var xProjectionAxis = new Vector(range.x, 0);
+          var xProjectedVertex = vertex.dot(xProjectionAxis.unit());
+          var yProjectionAxis = new Vector(range.y, 0);
+          var yProjectedVertex = vertex.dot(yProjectionAxis.unit());
+
+          var xInRange = checkProjectionInRange(range.x, xProjectedVertex, range.x + range.width);
+          var yInRange = checkProjectionInRange(range.y, yProjectedVertex, range.y + range.height);
+
+          if (!xInRange || !yInRange) {
+            inQuad = false;
+            break;
+          }
+        }
+
+        return inQuad;
+      }
+
       debugQuadTree(game, range);
       var localTree = [];
       for (var e = 0; e < entities.length; e++) {
         var entity = entities[e];
         var vertices = entity.components.RigidBody.dimensions.getVertices();
-        var speed = entity.components.RigidBody.physicsBody.v;
 
-        var outOfRangeSpeed = true;
-        //    (bounds.topRight.x + speed.x) < range.x || (bounds.bottomLeft + speed.y) < range.y
-        //    ||
-        //    (bounds.topLeft.x + speed.x) > range.x + range.width || (bounds.topLeft.y + speed.y) > range.y + range.width;
-        if (!outOfRangeSpeed) {
+        if (!checkObjectInQuad(vertices, range)) {
           localTree.push(entity);
         }
-
       }
       if (localTree.length > 256) {
         var quadWidth = range.width / 2;
@@ -116,29 +140,32 @@
     }
 
     mapQuadTree(this.entities, this.range);
+    debugger;
   };
 
   var debugQuadTree = function(game, range) {
-    var selectedObject = game.getSceneManager().getScene().getObjectByName('quadTreeDebugLines');
+    var selectedObject = game.getSceneManager().getScene().getObjectByName('quadTreeDebugLines' + range.x);
 
-    if (selectedObject) {
+    if (!selectedObject) {
       //console.log('remove');
-      game.getSceneManager().getScene().remove( selectedObject );
+      //game.getSceneManager().getScene().remove( selectedObject );
+
+      var material = new THREE.LineBasicMaterial({
+        color: 0xFFFFFF
+      });
+
+      var geometry = new THREE.Geometry();
+      geometry.vertices.push(new THREE.Vector3(range.x, range.y, 0));
+      geometry.vertices.push(new THREE.Vector3(range.x + range.width, range.y, 0));
+      geometry.vertices.push(new THREE.Vector3(range.x + range.width, range.y + range.height, 0));
+      geometry.vertices.push(new THREE.Vector3(range.x, range.y + range.height, 0));
+      geometry.vertices.push(new THREE.Vector3(range.x, range.y, 0));
+
+      var line = new THREE.Line(geometry, material);
+      line.name = 'quadTreeDebugLines' + range.x;
+
+      game.getSceneManager().getScene().add(line);
+      //debugger;
     }
-
-    var material = new THREE.LineBasicMaterial({
-      color: 0xFFFFFF
-    });
-
-    var geometry = new THREE.Geometry();
-    geometry.vertices.push(new THREE.Vector3(range.x, range.y, 0));
-    geometry.vertices.push(new THREE.Vector3(range.x + range.width, range.y, 0));
-    geometry.vertices.push(new THREE.Vector3(range.x + range.width, range.y + range.height, 0));
-    geometry.vertices.push(new THREE.Vector3(range.x, range.y + range.height, 0));
-
-    var line = new THREE.Line(geometry, material);
-    line.name = 'quadTreeDebugLines';
-
-    game.getSceneManager().getScene().add(line);
   }
 }());

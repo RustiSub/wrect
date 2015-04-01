@@ -23,15 +23,13 @@ window.onload = function() {
     return block.entity;
   }
 
-  var borderTop = createBlock({
-    x: 0,
-    y: 0,
-    w: 100,
-    h: 5,
-    frozen: 1
-  });
-
-  console.log(borderTop);
+  //var borderTop = createBlock({
+  //  x: 0,
+  //  y: 0,
+  //  w: 100,
+  //  h: 5,
+  //  frozen: 1
+  //});
 
   //createBlock({
   //  x: 0 - (5/2) + 50,
@@ -41,13 +39,13 @@ window.onload = function() {
   //  frozen: 1
   //});
 
-  createBlock({
-    x: 0,
-    y: -100,
-    w: 100,
-    h: 5,
-    frozen: 1
-  });
+  //createBlock({
+  //  x: 0,
+  //  y: -50,
+  //  w: 100,
+  //  h: 5,
+  //  frozen: 1
+  //});
 
   //createBlock({
   //  x: -50,
@@ -56,18 +54,18 @@ window.onload = function() {
   //  h: 100
   //});
 
-  var block = createBlock({
-    x: 10,
-    y: -10,
-    w: 5,
-    h: 5
-  });
+  //var block = createBlock({
+  //  x: 10,
+  //  y: -10,
+  //  w: 5,
+  //  h: 5
+  //});
 
   var centerBlock = createBlock({
     x: 0,
     y: 0,
-    w: 5,
-    h: 5
+    w: 50,
+    h: 50
   });
 
   //block.components.RigidBody.physicsBody.f = new wrect.Physics.Vector(0, -1);
