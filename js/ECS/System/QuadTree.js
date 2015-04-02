@@ -73,7 +73,7 @@
         }
       }
 
-      if (localTree.length > 2) {
+      if (localTree.length > 256) {
         var quadWidth = range.width / 2;
         var quadHeight = range.height / 2;
         var range1 = {

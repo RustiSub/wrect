@@ -11,7 +11,6 @@
 
     this.options = options || {};
     this.shape = options.shape;
-    this.position = new Vector(0, 0);
 
     if (this.options.alpha == undefined) {
       this.options.alpha = 1;

@@ -26,14 +26,9 @@
       }),
       frozen: options.frozen
     });
-console.log(rigidBody());
-    debugger;
     var visualComponent = new wrect.ECS.Component.Visual({
       color: options.color,
       alpha: options.alpha,
-      origin: rigidBody.dimensions.origin,
-      w: options.w,
-      h: options.h,
       useSprite: options.useSprite,
       shape: rigidBody.dimensions,
       renderer: options.renderer

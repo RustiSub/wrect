@@ -26,9 +26,17 @@ window.onload = function() {
 
   createBlock({
     x: -100,
-    y: 0,
+    y: 50,
     w: 300,
     h: 5,
+    frozen: 1
+  });
+
+  createBlock({
+    x: 200,
+    y: 50,
+    w: 5,
+    h: -200,
     frozen: 1
   });
 
@@ -40,13 +48,14 @@ window.onload = function() {
     frozen: 1
   });
 
-  //createBlock({
-  //  x: -45,
-  //  y: 40,
-  //  w: 20,
-  //  h: 50,
-  //  frozen: 1
-  //});
+  createBlock({
+    x: -100,
+    y: 50,
+    w: 5,
+    h: -200,
+    frozen: 1
+  });
+
   //
   //createBlock({
   //  x: -70,
@@ -88,11 +97,24 @@ window.onload = function() {
 
   var block = createBlock({
     x: 10,
-    y: -30,
+    y: -50,
     w: 20,
-    h: 20
+    h: 50
   });
 
   console.log(block);
-  //block.components.RigidBody.physicsBody.f = new wrect.Physics.Vector(0, 1);
+  block.components.RigidBody.physicsBody.f = new wrect.Physics.Vector(10, 50);
+
+  //var material = new THREE.LineBasicMaterial({
+  //  color: 0xFFFFFF
+  //});
+  //
+  //var geometry = new THREE.Geometry();
+  //geometry.vertices.push(new THREE.Vector3(50, -70, 0));
+  //geometry.vertices.push(new THREE.Vector3(70, -70, 0));
+  //geometry.vertices.push(new THREE.Vector3(70, -120, 0));
+  //
+  //var line = new THREE.Line(geometry, material);
+  //
+  //game.getSceneManager().getScene().add(line);
 };

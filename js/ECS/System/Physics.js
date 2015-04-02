@@ -23,7 +23,8 @@
   };
 
   wrect.ECS.System.Physics.prototype.perform = function(entity) {
-    var dt = this.gameTime.getDelta() / 100;
+    var dt = 1/6;//this.gameTime.getDelta() / 100;
+
     var rigidBody = entity.components.RigidBody;
 
     if (!entity.components.RigidBody.frozen) {

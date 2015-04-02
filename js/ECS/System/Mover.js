@@ -28,6 +28,8 @@
 
       if (entity.components.Visual) {
         var visual = entity.components.Visual;
+        //console.log(rigidBody.dimensions.origin.x);
+        //console.log(visual.graphics.position.x - rigidBody.dimensions.origin.x);
         visual.setPosition(rigidBody.dimensions.origin.x, rigidBody.dimensions.origin.y);
 
         //visual.graphics.rotation.x += 0.01;
