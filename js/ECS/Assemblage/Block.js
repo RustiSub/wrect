@@ -26,7 +26,8 @@
       }),
       frozen: options.frozen
     });
-
+console.log(rigidBody());
+    debugger;
     var visualComponent = new wrect.ECS.Component.Visual({
       color: options.color,
       alpha: options.alpha,

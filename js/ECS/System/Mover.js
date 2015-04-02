@@ -29,6 +29,11 @@
       if (entity.components.Visual) {
         var visual = entity.components.Visual;
         visual.setPosition(rigidBody.dimensions.origin.x, rigidBody.dimensions.origin.y);
+
+        //visual.graphics.rotation.x += 0.01;
+        //visual.graphics.rotation.y += 0.01;
+
+        //visual.graphics.position.y -= 1;
       }
 
       entity.components.RigidBody.move = new Vector(0, 0);

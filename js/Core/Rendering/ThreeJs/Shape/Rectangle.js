@@ -8,7 +8,7 @@
     });
 
     var mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(this.origin.x, this.origin.y, 0);
+    mesh.position.set(this.origin.x + this.width / 2, this.origin.y + this.height / 2, 0);
 
     return mesh;
   };

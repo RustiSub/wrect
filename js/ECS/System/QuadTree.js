@@ -9,9 +9,9 @@
   wrect.ECS.System.QuadTree = function (options) {
     wrect.ECS.System.BaseSystem.call(this, options);
 
-    options = options || {};
+    this.options = options || {};
 
-    var quadTreeSize = 100;
+    var quadTreeSize = 500;
 
     this.range = {
       x: -quadTreeSize,
@@ -45,9 +45,9 @@
         for (var v = 0; v < vertices.length; v++) {
           var vertex = vertices[v];
 
-          var xProjectionAxis = new Vector(range.x, 0);
+          var xProjectionAxis = new Vector(Math.abs(range.x), 0);
           var xProjectedVertex = vertex.dot(xProjectionAxis.unit());
-          var yProjectionAxis = new Vector(range.y, 0);
+          var yProjectionAxis = new Vector(Math.abs(range.y), 0);
           var yProjectedVertex = vertex.dot(yProjectionAxis.unit());
 
           var xInRange = checkProjectionInRange(range.x, xProjectedVertex, range.x + range.width);
@@ -62,17 +62,18 @@
         return inQuad;
       }
 
-      debugQuadTree(game, range);
+      //debugQuadTree(game, range);
       var localTree = [];
       for (var e = 0; e < entities.length; e++) {
         var entity = entities[e];
         var vertices = entity.components.RigidBody.dimensions.getVertices();
 
-        if (!checkObjectInQuad(vertices, range)) {
+        if (checkObjectInQuad(vertices, range)) {
           localTree.push(entity);
         }
       }
-      if (localTree.length > 256) {
+
+      if (localTree.length > 2) {
         var quadWidth = range.width / 2;
         var quadHeight = range.height / 2;
         var range1 = {
@@ -124,8 +125,7 @@
             }
             return hash;
           };
-//        var color = (Math.random()*0xFFFFFF<<0);
-//        game.addEntity(game._builder.createBlock('tree', range.x, range.y, range.width, range.height, color, 0.5));
+
           var treeHash = '';
           for (var h = 0; h < localTree.length; h++) {
             treeHash += localTree[h].id;
@@ -140,16 +140,12 @@
     }
 
     mapQuadTree(this.entities, this.range);
-    debugger;
   };
 
   var debugQuadTree = function(game, range) {
-    var selectedObject = game.getSceneManager().getScene().getObjectByName('quadTreeDebugLines' + range.x);
+    var selectedObject = game.getSceneManager().getScene().getObjectByName('quadTreeDebugLines_' + range.x + '_' + range.y);
 
     if (!selectedObject) {
-      //console.log('remove');
-      //game.getSceneManager().getScene().remove( selectedObject );
-
       var material = new THREE.LineBasicMaterial({
         color: 0xFFFFFF
       });
@@ -162,10 +158,9 @@
       geometry.vertices.push(new THREE.Vector3(range.x, range.y, 0));
 
       var line = new THREE.Line(geometry, material);
-      line.name = 'quadTreeDebugLines' + range.x;
+      line.name = 'quadTreeDebugLines_' + range.x + '_' + range.y;
 
       game.getSceneManager().getScene().add(line);
-      //debugger;
     }
   }
 }());

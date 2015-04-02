@@ -123,6 +123,13 @@
   wrect.Game.prototype.getGameTime = function() {
     return this.gameTime;
   };
+
+  /**
+   * @returns {wrect.Game}
+   */
+  wrect.Game.prototype.getGame = function() {
+    return this;
+  }
 }());
 //
 //
