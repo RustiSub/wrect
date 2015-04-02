@@ -8,6 +8,7 @@
     wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
+    this.gravityDirection = this.options.game.getRenderer().axisOrientation.y;
   };
 
   wrect.ECS.System.Gravity.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -23,7 +24,8 @@
     if (entity.components.RigidBody && entity.components.RigidBody.gravity) {
       var rigidBody = entity.components.RigidBody;
 
-      var gravity = new wrect.Physics.Vector(0, 9.81 / 4).multiply(rigidBody.physicsBody.m);
+      var gravity = new wrect.Physics.Vector(0, 9.81).multiply(rigidBody.physicsBody.m);
+      gravity.y *= this.gravityDirection;
       rigidBody.physicsBody.f = rigidBody.physicsBody.f.add(gravity);
     }
   }

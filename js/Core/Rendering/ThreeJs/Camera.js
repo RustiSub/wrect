@@ -6,11 +6,11 @@
 
     //this.camera.up = new THREE.Vector3(0,0,1);
 
-    this.camera.position.z = -300;
+    this.camera.position.z = 500;
     this.camera.position.x = 200;
     this.camera.position.y = 50;
 
-    this.camera.lookAt(new THREE.Vector3(0,0,0));
+    //this.camera.lookAt(new THREE.Vector3(0,0,0));
   };
 
   wrect.Core.Rendering.Camera.prototype.getCamera = function() {

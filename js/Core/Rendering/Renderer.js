@@ -9,6 +9,11 @@
 
     this.options = options || {};
     this.sceneManager = options.sceneManager;
+    this.axisOrientation = {
+      x: 1,
+      y: -1,
+      z: 1
+    };
     this.camera = options.camera;
 
     this.create();

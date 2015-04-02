@@ -15,6 +15,8 @@
     this.originalVertices = [];
     this.origin = new Vector(0, 0);
     this.previousOrigin = null;
+
+    this.offset = new Vector(0, 0);
   };
 
   wrect.Geometry.Dimensions.prototype.move = function(v) {
