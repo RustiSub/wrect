@@ -77,6 +77,8 @@
       self.getEventManager().trigger('game.updateEnd');
 
       self.getRenderer().render();
+
+      //self.camera.getCamera().rotation.y += 0.01;
     }
 
     function runSystemGroup(systems) {

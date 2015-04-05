@@ -15,7 +15,8 @@
 
     // directional lighting
     var directionalLight = new THREE.DirectionalLight(0xffffff);
-    directionalLight.position.set(1, 1, 1).normalize();
+    directionalLight.position.set(0, 10, 0).normalize();
+    directionalLight.lookAt(0, 0, 0);
     this.scene.add(directionalLight);
   };
 
