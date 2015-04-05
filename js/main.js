@@ -83,7 +83,8 @@ window.onload = function() {
   loader.options.convertUpAxis = true;
 
   //loader.load( 'models/mouse_1.dae', function ( collada ) {
-  loader.load( 'models/mouse_animated_walk.dae', function ( collada ) {
+  //loader.load( 'models/mouse_animated_walk.dae', function ( collada ) {
+  loader.load( 'models/mouse_walk_test.dae', function ( collada ) {
     //dummy1.dae
 
     var dae = collada.scene;
@@ -93,8 +94,18 @@ window.onload = function() {
     dae.position.set(0,0,0);//x,z,y- if you think in blender dimensions ;)
     dae.scale.set(10, 10, 10);
     dae.rotation.y = 90 * Math.PI / 180;
-    //dae.rotation.z = -20 * Math.PI / 180;
 
+    dae.traverse( function ( child ) {
+
+      if ( child instanceof THREE.SkinnedMesh ) {
+
+        var animation = new THREE.Animation( child, child.geometry.animation );
+        animation.play();
+
+      }
+
+    } );
+    dae.updateMatrix();
     game.getSceneManager().getScene().add(dae);
   });
 };
