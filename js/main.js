@@ -91,8 +91,8 @@ window.onload = function() {
 
     var skin = collada.skins[ 0 ];
 
-    dae.position.set(0,0,0);//x,z,y- if you think in blender dimensions ;)
-    dae.scale.set(10, 10, 10);
+    dae.position.set(0,0,10);//x,z,y- if you think in blender dimensions ;)
+    dae.scale.set(5, 5, 5);
     dae.rotation.y = 90 * Math.PI / 180;
 
     dae.traverse( function ( child ) {
@@ -108,4 +108,15 @@ window.onload = function() {
     dae.updateMatrix();
     game.getSceneManager().getScene().add(dae);
   });
+
+  var block = createBlock({
+    x: -50,
+    y: -85,
+    w: 20,
+    h: 20
+  });
+
+  block.components.Visual.graphics.scale.x = block.components.Visual.graphics.scale.y = 10;
+
+  console.log(game.camera.getCamera());
 };

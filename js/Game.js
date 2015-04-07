@@ -61,11 +61,19 @@
     var self = this;
     var clock = new THREE.Clock();
 
+    var controls = new THREE.OrbitControls( this.camera.getCamera() );
+    controls.damping = 0.2;
+    controls.addEventListener( 'change', function() {
+      self.getRenderer().render();
+    } );
+
     requestAnimationFrame(run);
 
     function run(timestamp) {
       if (self.pause) {return;}
       requestAnimationFrame(run);
+
+      controls.update();
 
       self.gameTime.updateTime(timestamp);
 

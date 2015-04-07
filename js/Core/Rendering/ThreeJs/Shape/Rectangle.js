@@ -29,8 +29,13 @@
     //return lines;
 
     var geometry = new THREE.BoxGeometry(this.width, this.height, 1);
+    var texture = THREE.ImageUtils.loadTexture('resources/levels/scene_concepts_41.png');
+
+    texture.minFilter = THREE.LinearFilter;
+
     var material = new THREE.MeshLambertMaterial({
-      color: new THREE.Color( 0xFFFFFF )
+      //color: new THREE.Color( 0xFFFFFF ),
+      map: texture
     });
 
     var mesh = new THREE.Mesh(geometry, material);
