@@ -13,11 +13,10 @@
 
     this.options = options;
     this.origin = options.origin;
-    this.width = options.width;
-    this.height = options.height;
+    this.dimension = options.dimension;
 
-    var widthVector = new Vector(options.width, 0);
-    var heightVector = new Vector(0, options.height);
+    var widthVector = new Vector(this.dimension.x, 0);
+    var heightVector = new Vector(0, this.dimension.y);
 
     this.vertices = [
       options.origin,

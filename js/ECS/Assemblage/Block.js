@@ -5,7 +5,7 @@
   wrect.ECS.Assemblage = wrect.ECS.Assemblage || {};
 
   var Entity = wrect.ECS.Entity;
-  var Vector = wrect.Physics.Vector;
+  var Vector3 = wrect.Physics.Vector3;
   var Rectangle = wrect.Geometry.Rectangle;
 
   /**
@@ -20,9 +20,8 @@
 
     var rigidBody = new wrect.ECS.Component.RigidBody({
       dimensions: new Rectangle({
-        origin: new Vector(options.x, options.y),
-        width: options.w,
-        height: options.h,
+        origin: options.position,
+        dimension: options.dimension,
         material: options.material
       }),
       frozen: options.frozen
