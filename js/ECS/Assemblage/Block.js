@@ -22,7 +22,8 @@
       dimensions: new Rectangle({
         origin: new Vector(options.x, options.y),
         width: options.w,
-        height: options.h
+        height: options.h,
+        material: options.material
       }),
       frozen: options.frozen
     });
@@ -34,11 +35,7 @@
       renderer: options.renderer
     });
 
-    //visualComponent.create(visualComponent.graphics);
-
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
-    //entity.addComponent( new ECS.Components.Position());
-    //entity.addComponent( new ECS.Components.Collision());
   };
 }());

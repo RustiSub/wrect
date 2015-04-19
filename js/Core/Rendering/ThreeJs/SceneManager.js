@@ -9,15 +9,14 @@
     //light.position.set( 50, 50, 50 );
     //this.scene.add( light );
 
-    // add subtle blue ambient lighting
-    var ambientLight = new THREE.AmbientLight(0xffffff);
-    this.scene.add(ambientLight);
+    //var ambientLight = new THREE.AmbientLight(0xffff00);
+    //this.scene.add(ambientLight);
 
     // directional lighting
-    var directionalLight = new THREE.DirectionalLight(0xffffff);
-    directionalLight.position.set(0, 10, 0).normalize();
-    directionalLight.lookAt(0, 0, 0);
-    this.scene.add(directionalLight);
+    //var directionalLight = new THREE.DirectionalLight(0xffffff);
+    //directionalLight.position.set(0, 10, 0).normalize();
+    //directionalLight.lookAt(0, 0, 0);
+    //this.scene.add(directionalLight);
   };
 
   /**

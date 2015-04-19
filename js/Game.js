@@ -55,6 +55,15 @@
         //}
       }
     };
+
+    this.loadBundles();
+  };
+
+  wrect.Game.prototype.loadBundles = function() {
+    for (var bundleIndex in wrect.Bundles) {
+      var bundle = new wrect.Bundles[bundleIndex]({game: this});
+      bundle.init();
+    }
   };
 
   wrect.Game.prototype.run = function() {
@@ -87,7 +96,7 @@
 
       self.getRenderer().render();
 
-      THREE.AnimationHandler.update( clock.getDelta() / 2);
+      //THREE.AnimationHandler.update( clock.getDelta() / 2);
       //self.camera.getCamera().rotation.y += 0.01;
     }
 
