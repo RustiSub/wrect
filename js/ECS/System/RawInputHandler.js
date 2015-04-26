@@ -10,10 +10,13 @@
     this.options = options || {};
 
     this.keys = [];
+    this.pressedKeys = [];
+    this.pressedKeyEvents = {};
+    var self = this;
 
     this.captureElement = document.getElementById(this.options.elementId);
-    this.captureElement.addEventListener('keydown', this.keyDown);
-    this.captureElement.addEventListener('keyup', this.keyUp);
+    this.captureElement.addEventListener('keydown', function(event) {self.keyDown.call(self, event);});
+    this.captureElement.addEventListener('keyup', function(event) {self.keyUp.call(self, event);});
   };
 
   wrect.ECS.System.RawInputHandler.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -36,8 +39,10 @@
     var newKeys = entity.components.RawInputMap.keys;
 
     for (var newKeyIndex in newKeys) if (newKeys.hasOwnProperty(newKeyIndex)) {
-      if (this.keys.indexOf(newKeys[newKeyIndex]) === -1) {
-        this.keys.push(newKeys[newKeyIndex]);
+      var keyCode = newKeys[newKeyIndex];
+      if (this.keys.indexOf(keyCode) === -1) {
+        this.keys.push(keyCode);
+        this.pressedKeyEvents[keyCode] = false;
       }
     }
   };
@@ -46,12 +51,25 @@
 
   };
 
-  wrect.ECS.System.RawInputHandler.prototype.keyDown= function(event) {
-    //this.keys[event.keyCode];
+  wrect.ECS.System.RawInputHandler.prototype.keyDown = function(event) {
+    if (this.shouldWatchKey.call(this, event.keyCode) && !this.watchedKey.call(this, event.keyCode)) {
+      this.pressedKeys.push(event.keyCode);
+      this.pressedKeyEvents[event.keyCode] = event;
+    }
   };
 
-  wrect.ECS.System.RawInputHandler.prototype.keyUp= function(event) {
-    //this.keys.slice(this.keys.indexOf());
-    console.log(event);
+  wrect.ECS.System.RawInputHandler.prototype.keyUp = function(event) {
+    if (this.shouldWatchKey.call(this, event.keyCode) && this.watchedKey.call(this, event.keyCode)) {
+      this.pressedKeys.splice(this.pressedKeys.indexOf(event.keyCode), 1);
+      this.pressedKeyEvents[event.keyCode] = false;
+    }
+  };
+
+  wrect.ECS.System.RawInputHandler.prototype.shouldWatchKey = function(keyCode) {
+    return this.keys.indexOf(keyCode) !== -1;
+  };
+
+  wrect.ECS.System.RawInputHandler.prototype.watchedKey = function(keyCode) {
+    return this.pressedKeys.indexOf(keyCode) !== -1;
   };
 }());
