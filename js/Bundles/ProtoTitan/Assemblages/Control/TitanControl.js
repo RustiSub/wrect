@@ -69,7 +69,7 @@
       console.log('Titan voice action enabled...');
     };
 
-    controlMap.controls[states.MOVE.FORWARD] = function() {
+    controlMap.controls[states.MOVE.FORWARD] = function(entity) {
       console.log('Trying to move forward ... engine not yet installed');
     };
 

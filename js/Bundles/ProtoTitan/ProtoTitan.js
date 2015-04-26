@@ -138,5 +138,33 @@
     dirLight.shadowDarkness = 0.35;
 
     //dirLight.shadowCameraVisible = true;
+
+    //document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+
+    //var game = this.game;
+    //var camera = game.Camera;
+    //var entities = game.getEntityManager().getAllEntities();
+    //var objects = [];
+    //for (var index in entities) {
+    //  var object = entities[index].components.Visual;
+    //  objects.push(object);
+    //}
+    //
+    //var projector = new THREE.Projector();
+    //
+    //function onDocumentMouseDown( event ) {
+    //  var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,   //x
+    //    -( event.clientY / window.innerHeight ) * 2 + 1,  //y
+    //    0.5 );                                            //z
+    //  projector.unprojectVector( mouse3D, camera );
+    //  mouse3D.sub( camera.position );
+    //  mouse3D.normalize();
+    //  var raycaster = new THREE.Raycaster( camera.position, mouse3D );
+    //  var intersects = raycaster.intersectObjects( objects );
+    //  // Change color if hit block
+    //  if ( intersects.length > 0 ) {
+    //    intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+    //  }
+    //}
   };
 }());
