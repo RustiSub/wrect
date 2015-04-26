@@ -14,7 +14,7 @@
   };
 
   /**
-   * @param {BaseEntity} entity
+   * @param {Entity} entity
    */
   wrect.Core.EntityManager.prototype.addEntity = function(entity){
     this._entities.push(entity);
@@ -23,7 +23,7 @@
   };
 
   /**
-   * @param {BaseEntity} entity
+   * @param {Entity} entity
    */
   wrect.Core.EntityManager.prototype.removeEntity = function(entity){
     var index;

@@ -43,6 +43,6 @@
    * @param {wrect.ECS.Entity} entity
    */
   wrect.ECS.System.BaseSystem.prototype.perform = function(entity) {
-    alert('Implemented wrect.ECS.System needs to do something with an entity ... right?');
+    console.log('Implemented wrect.ECS.System needs to do something with an entity ... right?');
   }
 }());

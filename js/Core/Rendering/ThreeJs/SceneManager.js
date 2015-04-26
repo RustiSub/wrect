@@ -23,13 +23,17 @@
    * @param {Object} entityData
    */
   wrect.Core.Rendering.SceneManager.prototype.add = function(entityData) {
-    this.scene.add(entityData.entity.components.Visual.getGraphics());
+    if (entityData.entity.components.Visual) {
+      this.scene.add(entityData.entity.components.Visual.getGraphics());
+    }
   };
 
   /**
    * @param {Object} entityData
    */
   wrect.Core.Rendering.SceneManager.prototype.remove = function(entityData) {
-    this.scene.remove(entityData.entity.components.Visual.getGraphics());
+    if (entityData.entity.components.Visual) {
+      this.scene.remove(entityData.entity.components.Visual.getGraphics());
+    }
   };
 }());
