@@ -12,22 +12,22 @@
    * @returns {wrect.ECS.Entity|wrect.ECS.Entity}
    * @constructor
    */
-  wrect.ECS.Assemblage.KeyboardInput = function (options) {
+  wrect.ECS.Assemblage.TitanControl = function (options) {
     this.entity = new Entity({eventManager: options.eventManager});
 
-    var rawInputMap = new wrect.ECS.Component.RawInputMap();
-
-    rawInputMap.keys = [
-      KeyMap.NUMPAD_1,
-      KeyMap.NUMPAD_2,
-      KeyMap.NUMPAD_3,
-      KeyMap.NUMPAD_4,
-      KeyMap.NUMPAD_5,
-      KeyMap.NUMPAD_6,
-      KeyMap.NUMPAD_7,
-      KeyMap.NUMPAD_8,
-      KeyMap.NUMPAD_9
-    ];
+    var rawInputMap = new wrect.ECS.Component.RawInputMap({
+      keys: [
+        KeyMap.NUMPAD_1,
+        KeyMap.NUMPAD_2,
+        KeyMap.NUMPAD_3,
+        KeyMap.NUMPAD_4,
+        KeyMap.NUMPAD_5,
+        KeyMap.NUMPAD_6,
+        KeyMap.NUMPAD_7,
+        KeyMap.NUMPAD_8,
+        KeyMap.NUMPAD_9
+      ]
+    });
 
     this.entity.addComponent(rawInputMap);
   };

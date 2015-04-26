@@ -24,10 +24,10 @@
   };
 
   wrect.Bundles.ProtoTitan.prototype.buildWorld = function() {
-    var keyboardInput = new wrect.ECS.Assemblage.KeyboardInput(
+    var titanControl = new wrect.ECS.Assemblage.TitanControl(
       {eventManager: game.getEventManager()}
     );
-    game.getEntityManager().addEntity(keyboardInput.entity);
+    game.getEntityManager().addEntity(titanControl.entity);
 
     function createBlock(options) {
       var block = new wrect.ECS.Assemblage.Block({

@@ -21,7 +21,6 @@
 
   wrect.ECS.System.RawInputHandler.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
   wrect.ECS.System.RawInputHandler.prototype.constructor = wrect.ECS.System.RawInputHandler;
-
   wrect.ECS.System.RawInputHandler.prototype.name = 'RawInputHandler';
 
   wrect.ECS.System.RawInputHandler.prototype.checkDependencies = function(entity) {
@@ -48,7 +47,7 @@
   };
 
   wrect.ECS.System.RawInputHandler.prototype.run = function() {
-
+//console.log(this.pressedKeys);
   };
 
   wrect.ECS.System.RawInputHandler.prototype.keyDown = function(event) {

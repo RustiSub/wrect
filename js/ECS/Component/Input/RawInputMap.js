@@ -9,7 +9,7 @@
 
     this.options = options || {};
 
-    this.keys = this.options.inputMap || [];
+    this.keys = this.options.keys || [];
   };
 
   wrect.ECS.Component.RawInputMap.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
