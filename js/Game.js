@@ -28,7 +28,23 @@
           system: new wrect.ECS.System.RawInputHandler(
             {
               game: this,
-              elementId: 'body'
+              elementId: 'body',
+              eventManager: this.eventManager
+            }
+          )
+        },
+        InputHandler: {
+          system: new wrect.ECS.System.InputHandler(
+            {
+              game: this,
+              eventManager: this.eventManager
+            }
+          )
+        },
+        ControlMapHandler: {
+          system: new wrect.ECS.System.ControlMapHandler(
+            {
+              game: this
             }
           )
         },

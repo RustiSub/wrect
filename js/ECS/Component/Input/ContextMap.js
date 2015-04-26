@@ -3,16 +3,19 @@
 
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.Component = wrect.ECS.Component || {};
+  wrect.ECS.Component.Input = wrect.ECS.Component.Input || {};
 
-  wrect.ECS.Component.ContextMap = function (options) {
+  wrect.ECS.Component.Input.ContextMap = function (options) {
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};
 
-    this.inputMap = this.options.inputMap || [];
+    this.actions = this.options.actions || {};
+    this.states = this.options.states || {};
+    this.ranges = this.options.ranges || {};
   };
 
-  wrect.ECS.Component.ContextMap.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
-  wrect.ECS.Component.ContextMap.prototype.constructor = wrect.ECS.Component.ContextMap;
-  wrect.ECS.Component.ContextMap.prototype.name = 'ContextMap';
+  wrect.ECS.Component.Input.ContextMap.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
+  wrect.ECS.Component.Input.ContextMap.prototype.constructor = wrect.ECS.Component.Input.ContextMap;
+  wrect.ECS.Component.Input.ContextMap.prototype.name = 'ContextMap';
 }());
