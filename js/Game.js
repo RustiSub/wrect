@@ -24,6 +24,14 @@
 
     this.systems = {
       pre: {
+        RawInputHandler: {
+          system: new wrect.ECS.System.RawInputHandler(
+            {
+              game: this,
+              elementId: 'body'
+            }
+          )
+        },
         Linker: {
           system: new wrect.ECS.System.Linker({game: this})
         },
@@ -51,7 +59,7 @@
   };
 
   wrect.Game.prototype.loadBundles = function() {
-    for (var bundleIndex in wrect.Bundles) {
+    for (var bundleIndex in wrect.Bundles) if (wrect.Bundles.hasOwnProperty(bundleIndex)) {
       var bundle = new wrect.Bundles[bundleIndex]({game: this});
       bundle.init();
     }
@@ -59,7 +67,7 @@
 
   wrect.Game.prototype.run = function() {
     var self = this;
-    var clock = new THREE.Clock();
+    //var clock = new THREE.Clock();
 
     var controls = new THREE.OrbitControls( this.camera.getCamera() );
     controls.damping = 0.2;
