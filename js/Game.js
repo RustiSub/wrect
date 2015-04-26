@@ -27,15 +27,6 @@
         Linker: {
           system: new wrect.ECS.System.Linker({game: this})
         },
-        Input: {
-          system: new wrect.ECS.System.Input({game: this, inputHandler: new wrect.Core.InputHandler()})
-        },
-        BaseControl: {
-          system: new wrect.ECS.System.Control.BaseControl({game: this})
-        },
-        Attack: {
-          system: new wrect.ECS.System.Control.Attack({game: this})
-        },
         Animator: {
           system: new wrect.ECS.System.Animator({game: this})
         }

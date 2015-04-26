@@ -49,7 +49,7 @@
 
     var titanBlock = createBlock({
       position: new Vector3(0, 0, 25),
-      dimension: new Vector3(15, 15, 50),
+      dimension: new Vector3(15, 30, 50),
       material: new THREE.MeshLambertMaterial({color: 0xFFFFFF })
     });
 
