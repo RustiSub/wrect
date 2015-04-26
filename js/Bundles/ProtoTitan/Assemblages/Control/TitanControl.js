@@ -28,6 +28,7 @@
   };
 
   var actions = titanControl.Constants.Actions;
+  var states = titanControl.Constants.States;
 
   /**
    * @param options
@@ -58,10 +59,18 @@
       state: 0
     };
 
+    contextMap.states[KeyMap.NUMPAD_8] = {
+      action: states.MOVE.FORWARD
+    };
+
     var controlMap = new wrect.ECS.Component.Input.ControlMap();
 
     controlMap.controls[actions.SPEAK] = function() {
       console.log('Titan voice action enabled...');
+    };
+
+    controlMap.controls[states.MOVE.FORWARD] = function() {
+      console.log('Trying to move forward ... engine not yet installed');
     };
 
     this.entity.addComponent(rawInputMap);

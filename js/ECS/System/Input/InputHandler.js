@@ -47,6 +47,7 @@
       var pressedKey = pressedKeys[pressedKeysIndex];
 
       this.handleAction(pressedKey, contextMap, controlMap);
+      this.handleState(pressedKey, contextMap, controlMap);
 
       if (pressedKey in contextMap.states) {
         //this.handleState(contextMap, pressedKey);
@@ -78,5 +79,13 @@
         action.state = 1;
       }
     }
-  }
+  };
+
+  wrect.ECS.System.InputHandler.prototype.handleState = function(pressedKey, contextMap, controlMap) {
+    if (pressedKey in contextMap.states) {
+      var action = contextMap.states[pressedKey];
+
+      controlMap.actions.push(action);
+    }
+  };
 }());

@@ -22,12 +22,8 @@
   };
 
   wrect.ECS.System.ControlMapHandler.prototype.perform = function(entity) {
-    var actions = entity.components.ControlMap.actions;
     var controls = entity.components.ControlMap.controls;
-
-    if (actions.length > 0) {
-      console.log(actions);
-    }
+    var actions = entity.components.ControlMap.actions;
 
     for (var actionIndex in  actions) if (actions.hasOwnProperty(actionIndex)) {
       var action = actions[actionIndex];
