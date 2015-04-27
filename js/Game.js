@@ -125,6 +125,13 @@
   };
 
   /**
+   * @returns {wrect.Core.Rendering.Camera|*}
+   */
+  wrect.Game.prototype.getCameraManager = function() {
+    return this.camera;
+  };
+
+  /**
    *
    * @returns {wrect.Core.EventManager|*}
    */

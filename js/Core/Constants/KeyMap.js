@@ -5,6 +5,7 @@
   wrect.Core.Constants = wrect.Core.Constants || {};
 
   wrect.Core.Constants.KeyMap = {
+    SHIFT: 16,
     NUMPAD_0: 97,
     NUMPAD_1: 97,
     NUMPAD_2: 98,
