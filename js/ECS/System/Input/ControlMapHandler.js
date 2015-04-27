@@ -27,7 +27,7 @@
 
     for (var actionIndex in  actions) if (actions.hasOwnProperty(actionIndex)) {
       var action = actions[actionIndex];
-      controls[action.action](entity);
+      controls[action.action](entity, action.values);
       actions.splice(actions.indexOf(action), 1);
     }
   };

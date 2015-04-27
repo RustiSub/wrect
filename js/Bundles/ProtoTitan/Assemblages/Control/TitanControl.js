@@ -6,6 +6,7 @@
 
   var Entity = wrect.ECS.Entity;
   var KeyMap = wrect.Core.Constants.KeyMap;
+  var Input = wrect.Core.Constants.Input;
 
   wrect.Bundles.ProtoTitan.TitanControl = wrect.Bundles.ProtoTitan.TitanControl || {};
 
@@ -24,11 +25,17 @@
         LEFT: 'LEFT',
         RIGHT: 'RIGHT'
       }
+    },
+    Ranges: {
+      CURSOR: {
+        DISPLAY: 'DISPLAY'
+      }
     }
   };
 
   var actions = titanControl.Constants.Actions;
   var states = titanControl.Constants.States;
+  var ranges = titanControl.Constants.Ranges;
 
   /**
    * @param options
@@ -49,6 +56,9 @@
         KeyMap.NUMPAD_7,
         KeyMap.NUMPAD_8,
         KeyMap.NUMPAD_9
+      ],
+      types: [
+          Input.CURSOR
       ]
     });
 
@@ -56,11 +66,18 @@
 
     contextMap.actions[KeyMap.NUMPAD_5] = {
       action: actions.SPEAK,
-      state: 0
+      state: 0,
+      values: {}
     };
 
     contextMap.states[KeyMap.NUMPAD_8] = {
-      action: states.MOVE.FORWARD
+      action: states.MOVE.FORWARD,
+      values: {}
+    };
+
+    contextMap.ranges[Input.CURSOR] = {
+      action: ranges.CURSOR.DISPLAY,
+      values: {}
     };
 
     var controlMap = new wrect.ECS.Component.Input.ControlMap();
@@ -69,8 +86,12 @@
       console.log('Titan voice action enabled...');
     };
 
-    controlMap.controls[states.MOVE.FORWARD] = function(entity) {
+    controlMap.controls[states.MOVE.FORWARD] = function() {
       console.log('Trying to move forward ... engine not yet installed');
+    };
+
+    controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
+      console.log('Display target reticule ...', values);
     };
 
     this.entity.addComponent(rawInputMap);

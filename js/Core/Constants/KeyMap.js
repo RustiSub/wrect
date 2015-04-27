@@ -16,4 +16,8 @@
     NUMPAD_8: 104,
     NUMPAD_9: 105
   };
+
+  wrect.Core.Constants.Input = {
+    CURSOR: 'CURSOR'
+  }
 }());

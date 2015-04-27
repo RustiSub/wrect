@@ -15,13 +15,15 @@
     this.pressedKeys = [];
     this.pressedKeyEvents = {};
     this.releasedKeys = [];
+    this.watchedTypes = [];
+    this.types = [];
+
     var self = this;
 
     this.captureElement = document.getElementById(this.options.elementId);
     this.captureElement.addEventListener('keydown', function(event) {self.keyDown.call(self, event);});
     this.captureElement.addEventListener('keyup', function(event) {self.keyUp.call(self, event);});
-
-    this.inputHandler = new wrect.ECS.System.InputHandler(options);
+    this.captureElement.addEventListener('mousemove', function(event) {self.mouseMove.call(self, event);});
   };
 
   wrect.ECS.System.RawInputHandler.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -49,16 +51,20 @@
         this.pressedKeyEvents[keyCode] = false;
       }
     }
+
+    this.watchedTypes = entity.components.RawInputMap.types;
   };
 
   wrect.ECS.System.RawInputHandler.prototype.perform = function(entity) {
     this.eventManager.trigger('raw_input_handler.context.perform', {
       entity: entity,
       pressedKeys: this.pressedKeys,
-      releasedKeys: this.releasedKeys
+      releasedKeys: this.releasedKeys,
+      types: this.types
     });
 
     this.releasedKeys = [];
+    this.types = {};
   };
 
   wrect.ECS.System.RawInputHandler.prototype.keyDown = function(event) {
@@ -74,6 +80,15 @@
       this.pressedKeys.splice(this.pressedKeys.indexOf(event.keyCode), 1);
       this.releasedKeys.push(event.keyCode);
       this.pressedKeyEvents[event.keyCode] = false;
+    }
+  };
+
+  wrect.ECS.System.RawInputHandler.prototype.mouseMove = function(event) {
+    if (this.watchedTypes.indexOf(wrect.Core.Constants.Input.CURSOR) !== -1) {
+      this.types[wrect.Core.Constants.Input.CURSOR] = {
+        x: event.x,
+        y: event.y
+      };
     }
   };
 

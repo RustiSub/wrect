@@ -11,6 +11,7 @@
     this.options = options || {};
 
     this.keys = this.options.keys || [];
+    this.types = this.options.types || [];
   };
 
   wrect.ECS.Component.Input.RawInputMap.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

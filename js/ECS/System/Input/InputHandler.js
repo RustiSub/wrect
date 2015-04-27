@@ -36,6 +36,7 @@
     var controlMap = entity.components.ControlMap;
     var pressedKeys = event.pressedKeys;
     var releasedKeys = event.releasedKeys;
+    var types = event.types;
 
     for (var releasedKeysIndex in releasedKeys) if (releasedKeys.hasOwnProperty(releasedKeysIndex)) {
       var releasedKey = releasedKeys[releasedKeysIndex];
@@ -48,21 +49,15 @@
 
       this.handleAction(pressedKey, contextMap, controlMap);
       this.handleState(pressedKey, contextMap, controlMap);
+    }
 
-      if (pressedKey in contextMap.states) {
-        //this.handleState(contextMap, pressedKey);
-        //continue;
-      }
-
-      if (pressedKey in contextMap.ranges) {
-        //this.handleRange(contextMap, pressedKey);
-        //continue;
-      }
+    for (var typesIndex in types) if (types.hasOwnProperty(typesIndex)) {
+      var type = types[typesIndex];
+      this.handleRange(type, typesIndex, contextMap, controlMap);
     }
   };
 
   wrect.ECS.System.InputHandler.prototype.refreshAction = function(releasedKey, contextMap) {
-    //console.log(releasedKey);
     if (releasedKey in contextMap.actions) {
       var action = contextMap.actions[releasedKey];
 
@@ -86,6 +81,17 @@
       var action = contextMap.states[pressedKey];
 
       controlMap.actions.push(action);
+    }
+  };
+
+  wrect.ECS.System.InputHandler.prototype.handleRange = function(type, typesIndex, contextMap, controlMap) {
+    if (typesIndex in contextMap.ranges) {
+      var range = contextMap.ranges[typesIndex];
+
+      if (!(range in controlMap.actions)) {
+        range.values = type;
+        controlMap.actions.push(range);
+      }
     }
   };
 }());
