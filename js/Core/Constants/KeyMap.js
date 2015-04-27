@@ -18,6 +18,7 @@
   };
 
   wrect.Core.Constants.Input = {
-    CURSOR: 'CURSOR'
+    CURSOR: 'CURSOR',
+    CLICK: 'CLICK'
   }
 }());

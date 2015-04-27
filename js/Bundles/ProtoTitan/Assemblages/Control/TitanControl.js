@@ -58,7 +58,8 @@
         KeyMap.NUMPAD_9
       ],
       types: [
-          Input.CURSOR
+          Input.CURSOR,
+          Input.CLICK,
       ]
     });
 
@@ -80,6 +81,11 @@
       values: {}
     };
 
+    contextMap.ranges[Input.CLICK] = {
+      action: ranges.CURSOR.CLICK,
+      values: {}
+    };
+
     var controlMap = new wrect.ECS.Component.Input.ControlMap();
 
     controlMap.controls[actions.SPEAK] = function() {
@@ -92,6 +98,10 @@
 
     controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
       console.log('Display target reticule ...', values);
+    };
+
+    controlMap.controls[ranges.CURSOR.CLICK] = function(entity, values) {
+      console.log('FIRE ON MY LOCATION!', values);
     };
 
     this.entity.addComponent(rawInputMap);

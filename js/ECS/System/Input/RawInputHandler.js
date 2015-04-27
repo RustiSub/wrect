@@ -24,6 +24,7 @@
     this.captureElement.addEventListener('keydown', function(event) {self.keyDown.call(self, event);});
     this.captureElement.addEventListener('keyup', function(event) {self.keyUp.call(self, event);});
     this.captureElement.addEventListener('mousemove', function(event) {self.mouseMove.call(self, event);});
+    this.captureElement.addEventListener('mousedown', function(event) {self.mouseDown.call(self, event);});
   };
 
   wrect.ECS.System.RawInputHandler.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -86,6 +87,15 @@
   wrect.ECS.System.RawInputHandler.prototype.mouseMove = function(event) {
     if (this.watchedTypes.indexOf(wrect.Core.Constants.Input.CURSOR) !== -1) {
       this.types[wrect.Core.Constants.Input.CURSOR] = {
+        x: event.x,
+        y: event.y
+      };
+    }
+  };
+
+  wrect.ECS.System.RawInputHandler.prototype.mouseDown = function(event) {
+    if (this.watchedTypes.indexOf(wrect.Core.Constants.Input.CLICK) !== -1) {
+      this.types[wrect.Core.Constants.Input.CLICK] = {
         x: event.x,
         y: event.y
       };
