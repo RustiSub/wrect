@@ -27,9 +27,11 @@
    */
   wrect.Core.EntityManager.prototype.removeEntity = function(entity){
     var index;
+    console.log(this._entities, entity);
     if ((index = this._entities.indexOf(entity)) != -1) {
       this._entities.splice(index, 1);
       delete this._entitiesByName[entity.name];
+
       this.eventManager.trigger('entity_manager.remove', {entity: entity});
     }
   };

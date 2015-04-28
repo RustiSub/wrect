@@ -101,8 +101,8 @@
     var controlMap = new wrect.ECS.Component.Input.ControlMap();
 
     controlMap.modes = {
-      VIEW : true,
-      MARKER: false
+      VIEW : false,
+      MARKER: true
     };
 
     controlMap.controls[actions.SPEAK] = function() {
@@ -136,11 +136,10 @@
         return;
       }
 
-      //debugger;
       console.log('FIRE ON MY LOCATION!', values);
 
       if (marker) {
-        sceneManager.remove(marker);
+        entityManager.removeEntity(marker.entity);
       }
 
       var vector = new THREE.Vector3();
