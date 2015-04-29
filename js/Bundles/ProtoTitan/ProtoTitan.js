@@ -24,6 +24,17 @@
   };
 
   wrect.Bundles.ProtoTitan.prototype.buildWorld = function() {
+    var titanControl = new wrect.ECS.Assemblage.TitanControl(
+      {
+        camera: game.getCameraManager().camera,
+        entityManager: game.getEntityManager(),
+        eventManager: game.getEventManager(),
+        sceneManager: game.getSceneManager(),
+        renderer: game.getRenderer()
+      }
+    );
+    game.getEntityManager().addEntity(titanControl.entity);
+
     function createBlock(options) {
       var block = new wrect.ECS.Assemblage.Block({
         position: options.position,
@@ -40,14 +51,14 @@
       return block.entity;
     }
 
-    var ground = createBlock({
+    createBlock({
       position: new Vector3(-250, -250, 0),
       dimension: new Vector3(500, 500, 5),
       frozen: 1,
       material: new THREE.MeshLambertMaterial({color: 0xC38A09 })
     });
 
-    var titanBlock = createBlock({
+    createBlock({
       position: new Vector3(0, 0, 25),
       dimension: new Vector3(15, 30, 50),
       material: new THREE.MeshLambertMaterial({color: 0xFFFFFF })
@@ -131,7 +142,5 @@
     dirLight.shadowCameraFar = 3500;
     dirLight.shadowBias = -0.0001;
     dirLight.shadowDarkness = 0.35;
-
-    //dirLight.shadowCameraVisible = true;
   };
 }());
