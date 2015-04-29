@@ -19,11 +19,21 @@
     this.setupCamera();
     this.setupScene();
     this.buildWorld();
+    this.registerSystems();
 
     this.game.getRenderer().render();
   };
 
   wrect.Bundles.ProtoTitan.prototype.buildWorld = function() {
+    var titanEngine = new wrect.ECS.Assemblage.TitanEngine(
+        {
+        }
+    );
+
+    game.getEntityManager().addEntity(titanEngine.entity);
+
+    return;
+
     var titanControl = new wrect.ECS.Assemblage.TitanControl(
       {
         camera: game.getCameraManager().camera,
@@ -142,5 +152,15 @@
     dirLight.shadowCameraFar = 3500;
     dirLight.shadowBias = -0.0001;
     dirLight.shadowDarkness = 0.35;
+  };
+
+  wrect.Bundles.ProtoTitan.prototype.registerSystems = function() {
+    this.game.systems.pre.TitanEngine = {
+      system: new wrect.ECS.System.TitanEngine.CycleHandler(
+          {
+            game: this.game
+          }
+      )
+    };
   };
 }());
