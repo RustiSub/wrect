@@ -18,15 +18,18 @@
 
     this.setupCamera();
     this.setupScene();
-    this.buildWorld();
+    //this.buildWorld();
     this.registerSystems();
+
+    this.setupBundle();
 
     this.game.getRenderer().render();
   };
 
-  wrect.Bundles.ProtoTitan.prototype.buildWorld = function() {
+  wrect.Bundles.ProtoTitan.prototype.setupBundle = function() {
     var titanEngine = new wrect.ECS.Assemblage.TitanEngine(
         {
+          eventManager: game.getEventManager()
         }
     );
 
@@ -35,16 +38,19 @@
     return;
 
     var titanControl = new wrect.ECS.Assemblage.TitanControl(
-      {
-        camera: game.getCameraManager().camera,
-        entityManager: game.getEntityManager(),
-        eventManager: game.getEventManager(),
-        sceneManager: game.getSceneManager(),
-        renderer: game.getRenderer()
-      }
+        {
+          camera: game.getCameraManager().camera,
+          entityManager: game.getEntityManager(),
+          eventManager: game.getEventManager(),
+          sceneManager: game.getSceneManager(),
+          renderer: game.getRenderer()
+        }
     );
-    game.getEntityManager().addEntity(titanControl.entity);
 
+    game.getEntityManager().addEntity(titanControl.entity);
+  };
+
+  wrect.Bundles.ProtoTitan.prototype.buildWorld = function() {
     function createBlock(options) {
       var block = new wrect.ECS.Assemblage.Block({
         position: options.position,

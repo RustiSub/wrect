@@ -3,9 +3,9 @@
 
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.Component = wrect.ECS.Component || {};
-  wrect.ECS.Component.Input = wrect.ECS.Component.Input || {};
+  wrect.ECS.Component.TitanEngine = wrect.ECS.Component.TitanEngine || {};
 
-  wrect.ECS.Component.Input.TitanEngineStep = function (options) {
+  wrect.ECS.Component.TitanEngine.TitanEngineStep = function (options) {
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};
@@ -19,7 +19,7 @@
     this.weight = options.weight || 0;
   };
 
-  wrect.ECS.Component.Input.TitanEngineStep.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
-  wrect.ECS.Component.Input.TitanEngineStep.prototype.constructor = wrect.ECS.Component.Input.TitanEngineStep;
-  wrect.ECS.Component.Input.TitanEngineStep.prototype.name = 'TitanEngineStep';
+  wrect.ECS.Component.TitanEngine.TitanEngineStep.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
+  wrect.ECS.Component.TitanEngine.TitanEngineStep.prototype.constructor = wrect.ECS.Component.TitanEngine.TitanEngineStep;
+  wrect.ECS.Component.TitanEngine.TitanEngineStep.prototype.name = 'TitanEngineStep';
 }());

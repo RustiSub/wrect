@@ -19,11 +19,41 @@
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.name = 'CycleHandler';
 
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.checkDependencies = function(entity) {
-    return entity.components.TitanEngineSystem ? true : false;
+    var TitanEngineSystems = wrect.Bundles.ProtoTitan.TitanEngine.Constants.Systems;
+
+    for(var systemIndex in TitanEngineSystems) if (TitanEngineSystems.hasOwnProperty(systemIndex)) {
+      if (entity.components[systemIndex]) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.perform = function(entity) {
-    console.log(entity);
+    var TitanEngineSystems = wrect.Bundles.ProtoTitan.TitanEngine.Constants.Systems;
+
+    for(var systemIndex in TitanEngineSystems) if (TitanEngineSystems.hasOwnProperty(systemIndex)) {
+      var system = TitanEngineSystems[systemIndex];
+      if (entity.components[system]) {
+        system = entity.components[system];
+
+
+        this.handleSystem(system);
+      }
+    }
     debugger;
+  };
+
+  wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleSystem = function(system) {
+
+  };
+
+  wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleStep = function() {
+
+  };
+
+  wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleAction = function() {
+
   };
 }());

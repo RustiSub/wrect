@@ -8,12 +8,12 @@
 
   wrect.Bundles.ProtoTitan.TitanEngine = wrect.Bundles.ProtoTitan.TitanEngine || {};
 
-  var titanEngine = wrect.Bundles.ProtoTitan.TitanEngine;
+  var TitanEngine = wrect.Bundles.ProtoTitan.TitanEngine;
   var components = wrect.ECS.Component.TitanEngine;
 
-  titanEngine.Constants = titanEngine.Constants || {};
-  titanEngine.Constants = titanEngine.TitanEngine || {};
-  titanEngine.Constants = {
+  TitanEngine.Constants = TitanEngine.Constants || {};
+  TitanEngine.Constants = TitanEngine.TitanEngine || {};
+  TitanEngine.Constants = {
     Systems : {
       MOVEMENT: 'MOVEMENT',
       OFFENSIVE: 'OFFENSIVE',
@@ -35,17 +35,17 @@
     this.entity = new Entity({eventManager: options.eventManager});
 
     var steps = [];
-    steps.push(new components.TitanEngineStep(({name: titanEngine.Constants.Steps.INPUT})));
-    steps.push(new components.TitanEngineStep(({name: titanEngine.Constants.Steps.PROCESS})));
-    steps.push(new components.TitanEngineStep(({name: titanEngine.Constants.Steps.OUTPUT})));
+    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.INPUT})));
+    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.PROCESS})));
+    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.OUTPUT})));
 
-    var movementSystem = new components.TitanEngineSystem({name: titanEngine.Constants.Systems.MOVEMENT});
+    var movementSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.MOVEMENT});
     movementSystem.actions = [
       new components.TitanEngineAction({name: 'Forward'}),
       new components.TitanEngineAction({name: 'Backward'})
     ];
     movementSystem.steps = steps;
 
-    this.entity.add(movementSystem);
+    this.entity.addComponent(movementSystem);
   };
 }());
