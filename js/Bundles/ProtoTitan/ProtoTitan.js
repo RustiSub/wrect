@@ -164,7 +164,8 @@
     this.game.systems.pre.TitanEngine = {
       system: new wrect.ECS.System.TitanEngine.CycleHandler(
           {
-            game: this.game
+            game: this.game,
+            eventManager: this.game.getEventManager()
           }
       )
     };
