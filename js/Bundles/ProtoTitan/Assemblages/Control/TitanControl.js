@@ -136,7 +136,7 @@
         return;
       }
 
-      console.log('FIRE ON MY LOCATION!', values);
+      //console.log('FIRE ON MY LOCATION!', values);
 
       if (marker) {
         entityManager.removeEntity(marker.entity);

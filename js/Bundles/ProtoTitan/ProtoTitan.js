@@ -21,22 +21,25 @@
     this.buildWorld();
     this.registerSystems();
 
-    //this.setupBundle();
+    //this.setupMechanics();
+    this.setupControls();
 
     this.game.getRenderer().render();
   };
 
-  wrect.Bundles.ProtoTitan.prototype.setupBundle = function() {
+  wrect.Bundles.ProtoTitan.prototype.setupMechanics = function() {
     var titanEngine = new wrect.ECS.Assemblage.TitanEngine(
-        {
-          eventManager: game.getEventManager()
-        }
+      {
+        eventManager: game.getEventManager()
+      }
     );
 
     game.getEntityManager().addEntity(titanEngine.entity);
 
     return;
+  };
 
+  wrect.Bundles.ProtoTitan.prototype.setupControls = function() {
     var titanControl = new wrect.ECS.Assemblage.TitanControl(
         {
           camera: game.getCameraManager().camera,
