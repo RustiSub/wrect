@@ -18,10 +18,10 @@
 
     this.setupCamera();
     this.setupScene();
-    //this.buildWorld();
+    this.buildWorld();
     this.registerSystems();
 
-    this.setupBundle();
+    //this.setupBundle();
 
     this.game.getRenderer().render();
   };
