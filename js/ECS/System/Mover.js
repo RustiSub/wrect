@@ -7,7 +7,7 @@
   var Vector = wrect.Physics.Vector;
 
   wrect.ECS.System.Mover = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
 
@@ -28,36 +28,14 @@
 
       if (entity.components.Visual) {
         var visual = entity.components.Visual;
+        //console.log(rigidBody.dimensions.origin.x);
+        //console.log(visual.graphics.position.x - rigidBody.dimensions.origin.x);
+        visual.setPosition(rigidBody.dimensions.origin.x, rigidBody.dimensions.origin.y);
 
-        visual.graphics.position.x = rigidBody.dimensions.origin.x;
-        visual.graphics.position.y = rigidBody.dimensions.origin.y;
+        //visual.graphics.rotation.x += 0.01;
+        //visual.graphics.rotation.y += 0.01;
 
-        if (visual.sprite) {
-          visual.sprite.position.x = rigidBody.dimensions.origin.x + visual.spriteOffset.x * visual.sprite.anchor.x;
-          visual.sprite.position.y = rigidBody.dimensions.origin.y + visual.spriteOffset.y * visual.sprite.anchor.y;
-        }
-      }
-
-      if (entity.components.Visual && entity.components.Visual.sprite) {
-        //console.log(Math.abs(Math.round(rigidBody.physicsBody.v.x)));
-        entity.components.Visual.sprite.animationSpeed = Math.abs(Math.round(rigidBody.physicsBody.v.x)) / 75;//Math.abs(rigidBody.physicsBody.v.x) / 5;
-
-        if (rigidBody.physicsBody.v.x < 0 && entity.components.Visual.sprite.scale.x > 0) {
-          entity.components.Visual.sprite.scale.x = -entity.components.Visual.sprite.scale.x;
-        } else if (rigidBody.physicsBody.v.x >= 0 && entity.components.Visual.sprite.scale.x < 0) {
-          entity.components.Visual.sprite.scale.x = -entity.components.Visual.sprite.scale.x;
-        }
-
-        //console.log(entity.components.Visual.sprite.scale.x);
-        if (entity.components.Visual.sprite.animationSpeed < 0.01) {
-          entity.components.Visual.sprite.gotoAndPlay(0);
-        }
-
-        if (rigidBody.physicsBody.v.y < -1.5 || rigidBody.physicsBody.v.y > 1.5) {
-          entity.components.Visual.sprite.gotoAndStop(2);
-        } else {
-          entity.components.Visual.sprite.play();
-        }
+        //visual.graphics.position.y -= 1;
       }
 
       entity.components.RigidBody.move = new Vector(0, 0);

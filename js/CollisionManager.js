@@ -1,3 +1,0 @@
-var CollisionManager = Class.extend({
-
-});

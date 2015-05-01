@@ -15,4 +15,11 @@
 
     return this.entity;
   };
+
+  /**
+   * @returns {string|*}
+   */
+  wrect.ECS.Assemblage.getId = function() {
+    return this.entity.getId();
+  };
 }());

@@ -5,7 +5,7 @@
   wrect.ECS.System = wrect.ECS.System || {};
 
   wrect.ECS.System.Collision = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+    wrect.ECS.System.BaseSystem.call(this, options);
   };
 
   wrect.ECS.System.Collision.prototype = Object.create(wrect.ECS.System.BaseSystem.prototype);
@@ -153,6 +153,9 @@
   };
 
   wrect.ECS.System.Collision.prototype.run = function() {
+    var game = this.options.game;
+
+    //console.log('collision', game.completeTree.length);
     for (var t = 0; t < game.completeTree.length; t++) {
       var branch = game.completeTree[t];
 

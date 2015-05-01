@@ -4,12 +4,17 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
-  wrect.ECS.System.BaseSystem = function (coreEntities) {
+  /**
+   * @param {Object} options
+   * @constructor
+   */
+  wrect.ECS.System.BaseSystem = function (options) {
     /**
      * @type {wrect.ECS.Entity[]}
      */
     this.entities = [];
-
+    this.options = options;
+    var game = options.game;
     game.getEventManager().addListener('entity.component.add', this.addEntity, this);
     game.getEventManager().addListener('entity.component.remove', this.removeEntity, this);
   };
@@ -38,6 +43,6 @@
    * @param {wrect.ECS.Entity} entity
    */
   wrect.ECS.System.BaseSystem.prototype.perform = function(entity) {
-    alert('Implemented wrect.ECS.System needs to do something with an entity ... right?');
+    console.log('Implemented wrect.ECS.System needs to do something with an entity ... right?');
   }
 }());

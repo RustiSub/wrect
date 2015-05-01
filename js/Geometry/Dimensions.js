@@ -15,6 +15,8 @@
     this.originalVertices = [];
     this.origin = new Vector(0, 0);
     this.previousOrigin = null;
+
+    this.offset = new Vector(0, 0);
   };
 
   wrect.Geometry.Dimensions.prototype.move = function(v) {
@@ -36,7 +38,7 @@
   };
 
   wrect.Geometry.Dimensions.prototype.rotate = function() {};
-  wrect.Geometry.Dimensions.prototype.getBounds = function() {};
+  wrect.Geometry.Dimensions.prototype.getVertices = function() {};
   wrect.Geometry.Dimensions.prototype.getCollisionVertices = function() {};
   wrect.Geometry.Dimensions.prototype.getCenter = function() {};
   wrect.Geometry.Dimensions.prototype.draw = function() {};

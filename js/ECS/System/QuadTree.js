@@ -4,16 +4,20 @@
   wrect.ECS = wrect.ECS || {};
   wrect.ECS.System = wrect.ECS.System || {};
 
-  wrect.ECS.System.QuadTree = function (options) {
-    wrect.ECS.System.BaseSystem.call(this);
+  var Vector = wrect.Physics.Vector;
 
-    options = options || {};
+  wrect.ECS.System.QuadTree = function (options) {
+    wrect.ECS.System.BaseSystem.call(this, options);
+
+    this.options = options || {};
+
+    var quadTreeSize = 500;
 
     this.range = {
-      x: 0,
-      y: 0,
-      width : options.width || 1500,
-      height: options.height || 1500,
+      x: -quadTreeSize,
+      y: -quadTreeSize,
+      width : quadTreeSize * 2,
+      height: quadTreeSize * 2,
       level: 0,
       quadLevel : 0
     };
@@ -29,20 +33,46 @@
   };
 
   wrect.ECS.System.QuadTree.prototype.run = function() {
+    var game = this.options.game;
+
     function mapQuadTree(entities, range) {
+      function checkProjectionInRange(min, projection, max) {
+        return min < projection && projection < max;
+      }
+      function checkObjectInQuad (vertices, range) {
+        var inQuad = true;
+
+        for (var v = 0; v < vertices.length; v++) {
+          var vertex = vertices[v];
+
+          var xProjectionAxis = new Vector(Math.abs(range.x), 0);
+          var xProjectedVertex = vertex.dot(xProjectionAxis.unit());
+          var yProjectionAxis = new Vector(Math.abs(range.y), 0);
+          var yProjectedVertex = vertex.dot(yProjectionAxis.unit());
+
+          var xInRange = checkProjectionInRange(range.x, xProjectedVertex, range.x + range.width);
+          var yInRange = checkProjectionInRange(range.y, yProjectedVertex, range.y + range.height);
+
+          if (!xInRange || !yInRange) {
+            inQuad = false;
+            break;
+          }
+        }
+
+        return inQuad;
+      }
+
+      //debugQuadTree(game, range);
       var localTree = [];
       for (var e = 0; e < entities.length; e++) {
         var entity = entities[e];
-        var bounds = entity.components.RigidBody.dimensions.getBounds();
-        var speed = entity.components.RigidBody.physicsBody.v;
-        var outOfRangeSpeed =
-          (bounds.topRight.x + speed.x) < range.x || (bounds.bottomLeft + speed.y) < range.y
-          ||
-          (bounds.topLeft.x + speed.x) > range.x + range.width || (bounds.topLeft.y + speed.y) > range.y + range.width;
-        if (!outOfRangeSpeed) {
+        var vertices = entity.components.RigidBody.dimensions.getVertices();
+
+        if (checkObjectInQuad(vertices, range)) {
           localTree.push(entity);
         }
       }
+
       if (localTree.length > 256) {
         var quadWidth = range.width / 2;
         var quadHeight = range.height / 2;
@@ -95,8 +125,7 @@
             }
             return hash;
           };
-//        var color = (Math.random()*0xFFFFFF<<0);
-//        game.addEntity(game._builder.createBlock('tree', range.x, range.y, range.width, range.height, color, 0.5));
+
           var treeHash = '';
           for (var h = 0; h < localTree.length; h++) {
             treeHash += localTree[h].id;
@@ -111,5 +140,27 @@
     }
 
     mapQuadTree(this.entities, this.range);
+  };
+
+  var debugQuadTree = function(game, range) {
+    var selectedObject = game.getSceneManager().getScene().getObjectByName('quadTreeDebugLines_' + range.x + '_' + range.y);
+
+    if (!selectedObject) {
+      var material = new THREE.LineBasicMaterial({
+        color: 0xFFFFFF
+      });
+
+      var geometry = new THREE.Geometry();
+      geometry.vertices.push(new THREE.Vector3(range.x, range.y, 0));
+      geometry.vertices.push(new THREE.Vector3(range.x + range.width, range.y, 0));
+      geometry.vertices.push(new THREE.Vector3(range.x + range.width, range.y + range.height, 0));
+      geometry.vertices.push(new THREE.Vector3(range.x, range.y + range.height, 0));
+      geometry.vertices.push(new THREE.Vector3(range.x, range.y, 0));
+
+      var line = new THREE.Line(geometry, material);
+      line.name = 'quadTreeDebugLines_' + range.x + '_' + range.y;
+
+      game.getSceneManager().getScene().add(line);
+    }
   }
 }());

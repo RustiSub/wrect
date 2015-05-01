@@ -7,6 +7,8 @@
   var Vector = wrect.Physics.Vector;
 
   wrect.ECS.Component.BaseMaterial = function (options) {
+    var game = options.game;
+
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};

@@ -14,6 +14,7 @@
     options = options || {};
 
     this.f = options.f || new Vector(0, 0);
+
     this.v = options.v || new Vector(0, 0);
     this.a = options.a || new Vector(0, 0);
     this.m =  options.m || 1;

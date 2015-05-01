@@ -11,16 +11,18 @@
   wrect.Geometry.Rectangle = function (options) {
     wrect.Geometry.Dimensions.call(this);
 
+    this.options = options;
     this.origin = options.origin;
+    this.dimension = options.dimension;
 
-    var width = new Vector(options.width, 0);
-    var height = new Vector(0, options.height);
+    var widthVector = new Vector(this.dimension.x, 0);
+    var heightVector = new Vector(0, this.dimension.y);
 
     this.vertices = [
       options.origin,
-      options.origin.add(width),
-      options.origin.add(width).add(height),
-      options.origin.add(height)
+      options.origin.add(widthVector),
+      options.origin.add(widthVector).add(heightVector),
+      options.origin.add(heightVector)
     ];
 
     this.offsetVertices = [
@@ -34,28 +36,23 @@
   wrect.Geometry.Rectangle.prototype = Object.create( wrect.Geometry.Dimensions.prototype );
   wrect.Geometry.Rectangle.prototype.constructor = wrect.Geometry.Rectangle;
 
-  wrect.Geometry.Rectangle.prototype.getBounds = function() {
-    return {
-      topLeft: this.vertices[0],
-      topRight: this.vertices[1],
-      bottomRight: this.vertices[2],
-      bottomLeft: this.vertices[3]
-    };
+  wrect.Geometry.Rectangle.prototype.getVertices = function() {
+    return this.vertices;
   };
 
   wrect.Geometry.Rectangle.prototype.getCollisionVertices = function() {
     return this.vertices;
   };
 
-  wrect.Geometry.Rectangle.prototype.draw = function(graphics, options) {
-    graphics.clear();
-
-    graphics.beginFill(options.color || 0x000000, options.alpha);
-    graphics.moveTo(0, 0);
-    graphics.lineTo(options.w, 0);
-    graphics.lineTo(options.w, options.h);
-    graphics.lineTo(0, options.h);
-
-    graphics.endFill();
+  wrect.Geometry.Rectangle.prototype.draw = function(renderer) {
+    //graphics.clear();
+    //
+    //graphics.beginFill(this.options.color || 0x000000, this.options.alpha);
+    //graphics.moveTo(0, 0);
+    //graphics.lineTo(this.options.w, 0);
+    //graphics.lineTo(this.options.w, this.options.h);
+    //graphics.lineTo(0, this.options.h);
+    //
+    //graphics.endFill();
   };
 }());
