@@ -11,6 +11,7 @@
   wrect.Geometry.Hexagon = function (options) {
     wrect.Geometry.Dimensions.call(this);
 
+    this.options = options || {};
     this.size = options.size || 1;
 
     this.vertices = [
@@ -41,19 +42,5 @@
     return this.vertices;
   };
 
-  wrect.Geometry.Hexagon.prototype.draw = function(graphics, options) {
-    graphics.clear();
-
-    graphics.beginFill(options.color || 0x000000, options.alpha);
-    graphics.moveTo(this.vertices[0].x, this.vertices[0].y);
-
-    for(var v = 0; v < this.vertices.length; v++) {
-      var vertex = this.vertices[v];
-      graphics.lineTo(vertex.x, vertex.y);
-    }
-
-    graphics.moveTo(this.vertices[0].x, this.vertices[0].y);
-
-    graphics.endFill();
-  };
+  wrect.Geometry.Hexagon.prototype.draw = function(graphics, options) {};
 }());

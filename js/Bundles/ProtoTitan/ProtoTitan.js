@@ -18,13 +18,22 @@
 
     this.setupCamera();
     this.setupScene();
-    this.buildWorld();
+    //this.buildWorld();
     this.registerSystems();
 
     //this.setupMechanics();
     this.setupControls();
 
+    this.setupGrid();
+
     this.game.getRenderer().render();
+  };
+
+  wrect.Bundles.ProtoTitan.prototype.setupGrid = function() {
+    var world = new wrect.ECS.Assemblage.World({
+      eventManager: game.getEventManager(),
+      renderer:  this.game.getRenderer()
+    });
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupMechanics = function() {
@@ -35,8 +44,6 @@
     );
 
     game.getEntityManager().addEntity(titanEngine.entity);
-
-    return;
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupControls = function() {
