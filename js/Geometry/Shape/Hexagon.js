@@ -14,15 +14,18 @@
     this.options = options || {};
     this.size = options.size || 1;
 
-    this.vertices = [
-      new Vector(-this.size, 0).add(new Vector(0, -this.size)),
-      new Vector(-this.size, 0),
-      new Vector(-this.size, 0).add(new Vector(0, this.size)),
-      new Vector(this.size, 0).add(new Vector(0, this.size)),
-      new Vector(this.size, 0),
-      new Vector(this.size, 0).add(new Vector(0, -this.size))
-    ];
     this.origin = options.origin || new Vector(0, 0);
+
+    this.vertices = [];
+
+    for (var i = 1; i <= 6; i++) {
+      this.vertices.push(new Vector(
+        this.size * Math.cos(i * 2 * Math.PI / 6),
+        this.size * Math.sin(i * 2 * Math.PI / 6)
+      ));
+    }
+console.log(this.vertices);
+
     this.offsetVertices = [];
   };
 

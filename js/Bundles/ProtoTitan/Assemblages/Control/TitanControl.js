@@ -157,15 +157,11 @@
 
       var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
 
-      marker = new wrect.ECS.Assemblage.Block({
-        position: new Vector3(pos.x - 10, pos.y - 10, 10),
-        dimension: new Vector3(20, 20, 20),
-        color: 0x000000,
-        alpha: 1,
-        material: new THREE.MeshLambertMaterial({color: 0xFFFFFF, transparent: true, opacity: 0.5 }),
-        renderer: renderer,
-        eventManager: eventManager,
-        frozen: 1
+      marker = new wrect.ECS.Assemblage.HexTile({
+        eventManager: game.getEventManager(),
+        renderer:  game.getRenderer(),
+        origin: new Vector3(pos.x, pos.y, 5),
+        size: 10
       });
       game.getEntityManager().addEntity(marker.entity);
     };
