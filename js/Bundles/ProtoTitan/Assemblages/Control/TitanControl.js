@@ -161,7 +161,7 @@
         eventManager: game.getEventManager(),
         renderer:  game.getRenderer(),
         origin: new Vector3(pos.x, pos.y, 5),
-        size: 10
+        size: 50
       });
       game.getEntityManager().addEntity(marker.entity);
     };
