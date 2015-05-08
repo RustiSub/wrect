@@ -30,7 +30,10 @@
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupGrid = function() {
-    var map = new wrect.ECS.Assemblage.HexMap();
+    var map = new wrect.ECS.Assemblage.HexMap({
+      mapSize: new Vector3(3, 3, 3),
+      tileSize: 50
+    });
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupMechanics = function() {

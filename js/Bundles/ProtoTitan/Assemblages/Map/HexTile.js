@@ -24,11 +24,13 @@
   wrect.ECS.Assemblage.HexTile = function (options) {
     this.entity = new Entity({eventManager: options.eventManager});
 
-    var visualComponent = new wrect.ECS.Component.Visual({
+    var material = options.material || new THREE.MeshLambertMaterial({color: 0xD0D0DF, side: THREE.DoubleSide});
+
+      var visualComponent = new wrect.ECS.Component.Visual({
       shape: new Hexagon({
         origin: options.origin || new Vector3(0, 0, 0),
         size: options.size || 100,
-        material: new THREE.MeshLambertMaterial({color: 0xD0D0DF, side:THREE.DoubleSide })
+        material: material
       }),
       renderer: options.renderer
     });
