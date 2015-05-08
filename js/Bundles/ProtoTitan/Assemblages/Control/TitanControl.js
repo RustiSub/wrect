@@ -106,7 +106,7 @@
     };
 
     controlMap.controls[actions.SPEAK] = function() {
-      console.log('Titan voice action enabled...');
+      console.log('Player voice action enabled...');
     };
 
     controlMap.controls[states.MOVE.FORWARD] = function() {

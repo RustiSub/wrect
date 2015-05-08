@@ -22,6 +22,8 @@
    * @constructor
    */
   wrect.ECS.Assemblage.HexMap = function (options) {
+    var grid = new wrect.ECS.Component.Map.Grid({});
+
     var coords = this.generateMapCoords(options.mapSize);
     var size = options.tileSize + 1;
 
@@ -36,16 +38,20 @@
         5
       );
 
-      var tileEntity = new wrect.ECS.Assemblage.HexTile({
+      var tile = new wrect.ECS.Assemblage.HexTile({
         eventManager: game.getEventManager(),
         renderer:  game.getRenderer(),
         origin: new Vector3(pos.x, pos.y, 5),
         size: options.tileSize,
-        material: new THREE.MeshBasicMaterial({color: 0xFFFFFF, side: THREE.DoubleSide, transparent: true, opacity: 0.5})
+        material: new THREE.MeshBasicMaterial({color: 0xFFFFFF, side: THREE.DoubleSide, transparent: true, opacity: 0.5}),
+        coord: new Vector3(coord.x, coord.y, coord.z)
       });
 
-      game.getEntityManager().addEntity(tileEntity.entity);
+      grid.tiles.push(tile.entity.components.Tile.coord);
+      game.getEntityManager().addEntity(tile.entity);
     }
+
+    console.log(grid);
   };
 
   wrect.ECS.Assemblage.HexMap.prototype.generateMapCoords = function(size) {

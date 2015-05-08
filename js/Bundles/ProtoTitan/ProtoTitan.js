@@ -85,12 +85,6 @@
     });
 
     createBlock({
-      position: new Vector3(0, 0, 25),
-      dimension: new Vector3(15, 30, 50),
-      material: new THREE.MeshLambertMaterial({color: 0xFFFFFF })
-    });
-
-    createBlock({
       position: new Vector3(50, 50, 50),
       dimension: new Vector3(15, 15, 100),
       frozen: 1,
@@ -117,6 +111,16 @@
       frozen: 1,
       material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
     });
+
+    var player = new wrect.ECS.Assemblage.Player.Titan({
+      position: new Vector3(0, 0, 25),
+      dimension: new Vector3(15, 30, 50),
+      material:  new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
+      renderer: game.getRenderer(),
+      eventManager: game.getEventManager(),
+    });
+
+    game.getEntityManager().addEntity(player.entity);
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupCamera = function() {
