@@ -34,7 +34,5 @@
     });
 
     this.entity.addComponent(visualComponent);
-
-    game.getEntityManager().addEntity(this.entity);
   };
 }());

@@ -22,15 +22,15 @@
     this.registerSystems();
 
     //this.setupMechanics();
-    this.setupControls();
+    //this.setupControls();
 
-    //this.setupGrid();
+    this.setupGrid();
 
     this.game.getRenderer().render();
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupGrid = function() {
-
+    var map = new wrect.ECS.Assemblage.HexMap();
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupMechanics = function() {
@@ -121,8 +121,8 @@
     var camera = this.game.camera.getCamera();
     camera.up = new THREE.Vector3( 0, 0, 1 );
     camera.position.z = 250;
-    camera.position.x += 100;
-    camera.position.y += 300;
+    camera.position.x += -100;
+    camera.position.y += -300;
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
   };

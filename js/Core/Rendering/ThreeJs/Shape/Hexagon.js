@@ -3,7 +3,7 @@
 
   wrect.Geometry.Hexagon.prototype.draw = function() {
     var geometry = new THREE.Geometry();
-console.log(this.origin);
+
     geometry.vertices.push(new THREE.Vector3(this.origin.x, this.origin.y, 0));
     //geometry.vertices.push(new THREE.Vector3(0, 0, 0));
 
