@@ -41,7 +41,7 @@
         renderer:  game.getRenderer(),
         origin: new Vector3(pos.x, pos.y, 5),
         size: options.tileSize,
-        material: new THREE.MeshLambertMaterial({color: 0x0000ff, side: THREE.DoubleSide, transparent: true, opacity: 0.5})
+        material: new THREE.MeshBasicMaterial({color: 0xFFFFFF, side: THREE.DoubleSide, transparent: true, opacity: 0.5})
       });
 
       game.getEntityManager().addEntity(tileEntity.entity);

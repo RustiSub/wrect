@@ -5,6 +5,8 @@
 
   wrect.Core.Rendering.SceneManager.prototype.createScene = function() {
     this.scene = new THREE.Scene();
+
+    this.objects = {};
     //var light = new THREE.PointLight( 0xff0000, 1, 100 );
     //light.position.set( 50, 50, 50 );
     //this.scene.add( light );
@@ -24,7 +26,9 @@
    */
   wrect.Core.Rendering.SceneManager.prototype.add = function(entityData) {
     if (entityData.entity.components.Visual) {
-      this.scene.add(entityData.entity.components.Visual.getGraphics());
+      var graphics = entityData.entity.components.Visual.getGraphics();
+      this.objects[graphics.id] = entityData.entity;
+      this.scene.add(graphics);
     }
   };
 
@@ -34,6 +38,12 @@
   wrect.Core.Rendering.SceneManager.prototype.remove = function(entityData) {
     if (entityData.entity.components.Visual) {
       this.scene.remove(entityData.entity.components.Visual.getGraphics());
+    }
+  };
+
+  wrect.Core.Rendering.SceneManager.prototype.getEntityByGraphicsId = function(id) {
+    if (this.objects[id]) {
+      return this.objects[id];
     }
   };
 }());

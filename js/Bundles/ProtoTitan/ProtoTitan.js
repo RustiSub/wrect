@@ -22,7 +22,7 @@
     this.registerSystems();
 
     //this.setupMechanics();
-    //this.setupControls();
+    this.setupControls();
 
     this.setupGrid();
 
@@ -84,11 +84,11 @@
       material: new THREE.MeshLambertMaterial({color: 0xC38A09 })
     });
 
-    //createBlock({
-    //  position: new Vector3(0, 0, 25),
-    //  dimension: new Vector3(15, 30, 50),
-    //  material: new THREE.MeshLambertMaterial({color: 0xFFFFFF })
-    //});
+    createBlock({
+      position: new Vector3(0, 0, 25),
+      dimension: new Vector3(15, 30, 50),
+      material: new THREE.MeshLambertMaterial({color: 0xFFFFFF })
+    });
 
     createBlock({
       position: new Vector3(50, 50, 50),
@@ -177,6 +177,15 @@
             game: this.game,
             eventManager: this.game.getEventManager()
           }
+      )
+    };
+
+    this.game.systems.pre.TileSelector = {
+      system: new wrect.ECS.System.Map.TileSelector(
+        {
+          game: this.game,
+          eventManager: this.game.getEventManager()
+        }
       )
     };
   };

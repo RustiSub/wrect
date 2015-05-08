@@ -24,7 +24,9 @@
   wrect.ECS.Assemblage.HexTile = function (options) {
     this.entity = new Entity({eventManager: options.eventManager});
 
-    var material = options.material || new THREE.MeshLambertMaterial({color: 0xD0D0DF, side: THREE.DoubleSide});
+    var tile = new wrect.ECS.Component.Map.Tile({});
+
+    var material = options.material || new THREE.MeshLambertMaterial({color: 0xD0D0DF, side: THREE.DoubleSide, transparent: true, opacity: 0.5});
 
       var visualComponent = new wrect.ECS.Component.Visual({
       shape: new Hexagon({
@@ -35,6 +37,15 @@
       renderer: options.renderer
     });
 
+    this.entity.addComponent(tile);
     this.entity.addComponent(visualComponent);
+    this.entity.addComponent(new wrect.ECS.Component.Selectable({
+      selectCallback: function(entity) {
+        entity.components.Visual.graphics.material.color.setHex(0xEBEB05);
+      },
+      deselectCallback: function(entity) {
+        entity.components.Visual.graphics.material.color.setHex(0xFFFFFF);
+      }
+    }));
   };
 }());

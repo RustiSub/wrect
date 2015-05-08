@@ -19,7 +19,8 @@
     geometry.faces.push(new THREE.Face3(0, 5, 6));
     geometry.faces.push(new THREE.Face3(0, 6, 1));
 
-    var material = this.options.material || new THREE.MeshLambertMaterial( { color: 0xffffff, side:THREE.DoubleSide } );
+    var material = this.options.material || new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors, side: THREE.DoubleSide });
+
     var mesh = new THREE.Mesh(geometry, material);
 
     mesh.position.set(this.origin.x, this.origin.y, this.origin.z);
