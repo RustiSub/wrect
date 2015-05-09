@@ -5,13 +5,17 @@
 
   /**
    * Basic timer functionality
-   * @param {int} time - time in ms
-   * @param {function} [callback] - Callback to trigger on reaching 0
-   * @param {boolean} [once] - If callback should only be called once or if it should reset
    * @class wrect.Core.Timer
    * @constructor
    */
-  wrect.Core.Timer = function(time, callback, once) {
+  wrect.Core.Timer = function(options) {
+
+    var time = options.time || 0;
+    var callback = options.callback || function() {};
+    var once = options.once || false;
+
+    this.eventManager = options.eventManager;
+    this.gameTime = options.gameTime;
 
     /**
      * Target time
@@ -27,12 +31,6 @@
     this._currentTime = 0;
 
     /**
-     * Reference to Game
-     * @type {Game}
-     */
-    this.game = Container.getGame();
-
-    /**
      * Callback to be executed when detla < 0
      * @type {Function}
      */
@@ -44,7 +42,7 @@
      */
     this.once = !!once;
 
-    this.game.getEventManager().addListener('game.updateStart', this.update, this);
+    this.eventManager.addListener('game.updateStart', this.update, this);
   };
 
   /**
@@ -55,10 +53,11 @@
       return;
     }
 
-    this._currentTime += this.game.getDelta();
+    this._currentTime += this.gameTime.getDelta();
 
     if (this.callback && (this.targetTime - this._currentTime) < 0) {
       this.callback(this);
+      this.reset();
       if (this.once) {
         this.stop();
       }
@@ -107,5 +106,13 @@
   wrect.Core.Timer.prototype.stop = function() {
     this.pause();
     this.reset();
+  };
+
+  /**
+   * Pauses the timer
+   */
+  wrect.Core.Timer.prototype.start = function() {
+    this.reset();
+    this.unpause();
   };
 }());

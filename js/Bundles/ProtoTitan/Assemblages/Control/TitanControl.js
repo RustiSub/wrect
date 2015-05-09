@@ -65,7 +65,7 @@
         KeyMap.SHIFT
       ],
       types: [
-          //Input.CURSOR,
+          Input.CURSOR,
           Input.CLICK
       ]
     });
@@ -106,7 +106,7 @@
     };
 
     controlMap.controls[actions.SPEAK] = function() {
-      console.log('Titan voice action enabled...');
+      console.log('Player voice action enabled...');
     };
 
     controlMap.controls[states.MOVE.FORWARD] = function() {
@@ -131,43 +131,54 @@
     var sceneManager = options.sceneManager;
     var marker;
 
+    controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
+      //mouseAction(values);
+    };
+
+    function selectObjects(values) {
+      var raycaster = new THREE.Raycaster();
+      var pos = new THREE.Vector2();
+      pos.x = ( values.x / window.innerWidth ) * 2 - 1;
+      pos.y = -( values.y / window.innerHeight ) * 2 + 1;
+      raycaster.setFromCamera(pos, camera);
+
+      var intersects = raycaster.intersectObjects(sceneManager.getScene().children);
+      // Change color if hit block
+      if (intersects.length > 0) {
+
+        for (var i in intersects) {
+          eventManager.trigger('titan_control.objects_selected', {
+            entity: sceneManager.getEntityByGraphicsId(intersects[i].object.id)
+          });
+        }
+      }
+
+      //marker = new wrect.ECS.Assemblage.HexTile({
+      //  eventManager: game.getEventManager(),
+      //  renderer:  game.getRenderer(),
+      //  origin: new Vector3(pos.x, pos.y, 5),
+      //  size: 50
+      //});
+      //game.getEntityManager().addEntity(marker.entity);
+
+      //var block = new wrect.ECS.Assemblage.Block({
+      //  position: new Vector3(pos.x, pos.y, 0),
+      //  dimension: new Vector3(50, 50, 50),
+      //  color: 0x000000,
+      //  alpha: 1,
+      //  material: new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
+      //  renderer: game.getRenderer(),
+      //  eventManager: game.getEventManager()
+      //});
+      //game.getEntityManager().addEntity(block.entity);
+    }
+
     controlMap.controls[ranges.CURSOR.CLICK] = function(entity, values) {
       if (!controlMap.modes.MARKER) {
         return;
       }
 
-      console.log('FIRE ON MY LOCATION!', values);
-
-      if (marker) {
-        entityManager.removeEntity(marker.entity);
-      }
-
-      var vector = new THREE.Vector3();
-
-      vector.set(
-        ( values.x / window.innerWidth ) * 2 - 1,
-        - ( values.y / window.innerHeight ) * 2 + 1,
-        0.5 );
-
-      vector.unproject( camera );
-
-      var dir = vector.sub( camera.position ).normalize();
-
-      var distance = - camera.position.z / dir.z;
-
-      var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
-
-      marker = new wrect.ECS.Assemblage.Block({
-        position: new Vector3(pos.x - 10, pos.y - 10, 10),
-        dimension: new Vector3(20, 20, 20),
-        color: 0x000000,
-        alpha: 1,
-        material: new THREE.MeshLambertMaterial({color: 0xFFFFFF, transparent: true, opacity: 0.5 }),
-        renderer: renderer,
-        eventManager: eventManager,
-        frozen: 1
-      });
-      game.getEntityManager().addEntity(marker.entity);
+      selectObjects(values);
     };
 
     this.entity.addComponent(rawInputMap);

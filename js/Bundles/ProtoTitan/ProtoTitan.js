@@ -19,22 +19,48 @@
     this.setupCamera();
     this.setupScene();
     this.buildWorld();
+    this.registerSystems();
+
+    //this.setupMechanics();
+    this.setupControls();
+
+    this.setupGrid();
 
     this.game.getRenderer().render();
   };
 
-  wrect.Bundles.ProtoTitan.prototype.buildWorld = function() {
-    var titanControl = new wrect.ECS.Assemblage.TitanControl(
+  wrect.Bundles.ProtoTitan.prototype.setupGrid = function() {
+    var map = new wrect.ECS.Assemblage.HexMap({
+      mapSize: new Vector3(3, 3, 3),
+      tileSize: 50
+    });
+  };
+
+  wrect.Bundles.ProtoTitan.prototype.setupMechanics = function() {
+    var titanEngine = new wrect.ECS.Assemblage.TitanEngine(
       {
-        camera: game.getCameraManager().camera,
-        entityManager: game.getEntityManager(),
-        eventManager: game.getEventManager(),
-        sceneManager: game.getSceneManager(),
-        renderer: game.getRenderer()
+        eventManager: game.getEventManager()
       }
     );
-    game.getEntityManager().addEntity(titanControl.entity);
 
+    game.getEntityManager().addEntity(titanEngine.entity);
+  };
+
+  wrect.Bundles.ProtoTitan.prototype.setupControls = function() {
+    var titanControl = new wrect.ECS.Assemblage.TitanControl(
+        {
+          camera: game.getCameraManager().camera,
+          entityManager: game.getEntityManager(),
+          eventManager: game.getEventManager(),
+          sceneManager: game.getSceneManager(),
+          renderer: game.getRenderer()
+        }
+    );
+
+    game.getEntityManager().addEntity(titanControl.entity);
+  };
+
+  wrect.Bundles.ProtoTitan.prototype.buildWorld = function() {
     function createBlock(options) {
       var block = new wrect.ECS.Assemblage.Block({
         position: options.position,
@@ -56,12 +82,6 @@
       dimension: new Vector3(500, 500, 5),
       frozen: 1,
       material: new THREE.MeshLambertMaterial({color: 0xC38A09 })
-    });
-
-    createBlock({
-      position: new Vector3(0, 0, 25),
-      dimension: new Vector3(15, 30, 50),
-      material: new THREE.MeshLambertMaterial({color: 0xFFFFFF })
     });
 
     createBlock({
@@ -91,6 +111,16 @@
       frozen: 1,
       material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
     });
+
+    var player = new wrect.ECS.Assemblage.Player.Titan({
+      position: new Vector3(0, 0, 25),
+      dimension: new Vector3(15, 30, 50),
+      material:  new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
+      renderer: game.getRenderer(),
+      eventManager: game.getEventManager(),
+    });
+
+    game.getEntityManager().addEntity(player.entity);
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupCamera = function() {
@@ -98,8 +128,8 @@
     var camera = this.game.camera.getCamera();
     camera.up = new THREE.Vector3( 0, 0, 1 );
     camera.position.z = 250;
-    camera.position.x += 100;
-    camera.position.y += 300;
+    camera.position.x += -100;
+    camera.position.y += -300;
 
     camera.lookAt(new THREE.Vector3(0, 0, 0));
   };
@@ -142,5 +172,25 @@
     dirLight.shadowCameraFar = 3500;
     dirLight.shadowBias = -0.0001;
     dirLight.shadowDarkness = 0.35;
+  };
+
+  wrect.Bundles.ProtoTitan.prototype.registerSystems = function() {
+    this.game.systems.pre.TitanEngine = {
+      system: new wrect.ECS.System.TitanEngine.CycleHandler(
+          {
+            game: this.game,
+            eventManager: this.game.getEventManager()
+          }
+      )
+    };
+
+    this.game.systems.pre.TileSelector = {
+      system: new wrect.ECS.System.Map.TileSelector(
+        {
+          game: this.game,
+          eventManager: this.game.getEventManager()
+        }
+      )
+    };
   };
 }());
