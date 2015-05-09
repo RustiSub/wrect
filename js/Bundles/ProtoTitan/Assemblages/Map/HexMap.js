@@ -50,8 +50,6 @@
       grid.tiles.push(tile.entity.components.Tile.coord);
       game.getEntityManager().addEntity(tile.entity);
     }
-
-    console.log(grid);
   };
 
   wrect.ECS.Assemblage.HexMap.prototype.generateMapCoords = function(size) {

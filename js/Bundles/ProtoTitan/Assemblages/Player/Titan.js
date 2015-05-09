@@ -8,6 +8,7 @@
 
   var Entity = wrect.ECS.Entity;
   var Vector3 = wrect.Physics.Vector3;
+  var Vector = wrect.Physics.Vector;
   var Rectangle = wrect.Geometry.Rectangle;
 
   /**
@@ -34,6 +35,7 @@
       renderer: options.renderer
     });
 
+    //rigidBody.dimensions.origin = new Vector3(0, 0, 25);
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
   };
