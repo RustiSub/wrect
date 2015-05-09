@@ -34,6 +34,8 @@
       mapSize: new Vector3(3, 3, 3),
       tileSize: 50
     });
+
+    game.getEntityManager().addEntity(map.entity);
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupMechanics = function() {

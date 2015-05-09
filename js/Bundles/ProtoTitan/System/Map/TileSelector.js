@@ -11,8 +11,8 @@
     wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
-
-    this.options.eventManager.addListener('titan_control.objects_selected', this.selectObject, this);
+    this.eventManager = this.options.eventManager;
+    this.eventManager.addListener('titan_control.objects_selected', this.selectObject, this);
 
     this.selectedTiles = [];
   };
@@ -23,7 +23,7 @@
   wrect.ECS.System.Map.TileSelector.prototype.name = 'TileSelector';
 
   wrect.ECS.System.Map.TileSelector.prototype.checkDependencies = function(entity) {
-    return entity.components.Selectable && entity.components.Tile ? true : false;
+    return entity.components.Selectable && entity.components.Tile && entity.components.Grid ? true : false;
   };
 
   wrect.ECS.System.Map.TileSelector.prototype.perform = function(entity) {
@@ -33,7 +33,17 @@
       return;
     }
 
+    //this.eventManager.trigger('titan_control.selected_tile_clicked', {
+    //  entity: entity,
+    //  coord: entity.components.Grid.getTileCoord(entity.components.Tile.coord)
+    //});
+
     selectable.changed = false;
+
+    this.eventManager.trigger('titan_control.tile_changed', {
+      entity: entity,
+      coord: entity.components.Grid.getTileCoord(entity.components.Tile.coord)
+    });
 
     if (selectable.selected) {
       selectable.deselectCallback(entity);

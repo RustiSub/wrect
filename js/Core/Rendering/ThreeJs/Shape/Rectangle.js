@@ -19,4 +19,8 @@
 
     return mesh;
   };
+
+  wrect.Geometry.Rectangle.prototype.rotate = function(origin) {
+
+  };
 }());

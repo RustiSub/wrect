@@ -50,5 +50,7 @@
         entity.components.Visual.graphics.material.color.setHex(0xFFFFFF);
       }
     }));
+
+    this.entity.addComponent(options.grid);
   };
 }());

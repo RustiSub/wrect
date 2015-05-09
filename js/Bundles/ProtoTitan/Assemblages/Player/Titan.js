@@ -38,5 +38,23 @@
     //rigidBody.dimensions.origin = new Vector3(0, 0, 25);
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
+
+    options.eventManager.addListener('titan_control.tile_changed', function(entityData) {
+      if (this.entity.components.RigidBody.dimensions.origin.x !== entityData.coord.x ||
+        this.entity.components.RigidBody.dimensions.origin.y !== entityData.coord.y) {
+        this.move(entityData.coord);
+      } else {
+        this.rotate();
+      }
+    }, this);
+  };
+
+  wrect.ECS.Assemblage.Player.Titan.prototype.move = function(coord) {
+    this.entity.components.RigidBody.dimensions.origin.x = coord.x;
+    this.entity.components.RigidBody.dimensions.origin.y = coord.y;
+  };
+
+  wrect.ECS.Assemblage.Player.Titan.prototype.rotate = function() {
+    this.entity.components.Visual.getGraphics().rotation.z += 30 * (Math.PI /180);
   };
 }());

@@ -7,7 +7,6 @@
   var Entity = wrect.ECS.Entity;
   var KeyMap = wrect.Core.Constants.KeyMap;
   var Input = wrect.Core.Constants.Input;
-  var Vector3 = wrect.Physics.Vector3;
 
   wrect.Bundles.ProtoTitan.TitanControl = wrect.Bundles.ProtoTitan.TitanControl || {};
 
@@ -132,7 +131,7 @@
     var marker;
 
     controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
-      //mouseAction(values);
+      //selectObjects(values);
     };
 
     function selectObjects(values) {
