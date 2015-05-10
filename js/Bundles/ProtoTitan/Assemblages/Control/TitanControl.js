@@ -134,6 +134,14 @@
       //selectObjects(values);
     };
 
+    controlMap.controls[ranges.CURSOR.CLICK] = function(entity, values) {
+      if (!controlMap.modes.MARKER) {
+        return;
+      }
+
+      selectObjects(values);
+    };
+
     function selectObjects(values) {
       var raycaster = new THREE.Raycaster();
       var pos = new THREE.Vector2();
@@ -171,14 +179,6 @@
       //});
       //game.getEntityManager().addEntity(block.entity);
     }
-
-    controlMap.controls[ranges.CURSOR.CLICK] = function(entity, values) {
-      if (!controlMap.modes.MARKER) {
-        return;
-      }
-
-      selectObjects(values);
-    };
 
     this.entity.addComponent(rawInputMap);
     this.entity.addComponent(contextMap);

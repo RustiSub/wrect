@@ -19,18 +19,18 @@
         2000: {
           perform: function (entity) {
             console.log('action op 1000 triggered');
-            entity.components.RigidBody.physicsBody.f = entity.components.RigidBody.physicsBody.f.add(new Vector(15, -50));
-            entity.components.Visual.options.color = (Math.random()*0xFFFFFF<<0);
-            entity.components.Visual.draw(entity.components.RigidBody.dimensions.origin);
+            //entity.components.RigidBody.physicsBody.f = entity.components.RigidBody.physicsBody.f.add(new Vector(15, -50));
+            //entity.components.Visual.options.color = (Math.random()*0xFFFFFF<<0);
+            //entity.components.Visual.draw(entity.components.RigidBody.dimensions.origin);
           },
           state: 0
         },
         2500: {
           perform: function (entity) {
             console.log('action op 3000 triggered');
-            entity.components.RigidBody.physicsBody.f = entity.components.RigidBody.physicsBody.f.add(new Vector(50, 0));
-            entity.components.Visual.options.color = (Math.random()*0xFFFFFF<<0);
-            entity.components.Visual.draw(entity.components.RigidBody.dimensions.origin);
+            //entity.components.RigidBody.physicsBody.f = entity.components.RigidBody.physicsBody.f.add(new Vector(50, 0));
+            //entity.components.Visual.options.color = (Math.random()*0xFFFFFF<<0);
+            //entity.components.Visual.draw(entity.components.RigidBody.dimensions.origin);
           },
           state: 0
         }

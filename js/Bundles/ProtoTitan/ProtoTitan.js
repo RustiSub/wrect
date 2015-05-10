@@ -119,7 +119,7 @@
       dimension: new Vector3(15, 30, 50),
       material:  new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
       renderer: game.getRenderer(),
-      eventManager: game.getEventManager(),
+      eventManager: game.getEventManager()
     });
 
     game.getEntityManager().addEntity(player.entity);
@@ -190,6 +190,16 @@
       system: new wrect.ECS.System.Map.TileSelector(
         {
           game: this.game,
+          eventManager: this.game.getEventManager()
+        }
+      )
+    };
+
+    this.game.systems.pre.ActionHandler = {
+      system: new wrect.ECS.System.ActionHandler(
+        {
+          game: this.game,
+          gameTime: this.game.getGameTime(),
           eventManager: this.game.getEventManager()
         }
       )
