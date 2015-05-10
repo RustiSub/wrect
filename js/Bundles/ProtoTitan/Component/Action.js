@@ -9,6 +9,14 @@
 
     this.options = options || {};
 
+    //this.eventTriggers = options.eventTriggers;
+    //
+    //for(var triggerIndex in this.eventTriggers) if(this.eventTriggers.hasOwnProperty(triggerIndex)) {
+    //  this.eventManager.addListener(this.eventTriggers[triggerIndex], function() {
+    //
+    //  }, this);
+    //}
+
     this.updateTick = options.updateTick || {};
     this.updateCallback = options.updateCallback || {};
     this.startCallback = options.startCallback  || {};

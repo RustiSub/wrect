@@ -26,6 +26,8 @@
 
     this.setupGrid();
 
+    this.setupActions();
+
     this.game.getRenderer().render();
   };
 
@@ -204,5 +206,17 @@
         }
       )
     };
+  };
+
+  wrect.Bundles.ProtoTitan.prototype.setupActions = function() {
+    //var moveAction = new wrect.ECS.Assemblage.MoveAction({
+    //  eventManager: game.getEventManager()
+    //});
+
+    //game.getEventManager().trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
+    //  entity: moveAction.entity
+    //});
+
+    //this.game.getEntityManager().addEntity(moveAction.entity);
   };
 }());

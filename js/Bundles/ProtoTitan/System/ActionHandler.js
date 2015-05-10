@@ -7,6 +7,15 @@
 
   var Vector = wrect.Physics.Vector;
 
+  wrect.Bundles.ProtoTitan.Actions = wrect.Bundles.ProtoTitan.Actions || {};
+  var actions = wrect.Bundles.ProtoTitan.Actions;
+
+  actions.Constants = {
+    START: 'action.start',
+    UPDATE: 'action.update',
+    STOP: 'action.stop'
+  };
+
   wrect.ECS.System.ActionHandler = function (options) {
     wrect.ECS.System.BaseSystem.call(this, options);
 
@@ -14,9 +23,9 @@
     this.eventManager = this.options.eventManager;
     this.gameTime = this.options.gameTime;
 
-    this.eventManager.addListener('action.start', this.start, this);
-    this.eventManager.addListener('action.update', this.update, this);
-    this.eventManager.addListener('action.stop', this.stop, this);
+    this.eventManager.addListener(actions.Constants.START, this.start, this);
+    this.eventManager.addListener(actions.Constants.UPDATE, this.update, this);
+    this.eventManager.addListener(actions.Constants.STOP, this.stop, this);
   };
 
   wrect.ECS.System.ActionHandler.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -32,15 +41,16 @@
     var queue = entity.components.Action.queue;
     for(var actionIndex in queue) if(queue.hasOwnProperty(actionIndex)) {
       var queuedAction = queue[actionIndex];
-      this.call(queuedAction);
+      queuedAction();
 
-      entity.queue.splice(entity.queue.indexOf(queuedAction), 1);
+      queue.splice(queue.indexOf(queuedAction), 1);
     }
   };
 
   wrect.ECS.System.ActionHandler.prototype.start = function(eventData) {
-    if (this.hasEntity(eventData.entity)) {
-      this.queue.push(eventData.entity.components.Action.startCallback);
+    var entity = eventData.entity;
+    if (this.hasEntity(entity)) {
+      entity.components.Action.queue.push(entity.components.Action.startCallback);
     }
   };
 
@@ -56,7 +66,7 @@
     }
   };
 
-  wrect.ECS.System.ActionHandler.prototype.hasEntity = function() {
+  wrect.ECS.System.ActionHandler.prototype.hasEntity = function(entity) {
     return this.entities.indexOf(entity) !== -1
   };
 }());

@@ -48,6 +48,7 @@
    */
   wrect.ECS.Assemblage.TitanControl = function (options) {
     this.entity = new Entity({eventManager: options.eventManager});
+    var entity = this.entity;
 
     var rawInputMap = new wrect.ECS.Component.Input.RawInputMap({
       keys: [
@@ -76,22 +77,18 @@
       state: 0,
       values: {}
     };
-
     contextMap.states[KeyMap.NUMPAD_8] = {
       action: states.MOVE.FORWARD,
       values: {}
     };
-
     contextMap.actions[KeyMap.SHIFT] = {
       action: states.TOGGLE.MARKER_MODE,
       values: {}
     };
-
     contextMap.ranges[Input.CURSOR] = {
       action: ranges.CURSOR.DISPLAY,
       values: {}
     };
-
     contextMap.ranges[Input.CLICK] = {
       action: ranges.CURSOR.CLICK,
       values: {}
@@ -107,33 +104,25 @@
     controlMap.controls[actions.SPEAK] = function() {
       console.log('Player voice action enabled...');
     };
-
     controlMap.controls[states.MOVE.FORWARD] = function() {
-      console.log('Trying to move forward ... engine not yet installed');
-    };
+      console.log('One step forward');
 
+      options.eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
+        entity: entity
+      });
+    };
     controlMap.controls[states.TOGGLE.MARKER_MODE] = function(entity) {
       controlMap.modes.VIEW = !controlMap.modes.VIEW;
       controlMap.modes.MARKER = !controlMap.modes.MARKER;
 
       console.log('Cursor mode: ', controlMap.modes);
     };
-
     controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values, action) {
       console.log('Display target reticule ...', values);
     };
-
-    var camera = options.camera;
-    var entityManager = options.entityManager;
-    var eventManager = options.eventManager;
-    var renderer = options.renderer;
-    var sceneManager = options.sceneManager;
-    var marker;
-
     controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
       //selectObjects(values);
     };
-
     controlMap.controls[ranges.CURSOR.CLICK] = function(entity, values) {
       if (!controlMap.modes.MARKER) {
         return;
@@ -143,6 +132,10 @@
     };
 
     function selectObjects(values) {
+      var camera = options.camera;
+      var eventManager = options.eventManager;
+      var sceneManager = options.sceneManager;
+
       var raycaster = new THREE.Raycaster();
       var pos = new THREE.Vector2();
       pos.x = ( values.x / window.innerWidth ) * 2 - 1;
@@ -183,5 +176,35 @@
     this.entity.addComponent(rawInputMap);
     this.entity.addComponent(contextMap);
     this.entity.addComponent(controlMap);
+
+    var moveAction = new wrect.ECS.Component.Action({
+      updateTick: {},
+      updateCallback: function() {
+        console.log('move action: update');
+      },
+      startCallback: function() {
+        console.log('move action: start');
+      },
+      stopCallback: function() {
+        console.log('move action: stop');
+      }
+    });
+
+    this.entity.addComponent(moveAction);
+
+    var speakAction = new wrect.ECS.Component.Action({
+      updateTick: {},
+      updateCallback: function() {
+        console.log('speak action: update');
+      },
+      startCallback: function() {
+        console.log('speak action: start');
+      },
+      stopCallback: function() {
+        console.log('speak action: stop');
+      }
+    });
+
+    this.entity.addComponent(speakAction);
   };
 }());
