@@ -17,7 +17,8 @@
    * @constructor
    */
   wrect.ECS.Assemblage.Player.Titan = function (options) {
-    this.entity = new Entity({eventManager: options.eventManager});
+    var eventManager = options.eventManager;
+    this.entity = new Entity({eventManager: eventManager});
 
     var rigidBody = new wrect.ECS.Component.RigidBody({
       dimensions: new Rectangle({
@@ -35,11 +36,51 @@
       renderer: options.renderer
     });
 
-    //rigidBody.dimensions.origin = new Vector3(0, 0, 25);
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
 
-    options.eventManager.addListener('titan_control.tile_changed', function(entityData) {
+    var playerEntity = this.entity;
+
+    var moveAction = new wrect.ECS.Component.Action({
+      initCallback: function() {
+        console.log('Setup listening to action: ', wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions.MOVE.FORWARD);
+        eventManager.addListener(wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions.MOVE.FORWARD, function() {
+          console.log('Action caught from the airwave ... Queue the action');
+
+          eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
+            entity: playerEntity
+          });
+        });
+      },
+      startCallback: function(data) {
+        console.log('*the movement engine kicks and screams as the pistons come to life*');
+
+        var rigidBody = data.entity.components.RigidBody;
+
+        rigidBody.dimensions.origin.x += 10;
+        rigidBody.gridCoord = rigidBody.gridCoord || new Vector(0, 0, 0);
+
+        rigidBody.gridCoord.x += 1;
+        rigidBody.gridCoord.z -= 1;
+
+        var size = 50;
+        var width = (size * 1.5);
+        var height = (size * 2 * (Math.sqrt(3) / 2));
+        var coord = new Vector3(
+            rigidBody.gridCoord.x * width,
+            rigidBody.gridCoord.y * height +
+            (rigidBody.gridCoord.x * (height/ 2)),
+            5
+        );
+
+        data.entity.components.RigidBody.dimensions.origin.x = coord.x;
+        data.entity.components.RigidBody.dimensions.origin.y = coord.y;
+      }
+    });
+
+    this.entity.addComponent(moveAction);
+
+    eventManager.addListener('titan_control.tile_changed', function(entityData) {
       if (this.entity.components.RigidBody.dimensions.origin.x !== entityData.coord.x ||
         this.entity.components.RigidBody.dimensions.origin.y !== entityData.coord.y) {
         this.move(entityData.coord);

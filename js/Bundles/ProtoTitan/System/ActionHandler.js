@@ -41,7 +41,7 @@
     var queue = entity.components.Action.queue;
     for(var actionIndex in queue) if(queue.hasOwnProperty(actionIndex)) {
       var queuedAction = queue[actionIndex];
-      queuedAction();
+      queuedAction.callback(queuedAction.data);
 
       queue.splice(queue.indexOf(queuedAction), 1);
     }
@@ -50,7 +50,12 @@
   wrect.ECS.System.ActionHandler.prototype.start = function(eventData) {
     var entity = eventData.entity;
     if (this.hasEntity(entity)) {
-      entity.components.Action.queue.push(entity.components.Action.startCallback);
+      entity.components.Action.queue.push(
+          {
+            callback: entity.components.Action.startCallback,
+            data: eventData
+          }
+      );
     }
   };
 

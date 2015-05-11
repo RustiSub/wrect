@@ -9,13 +9,7 @@
 
     this.options = options || {};
 
-    //this.eventTriggers = options.eventTriggers;
-    //
-    //for(var triggerIndex in this.eventTriggers) if(this.eventTriggers.hasOwnProperty(triggerIndex)) {
-    //  this.eventManager.addListener(this.eventTriggers[triggerIndex], function() {
-    //
-    //  }, this);
-    //}
+    this.initCallback = options.initCallback || {};
 
     this.updateTick = options.updateTick || {};
     this.updateCallback = options.updateCallback || {};
@@ -23,6 +17,8 @@
     this.stopCallback = options.stopCallback  || {};
 
     this.queue = [];
+
+    this.initCallback();
   };
 
   wrect.ECS.Component.Action.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

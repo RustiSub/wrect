@@ -16,11 +16,14 @@
   titanControl.Constants = titanControl.TitanControl || {};
   titanControl.Constants = {
     Actions: {
-      SPEAK: 'SPEAK'
+      SPEAK: 'SPEAK',
+      MOVE : {
+        FORWARD: 'titan_control.actions.move.forward'
+      }
     },
     States: {
       MOVE : {
-        FORWARD: 'FORWARD',
+        FORWARD: 'titan_control.states.move.forward',
         BACK: 'BACK',
         LEFT: 'LEFT',
         RIGHT: 'RIGHT'
@@ -77,8 +80,8 @@
       state: 0,
       values: {}
     };
-    contextMap.states[KeyMap.NUMPAD_8] = {
-      action: states.MOVE.FORWARD,
+    contextMap.actions[KeyMap.NUMPAD_8] = {
+      action: actions.MOVE.FORWARD,
       values: {}
     };
     contextMap.actions[KeyMap.SHIFT] = {
@@ -104,10 +107,10 @@
     controlMap.controls[actions.SPEAK] = function() {
       console.log('Player voice action enabled...');
     };
-    controlMap.controls[states.MOVE.FORWARD] = function() {
-      console.log('One step forward');
+    controlMap.controls[actions.MOVE.FORWARD] = function() {
+      console.log('Control accepted: ', actions.MOVE.FORWARD);
 
-      options.eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
+      options.eventManager.trigger(actions.MOVE.FORWARD, {
         entity: entity
       });
     };
@@ -176,35 +179,5 @@
     this.entity.addComponent(rawInputMap);
     this.entity.addComponent(contextMap);
     this.entity.addComponent(controlMap);
-
-    var moveAction = new wrect.ECS.Component.Action({
-      updateTick: {},
-      updateCallback: function() {
-        console.log('move action: update');
-      },
-      startCallback: function() {
-        console.log('move action: start');
-      },
-      stopCallback: function() {
-        console.log('move action: stop');
-      }
-    });
-
-    this.entity.addComponent(moveAction);
-
-    var speakAction = new wrect.ECS.Component.Action({
-      updateTick: {},
-      updateCallback: function() {
-        console.log('speak action: update');
-      },
-      startCallback: function() {
-        console.log('speak action: start');
-      },
-      stopCallback: function() {
-        console.log('speak action: stop');
-      }
-    });
-
-    this.entity.addComponent(speakAction);
   };
 }());

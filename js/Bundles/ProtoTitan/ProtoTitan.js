@@ -26,7 +26,7 @@
 
     this.setupGrid();
 
-    this.setupActions();
+    this.setupPlayer();
 
     this.game.getRenderer().render();
   };
@@ -115,16 +115,6 @@
       frozen: 1,
       material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
     });
-
-    var player = new wrect.ECS.Assemblage.Player.Titan({
-      position: new Vector3(0, 0, 25),
-      dimension: new Vector3(15, 30, 50),
-      material:  new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
-      renderer: game.getRenderer(),
-      eventManager: game.getEventManager()
-    });
-
-    game.getEntityManager().addEntity(player.entity);
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupCamera = function() {
@@ -208,15 +198,15 @@
     };
   };
 
-  wrect.Bundles.ProtoTitan.prototype.setupActions = function() {
-    //var moveAction = new wrect.ECS.Assemblage.MoveAction({
-    //  eventManager: game.getEventManager()
-    //});
+  wrect.Bundles.ProtoTitan.prototype.setupPlayer = function() {
+    var player = new wrect.ECS.Assemblage.Player.Titan({
+      position: new Vector3(0, 0, 25),
+      dimension: new Vector3(15, 30, 50),
+      material:  new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
+      renderer: game.getRenderer(),
+      eventManager: game.getEventManager()
+    });
 
-    //game.getEventManager().trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
-    //  entity: moveAction.entity
-    //});
-
-    //this.game.getEntityManager().addEntity(moveAction.entity);
+    game.getEntityManager().addEntity(player.entity);
   };
 }());
