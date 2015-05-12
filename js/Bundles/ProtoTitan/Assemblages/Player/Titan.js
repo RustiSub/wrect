@@ -50,8 +50,8 @@
     this.setupMoves();
 
     this.entity.eventManager.addListener('titan_control.tile_changed', function(entityData) {
-      if (this.entity.components.RigidBody.dimensions.origin.x !== entityData.coord.x ||
-        this.entity.components.RigidBody.dimensions.origin.y !== entityData.coord.y) {
+      if (this.entity.components.Coord.targetCoord.x !== entityData.coord.x ||
+          this.entity.components.Coord.targetCoord.y !== entityData.coord.y) {
         this.move(entityData.coord);
       } else {
         this.rotate();
@@ -87,8 +87,8 @@
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.move = function(coord) {
-    this.entity.components.RigidBody.dimensions.origin.x = coord.x;
-    this.entity.components.RigidBody.dimensions.origin.y = coord.y;
+    var visual = this.entity.components.Visual;
+    visual.setPosition(coord.x, coord.y, visual.graphics.position.z);
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.rotate = function() {
