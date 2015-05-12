@@ -17,70 +17,39 @@
    * @constructor
    */
   wrect.ECS.Assemblage.Player.Titan = function (options) {
-    var eventManager = options.eventManager;
-    this.entity = new Entity({eventManager: eventManager});
+    this.entity = new Entity({eventManager: options.eventManager});
 
-    var rigidBody = new wrect.ECS.Component.RigidBody({
-      dimensions: new Rectangle({
-        origin: options.position,
-        dimension: options.dimension,
-        material: options.material
-      }),
-      frozen: options.frozen
-    });
+    //var rigidBody = new wrect.ECS.Component.RigidBody({
+    //  dimensions: new Rectangle({
+    //    origin: options.position,
+    //    dimension: options.dimension,
+    //    material: options.material
+    //  }),
+    //  frozen: options.frozen
+    //});
+    //this.entity.addComponent(rigidBody);
+
     var visualComponent = new wrect.ECS.Component.Visual({
       color: options.color,
       alpha: options.alpha,
       useSprite: options.useSprite,
-      shape: rigidBody.dimensions,
+      shape: new Rectangle({
+        origin: options.position,
+        dimension: options.dimension,
+        material: options.material
+      }),
       renderer: options.renderer
     });
-
-    this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
 
-    var playerEntity = this.entity;
+    this.entity.addComponent(new wrect.ECS.Component.Map.Coord({
+      coord: new Vector3(0, 0, 0),
+      size: 50
+    }));
 
-    var moveAction = new wrect.ECS.Component.Action({
-      initCallback: function() {
-        console.log('Setup listening to action: ', wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions.MOVE.FORWARD);
-        eventManager.addListener(wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions.MOVE.FORWARD, function() {
-          console.log('Action caught from the airwave ... Queue the action');
+    this.setupMoves();
 
-          eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
-            entity: playerEntity
-          });
-        });
-      },
-      startCallback: function(data) {
-        console.log('*the movement engine kicks and screams as the pistons come to life*');
-
-        var rigidBody = data.entity.components.RigidBody;
-
-        rigidBody.dimensions.origin.x += 10;
-        rigidBody.gridCoord = rigidBody.gridCoord || new Vector(0, 0, 0);
-
-        rigidBody.gridCoord.x += 1;
-        rigidBody.gridCoord.z -= 1;
-
-        var size = 50;
-        var width = (size * 1.5);
-        var height = (size * 2 * (Math.sqrt(3) / 2));
-        var coord = new Vector3(
-            rigidBody.gridCoord.x * width,
-            rigidBody.gridCoord.y * height +
-            (rigidBody.gridCoord.x * (height/ 2)),
-            5
-        );
-
-        data.entity.components.RigidBody.dimensions.origin.x = coord.x;
-        data.entity.components.RigidBody.dimensions.origin.y = coord.y;
-      }
-    });
-
-    this.entity.addComponent(moveAction);
-
-    eventManager.addListener('titan_control.tile_changed', function(entityData) {
+    this.entity.eventManager.addListener('titan_control.tile_changed', function(entityData) {
       if (this.entity.components.RigidBody.dimensions.origin.x !== entityData.coord.x ||
         this.entity.components.RigidBody.dimensions.origin.y !== entityData.coord.y) {
         this.move(entityData.coord);
@@ -88,6 +57,33 @@
         this.rotate();
       }
     }, this);
+  };
+
+  wrect.ECS.Assemblage.Player.Titan.prototype.setupMoves = function() {
+    var entity = this.entity;
+
+    function createMove(command, moveVector) {
+      var playerEntity = entity;
+      var eventManager = playerEntity.eventManager;
+      var moveAction = new wrect.ECS.Component.Action({
+        initCallback: function () {
+          eventManager.addListener(command, function () {
+            eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
+              entity: playerEntity
+            });
+          });
+        },
+        startCallback: function (data) {
+          data.entity.components.Coord.targetCoord.x += moveVector.x;
+          data.entity.components.Coord.targetCoord.y += moveVector.y;
+          data.entity.components.Coord.targetCoord.z += moveVector.z;
+        }
+      });
+      entity.addComponent(moveAction);
+    }
+
+    createMove(wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions.MOVE.BACKWARD, new Vector3(-1, 0, 1));
+    createMove(wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions.MOVE.FORWARD, new Vector3(1, 0, -1));
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.move = function(coord) {

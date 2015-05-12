@@ -18,7 +18,8 @@
     Actions: {
       SPEAK: 'SPEAK',
       MOVE : {
-        FORWARD: 'titan_control.actions.move.forward'
+        FORWARD: 'titan_control.actions.move.forward',
+        BACKWARD: 'titan_control.actions.move.backward'
       }
     },
     States: {
@@ -84,6 +85,10 @@
       action: actions.MOVE.FORWARD,
       values: {}
     };
+    contextMap.actions[KeyMap.NUMPAD_2] = {
+      action: actions.MOVE.BACKWARD,
+      values: {}
+    };
     contextMap.actions[KeyMap.SHIFT] = {
       action: states.TOGGLE.MARKER_MODE,
       values: {}
@@ -108,9 +113,12 @@
       console.log('Player voice action enabled...');
     };
     controlMap.controls[actions.MOVE.FORWARD] = function() {
-      console.log('Control accepted: ', actions.MOVE.FORWARD);
-
       options.eventManager.trigger(actions.MOVE.FORWARD, {
+        entity: entity
+      });
+    };
+    controlMap.controls[actions.MOVE.BACKWARD] = function() {
+      options.eventManager.trigger(actions.MOVE.BACKWARD, {
         entity: entity
       });
     };

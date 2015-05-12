@@ -23,7 +23,7 @@
   wrect.ECS.System.Map.TileSelector.prototype.name = 'TileSelector';
 
   wrect.ECS.System.Map.TileSelector.prototype.checkDependencies = function(entity) {
-    return entity.components.Selectable && entity.components.Tile && entity.components.Grid ? true : false;
+    return entity.components.Selectable && entity.components.Coord && entity.components.Grid ? true : false;
   };
 
   wrect.ECS.System.Map.TileSelector.prototype.perform = function(entity) {
@@ -35,14 +35,14 @@
 
     //this.eventManager.trigger('titan_control.selected_tile_clicked', {
     //  entity: entity,
-    //  coord: entity.components.Grid.getTileCoord(entity.components.Tile.coord)
+    //  coord: entity.components.Grid.getTileCoord(entity.components.Coord.coord)
     //});
 
     selectable.changed = false;
 
     this.eventManager.trigger('titan_control.tile_changed', {
       entity: entity,
-      coord: entity.components.Grid.getTileCoord(entity.components.Tile.coord)
+      coord: entity.components.Grid.getTileCoord(entity.components.Coord.coord)
     });
 
     if (selectable.selected) {

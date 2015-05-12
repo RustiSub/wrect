@@ -17,7 +17,7 @@
     console.log('ProtoTitan setup...');
 
     this.setupCamera();
-    this.setupScene();
+    //this.setupScene();
     this.buildWorld();
     this.registerSystems();
 
@@ -194,6 +194,16 @@
           gameTime: this.game.getGameTime(),
           eventManager: this.game.getEventManager()
         }
+      )
+    };
+
+    this.game.systems.post.GridMover = {
+      system: new wrect.ECS.System.Map.GridMover(
+          {
+            game: this.game,
+            gameTime: this.game.getGameTime(),
+            eventManager: this.game.getEventManager()
+          }
       )
     };
   };
