@@ -34,25 +34,30 @@
   wrect.ECS.System.ActionHandler.prototype.name = 'ActionHandler';
 
   wrect.ECS.System.ActionHandler.prototype.checkDependencies = function(entity) {
-    return entity.components.Action ? true : false;
+    return entity.components.ActionCollection ? true : false;
   };
 
   wrect.ECS.System.ActionHandler.prototype.perform = function(entity) {
-    var queue = entity.components.Action.queue;
-    for(var actionIndex in queue) if(queue.hasOwnProperty(actionIndex)) {
-      var queuedAction = queue[actionIndex];
-      queuedAction.callback(queuedAction.data);
+    var actions = entity.components.ActionCollection.actions;
+    for(var actionIndex in actions) if (actions.hasOwnProperty(actionIndex)) {
+      var action = actions[actionIndex];
+      var queue = action.queue;
+      for(var callbackIndex in queue) if(queue.hasOwnProperty(callbackIndex)) {
+        var queuedAction = queue[callbackIndex];
+        queuedAction.callback(queuedAction.data);
 
-      queue.splice(queue.indexOf(queuedAction), 1);
+        queue.splice(queue.indexOf(queuedAction), 1);
+      }
     }
   };
 
   wrect.ECS.System.ActionHandler.prototype.start = function(eventData) {
     var entity = eventData.entity;
-    if (this.hasEntity(entity)) {
-      entity.components.Action.queue.push(
+    if (this.hasEntity(entity) && this.hasAction(entity, eventData.action)) {
+
+      eventData.action.queue.push(
           {
-            callback: entity.components.Action.startCallback,
+            callback: eventData.action.startCallback,
             data: eventData
           }
       );
@@ -73,5 +78,9 @@
 
   wrect.ECS.System.ActionHandler.prototype.hasEntity = function(entity) {
     return this.entities.indexOf(entity) !== -1
+  };
+
+  wrect.ECS.System.ActionHandler.prototype.hasAction = function(entity, action) {
+    return entity.components.ActionCollection.actions.indexOf(action) !== -1;
   };
 }());

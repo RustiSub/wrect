@@ -18,8 +18,18 @@
     Actions: {
       SPEAK: 'SPEAK',
       MOVE : {
-        FORWARD: 'titan_control.actions.move.forward',
-        BACKWARD: 'titan_control.actions.move.backward'
+        X: {
+          FORWARD: 'titan_control.actions.move.x.forward',
+          BACKWARD: 'titan_control.actions.move.x.backward'
+        },
+        Y: {
+          FORWARD: 'titan_control.actions.move.y.forward',
+          BACKWARD: 'titan_control.actions.move.y.backward'
+        },
+        Z: {
+          FORWARD: 'titan_control.actions.move.z.forward',
+          BACKWARD: 'titan_control.actions.move.z.backward'
+        }
       }
     },
     States: {
@@ -82,11 +92,27 @@
       values: {}
     };
     contextMap.actions[KeyMap.NUMPAD_8] = {
-      action: actions.MOVE.FORWARD,
+      action: actions.MOVE.Y.FORWARD,
       values: {}
     };
     contextMap.actions[KeyMap.NUMPAD_2] = {
-      action: actions.MOVE.BACKWARD,
+      action: actions.MOVE.Y.BACKWARD,
+      values: {}
+    };
+    contextMap.actions[KeyMap.NUMPAD_9] = {
+      action: actions.MOVE.X.FORWARD,
+      values: {}
+    };
+    contextMap.actions[KeyMap.NUMPAD_1] = {
+      action: actions.MOVE.X.BACKWARD,
+      values: {}
+    };
+    contextMap.actions[KeyMap.NUMPAD_7] = {
+      action: actions.MOVE.Z.FORWARD,
+      values: {}
+    };
+    contextMap.actions[KeyMap.NUMPAD_3] = {
+      action: actions.MOVE.Z.BACKWARD,
       values: {}
     };
     contextMap.actions[KeyMap.SHIFT] = {
@@ -112,16 +138,23 @@
     controlMap.controls[actions.SPEAK] = function() {
       console.log('Player voice action enabled...');
     };
-    controlMap.controls[actions.MOVE.FORWARD] = function() {
-      options.eventManager.trigger(actions.MOVE.FORWARD, {
-        entity: entity
-      });
-    };
-    controlMap.controls[actions.MOVE.BACKWARD] = function() {
-      options.eventManager.trigger(actions.MOVE.BACKWARD, {
-        entity: entity
-      });
-    };
+
+    function setMovementControl(key) {
+      controlMap.controls[key] = function() {
+        options.eventManager.trigger(key, {
+          entity: entity
+        });
+      };
+    }
+
+    setMovementControl(actions.MOVE.X.FORWARD);
+    setMovementControl(actions.MOVE.X.BACKWARD);
+    setMovementControl(actions.MOVE.Y.FORWARD);
+    setMovementControl(actions.MOVE.Y.BACKWARD);
+    setMovementControl(actions.MOVE.Z.FORWARD);
+    setMovementControl(actions.MOVE.Z.BACKWARD);
+
+
     controlMap.controls[states.TOGGLE.MARKER_MODE] = function(entity) {
       controlMap.modes.VIEW = !controlMap.modes.VIEW;
       controlMap.modes.MARKER = !controlMap.modes.MARKER;

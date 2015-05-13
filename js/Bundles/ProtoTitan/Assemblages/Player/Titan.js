@@ -61,15 +61,20 @@
 
   wrect.ECS.Assemblage.Player.Titan.prototype.setupMoves = function() {
     var entity = this.entity;
+    var actions = new wrect.ECS.Component.ActionCollection({});
+    var actionConstants = wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions;
 
     function createMove(command, moveVector) {
       var playerEntity = entity;
       var eventManager = playerEntity.eventManager;
-      var moveAction = new wrect.ECS.Component.Action({
+
+      return new wrect.ECS.Component.Action({
         initCallback: function () {
+          var action = this;
           eventManager.addListener(command, function () {
             eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
-              entity: playerEntity
+              entity: playerEntity,
+              action: action
             });
           });
         },
@@ -79,11 +84,18 @@
           data.entity.components.Coord.targetCoord.z += moveVector.z;
         }
       });
-      entity.addComponent(moveAction);
     }
 
-    createMove(wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions.MOVE.BACKWARD, new Vector3(-1, 0, 1));
-    createMove(wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions.MOVE.FORWARD, new Vector3(1, 0, -1));
+    actions.addAction(createMove(actionConstants.MOVE.X.FORWARD, new Vector3(1, 0, -1)));
+    actions.addAction(createMove(actionConstants.MOVE.X.BACKWARD, new Vector3(-1, 0, 1)));
+
+    actions.addAction(createMove(actionConstants.MOVE.Y.FORWARD, new Vector3(0, 1, -1)));
+    actions.addAction(createMove(actionConstants.MOVE.Y.BACKWARD, new Vector3(0, -1, 1)));
+
+    actions.addAction(createMove(actionConstants.MOVE.Z.FORWARD, new Vector3(-1, 1, 0)));
+    actions.addAction(createMove(actionConstants.MOVE.Z.BACKWARD, new Vector3(1, -1, 0)));
+
+    entity.addComponent(actions);
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.move = function(coord) {
