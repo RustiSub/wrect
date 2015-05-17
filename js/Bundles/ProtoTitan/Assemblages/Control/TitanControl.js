@@ -85,40 +85,17 @@
     });
 
     var contextMap = new wrect.ECS.Component.Input.ContextMap();
+    var ContextAction = wrect.ECS.Component.Input.ContextAction;
 
-    contextMap.actions[KeyMap.NUMPAD_5] = {
-      action: actions.SPEAK,
-      state: 0,
-      values: {}
-    };
-    contextMap.actions[KeyMap.NUMPAD_8] = {
-      action: actions.MOVE.Y.FORWARD,
-      values: {}
-    };
-    contextMap.actions[KeyMap.NUMPAD_2] = {
-      action: actions.MOVE.Y.BACKWARD,
-      values: {}
-    };
-    contextMap.actions[KeyMap.NUMPAD_9] = {
-      action: actions.MOVE.X.FORWARD,
-      values: {}
-    };
-    contextMap.actions[KeyMap.NUMPAD_1] = {
-      action: actions.MOVE.X.BACKWARD,
-      values: {}
-    };
-    contextMap.actions[KeyMap.NUMPAD_7] = {
-      action: actions.MOVE.Z.FORWARD,
-      values: {}
-    };
-    contextMap.actions[KeyMap.NUMPAD_3] = {
-      action: actions.MOVE.Z.BACKWARD,
-      values: {}
-    };
-    contextMap.actions[KeyMap.SHIFT] = {
-      action: states.TOGGLE.MARKER_MODE,
-      values: {}
-    };
+    contextMap.actions[KeyMap.NUMPAD_5] = new ContextAction({action: actions.SPEAK});
+    contextMap.actions[KeyMap.NUMPAD_8] = new ContextAction({action: actions.MOVE.Y.FORWARD});
+    contextMap.actions[KeyMap.NUMPAD_2] = new ContextAction({action: actions.MOVE.Y.BACKWARD});
+    contextMap.actions[KeyMap.NUMPAD_9] = new ContextAction({action: actions.MOVE.X.FORWARD});
+    contextMap.actions[KeyMap.NUMPAD_1] = new ContextAction({action: actions.MOVE.X.BACKWARD});
+    contextMap.actions[KeyMap.NUMPAD_7] = new ContextAction({action: actions.MOVE.Z.FORWARD});
+    contextMap.actions[KeyMap.NUMPAD_3] = new ContextAction({action: actions.MOVE.Z.BACKWARD});
+    contextMap.actions[KeyMap.SHIFT] = new ContextAction({action: states.TOGGLE.MARKER_MODE});
+
     contextMap.ranges[Input.CURSOR] = {
       action: ranges.CURSOR.DISPLAY,
       values: {}

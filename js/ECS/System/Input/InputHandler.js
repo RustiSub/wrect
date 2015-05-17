@@ -61,7 +61,7 @@
     if (releasedKey in contextMap.actions) {
       var action = contextMap.actions[releasedKey];
 
-      action.state = 0;
+      action.state = wrect.ECS.Component.Input.Constants.STATES.OFF;
     }
   };
 
@@ -69,9 +69,9 @@
     if (pressedKey in contextMap.actions) {
       var action = contextMap.actions[pressedKey];
 
-      if (action.state === 0) {
+      if (action.state === wrect.ECS.Component.Input.Constants.STATES.OFF) {
         controlMap.actions.push(action);
-        action.state = 1;
+        action.state = wrect.ECS.Component.Input.Constants.STATES.ON;
       }
     }
   };

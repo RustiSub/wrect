@@ -24,7 +24,6 @@
   wrect.ECS.System.ControlMapHandler.prototype.perform = function(entity) {
     var controls = entity.components.ControlMap.controls;
     var actions = entity.components.ControlMap.actions;
-
     for (var actionIndex in  actions) if (actions.hasOwnProperty(actionIndex)) {
       var action = actions[actionIndex];
       controls[action.action](entity, action.values);
