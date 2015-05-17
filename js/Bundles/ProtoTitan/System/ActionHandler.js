@@ -66,7 +66,6 @@
   wrect.ECS.System.ActionHandler.prototype.start = function(eventData) {
     var entity = eventData.entity;
     if (this.hasEntity(entity) && this.hasAction(entity, eventData.action)) {
-
       eventData.action.queue.push(
           {
             callback: eventData.action.tickCallback,

@@ -52,12 +52,12 @@
     this.move(new Vector3(0, 0, 0));
 
     this.entity.eventManager.addListener('titan_control.tile_changed', function(entityData) {
-      if (this.entity.components.Coord.targetCoord.x !== entityData.coord.x ||
-          this.entity.components.Coord.targetCoord.y !== entityData.coord.y) {
-        this.move(entityData.coord);
-      } else {
-        this.rotate();
-      }
+      //if (this.entity.components.Coord.targetCoord.x !== entityData.coord.x ||
+      //    this.entity.components.Coord.targetCoord.y !== entityData.coord.y) {
+      //  this.move(entityData.coord);
+      //} else {
+      //  this.rotate();
+      //}
     }, this);
   };
 
@@ -65,10 +65,9 @@
     var entity = this.entity;
     var actions = new wrect.ECS.Component.ActionCollection({});
     var actionConstants = wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions;
+    var eventManager = entity.eventManager;
 
     function createMove(command, moveVector) {
-      var playerEntity = entity;
-      var eventManager = playerEntity.eventManager;
 
       return new wrect.ECS.Component.Action({
         updateTick: 1000,
@@ -76,7 +75,7 @@
           var action = this;
           eventManager.addListener(command, function () {
             eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
-              entity: playerEntity,
+              entity: entity,
               action: action
             });
           });
@@ -93,7 +92,7 @@
           var directionVector = coord.getDirectionVector(coord.coord.add(moveVector));
           var totalDistance = directionVector.len();
 
-          var updateVector = directionVector.unitScalar(updatePercentage * 100);
+          var updateVector = directionVector.unitScalar(totalDistance * updatePercentage);
 
           visual.graphics.position.x += updateVector.x;
           visual.graphics.position.y += updateVector.y;
@@ -114,6 +113,45 @@
     actions.addAction(createMove(actionConstants.MOVE.Z.BACKWARD, new Vector3(1, -1, 0)));
 
     actions.addAction(createMove(actionConstants.MOVE.Z.BACKWARD, new Vector3(1, -1, 0)));
+
+    actions.addAction(new wrect.ECS.Component.Action({
+      updateTick: 1000,
+      initCallback: function () {
+        var action = this;
+        eventManager.addListener('titan_control.tile_changed', function (entityData) {
+          eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
+            entity: entity,
+            action: action,
+            coord: entityData.coord,
+            gridCoord: entityData.entity.components.Coord.coord
+          });
+        });
+      },
+      tickCallback: function (data) {
+        var entity = data.entity;
+        var coord = data.coord;
+
+        //var visual = entity.components.Visual;
+        //visual.setPosition(coord.x, coord.y, visual.graphics.position.z);
+
+        entity.components.Coord.targetCoord = new Vector3(data.gridCoord);
+        //entity.components.Coord.targetCoord = new Vector3(coord.x, coord.y, coord.z);
+      },
+      updateCallback: function (updatePercentage, data) {
+        var coord = data.entity.components.Coord;
+        var visual = data.entity.components.Visual;
+        var targetCoord = data.coord;
+        var directionVector = targetCoord.subtract(coord.getWorldCoord(coord.coord));
+        var totalDistance = directionVector.len();
+        var updateVector = directionVector.unitScalar(totalDistance * updatePercentage);
+        ////
+        visual.graphics.position.x += updateVector.x;
+        visual.graphics.position.y += updateVector.y;
+      },
+      stopCallback: function() {
+        return true;
+      }
+    }));
 
     entity.addComponent(actions);
   };
