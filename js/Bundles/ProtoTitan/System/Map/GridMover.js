@@ -26,18 +26,10 @@
     var coord = entity.components.Coord;
 
     if ((coord.targetCoord.x !== coord.coord.x) || (coord.targetCoord.y !== coord.coord.y) || (coord.targetCoord.z !== coord.coord.z)) {
-      var size = coord.size;
-      var width = (size * 1.5);
-      var height = (size * 2 * (Math.sqrt(3) / 2));
-      var realCoord = new Vector3(
-          coord.targetCoord.x * width,
-          coord.targetCoord.y * height +
-          (coord.targetCoord.x * (height/ 2)),
-          5
-      );
+      var worldCoord = coord.getWorldCoord(coord.targetCoord);
 
       var visual = entity.components.Visual;
-      visual.setPosition(realCoord.x, realCoord.y, visual.graphics.position.z);
+      visual.setPosition(worldCoord.x, worldCoord.y, visual.graphics.position.z);
       coord.coord.x = coord.targetCoord.x;
       coord.coord.y = coord.targetCoord.y;
       coord.coord.z = coord.targetCoord.z;

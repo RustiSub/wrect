@@ -49,6 +49,8 @@
 
     this.setupMoves();
 
+    this.move(new Vector3(0, 0, 0));
+
     this.entity.eventManager.addListener('titan_control.tile_changed', function(entityData) {
       if (this.entity.components.Coord.targetCoord.x !== entityData.coord.x ||
           this.entity.components.Coord.targetCoord.y !== entityData.coord.y) {
@@ -69,6 +71,7 @@
       var eventManager = playerEntity.eventManager;
 
       return new wrect.ECS.Component.Action({
+        updateTick: 1000,
         initCallback: function () {
           var action = this;
           eventManager.addListener(command, function () {
@@ -78,10 +81,25 @@
             });
           });
         },
-        startCallback: function (data) {
+        tickCallback: function (data) {
           data.entity.components.Coord.targetCoord.x += moveVector.x;
           data.entity.components.Coord.targetCoord.y += moveVector.y;
           data.entity.components.Coord.targetCoord.z += moveVector.z;
+        },
+        updateCallback: function (updatePercentage, data) {
+          var coord = data.entity.components.Coord;
+          var visual = data.entity.components.Visual;
+
+          var directionVector = coord.getDirectionVector(coord.coord.add(moveVector));
+          var totalDistance = directionVector.len();
+
+          var updateVector = directionVector.unitScalar(updatePercentage * 100);
+
+          visual.graphics.position.x += updateVector.x;
+          visual.graphics.position.y += updateVector.y;
+        },
+        stopCallback: function() {
+          return true;
         }
       });
     }
@@ -93,6 +111,8 @@
     actions.addAction(createMove(actionConstants.MOVE.Y.BACKWARD, new Vector3(0, -1, 1)));
 
     actions.addAction(createMove(actionConstants.MOVE.Z.FORWARD, new Vector3(-1, 1, 0)));
+    actions.addAction(createMove(actionConstants.MOVE.Z.BACKWARD, new Vector3(1, -1, 0)));
+
     actions.addAction(createMove(actionConstants.MOVE.Z.BACKWARD, new Vector3(1, -1, 0)));
 
     entity.addComponent(actions);

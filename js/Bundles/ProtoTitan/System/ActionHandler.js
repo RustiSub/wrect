@@ -24,8 +24,6 @@
     this.gameTime = this.options.gameTime;
 
     this.eventManager.addListener(actions.Constants.START, this.start, this);
-    this.eventManager.addListener(actions.Constants.UPDATE, this.update, this);
-    this.eventManager.addListener(actions.Constants.STOP, this.stop, this);
   };
 
   wrect.ECS.System.ActionHandler.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -41,12 +39,26 @@
     var actions = entity.components.ActionCollection.actions;
     for(var actionIndex in actions) if (actions.hasOwnProperty(actionIndex)) {
       var action = actions[actionIndex];
+
       var queue = action.queue;
       for(var callbackIndex in queue) if(queue.hasOwnProperty(callbackIndex)) {
         var queuedAction = queue[callbackIndex];
-        queuedAction.callback(queuedAction.data);
+        var action = queuedAction.data.action;
+        var updatePercentage = 1 - (action.countdown / (action.updateTick / 100)) / 100;
+        action.countdown -= this.gameTime.getDelta();
+        var percentageIncrease = (1 - (action.countdown / (action.updateTick / 100)) / 100) - updatePercentage;
 
-        queue.splice(queue.indexOf(queuedAction), 1);
+        if (action.countdown <= 0) {
+          queuedAction.callback(queuedAction.data);
+
+          action.countdown = action.updateTick;
+
+          if (action.stopCallback()) {
+            queue.splice(queue.indexOf(queuedAction), 1);
+          }
+        } else {
+          action.updateCallback(percentageIncrease, queuedAction.data);
+        }
       }
     }
   };
@@ -57,22 +69,10 @@
 
       eventData.action.queue.push(
           {
-            callback: eventData.action.startCallback,
+            callback: eventData.action.tickCallback,
             data: eventData
           }
       );
-    }
-  };
-
-  wrect.ECS.System.ActionHandler.prototype.update = function(eventData) {
-    if (this.hasEntity(eventData.entity)) {
-      this.queue.push(eventData.entity.components.Action.updateCallback);
-    }
-  };
-
-  wrect.ECS.System.ActionHandler.prototype.stop = function(eventData) {
-    if (this.hasEntity(eventData.entity)) {
-      this.queue.push(eventData.entity.components.Action.stopCallback);
     }
   };
 

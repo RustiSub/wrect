@@ -12,9 +12,13 @@
     this.initCallback = options.initCallback || {};
 
     this.updateTick = options.updateTick || {};
+    this.countdown = this.updateTick;
+
     this.updateCallback = options.updateCallback || {};
-    this.startCallback = options.startCallback  || {};
-    this.stopCallback = options.stopCallback  || {};
+    this.tickCallback = options.tickCallback || {};
+    this.stopCallback = options.stopCallback  || function() {
+      return true;
+    };
 
     this.queue = [];
 

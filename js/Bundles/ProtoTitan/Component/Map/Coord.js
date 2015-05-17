@@ -19,4 +19,28 @@
   wrect.ECS.Component.Map.Coord.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
   wrect.ECS.Component.Map.Coord.prototype.constructor = wrect.ECS.Component.Map.Coord;
   wrect.ECS.Component.Map.Coord.prototype.name = 'Coord';
+
+  wrect.ECS.Component.Map.Coord.prototype.getWorldCoord = function(coord) {
+    var size = this.size;
+    var width = (size * 1.5);
+    var height = (size * 2 * (Math.sqrt(3) / 2));
+
+    return new Vector3(
+      coord.x * width,
+      coord.y * height +
+      (coord.x * (height/ 2)),
+      5
+    );
+  };
+
+  /**
+   * @param moveVector
+   * @returns {wrect.Physics.Vector3|wrect.Physics.Vector}
+   */
+  wrect.ECS.Component.Map.Coord.prototype.getDirectionVector = function(moveVector) {
+    var currentCoord = this.getWorldCoord(this.coord);
+    var targetCoord = this.getWorldCoord(moveVector);
+
+    return targetCoord.subtract(currentCoord);
+  };
 }());
