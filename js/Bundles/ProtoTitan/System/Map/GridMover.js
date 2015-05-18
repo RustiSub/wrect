@@ -33,6 +33,8 @@
       coord.coord.x = coord.targetCoord.x;
       coord.coord.y = coord.targetCoord.y;
       coord.coord.z = coord.targetCoord.z;
+
+      coord.updateWorldCoords();
     }
   };
 }());

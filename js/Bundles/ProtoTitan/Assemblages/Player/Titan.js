@@ -112,39 +112,37 @@
     actions.addAction(createMove(actionConstants.MOVE.Z.FORWARD, new Vector3(-1, 1, 0)));
     actions.addAction(createMove(actionConstants.MOVE.Z.BACKWARD, new Vector3(1, -1, 0)));
 
-    actions.addAction(createMove(actionConstants.MOVE.Z.BACKWARD, new Vector3(1, -1, 0)));
-
     actions.addAction(new wrect.ECS.Component.Action({
       updateTick: 1000,
       initCallback: function () {
         var action = this;
         eventManager.addListener('titan_control.tile_changed', function (entityData) {
+          var marker = new wrect.ECS.Component.Map.Marker({
+            coord: entityData.entity.components.Coord
+          });
+
           eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
             entity: entity,
             action: action,
-            coord: entityData.coord,
-            gridCoord: entityData.entity.components.Coord.coord
+            marker: marker
           });
         });
       },
       tickCallback: function (data) {
         var entity = data.entity;
-        var coord = data.coord;
 
-        //var visual = entity.components.Visual;
-        //visual.setPosition(coord.x, coord.y, visual.graphics.position.z);
-
-        entity.components.Coord.targetCoord = new Vector3(data.gridCoord);
-        //entity.components.Coord.targetCoord = new Vector3(coord.x, coord.y, coord.z);
+        entity.components.Coord.targetCoord = new Vector3(data.marker.coord.coord);
       },
       updateCallback: function (updatePercentage, data) {
         var coord = data.entity.components.Coord;
         var visual = data.entity.components.Visual;
-        var targetCoord = data.coord;
-        var directionVector = targetCoord.subtract(coord.getWorldCoord(coord.coord));
+        var targetCoord = data.marker.coord.worldTargetCoord;
+
+        var directionVector = targetCoord.subtract(coord.worldCoord);
+
         var totalDistance = directionVector.len();
         var updateVector = directionVector.unitScalar(totalDistance * updatePercentage);
-        ////
+
         visual.graphics.position.x += updateVector.x;
         visual.graphics.position.y += updateVector.y;
       },

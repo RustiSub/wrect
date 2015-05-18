@@ -9,6 +9,8 @@
 
     this.options = options || {};
 
+    this.marker = options.marker || new wrect.ECS.Component.Map.Marker({});
+
     this.initCallback = options.initCallback || {};
 
     this.updateTick = options.updateTick || {};
