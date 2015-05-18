@@ -44,6 +44,7 @@
       for(var callbackIndex in queue) if(queue.hasOwnProperty(callbackIndex)) {
         var queuedAction = queue[callbackIndex];
         var action = queuedAction.data.action;
+
         var updatePercentage = 1 - (action.countdown / (action.updateTick / 100)) / 100;
         action.countdown -= this.gameTime.getDelta();
         var percentageIncrease = (1 - (action.countdown / (action.updateTick / 100)) / 100) - updatePercentage;

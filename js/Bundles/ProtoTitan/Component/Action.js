@@ -30,4 +30,9 @@
   wrect.ECS.Component.Action.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
   wrect.ECS.Component.Action.prototype.constructor = wrect.ECS.Component.Action;
   wrect.ECS.Component.Action.prototype.name = 'Action';
+
+  wrect.ECS.Component.Action.prototype.setUpdateTick = function(updateTick) {
+    this.updateTick = updateTick;
+    this.countdown = this.updateTick;
+  };
 }());
