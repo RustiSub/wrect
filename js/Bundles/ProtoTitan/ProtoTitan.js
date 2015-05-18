@@ -17,7 +17,7 @@
     console.log('ProtoTitan setup...');
 
     this.setupCamera();
-    //this.setupScene();
+    this.setupScene();
     this.buildWorld();
     this.registerSystems();
 
