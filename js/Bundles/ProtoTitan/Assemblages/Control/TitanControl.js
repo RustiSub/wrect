@@ -7,7 +7,6 @@
   var Entity = wrect.ECS.Entity;
   var KeyMap = wrect.Core.Constants.KeyMap;
   var Input = wrect.Core.Constants.Input;
-  var Vector3 = wrect.Physics.Vector3;
 
   wrect.Bundles.ProtoTitan.TitanControl = wrect.Bundles.ProtoTitan.TitanControl || {};
 
@@ -17,11 +16,25 @@
   titanControl.Constants = titanControl.TitanControl || {};
   titanControl.Constants = {
     Actions: {
-      SPEAK: 'SPEAK'
+      SPEAK: 'SPEAK',
+      MOVE : {
+        X: {
+          FORWARD: 'titan_control.actions.move.x.forward',
+          BACKWARD: 'titan_control.actions.move.x.backward'
+        },
+        Y: {
+          FORWARD: 'titan_control.actions.move.y.forward',
+          BACKWARD: 'titan_control.actions.move.y.backward'
+        },
+        Z: {
+          FORWARD: 'titan_control.actions.move.z.forward',
+          BACKWARD: 'titan_control.actions.move.z.backward'
+        }
+      }
     },
     States: {
       MOVE : {
-        FORWARD: 'FORWARD',
+        FORWARD: 'titan_control.states.move.forward',
         BACK: 'BACK',
         LEFT: 'LEFT',
         RIGHT: 'RIGHT'
@@ -49,6 +62,7 @@
    */
   wrect.ECS.Assemblage.TitanControl = function (options) {
     this.entity = new Entity({eventManager: options.eventManager});
+    var entity = this.entity;
 
     var rawInputMap = new wrect.ECS.Component.Input.RawInputMap({
       keys: [
@@ -65,34 +79,27 @@
         KeyMap.SHIFT
       ],
       types: [
-          //Input.CURSOR,
+          Input.CURSOR,
           Input.CLICK
       ]
     });
 
     var contextMap = new wrect.ECS.Component.Input.ContextMap();
+    var ContextAction = wrect.ECS.Component.Input.ContextAction;
 
-    contextMap.actions[KeyMap.NUMPAD_5] = {
-      action: actions.SPEAK,
-      state: 0,
-      values: {}
-    };
-
-    contextMap.states[KeyMap.NUMPAD_8] = {
-      action: states.MOVE.FORWARD,
-      values: {}
-    };
-
-    contextMap.actions[KeyMap.SHIFT] = {
-      action: states.TOGGLE.MARKER_MODE,
-      values: {}
-    };
+    contextMap.actions[KeyMap.NUMPAD_5] = new ContextAction({action: actions.SPEAK});
+    contextMap.actions[KeyMap.NUMPAD_8] = new ContextAction({action: actions.MOVE.Y.FORWARD});
+    contextMap.actions[KeyMap.NUMPAD_2] = new ContextAction({action: actions.MOVE.Y.BACKWARD});
+    contextMap.actions[KeyMap.NUMPAD_9] = new ContextAction({action: actions.MOVE.X.FORWARD});
+    contextMap.actions[KeyMap.NUMPAD_1] = new ContextAction({action: actions.MOVE.X.BACKWARD});
+    contextMap.actions[KeyMap.NUMPAD_7] = new ContextAction({action: actions.MOVE.Z.FORWARD});
+    contextMap.actions[KeyMap.NUMPAD_3] = new ContextAction({action: actions.MOVE.Z.BACKWARD});
+    contextMap.actions[KeyMap.SHIFT] = new ContextAction({action: states.TOGGLE.MARKER_MODE});
 
     contextMap.ranges[Input.CURSOR] = {
       action: ranges.CURSOR.DISPLAY,
       values: {}
     };
-
     contextMap.ranges[Input.CLICK] = {
       action: ranges.CURSOR.CLICK,
       values: {}
@@ -106,12 +113,24 @@
     };
 
     controlMap.controls[actions.SPEAK] = function() {
-      console.log('Titan voice action enabled...');
+      console.log('Player voice action enabled...');
     };
 
-    controlMap.controls[states.MOVE.FORWARD] = function() {
-      console.log('Trying to move forward ... engine not yet installed');
-    };
+    function setMovementControl(key) {
+      controlMap.controls[key] = function() {
+        options.eventManager.trigger(key, {
+          entity: entity
+        });
+      };
+    }
+
+    setMovementControl(actions.MOVE.X.FORWARD);
+    setMovementControl(actions.MOVE.X.BACKWARD);
+    setMovementControl(actions.MOVE.Y.FORWARD);
+    setMovementControl(actions.MOVE.Y.BACKWARD);
+    setMovementControl(actions.MOVE.Z.FORWARD);
+    setMovementControl(actions.MOVE.Z.BACKWARD);
+
 
     controlMap.controls[states.TOGGLE.MARKER_MODE] = function(entity) {
       controlMap.modes.VIEW = !controlMap.modes.VIEW;
@@ -119,56 +138,61 @@
 
       console.log('Cursor mode: ', controlMap.modes);
     };
-
     controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values, action) {
       console.log('Display target reticule ...', values);
     };
-
-    var camera = options.camera;
-    var entityManager = options.entityManager;
-    var eventManager = options.eventManager;
-    var renderer = options.renderer;
-    var sceneManager = options.sceneManager;
-    var marker;
-
+    controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
+      //selectObjects(values);
+    };
     controlMap.controls[ranges.CURSOR.CLICK] = function(entity, values) {
       if (!controlMap.modes.MARKER) {
         return;
       }
 
-      console.log('FIRE ON MY LOCATION!', values);
+      selectObjects(values);
+    };
 
-      if (marker) {
-        entityManager.removeEntity(marker.entity);
+    function selectObjects(values) {
+      var camera = options.camera;
+      var eventManager = options.eventManager;
+      var sceneManager = options.sceneManager;
+
+      var raycaster = new THREE.Raycaster();
+      var pos = new THREE.Vector2();
+      pos.x = ( values.x / window.innerWidth ) * 2 - 1;
+      pos.y = -( values.y / window.innerHeight ) * 2 + 1;
+      raycaster.setFromCamera(pos, camera);
+
+      var intersects = raycaster.intersectObjects(sceneManager.getScene().children);
+      // Change color if hit block
+      if (intersects.length > 0) {
+
+        for (var i in intersects) {
+          eventManager.trigger('titan_control.objects_selected', {
+            entity: sceneManager.getEntityByGraphicsId(intersects[i].object.id)
+          });
+        }
       }
 
-      var vector = new THREE.Vector3();
+      //marker = new wrect.ECS.Assemblage.HexTile({
+      //  eventManager: game.getEventManager(),
+      //  renderer:  game.getRenderer(),
+      //  origin: new Vector3(pos.x, pos.y, 5),
+      //  size: 50
+      //});
+      //game.getEntityManager().addEntity(marker.entity);
 
-      vector.set(
-        ( values.x / window.innerWidth ) * 2 - 1,
-        - ( values.y / window.innerHeight ) * 2 + 1,
-        0.5 );
-
-      vector.unproject( camera );
-
-      var dir = vector.sub( camera.position ).normalize();
-
-      var distance = - camera.position.z / dir.z;
-
-      var pos = camera.position.clone().add( dir.multiplyScalar( distance ) );
-
-      marker = new wrect.ECS.Assemblage.Block({
-        position: new Vector3(pos.x - 10, pos.y - 10, 10),
-        dimension: new Vector3(20, 20, 20),
-        color: 0x000000,
-        alpha: 1,
-        material: new THREE.MeshLambertMaterial({color: 0xFFFFFF, transparent: true, opacity: 0.5 }),
-        renderer: renderer,
-        eventManager: eventManager,
-        frozen: 1
-      });
-      game.getEntityManager().addEntity(marker.entity);
-    };
+      //var block = new wrect.ECS.Assemblage.Block({
+      //  position: new Vector3(pos.x, pos.y, 0),
+      //  dimension: new Vector3(50, 50, 50),
+      //  color: 0x000000,
+      //  alpha: 1,
+      //  material: new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
+      //  renderer: game.getRenderer(),
+      //  eventManager: game.getEventManager()
+      //});
+      //game.getEntityManager().addEntity(block.entity);
+    }
 
     this.entity.addComponent(rawInputMap);
     this.entity.addComponent(contextMap);

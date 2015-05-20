@@ -46,8 +46,6 @@
           var action = actions[actionIndex];
 
           if (animation.timer >= actionIndex && action.state === 0) {
-            //console.log(actionIndex);
-            //console.log(animation.timer);
             action.perform(entity);
             action.state = 1;
           }
@@ -70,8 +68,6 @@
           if (actionEnd.state === 1) {
             actionEnd.state = 0;
           }
-          //console.log('checking action :', actionIndex);
-          //console.log(this.interval % actionIndex);
         }
       }
     }

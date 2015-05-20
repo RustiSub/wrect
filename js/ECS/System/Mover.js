@@ -28,14 +28,7 @@
 
       if (entity.components.Visual) {
         var visual = entity.components.Visual;
-        //console.log(rigidBody.dimensions.origin.x);
-        //console.log(visual.graphics.position.x - rigidBody.dimensions.origin.x);
-        visual.setPosition(rigidBody.dimensions.origin.x, rigidBody.dimensions.origin.y);
-
-        //visual.graphics.rotation.x += 0.01;
-        //visual.graphics.rotation.y += 0.01;
-
-        //visual.graphics.position.y -= 1;
+        visual.setPosition(rigidBody.dimensions.origin.x, rigidBody.dimensions.origin.y, rigidBody.dimensions.origin.z);
       }
 
       entity.components.RigidBody.move = new Vector(0, 0);

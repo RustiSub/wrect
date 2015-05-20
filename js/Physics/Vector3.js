@@ -11,6 +11,13 @@
      * @constructor
      */
     wrect.Physics.Vector3 = function(x, y, z) {
+      if (x instanceof wrect.Physics.Vector3) {
+        this.x = x.x;
+        this.y = x.y;
+        this.z = x.z;
+
+        return this;
+      }
         this.x = x;
         this.y = y;
         this.z = z;
@@ -35,7 +42,7 @@
      * @returns {wrect.Physics.Vector3} vector
      */
     Vector3.prototype.subtract = function(v) {
-        return new Vector3(this.x - v.x, this.y - v.y);
+        return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z);
     };
 
     /**
