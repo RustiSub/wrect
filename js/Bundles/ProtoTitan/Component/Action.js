@@ -8,6 +8,7 @@
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};
+    this.speed = options.speed || 1000;
 
     this.marker = options.marker || new wrect.ECS.Component.Map.Marker({});
 

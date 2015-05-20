@@ -113,17 +113,15 @@
     actions.addAction(createMove(actionConstants.MOVE.Z.BACKWARD, new Vector3(1, -1, 0)));
 
     actions.addAction(new wrect.ECS.Component.Action({
+      speed: 1000,
       initCallback: function () {
         var action = this;
         eventManager.addListener('titan_control.tile_changed', function (entityData) {
-          var coord = entity.components.Coord.coord;
-          var targetCoord = entityData.entity.components.Coord.worldTargetCoord;
+          var a = entity.components.Coord.coord;
+          var b = entityData.entity.components.Coord.coord;
+          var gridDistance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2;
 
-          var directionVector = targetCoord.subtract(coord);
-          var totalDistance = directionVector.len();
-
-          //TODO: Ask the actual distance from the Grid instead of vector distance?
-          action.setUpdateTick(10 * totalDistance);
+          action.setUpdateTick(gridDistance * action.speed);
 
           var marker = new wrect.ECS.Component.Map.Marker({
             coord: entityData.entity.components.Coord
