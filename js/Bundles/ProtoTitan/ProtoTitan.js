@@ -20,12 +20,9 @@
     //this.setupScene();
     this.buildWorld();
     this.registerSystems();
-
-    //this.setupMechanics();
+    this.setupMechanics();
     this.setupControls();
-
     this.setupGrid();
-
     this.setupPlayer();
 
     this.game.getRenderer().render();

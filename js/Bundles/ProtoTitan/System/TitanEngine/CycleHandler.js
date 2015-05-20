@@ -35,18 +35,24 @@
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.name = 'CycleHandler';
 
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.checkDependencies = function(entity) {
-    var TitanEngineSystems = wrect.Bundles.ProtoTitan.TitanEngine.Constants.Systems;
-
-    for(var systemIndex in TitanEngineSystems) if (TitanEngineSystems.hasOwnProperty(systemIndex)) {
-      if (entity.components[systemIndex]) {
-        return true;
-      }
-    }
-
-    return false;
+    return entity.components.TitanEngineSystemCollection ? true : false;
+    //var TitanEngineSystems = wrect.Bundles.ProtoTitan.TitanEngine.Constants.Systems;
+    //
+    //for(var systemIndex in TitanEngineSystems) if (TitanEngineSystems.hasOwnProperty(systemIndex)) {
+    //  if (entity.components[systemIndex]) {
+    //    return true;
+    //  }
+    //}
+    //
+    //return false;
   };
 
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.perform = function(entity) {
+    var systems = entity.components.TitanEngineSystemCollection.system;
+    for(var systemIndex in systems) if (systems.hasOwnProperty(systemIndex)) {
+      var action = systems[systemIndex];
+    }
+
     if (!this.cooledDown) {
       return;
     }
@@ -67,7 +73,7 @@
   };
 
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleSystem = function(system) {
-console.log('Handle System :', system);
+
   };
 
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleStep = function() {
