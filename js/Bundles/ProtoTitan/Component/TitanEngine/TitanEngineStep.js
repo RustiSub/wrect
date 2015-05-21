@@ -17,6 +17,11 @@
       true: false
     };
     this.weight = options.weight || 0;
+    this.updateTickLength = options.updateTickLength || 1000;
+    this.updateTick = this.updateTickLength;
+    this.tickCount = 0;
+    this.tickLength = options.tickLength || 1;
+    this.completed = false;
   };
 
   wrect.ECS.Component.TitanEngine.TitanEngineStep.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

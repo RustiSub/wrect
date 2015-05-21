@@ -14,7 +14,9 @@
 
     this.eventManager = new wrect.Core.EventManager();
     this.entityManager = new wrect.Core.EntityManager({eventManager: this.eventManager});
-    this.gameTime = new wrect.Core.GameTime();
+    this.gameTime = new wrect.Core.GameTime({
+      eventManager: this.eventManager
+    });
     this.sceneManager = new wrect.Core.Rendering.SceneManager({eventManager: this.eventManager});
     this.camera = new wrect.Core.Rendering.Camera();
     this.renderer = new wrect.Core.Rendering.Renderer({

@@ -170,6 +170,7 @@
       system: new wrect.ECS.System.TitanEngine.CycleHandler(
           {
             game: this.game,
+            gameTime: this.game.gameTime,
             eventManager: this.game.getEventManager()
           }
       )

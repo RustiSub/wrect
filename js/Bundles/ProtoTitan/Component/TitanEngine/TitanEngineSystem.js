@@ -12,7 +12,9 @@
 
     this.name = options.name;
     this.actions = options.actions;
-    this.activeAction = false;
+    this.steps = options.steps || [];
+    this.activeStepIndex = -1;
+    this.activeStep = false;
   };
 
   wrect.ECS.Component.TitanEngine.TitanEngineSystem.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
