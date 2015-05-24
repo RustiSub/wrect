@@ -40,6 +40,8 @@
       }),
       renderer: options.renderer
     });
+    visualComponent.graphics.castShadow = true;
+    visualComponent.graphics.receiveShadow = true;
     this.entity.addComponent(visualComponent);
 
     this.entity.addComponent(new wrect.ECS.Component.Map.Coord({

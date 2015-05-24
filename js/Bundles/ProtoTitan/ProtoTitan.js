@@ -90,7 +90,7 @@ var dirLight;
     });
 
     createBlock({
-      position: new Vector3(50, 50, 50),
+      position: new Vector3(100, 100, 50),
       dimension: new Vector3(15, 15, 100),
       frozen: 1,
       material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
@@ -99,7 +99,7 @@ var dirLight;
     });
 
     createBlock({
-      position: new Vector3(-50, 50, 50),
+      position: new Vector3(-100, 100, 50),
       dimension: new Vector3(15, 15, 100),
       frozen: 1,
       material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
@@ -108,7 +108,7 @@ var dirLight;
     });
 
     createBlock({
-      position: new Vector3(50, -50, 50),
+      position: new Vector3(100, -100, 50),
       dimension: new Vector3(15, 15, 100),
       frozen: 1,
       material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
@@ -117,7 +117,7 @@ var dirLight;
     });
 
     createBlock({
-      position: new Vector3(-50, -50, 50),
+      position: new Vector3(-100, -100, 50),
       dimension: new Vector3(15, 15, 100),
       frozen: 1,
       material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
@@ -127,7 +127,7 @@ var dirLight;
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupCamera = function() {
-    this.game.camera.setCamera(new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 ));
+    this.game.camera.setCamera(new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 10000 ));
     var camera = this.game.camera.getCamera();
     camera.up = new THREE.Vector3( 0, 0, 1 );
     camera.position.z = 250;
@@ -142,28 +142,15 @@ var dirLight;
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = false;
 
-    //renderer.shadowCameraNear = 3;
-    //renderer.shadowCameraFar = this.game.camera.getCamera().far;
-    //renderer.shadowCameraFov = 50;
-
-    //renderer.shadowMapBias = 0.0039;
-    //renderer.shadowMapDarkness = 0.5;
-    //renderer.shadowMapWidth = 1024;
-    //renderer.shadowMapHeight = 1024;
-
     var scene = this.game.getSceneManager().getScene();
 
     dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
     dirLight.color.setHSL(0.1, 1, 0.95);
-    //dirLight.position.set(-1, 1, 1);
     dirLight.target.position.set(0, 0, 0);
     dirLight.position.x = 250;
     dirLight.position.y = 250;
     dirLight.position.z = 250;
-    scene.add( dirLight );
-
     dirLight.castShadow = true;
-
     dirLight.shadowMapWidth = 2048;
     dirLight.shadowMapHeight = 2048;
 
@@ -176,22 +163,30 @@ var dirLight;
     dirLight.shadowCameraRight = d;
     dirLight.shadowCameraTop = d;
     dirLight.shadowCameraBottom = -d;
-    //
-    //dirLight.shadowCameraFar = 3500;
-    //dirLight.shadowBias = -0.0001;
-    //dirLight.shadowDarkness = 0.35;
-    dirLight.shadowCameraVisible  = true;
+    //dirLight.shadowCameraVisible  = true;
 
-      //dirLight.position.set(250, 250, 250);
-      //dirLight.intensity = 0.5;
-      //dirLight.castShadow = true;
-      //dirLight.shadowCameraVisible = true;
-      //dirLight.shadowCameraNear = 250;
-      //dirLight.shadowCameraFar = 600;
-      //dirLight.shadowCameraLeft = -200;
-      //dirLight.shadowCameraRight = 200;
-      //dirLight.shadowCameraTop = 200;
-      //dirLight.shadowCameraBottom = -200;
+    scene.add( dirLight );
+
+    scene.fog = new THREE.Fog( 0xffffff, 1, 2500 );
+    scene.fog.color.setHSL( 0.6, 0, 1 );
+
+    var vertexShader = document.getElementById( 'vertexShader' ).textContent;
+    var fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
+    var uniforms = {
+      topColor: 	 { type: "c", value: new THREE.Color( 0x0077ff ) },
+      bottomColor: { type: "c", value: new THREE.Color( 0xffffff ) },
+      offset:		 { type: "f", value: 33 },
+      exponent:	 { type: "f", value: 0.6 }
+    };
+    uniforms.topColor.value.copy( dirLight.color );
+
+    scene.fog.color.copy( uniforms.bottomColor.value );
+
+    var skyGeo = new THREE.SphereGeometry( 4000, 32, 15 );
+    var skyMat = new THREE.ShaderMaterial( { vertexShader: vertexShader, fragmentShader: fragmentShader, uniforms: uniforms, side: THREE.BackSide } );
+
+    var sky = new THREE.Mesh( skyGeo, skyMat );
+    scene.add( sky );
   };
 
   wrect.Bundles.ProtoTitan.prototype.registerSystems = function() {
