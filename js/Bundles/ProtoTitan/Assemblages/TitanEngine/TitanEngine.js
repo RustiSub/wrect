@@ -39,7 +39,7 @@
     steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.PROCESS})));
     steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.OUTPUT})));
 
-    var systems = new components.TitanEngineSystemCollection({});
+    var systemsCollection = new components.TitanEngineSystemCollection({});
 
     var movementSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.MOVEMENT});
     movementSystem.actions = [
@@ -48,16 +48,43 @@
     ];
     movementSystem.steps = steps;
 
-    systems.addSystem(movementSystem);
-    this.entity.addComponent(systems);
+    systemsCollection.addSystem(movementSystem);
+    //this.entity.addComponent(systemsCollection);
 
     var guiElement = new wrect.ECS.Component.Gui.GuiElement({
-      html: '<div class="titan-engine-gui"></div>'
+      html: ''
     });
 
-    var guiContainer = document.getElementById('guiContainer');
-    guiContainer.innerHTML = guiElement.html;
+    function createGui(systemsCollection) {
+      var root = document.querySelector('#guiContainer');
+      var shadow = root.createShadowRoot();
+      var template = document.querySelector('#guiContainerTemplate');
 
-    this.entity.addComponent(guiElement);
+      var systems = systemsCollection.systems;
+      for (var systemIndex in systems) if (systems.hasOwnProperty(systemIndex)) {
+        var system = systems[systemIndex];
+        var id = (+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16);
+        root.innerHTML += '<div class="titan-engine-system" id="system-' + id + '" >' + system.name + '</div>';
+        var steps = system.steps;
+        for (var stepIndex in steps) if (steps.hasOwnProperty(stepIndex)) {
+          var step = steps[stepIndex];
+          console.log(step);
+        //<div class="progress-bar blue stripes">
+        //  <span style="width: 40%"></span>
+        //  </div>
+          root.querySelector('#system-' + id).innerHTML += '<div class="titan-engine-step" id="step-' + id + '" >' + step.name + '</div>';
+        //  root.querySelector('#system-' + id).innerHTML += '<div class="progress-bar blue stripes"><span style="width: 40%"></span></div>';
+        }
+      }
+
+      var clone = document.importNode(template.content, true);
+      shadow.appendChild(clone);
+//  document.querySelector('#nameTag').textContent = 'Shellie';
+      //var guiContainer = document.getElementById('guiContainer');
+      //guiContainer.innerHTML = guiElement.html;
+      //this.entity.addComponent(guiElement);
+    }
+
+    createGui(systemsCollection);
   };
 }());
