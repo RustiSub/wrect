@@ -74,6 +74,13 @@
     };
 
     this.loadBundles();
+
+    this.controls = new THREE.OrbitControls( this.camera.getCamera() );
+    this.controls.damping = 0.2;
+    var self = this;
+    this.controls.addEventListener( 'change', function() {
+      self.renderer.render();
+    } );
   };
 
   wrect.Game.prototype.loadBundles = function() {
@@ -87,19 +94,13 @@
     var self = this;
     //var clock = new THREE.Clock();
 
-    var controls = new THREE.OrbitControls( this.camera.getCamera() );
-    controls.damping = 0.2;
-    controls.addEventListener( 'change', function() {
-      self.getRenderer().render();
-    } );
-
     requestAnimationFrame(run);
 
     function run(timestamp) {
       if (self.pause) {return;}
       requestAnimationFrame(run);
 
-      controls.update();
+      self.controls.update();
 
       self.gameTime.updateTime(timestamp);
 

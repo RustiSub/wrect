@@ -108,8 +108,8 @@
     var controlMap = new wrect.ECS.Component.Input.ControlMap();
 
     controlMap.modes = {
-      VIEW : false,
-      MARKER: true
+      VIEW : true,
+      MARKER: false
     };
 
     controlMap.controls[actions.SPEAK] = function() {

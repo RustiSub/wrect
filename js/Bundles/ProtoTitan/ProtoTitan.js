@@ -21,11 +21,15 @@ var dirLight;
     this.buildWorld();
     this.registerSystems();
     //this.setupMechanics();
-    //this.setupControls();
+    this.setupControls();
     this.setupGrid();
     this.setupPlayer();
 
     this.game.getRenderer().render();
+
+    //this.game.controls.target.x = 0;
+    //this.game.controls.target.y = 0;
+    //this.game.controls.target.z = 0;
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupGrid = function() {
