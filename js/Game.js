@@ -111,6 +111,9 @@
 
       self.getEventManager().trigger('game.updateEnd');
 
+        //dirLight.shadowCameraNear += 10;
+        //console.log(dirLight.shadowCameraNear);
+
       self.getRenderer().render();
 
       //THREE.AnimationHandler.update( clock.getDelta() / 2);

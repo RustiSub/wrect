@@ -1,8 +1,8 @@
+var dirLight;
 (function() {
   "use strict";
 
   wrect.Bundles = wrect.Bundles || {};
-
   var Vector3 = wrect.Physics.Vector3;
 
   /**
@@ -17,11 +17,11 @@
     console.log('ProtoTitan setup...');
 
     this.setupCamera();
-    //this.setupScene();
+    this.setupScene();
     this.buildWorld();
     this.registerSystems();
-    this.setupMechanics();
-    this.setupControls();
+    //this.setupMechanics();
+    //this.setupControls();
     this.setupGrid();
     this.setupPlayer();
 
@@ -30,7 +30,7 @@
 
   wrect.Bundles.ProtoTitan.prototype.setupGrid = function() {
     var map = new wrect.ECS.Assemblage.HexMap({
-      mapSize: new Vector3(3, 3, 3),
+      mapSize: new Vector3(27, 27, 27),
       tileSize: 50
     });
 
@@ -75,42 +75,54 @@
       });
       game.getEntityManager().addEntity(block.entity);
 
+      block.entity.components.Visual.graphics.receiveShadow = options.receiveShadow || false;
+      block.entity.components.Visual.graphics.castShadow = options.castShadow || false;
+
       return block.entity;
     }
 
     createBlock({
-      position: new Vector3(-250, -250, 0),
-      dimension: new Vector3(500, 500, 5),
+      position: new Vector3(-5000, -5000, 0),
+      dimension: new Vector3(10000, 10000, 5),
       frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xC38A09 })
+      material: new THREE.MeshLambertMaterial({color: 0xC38A09 }),
+      receiveShadow: true
     });
 
     createBlock({
       position: new Vector3(50, 50, 50),
       dimension: new Vector3(15, 15, 100),
       frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
+      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
+      castShadow: true,
+      receiveShadow: true
     });
 
     createBlock({
       position: new Vector3(-50, 50, 50),
       dimension: new Vector3(15, 15, 100),
       frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
+      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
+      castShadow: true,
+      receiveShadow: true
     });
 
     createBlock({
       position: new Vector3(50, -50, 50),
       dimension: new Vector3(15, 15, 100),
       frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
+      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
+      castShadow: true,
+      receiveShadow: true
     });
 
     createBlock({
       position: new Vector3(-50, -50, 50),
       dimension: new Vector3(15, 15, 100),
       frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
+      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
+      castShadow: true,
+      receiveShadow: true
     });
   };
 
@@ -130,22 +142,24 @@
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = false;
 
-    renderer.shadowCameraNear = 3;
-    renderer.shadowCameraFar = this.game.camera.getCamera().far;
-    renderer.shadowCameraFov = 50;
+    //renderer.shadowCameraNear = 3;
+    //renderer.shadowCameraFar = this.game.camera.getCamera().far;
+    //renderer.shadowCameraFov = 50;
 
-    renderer.shadowMapBias = 0.0039;
-    renderer.shadowMapDarkness = 0.5;
-    renderer.shadowMapWidth = 1024;
-    renderer.shadowMapHeight = 1024;
+    //renderer.shadowMapBias = 0.0039;
+    //renderer.shadowMapDarkness = 0.5;
+    //renderer.shadowMapWidth = 1024;
+    //renderer.shadowMapHeight = 1024;
 
     var scene = this.game.getSceneManager().getScene();
 
-    var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+    dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
     dirLight.color.setHSL(0.1, 1, 0.95);
-    dirLight.position.set(-1, 1, 1);
+    //dirLight.position.set(-1, 1, 1);
     dirLight.target.position.set(0, 0, 0);
-    dirLight.position.multiplyScalar(300);
+    dirLight.position.x = 250;
+    dirLight.position.y = 250;
+    dirLight.position.z = 250;
     scene.add( dirLight );
 
     dirLight.castShadow = true;
@@ -153,16 +167,31 @@
     dirLight.shadowMapWidth = 2048;
     dirLight.shadowMapHeight = 2048;
 
-    var d = 250;
+    var d = 500;
+    dirLight.intensity = 1;
+    dirLight.shadowCameraNear = 0;
+    dirLight.shadowCameraFar = 4096;
 
     dirLight.shadowCameraLeft = -d;
     dirLight.shadowCameraRight = d;
     dirLight.shadowCameraTop = d;
     dirLight.shadowCameraBottom = -d;
     //
-    dirLight.shadowCameraFar = 3500;
-    dirLight.shadowBias = -0.0001;
-    dirLight.shadowDarkness = 0.35;
+    //dirLight.shadowCameraFar = 3500;
+    //dirLight.shadowBias = -0.0001;
+    //dirLight.shadowDarkness = 0.35;
+    dirLight.shadowCameraVisible  = true;
+
+      //dirLight.position.set(250, 250, 250);
+      //dirLight.intensity = 0.5;
+      //dirLight.castShadow = true;
+      //dirLight.shadowCameraVisible = true;
+      //dirLight.shadowCameraNear = 250;
+      //dirLight.shadowCameraFar = 600;
+      //dirLight.shadowCameraLeft = -200;
+      //dirLight.shadowCameraRight = 200;
+      //dirLight.shadowCameraTop = 200;
+      //dirLight.shadowCameraBottom = -200;
   };
 
   wrect.Bundles.ProtoTitan.prototype.registerSystems = function() {

@@ -3,8 +3,6 @@
 
   wrect.Geometry.Hexagon.prototype.draw = function() {
     var geometry = new THREE.Geometry();
-
-    //geometry.vertices.push(new THREE.Vector3(this.origin.x, this.origin.y, 0));
     geometry.vertices.push(new THREE.Vector3(0, 0, 0));
 
     for(var v = 0; v < this.vertices.length; v++) {
@@ -24,11 +22,6 @@
     var mesh = new THREE.Mesh(geometry, material);
 
     mesh.position.set(this.origin.x, this.origin.y, this.origin.z);
-    //mesh.position.set(0, 0, this.origin.z);
-
-    mesh.receiveShadow = true;
-    mesh.castShadow = true;
-
 
     return mesh;
   };
