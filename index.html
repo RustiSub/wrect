@@ -219,10 +219,18 @@
         height: 50px;
         border-radius: 3px;
         box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
-        /*transition: width .4s ease-in-out;*/
       }
-      .blue span {
+      .blue .progress-bar {
         background-color: #34c2e3;
+      }
+      .glow .progress-bar {
+        box-shadow: 0 5px 5px rgba(255, 255, 255, .7) inset, 0 -5px 5px rgba(255, 255, 255, .7) inset;
+        animation: animate-glow 1s ease-out infinite;
+      }
+      @keyframes animate-glow {
+        0% { box-shadow: 0 15px 15px rgba(255, 255, 255, .7) inset, 0 -15px 15px rgba(255, 255, 255, .7) inset;}
+        50% { box-shadow: 0 15px 15px rgba(255, 255, 255, .3) inset, 0 -15px 15px rgba(255, 255, 255, .3) inset;}
+        100% { box-shadow: 0 15px 15px rgba(255, 255, 255, .7) inset, 0 -15px 15px rgba(255, 255, 255, .7) inset;}
       }
     </style>
   </div>
@@ -241,8 +249,10 @@
     <div class="step-title-container">
       <span class="step-title">[step-title]</span>
     </div>
-    <div class="progress-bar-container blue">
-      <span class="progress-bar"></span>
+    <div class="progress-bar-container blue glow">
+      <span class="progress-bar">
+        <span class="progress-bar-label"></span>
+      </span>
     </div>
   </div>
 </template>

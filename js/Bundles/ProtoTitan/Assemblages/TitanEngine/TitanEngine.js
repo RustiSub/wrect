@@ -46,7 +46,9 @@
 
     this.entity.eventManager.addListener('titan_engine.tick.update', function(data) {
       var step = document.querySelector('.titan-engine-gui #' + data.step.id);
-      step.querySelector('.progress-bar-container .progress-bar').style.width =  Math.round(data.percentage) + '%';
+      var percentage = Math.round(data.percentage) + '%';
+      step.querySelector('.progress-bar-container .progress-bar').style.width = percentage;
+      step.querySelector('.progress-bar-container .progress-bar').innerHTML = percentage;
     });
 
     this.entity.eventManager.addListener('titan_engine.tick', function(data) {
@@ -54,9 +56,9 @@
     });
 
     var steps = [];
-    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.INPUT})));
-    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.PROCESS})));
-    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.OUTPUT})));
+    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.INPUT, updateTickLength: 5000})));
+    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.PROCESS, updateTickLength: 2500})));
+    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.OUTPUT, updateTickLength: 1000})));
 
     var systemsCollection = new components.TitanEngineSystemCollection({});
 
@@ -68,6 +70,11 @@
     movementSystem.steps = steps;
 
     systemsCollection.addSystem(movementSystem);
+
+    //var offensiveSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.OFFENSIVE});
+    //offensiveSystem.steps = steps;
+    //systemsCollection.addSystem(offensiveSystem);
+
     this.entity.addComponent(systemsCollection);
 
     var guiElement = new wrect.ECS.Component.Gui.GuiElement({
@@ -107,6 +114,7 @@
           clonedStepContent.querySelector('.titan-engine-step').id = step.id;
           clonedStepContent.querySelector('.step-title-container .step-title').innerHTML = step.name;
           clonedStepContent.querySelector('.progress-bar-container .progress-bar').style.width = '0%';
+          clonedStepContent.querySelector('.progress-bar-container .progress-bar .progress-bar-label').innerHTML = '0%';
           systemRoot.appendChild(clonedStepContent);
         }
       }
