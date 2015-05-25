@@ -19,16 +19,6 @@
   wrect.ECS.Assemblage.Player.Titan = function (options) {
     this.entity = new Entity({eventManager: options.eventManager});
 
-    //var rigidBody = new wrect.ECS.Component.RigidBody({
-    //  dimensions: new Rectangle({
-    //    origin: options.position,
-    //    dimension: options.dimension,
-    //    material: options.material
-    //  }),
-    //  frozen: options.frozen
-    //});
-    //this.entity.addComponent(rigidBody);
-
     var visualComponent = new wrect.ECS.Component.Visual({
       color: options.color,
       alpha: options.alpha,

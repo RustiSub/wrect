@@ -56,8 +56,8 @@
     });
 
     var steps = [];
-    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.INPUT, updateTickLength: 5000})));
-    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.PROCESS, updateTickLength: 2500})));
+    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.INPUT, updateTickLength: 1000})));
+    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.PROCESS, updateTickLength: 1000})));
     steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.OUTPUT, updateTickLength: 1000})));
 
     var systemsCollection = new components.TitanEngineSystemCollection({});

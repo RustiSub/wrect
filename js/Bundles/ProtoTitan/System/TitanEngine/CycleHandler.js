@@ -92,6 +92,7 @@
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.activateNextStep = function(system) {
     system.activeStepIndex += 1;
     if (system.activeStepIndex >= system.steps.length) {
+      system.steps[system.activeStepIndex - 1].action = false;
       system.activeStepIndex = 0;
       this.eventManager.trigger('titan_engine.system.reset', {
         system: system
@@ -107,7 +108,7 @@
     }
 
     system.activeStep = system.steps[system.activeStepIndex];
-    console.log(system.activeStep.action);
+    console.log(system.activeStep, system.activeStep.action);
   };
 
   /**
