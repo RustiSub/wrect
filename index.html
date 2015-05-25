@@ -173,46 +173,75 @@
 			}
 
 		</script>
+
 <div id="container">
     <div id="guiContainer">
 
     </div>
 </div>
 
-
-<template id="guiContainerTemplate">
-  <style>
-    .titan-engine-gui {
-      z-index: 1;
-      position:absolute;
-      width:300px;
-      height:300px;
-      bottom:0px;
-      right:25%;
-      left:50%;
-      margin-left:-150px;
-      background-color: red;
-    }
-    .progress-bar {
-      background-color: #1a1a1a;
-      height: 25px;
-      padding: 5px;
-      width: 350px;
-      margin: 50px 0;
-      border-radius: 5px;
-      box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;
-    }
-    .progress-bar span {
-      display: inline-block;
-      height: 100%;
-      border-radius: 3px;
-      box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
-      transition: width .4s ease-in-out;
-    }
-  </style>
+<template id="titan-engine-gui">
   <div class="titan-engine-gui">
-    <content>
-    </content>
+    <style>
+      .titan-engine-gui {
+        z-index: 1;
+        background: rgba(54, 25, 25, .5);
+
+        position:fixed;
+        bottom:0px;
+        width:100%;
+      }
+      .titan-engine-system {
+        width:800px;
+        margin:0px auto;
+        background: rgba(54, 25, 25, 0.75);
+        color: #FFF;
+      }
+      .titan-engine-step {
+        float: left;
+        width: 33%;
+        background: rgba(54, 25, 25, 0.75);
+        color: #FFF;
+      }
+      .step-title-container {
+        text-align: center;
+      }
+      .progress-bar {
+        background-color: #1a1a1a;
+        padding: 5px;
+        border-radius: 5px;
+        box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;
+      }
+      .progress-bar-container .progress-bar {
+        display: inline-block;
+        height: 50px;
+        border-radius: 3px;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+        transition: width .4s ease-in-out;
+      }
+      .blue span {
+        background-color: #34c2e3;
+      }
+    </style>
+  </div>
+</template>
+
+<template id="titan-engine-system">
+  <div class="titan-engine-system">
+    <div class="system-title-container">
+      <span class="system-title">[system-title]</span>
+    </div>
+  </div>
+</template>
+
+<template id="titan-engine-step">
+  <div class="titan-engine-step">
+    <div class="step-title-container">
+      <span class="step-title">[step-title]</span>
+    </div>
+    <div class="progress-bar-container blue">
+      <span class="progress-bar"></span>
+    </div>
   </div>
 </template>
 

@@ -56,33 +56,36 @@
     });
 
     function createGui(systemsCollection) {
-      var root = document.querySelector('#guiContainer');
-      var shadow = root.createShadowRoot();
-      var template = document.querySelector('#guiContainerTemplate');
+      var shadow = document.querySelector('#guiContainer');//.createShadowRoot();
+
+      var guiContent = document.querySelector('#titan-engine-gui').content;
+      var systemContent = document.querySelector('#titan-engine-system').content;
+      var stepContent = document.querySelector('#titan-engine-step').content;
+
+      shadow.appendChild(guiContent);
+
+      var guiRoot = document.querySelector('.titan-engine-gui');
 
       var systems = systemsCollection.systems;
       for (var systemIndex in systems) if (systems.hasOwnProperty(systemIndex)) {
         var system = systems[systemIndex];
         var id = (+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16);
-        root.innerHTML += '<div class="titan-engine-system" id="system-' + id + '" >' + system.name + '</div>';
+        var clonedSystemContent = document.importNode(systemContent, true);
+        clonedSystemContent.querySelector('.system-title-container .system-title').innerHTML = system.name;
+
+        guiRoot.appendChild(clonedSystemContent);
+
+        var systemRoot = document.querySelector('.titan-engine-system');
         var steps = system.steps;
+
         for (var stepIndex in steps) if (steps.hasOwnProperty(stepIndex)) {
           var step = steps[stepIndex];
-          console.log(step);
-        //<div class="progress-bar blue stripes">
-        //  <span style="width: 40%"></span>
-        //  </div>
-          root.querySelector('#system-' + id).innerHTML += '<div class="titan-engine-step" id="step-' + id + '" >' + step.name + '</div>';
-        //  root.querySelector('#system-' + id).innerHTML += '<div class="progress-bar blue stripes"><span style="width: 40%"></span></div>';
+          var clonedStepContent = document.importNode(stepContent, true);
+          clonedStepContent.querySelector('.step-title-container .step-title').innerHTML = step.name;
+          clonedStepContent.querySelector('.progress-bar-container .progress-bar').style.width = '0%';
+          systemRoot.appendChild(clonedStepContent);
         }
       }
-
-      var clone = document.importNode(template.content, true);
-      shadow.appendChild(clone);
-//  document.querySelector('#nameTag').textContent = 'Shellie';
-      //var guiContainer = document.getElementById('guiContainer');
-      //guiContainer.innerHTML = guiElement.html;
-      //this.entity.addComponent(guiElement);
     }
 
     createGui(systemsCollection);
