@@ -90,6 +90,10 @@
    * @param {wrect.ECS.Component.TitanEngine.TitanEngineSystem} system
    */
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.activateNextStep = function(system) {
+    if (system.activeStep && system.activeStep.action && system.activeStep.endCallback) {
+      system.activeStep.endCallback(system.activeStep.action);
+    }
+
     system.activeStepIndex += 1;
     if (system.activeStepIndex >= system.steps.length) {
       system.steps[system.activeStepIndex - 1].action = false;
@@ -108,7 +112,9 @@
     }
 
     system.activeStep = system.steps[system.activeStepIndex];
-    console.log(system.activeStep, system.activeStep.action);
+    if (system.activeStep.action) {
+      console.log(system.activeStep, system.activeStep.action);
+    }
   };
 
   /**

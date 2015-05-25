@@ -17,6 +17,8 @@
 
     this.action = options.action;
     this.state = wrect.ECS.Component.Input.Constants.STATES.OFF;
+
+    this.delegatedAction = options.delegatedAction || false;
   };
 
   wrect.ECS.Component.Input.ContextAction.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

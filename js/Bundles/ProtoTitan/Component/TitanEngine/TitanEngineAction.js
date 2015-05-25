@@ -13,6 +13,8 @@
     this.name = options.name;
     this.timer = options.timer || {};
     this.cost = options.cost || {};
+
+    this.actionCallback = options.actionCallback || false;
   };
 
   wrect.ECS.Component.TitanEngine.TitanEngineAction.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

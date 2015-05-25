@@ -99,7 +99,8 @@
       speed: 1000,
       initCallback: function () {
         var action = this;
-        eventManager.addListener('titan_control.tile_changed', function (entityData) {
+        eventManager.addListener('titan_control.move', function (entityData) {
+          console.log(entityData);
           var a = entity.components.Coord.coord;
           var b = entityData.entity.components.Coord.coord;
           var gridDistance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2;

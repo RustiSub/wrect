@@ -10,6 +10,7 @@
 
   var TitanEngine = wrect.Bundles.ProtoTitan.TitanEngine;
   var components = wrect.ECS.Component.TitanEngine;
+  var Vector3 = wrect.Physics.Vector3;
 
   TitanEngine.Constants = TitanEngine.Constants || {};
   TitanEngine.Constants = TitanEngine.TitanEngine || {};
@@ -34,6 +35,7 @@
   wrect.ECS.Assemblage.TitanEngine = function (options) {
     this.entity = new Entity({eventManager: options.eventManager});
 
+    var eventManager = this.entity.eventManager;
 
     this.entity.eventManager.addListener('titan_engine.system.reset', function(data) {
       var steps = document.querySelectorAll('#' + data.system.id + ' .progress-bar-container .progress-bar');
@@ -58,13 +60,27 @@
     var steps = [];
     steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.INPUT, updateTickLength: 1000})));
     steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.PROCESS, updateTickLength: 1000})));
-    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.OUTPUT, updateTickLength: 1000})));
+    steps.push(new components.TitanEngineStep((
+    {
+      name: TitanEngine.Constants.Steps.OUTPUT,
+      updateTickLength: 1000,
+      endCallback: function(action) {
+        action.actionCallback(action.data);
+      }
+    })));
 
     var systemsCollection = new components.TitanEngineSystemCollection({});
 
     var movementSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.MOVEMENT});
     movementSystem.actions = [
-      new components.TitanEngineAction({name: 'Forward'}),
+      new components.TitanEngineAction(
+        {
+          name: 'Forward',
+          actionCallback: function(data) {
+            eventManager.trigger('titan_control.move', data);
+          }
+        }
+      ),
       new components.TitanEngineAction({name: 'Backward'})
     ];
     movementSystem.steps = steps;
@@ -141,27 +157,29 @@
           var systems = entity.components.TitanEngineSystemCollection.systems;
           var movementSystem = systems[0];
           var action = movementSystem.actions[0];
+          data.coord = new Vector3(data.coord);
+          action.data = data;
 
           movementSystem.queueAction(action);
-
-          //var a = entity.components.Coord.coord;
-          //var b = entityData.entity.components.Coord.coord;
-          //var gridDistance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2;
-          //
-          //action.setUpdateTick(gridDistance * action.speed);
-          //
-          //var marker = new wrect.ECS.Component.Map.Marker({
-          //  coord: entityData.entity.components.Coord
-          //});
-          //
-          //eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
-          //  entity: entity,
-          //  action: action
-          //});
         });
       },
       tickCallback: function () {},
       updateCallback: function () {},
+      stopCallback: function() {
+        return true;
+      }
+    }));
+
+    actions.addAction(new wrect.ECS.Component.Action({
+      speed: 0,
+      initCallback: function () {
+        var action = this;
+        eventManager.addListener('titan_control.tile_changed', function (data) {
+          eventManager.trigger(actionConstants.ENGINE.QUEUE.ADD, data);
+        });
+      },
+      tickCallback: function (data) {},
+      updateCallback: function (updatePercentage, data) {},
       stopCallback: function() {
         return true;
       }
