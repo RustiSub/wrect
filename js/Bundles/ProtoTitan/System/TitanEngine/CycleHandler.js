@@ -11,6 +11,7 @@
     wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
+    this.eventManager = options.eventManager;
     this.gameTime = options.gameTime;
   };
 
@@ -54,15 +55,23 @@
    */
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleStep = function(step) {
     //console.log('Handle step: ', step);
-    console.log('Update step tick: ', step.updateTick, ' reduce by ', this.gameTime.getDelta());
+    //console.log('Update step tick: ', step.updateTick, ' reduce by ', this.gameTime.getDelta());
     step.updateTick -= this.gameTime.getDelta();
+
+    var percentage = (step.updateTickLength - step.updateTick) / step.updateTickLength * 100;
+    percentage = percentage < 100 ? percentage : 100;
+    this.eventManager.trigger('titan_engine.tick.update', {
+      step: step,
+      percentage: percentage
+    });
 
     if (step.updateTick <= 0) {
       step.tickCount += 1;
-      //console.log('Ticket passed...');
+      this.eventManager.trigger('titan_engine.tick.passed', {step: step});
+      //console.log('Tick passed...');
       //console.log(step.tickLength - step.tickCount, ' ticks left');
       if (step.tickCount === step.tickLength) {
-        console.log('Step completed...');
+        //console.log('Step completed...');
         step.completed = true;
       }
     }
@@ -84,12 +93,14 @@
     system.activeStepIndex += 1;
     if (system.activeStepIndex > system.steps.length) {
       system.activeStepIndex = 0;
-      debugger;
+      this.eventManager.trigger('titan_engine.system.reset', {
+        system: system
+      });
     }
 
     system.activeStep = system.steps[system.activeStepIndex];
 
-    console.log('Activate step: ', system.activeStep);
+    //console.log('Activate step: ', system.activeStep);
   };
 
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleAction = function() {
