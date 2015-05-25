@@ -52,15 +52,6 @@
     this.setupMoves();
 
     this.move(new Vector3(0, 0, 0));
-
-    this.entity.eventManager.addListener('titan_control.tile_changed', function(entityData) {
-      //if (this.entity.components.Coord.targetCoord.x !== entityData.coord.x ||
-      //    this.entity.components.Coord.targetCoord.y !== entityData.coord.y) {
-      //  this.move(entityData.coord);
-      //} else {
-      //  this.rotate();
-      //}
-    }, this);
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.setupMoves = function() {

@@ -121,5 +121,52 @@
     }
 
     createGui(systemsCollection);
+
+    this.setupActions();
+  };
+
+  var actionConstants = wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions;
+
+  wrect.ECS.Assemblage.TitanEngine.prototype.setupActions = function() {
+    var entity = this.entity;
+    var actions = new wrect.ECS.Component.ActionCollection({});
+    var actionConstants = wrect.Bundles.ProtoTitan.TitanControl.Constants.Actions;
+    var eventManager = entity.eventManager;
+
+    actions.addAction(new wrect.ECS.Component.Action({
+      speed: 0,
+      initCallback: function () {
+        var action = this;
+        eventManager.addListener(actionConstants.ENGINE.QUEUE.ADD, function (data) {
+          var systems = entity.components.TitanEngineSystemCollection.systems;
+          var movementSystem = systems[0];
+          var action = movementSystem.actions[0];
+
+          movementSystem.queueAction(action);
+
+          //var a = entity.components.Coord.coord;
+          //var b = entityData.entity.components.Coord.coord;
+          //var gridDistance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2;
+          //
+          //action.setUpdateTick(gridDistance * action.speed);
+          //
+          //var marker = new wrect.ECS.Component.Map.Marker({
+          //  coord: entityData.entity.components.Coord
+          //});
+          //
+          //eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
+          //  entity: entity,
+          //  action: action
+          //});
+        });
+      },
+      tickCallback: function () {},
+      updateCallback: function () {},
+      stopCallback: function() {
+        return true;
+      }
+    }));
+
+    entity.addComponent(actions);
   };
 }());

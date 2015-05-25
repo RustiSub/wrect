@@ -91,16 +91,47 @@
    */
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.activateNextStep = function(system) {
     system.activeStepIndex += 1;
-    if (system.activeStepIndex > system.steps.length) {
+    if (system.activeStepIndex >= system.steps.length) {
       system.activeStepIndex = 0;
       this.eventManager.trigger('titan_engine.system.reset', {
         system: system
       });
+
+      system.steps[system.activeStepIndex].action = false;
+    }
+
+    if (system.activeStepIndex === 0) {
+      this.getActionFromQueue(system, system.steps[system.activeStepIndex]);
+    } else {
+      this.moveAction(system.steps[system.activeStepIndex - 1], system.steps[system.activeStepIndex]);
     }
 
     system.activeStep = system.steps[system.activeStepIndex];
+    console.log(system.activeStep.action);
+  };
 
-    //console.log('Activate step: ', system.activeStep);
+  /**
+   * Get Action from the queue and assign it to the given step
+   *
+   * @param {wrect.ECS.Component.TitanEngine.TitanEngineSystem} system
+   * @param {wrect.ECS.Component.TitanEngine.TitanEngineStep} currentStep
+   */
+  wrect.ECS.System.TitanEngine.CycleHandler.prototype.getActionFromQueue = function(system, currentStep) {
+    var action = system.getNextAction();
+    currentStep.action = action;
+  };
+
+  /**
+   * Move Action from one step to the next, if given
+   *
+   * @param {wrect.ECS.Component.TitanEngine.TitanEngineStep} currentStep
+   * @param {wrect.ECS.Component.TitanEngine.TitanEngineStep} nextStep
+   */
+  wrect.ECS.System.TitanEngine.CycleHandler.prototype.moveAction = function(currentStep, nextStep) {
+    if (currentStep && currentStep.action) {
+      nextStep.action = currentStep.action;
+      currentStep.action = false;
+    }
   };
 
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleAction = function() {

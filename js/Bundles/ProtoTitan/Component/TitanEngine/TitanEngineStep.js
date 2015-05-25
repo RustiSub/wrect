@@ -22,6 +22,8 @@
     this.tickCount = 0;
     this.tickLength = options.tickLength || 1;
     this.completed = false;
+
+    this.action = false;
   };
 
   wrect.ECS.Component.TitanEngine.TitanEngineStep.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
