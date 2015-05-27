@@ -17,7 +17,7 @@ var dirLight;
     console.log('ProtoTitan setup...');
 
     this.setupCamera();
-    this.setupScene();
+    //this.setupScene();
     this.buildWorld();
     this.registerSystems();
     this.setupMechanics();
@@ -34,7 +34,8 @@ var dirLight;
 
   wrect.Bundles.ProtoTitan.prototype.setupGrid = function() {
     var map = new wrect.ECS.Assemblage.HexMap({
-      mapSize: new Vector3(27, 27, 27),
+      //mapSize: new Vector3(27, 27, 27),
+      mapSize: new Vector3(9, 9, 9  ),
       tileSize: 50
     });
 

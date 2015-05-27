@@ -106,9 +106,24 @@
     }
 
     if (system.activeStepIndex === 0) {
-      this.getActionFromQueue(system, system.steps[system.activeStepIndex]);
+      var queuedAction = this.getActionFromQueue(system, system.steps[system.activeStepIndex]);
+
+      this.eventManager.trigger('titan_engine.queue.move', {
+        system: system,
+        toStep: system.steps[system.activeStepIndex],
+        action: queuedAction
+      });
     } else {
-      this.moveAction(system.steps[system.activeStepIndex - 1], system.steps[system.activeStepIndex]);
+      var movedAction = this.moveAction(system.steps[system.activeStepIndex - 1], system.steps[system.activeStepIndex]);
+
+      if (movedAction) {
+        this.eventManager.trigger('titan_engine.queue.move', {
+          system: system,
+          fromStep: system.steps[system.activeStepIndex - 1],
+          toStep: system.steps[system.activeStepIndex],
+          action: movedAction
+        });
+      }
     }
 
     system.activeStep = system.steps[system.activeStepIndex];
@@ -126,6 +141,8 @@
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.getActionFromQueue = function(system, currentStep) {
     var action = system.getNextAction();
     currentStep.action = action;
+
+    return currentStep.action;
   };
 
   /**
@@ -139,6 +156,8 @@
       nextStep.action = currentStep.action;
       currentStep.action = false;
     }
+
+    return nextStep.action;
   };
 
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleAction = function() {

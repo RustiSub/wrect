@@ -57,6 +57,40 @@
       //console.log(data.step.name);
     });
 
+    var actionContent = document.querySelector('#titan-engine-action').content;
+
+    this.entity.eventManager.addListener('titan_engine.queue.add', function(data) {
+      var system = document.querySelector('#' + data.system.id);
+      var action = data.action;
+      var clonedActionContent = document.importNode(actionContent, true);
+      var id = (+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16);
+      action.id = 'action-' + system.name + '-' + action.name + '-' + id;
+
+      clonedActionContent.querySelector('.action').id = action.id;
+      clonedActionContent.querySelector('.action-title').innerHTML = data.action.name;
+
+      system.querySelector('.queue-action-container').appendChild(clonedActionContent);
+    });
+
+    this.entity.eventManager.addListener('titan_engine.queue.move', function(data) {
+      var system = document.querySelector('#' + data.system.id);
+      var toStep = system.querySelector('#' + data.toStep.id);
+      var action = system.querySelector('#' + data.action.id);
+
+      if (action) {
+        action.remove();
+
+        if (toStep) {
+          toStep.appendChild(action);
+        }
+      }
+
+      //var action = system.querySelector('#' + data.action.id);
+      //
+      //action.remove();
+      //step.appendChild(action);
+    });
+
     var steps = [];
     steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.INPUT, updateTickLength: 1000})));
     steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.PROCESS, updateTickLength: 1000})));
@@ -71,7 +105,7 @@
 
     var systemsCollection = new components.TitanEngineSystemCollection({});
 
-    var movementSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.MOVEMENT});
+    var movementSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.MOVEMENT, eventManager: eventManager});
     movementSystem.actions = [
       new components.TitanEngineAction(
         {
@@ -102,6 +136,7 @@
 
       var guiContent = document.querySelector('#titan-engine-gui').content;
       var systemContent = document.querySelector('#titan-engine-system').content;
+      var queueContent = document.querySelector('#titan-engine-queue').content;
       var stepContent = document.querySelector('#titan-engine-step').content;
 
       shadow.appendChild(guiContent);
@@ -113,11 +148,15 @@
         var system = systems[systemIndex];
         var id = (+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16);
         var clonedSystemContent = document.importNode(systemContent, true);
+        var clonedQueueContent = document.importNode(queueContent, true);
         clonedSystemContent.querySelector('.system-title-container .system-title').innerHTML = system.name;
 
         guiRoot.appendChild(clonedSystemContent);
 
         var systemRoot = document.querySelector('.titan-engine-system');
+
+        systemRoot.appendChild(clonedQueueContent);
+
         system.id = 'system-' + system.name + '-' + id;
         systemRoot.id = system.id;
         var steps = system.steps;

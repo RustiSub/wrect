@@ -195,13 +195,13 @@
       }
       .titan-engine-step {
         float: left;
-        width: 33%;
+        width: 25%;
         background: rgba(54, 25, 25, 0.75);
         color: #FFF;
       }
       .system-title-container {
         float:left;
-        width: 99%;
+        width: 100%;
         background: rgba(54, 25, 25, 0.75);
         color: #FFF;
       }
@@ -244,6 +244,15 @@
   </div>
 </template>
 
+<template id="titan-engine-queue">
+    <div class="titan-engine-queue titan-engine-step">
+        <div><span class="step-title">QUEUE</span></div>
+        <div class="queue-action-container">
+
+        </div>
+    </div>
+</template>
+
 <template id="titan-engine-step">
   <div class="titan-engine-step">
     <div class="step-title-container">
@@ -255,6 +264,12 @@
       </span>
     </div>
   </div>
+</template>
+
+<template id="titan-engine-action">
+    <div class="action">
+        <div><span class="action-title">[ACTION]</span></div>
+    </div>
 </template>
 
 </body>

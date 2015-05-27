@@ -9,6 +9,8 @@
     wrect.ECS.Component.BaseComponent.call(this);
 
     this.options = options || {};
+    this.eventManager = options.eventManager;
+    console.log(this.eventManager);
 
     this.name = options.name;
     this.actions = options.actions;
@@ -37,5 +39,10 @@
    */
   wrect.ECS.Component.TitanEngine.TitanEngineSystem.prototype.queueAction = function(action) {
     this.actionQueue.push(action);
+
+    this.eventManager.trigger('titan_engine.queue.add', {
+      system: this,
+      action: action
+    });
   };
 }());
