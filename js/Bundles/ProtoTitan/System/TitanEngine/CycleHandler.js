@@ -96,10 +96,16 @@
 
     system.activeStepIndex += 1;
     if (system.activeStepIndex >= system.steps.length) {
+      var action = system.steps[system.activeStepIndex - 1].action;
       system.steps[system.activeStepIndex - 1].action = false;
       system.activeStepIndex = 0;
       this.eventManager.trigger('titan_engine.system.reset', {
         system: system
+      });
+
+      this.eventManager.trigger('titan_engine.queue.end', {
+        system: system,
+        action: action
       });
 
       system.steps[system.activeStepIndex].action = false;
@@ -127,9 +133,6 @@
     }
 
     system.activeStep = system.steps[system.activeStepIndex];
-    if (system.activeStep.action) {
-      console.log(system.activeStep, system.activeStep.action);
-    }
   };
 
   /**

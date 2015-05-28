@@ -84,11 +84,15 @@
           toStep.appendChild(action);
         }
       }
+    });
 
-      //var action = system.querySelector('#' + data.action.id);
-      //
-      //action.remove();
-      //step.appendChild(action);
+    this.entity.eventManager.addListener('titan_engine.queue.end', function(data) {
+      if (data.action) {
+        var system = document.querySelector('#' + data.system.id);
+        var action = system.querySelector('#' + data.action.id);
+
+        action.remove();
+      }
     });
 
     var steps = [];
