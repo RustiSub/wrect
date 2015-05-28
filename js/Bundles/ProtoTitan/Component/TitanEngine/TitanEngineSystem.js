@@ -10,8 +10,6 @@
 
     this.options = options || {};
     this.eventManager = options.eventManager;
-    console.log(this.eventManager);
-
     this.name = options.name;
     this.actions = options.actions;
     this.steps = options.steps || [];

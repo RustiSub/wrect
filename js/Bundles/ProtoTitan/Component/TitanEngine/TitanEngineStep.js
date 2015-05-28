@@ -19,6 +19,7 @@
     this.weight = options.weight || 0;
     this.updateTickLength = options.updateTickLength || 1000;
     this.updateTick = this.updateTickLength;
+    this.backupUpdateTickLength = this.updateTickLength;
     this.tickCount = 0;
     this.tickLength = options.tickLength || 1;
     this.completed = false;

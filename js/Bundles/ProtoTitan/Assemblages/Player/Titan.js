@@ -106,6 +106,13 @@
 
           action.setUpdateTick(gridDistance * action.speed);
 
+          if (entityData.step) {
+            eventManager.trigger('titan_control.move.time', {
+              step: entityData.step,
+              time: gridDistance * action.speed
+            });
+          }
+
           var marker = new wrect.ECS.Component.Map.Marker({
             coord: entityData.entity.components.Coord
           });

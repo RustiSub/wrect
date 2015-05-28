@@ -54,8 +54,6 @@
    * @param {wrect.ECS.Component.TitanEngine.TitanEngineStep} step
    */
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleStep = function(step) {
-    //console.log('Handle step: ', step);
-    //console.log('Update step tick: ', step.updateTick, ' reduce by ', this.gameTime.getDelta());
     step.updateTick -= this.gameTime.getDelta();
 
     var percentage = (step.updateTickLength - step.updateTick) / step.updateTickLength * 100;
@@ -68,11 +66,12 @@
     if (step.updateTick <= 0) {
       step.tickCount += 1;
       this.eventManager.trigger('titan_engine.tick.passed', {step: step});
-      //console.log('Tick passed...');
-      //console.log(step.tickLength - step.tickCount, ' ticks left');
       if (step.tickCount === step.tickLength) {
-        //console.log('Step completed...');
         step.completed = true;
+
+        if (step.action && step.endCallback) {
+          step.endCallback(step.action);
+        }
       }
     }
   };
@@ -90,10 +89,6 @@
    * @param {wrect.ECS.Component.TitanEngine.TitanEngineSystem} system
    */
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.activateNextStep = function(system) {
-    if (system.activeStep && system.activeStep.action && system.activeStep.endCallback) {
-      system.activeStep.endCallback(system.activeStep.action);
-    }
-
     system.activeStepIndex += 1;
     if (system.activeStepIndex >= system.steps.length) {
       var action = system.steps[system.activeStepIndex - 1].action;
