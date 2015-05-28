@@ -102,8 +102,8 @@
     {
       name: TitanEngine.Constants.Steps.OUTPUT,
       updateTickLength: 1000,
-      endCallback: function(action) {
-        action.actionCallback(action.data);
+      startCallback: function(action) {
+        action.startCallback(action.data);
       }
     })));
 
@@ -114,7 +114,7 @@
       new components.TitanEngineAction(
         {
           name: 'Forward',
-          actionCallback: function(data) {
+          startCallback: function(data) {
             eventManager.trigger('titan_control.move', data);
           }
         }

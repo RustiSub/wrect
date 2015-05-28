@@ -14,7 +14,8 @@
     this.timer = options.timer || {};
     this.cost = options.cost || {};
 
-    this.actionCallback = options.actionCallback || false;
+    this.startCallback = options.startCallback || false;
+    this.endCallback = options.endCallback || false;
   };
 
   wrect.ECS.Component.TitanEngine.TitanEngineAction.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

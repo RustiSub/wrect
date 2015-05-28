@@ -133,6 +133,10 @@
     }
 
     system.activeStep = system.steps[system.activeStepIndex];
+
+    if (system.activeStep && system.activeStep.action && system.activeStep.startCallback) {
+      system.activeStep.startCallback(system.activeStep.action);
+    }
   };
 
   /**
