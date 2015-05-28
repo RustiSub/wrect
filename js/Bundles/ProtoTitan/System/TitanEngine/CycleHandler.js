@@ -90,20 +90,24 @@
    */
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.activateNextStep = function(system) {
     system.activeStepIndex += 1;
+
     if (system.activeStepIndex >= system.steps.length) {
-      var action = system.steps[system.activeStepIndex - 1].action;
-      system.steps[system.activeStepIndex - 1].action = false;
-      system.activeStepIndex = 0;
+      if (system.steps[system.activeStepIndex - 1].action) {
+        var lastAction = system.steps[system.activeStepIndex - 1].action;
+
+        this.eventManager.trigger('titan_engine.queue.end', {
+          system: system,
+          action: lastAction
+        });
+
+        system.steps[system.activeStepIndex - 1].action = false;
+      }
+
       this.eventManager.trigger('titan_engine.system.reset', {
         system: system
       });
 
-      this.eventManager.trigger('titan_engine.queue.end', {
-        system: system,
-        action: action
-      });
-
-      system.steps[system.activeStepIndex].action = false;
+      system.activeStepIndex = 0;
     }
 
     if (system.activeStepIndex === 0) {
@@ -114,7 +118,7 @@
         toStep: system.steps[system.activeStepIndex],
         action: queuedAction
       });
-    } else {
+    } else if (system.activeStepIndex >= 0 && system.activeStepIndex < system.steps.length) {
       var movedAction = this.moveAction(system.steps[system.activeStepIndex - 1], system.steps[system.activeStepIndex]);
 
       if (movedAction) {

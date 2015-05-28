@@ -146,11 +146,11 @@
     actions.addAction(new wrect.ECS.Component.Action({
       speed: 0,
       initCallback: function () {
-        var action = this;
         eventManager.addListener(actionConstants.ENGINE.QUEUE.ADD, function (data) {
           var systems = entity.components.TitanEngineSystemCollection.systems;
           var movementSystem = systems[0];
-          var action = movementSystem.actions[0];
+
+          var action = new components.TitanEngineAction(movementSystem.actions[0].options);
           data.coord = new Vector3(data.coord);
           action.data = data;
 
@@ -206,16 +206,16 @@
     var actionContent = document.querySelector('#titan-engine-action').content;
 
     this.entity.eventManager.addListener('titan_engine.queue.add', function (data) {
-      var system = document.querySelector('#' + data.system.id);
+      var systemContent = document.querySelector('#' + data.system.id);
       var action = data.action;
       var clonedActionContent = document.importNode(actionContent, true);
       var id = (+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16);
-      action.id = 'action-' + system.name + '-' + action.name + '-' + id;
+      action.id = 'action-' + data.system.name + '-' + action.name + '-' + id;
 
       clonedActionContent.querySelector('.action').id = action.id;
       clonedActionContent.querySelector('.action-title').innerHTML = data.action.name;
 
-      system.querySelector('.queue-action-container').appendChild(clonedActionContent);
+      systemContent.querySelector('.queue-action-container').appendChild(clonedActionContent);
     });
 
     this.entity.eventManager.addListener('titan_engine.queue.move', function (data) {

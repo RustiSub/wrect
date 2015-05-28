@@ -24,7 +24,7 @@
   wrect.ECS.Component.TitanEngine.TitanEngineSystem.prototype.name = 'TitanEngineSystem';
 
   /**
-   * @returns {TitanEngineAction|false}
+   * @returns {wrect.ECS.Component.TitanEngineAction|boolean}
    */
   wrect.ECS.Component.TitanEngine.TitanEngineSystem.prototype.getNextAction = function() {
     var action = this.actionQueue.shift();
@@ -33,7 +33,7 @@
   };
 
   /**
-   * @param {TitanEngineAction} action
+   * @param {wrect.ECS.Component.TitanEngineAction} action
    */
   wrect.ECS.Component.TitanEngine.TitanEngineSystem.prototype.queueAction = function(action) {
     this.actionQueue.push(action);
