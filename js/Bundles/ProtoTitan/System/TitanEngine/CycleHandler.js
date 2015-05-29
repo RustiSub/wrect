@@ -30,7 +30,6 @@
     for(var systemIndex in systems) if (systems.hasOwnProperty(systemIndex)) {
       var system = systems[systemIndex];
 
-      //console.log('Handle system: ', system);
       this.handleSystem(system);
     }
   };
@@ -42,6 +41,10 @@
 
     if (system.activeStep) {
       this.handleStep(system.activeStep);
+
+      if (system.activeStep.updateCallback) {
+        system.activeStep.updateCallback(this, system);
+      }
 
       if (system.activeStep.completed) {
         this.resetStep(system.activeStep);
@@ -111,24 +114,9 @@
     }
 
     if (system.activeStepIndex === 0) {
-      var queuedAction = this.getActionFromQueue(system, system.steps[system.activeStepIndex]);
-
-      this.eventManager.trigger('titan_engine.queue.move', {
-        system: system,
-        toStep: system.steps[system.activeStepIndex],
-        action: queuedAction
-      });
+      this.moveActionFromQueue(system);
     } else if (system.activeStepIndex >= 0 && system.activeStepIndex < system.steps.length) {
-      var movedAction = this.moveAction(system.steps[system.activeStepIndex - 1], system.steps[system.activeStepIndex]);
-
-      if (movedAction) {
-        this.eventManager.trigger('titan_engine.queue.move', {
-          system: system,
-          fromStep: system.steps[system.activeStepIndex - 1],
-          toStep: system.steps[system.activeStepIndex],
-          action: movedAction
-        });
-      }
+      this.moveActionToNextStep(system);
     }
 
     system.activeStep = system.steps[system.activeStepIndex];
@@ -169,4 +157,27 @@
   wrect.ECS.System.TitanEngine.CycleHandler.prototype.handleAction = function() {
 
   };
+
+  wrect.ECS.System.TitanEngine.CycleHandler.prototype.moveActionFromQueue = function(system) {
+    var queuedAction = this.getActionFromQueue(system, system.steps[system.activeStepIndex]);
+
+    this.eventManager.trigger('titan_engine.queue.move', {
+      system: system,
+      toStep: system.steps[system.activeStepIndex],
+      action: queuedAction
+    });
+  };
+
+  wrect.ECS.System.TitanEngine.CycleHandler.prototype.moveActionToNextStep = function(system) {
+    var movedAction = this.moveAction(system.steps[system.activeStepIndex - 1], system.steps[system.activeStepIndex]);
+
+    if (movedAction) {
+      this.eventManager.trigger('titan_engine.queue.move', {
+        system: system,
+        fromStep: system.steps[system.activeStepIndex - 1],
+        toStep: system.steps[system.activeStepIndex],
+        action: movedAction
+      });
+    }
+  }
 }());

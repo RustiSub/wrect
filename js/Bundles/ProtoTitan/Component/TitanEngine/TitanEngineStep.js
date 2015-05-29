@@ -27,6 +27,7 @@
     this.action = false;
 
     this.startCallback = options.startCallback || false;
+    this.updateCallback = options.updateCallback || false;
     this.endCallback = options.endCallback || false;
   };
 

@@ -44,7 +44,16 @@
     var eventManager = this.entity.eventManager;
     var steps = [];
 
-    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.INPUT, updateTickLength: 1000})));
+    steps.push(new components.TitanEngineStep((
+    {
+      name: TitanEngine.Constants.Steps.INPUT,
+      updateTickLength: 1000,
+      updateCallback: function(cycleHandler, system) {
+        if (!this.action) {
+          cycleHandler.moveActionFromQueue(system);
+        }
+      }
+    })));
     steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.PROCESS, updateTickLength: 1000})));
     var outputStep = new components.TitanEngineStep((
     {
