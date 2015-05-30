@@ -43,28 +43,16 @@
   wrect.ECS.Assemblage.TitanEngine.prototype.buildEngine = function() {
     var eventManager = this.entity.eventManager;
     var titanEngineSteps = new wrect.ECS.Assemblage.TitanEngineSteps({eventManager: eventManager});
-    var steps = titanEngineSteps.steps;
-    var systemsCollection = new components.TitanEngineSystemCollection({});
+    var titanEngineSystems = new wrect.ECS.Assemblage.TitanEngineSystems(
+      {
+        eventManager: eventManager,
+        steps: titanEngineSteps.steps
+      }
+    );
 
-    var movementSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.MOVEMENT, eventManager: eventManager});
-    movementSystem.actions = [
-      new components.TitanEngineAction(
-          {
-            name: 'Forward',
-            startCallback: function(data) {
-              eventManager.trigger('titan_control.move', data);
-            }
-          }
-      ),
-      new components.TitanEngineAction({name: 'Backward'})
-    ];
-    movementSystem.steps = steps;
+    this.entity.addComponent(titanEngineSystems.systemsCollection);
 
-    systemsCollection.addSystem(movementSystem);
-
-    this.entity.addComponent(systemsCollection);
-
-    this.createGui(systemsCollection);
+    this.createGui(titanEngineSystems.systemsCollection);
   };
 
   wrect.ECS.Assemblage.TitanEngine.prototype.createGui = function(systemsCollection) {
