@@ -37,4 +37,23 @@
 
     systemsCollection.addSystem(movementSystem);
   };
+
+  wrect.ECS.Assemblage.TitanEngineSystems.prototype.createMovementSystem = function() {
+    var eventManager = this.eventManager;
+    var movementSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.MOVEMENT, eventManager: eventManager});
+    movementSystem.actions = [
+      new components.TitanEngineAction(
+        {
+          name: 'Forward',
+          startCallback: function(data) {
+            eventManager.trigger('titan_control.move', data);
+          }
+        }
+      ),
+      new components.TitanEngineAction({name: 'Backward'})
+    ];
+    movementSystem.steps = this.steps;
+
+    return movementSystem;
+  };
 }());
