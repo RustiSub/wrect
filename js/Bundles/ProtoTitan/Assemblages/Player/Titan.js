@@ -160,6 +160,7 @@
           });
         });
       },
+      tickCallback: function (data) {},
       updateCallback: function (updatePercentage, data) {
         data.tile.components.Visual.graphics.material.color.r += updatePercentage;
       },

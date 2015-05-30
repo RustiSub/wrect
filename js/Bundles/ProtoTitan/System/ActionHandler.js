@@ -50,12 +50,14 @@
         var percentageIncrease = (1 - (action.countdown / (action.updateTick / 100)) / 100) - updatePercentage;
 
         if (action.countdown <= 0) {
-          queuedAction.callback(queuedAction.data);
+          if (queuedAction.callback) {
+            queuedAction.callback(queuedAction.data);
 
-          action.countdown = action.updateTick;
+            action.countdown = action.updateTick;
 
-          if (action.stopCallback()) {
-            queue.splice(queue.indexOf(queuedAction), 1);
+            if (action.stopCallback()) {
+              queue.splice(queue.indexOf(queuedAction), 1);
+            }
           }
         } else {
           action.updateCallback(percentageIncrease, queuedAction.data);
