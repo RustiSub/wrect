@@ -20,6 +20,7 @@
 
   wrect.Core.Constants.Input = {
     CURSOR: 'CURSOR',
-    CLICK: 'CLICK'
+    LEFT_CLICK: 'LEFT_CLICK',
+    RIGHT_CLICK: 'RIGHT_CLICK'
   }
 }());

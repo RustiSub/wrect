@@ -52,7 +52,8 @@
     Ranges: {
       CURSOR: {
         DISPLAY: 'DISPLAY',
-        CLICK: 'CLICK'
+        LEFT_CLICK: 'LEFT_CLICK',
+        RIGHT_CLICK: 'RIGHT_CLICK'
       }
     }
   };
@@ -86,7 +87,8 @@
       ],
       types: [
           Input.CURSOR,
-          Input.CLICK
+          Input.LEFT_CLICK,
+          Input.RIGHT_CLICK
       ]
     });
 
@@ -108,8 +110,12 @@
       action: ranges.CURSOR.DISPLAY,
       values: {}
     };
-    contextMap.ranges[Input.CLICK] = {
-      action: ranges.CURSOR.CLICK,
+    contextMap.ranges[Input.LEFT_CLICK] = {
+      action: ranges.CURSOR.LEFT_CLICK,
+      values: {}
+    };
+    contextMap.ranges[Input.RIGHT_CLICK] = {
+      action: ranges.CURSOR.RIGHT_CLICK,
       values: {}
     };
 
@@ -153,7 +159,7 @@
     controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
       //selectObjects(values);
     };
-    controlMap.controls[ranges.CURSOR.CLICK] = function(entity, values) {
+    controlMap.controls[ranges.CURSOR.LEFT_CLICK] = function(entity, values) {
       if (!controlMap.modes.MARKER) {
         return;
       }
