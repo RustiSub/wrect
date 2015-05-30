@@ -6,6 +6,7 @@
   wrect.Bundles.ProtoTitan.Steps = wrect.Bundles.ProtoTitan.Steps || {};
 
   var TitanEngine = wrect.Bundles.ProtoTitan.TitanEngine;
+  var titanControl = wrect.Bundles.ProtoTitan.TitanControl;
   var components = wrect.ECS.Component.TitanEngine;
 
   /**
@@ -37,7 +38,7 @@
     movementSystem.actions = [
       new components.TitanEngineAction(
         {
-          name: 'Forward',
+          name: titanControl.Constants.Ranges.CURSOR.MOVE,
           startCallback: function(data) {
             eventManager.trigger('titan_control.move', data);
           }
@@ -62,7 +63,7 @@
     offensiveSystem.actions = [
       new components.TitanEngineAction(
         {
-          name: 'Attack',
+          name: titanControl.Constants.Ranges.CURSOR.ATTACK,
           startCallback: function(data) {
             //eventManager.trigger('titan_control.move', data);
             console.log('trigger attack');

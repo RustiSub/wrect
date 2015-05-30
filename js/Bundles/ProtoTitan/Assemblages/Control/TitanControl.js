@@ -52,8 +52,8 @@
     Ranges: {
       CURSOR: {
         DISPLAY: 'DISPLAY',
-        LEFT_CLICK: 'LEFT_CLICK',
-        RIGHT_CLICK: 'RIGHT_CLICK'
+        MOVE: 'MOVE',
+        ATTACK: 'ATTACK'
       }
     }
   };
@@ -111,11 +111,11 @@
       values: {}
     };
     contextMap.ranges[Input.LEFT_CLICK] = {
-      action: ranges.CURSOR.LEFT_CLICK,
+      action: ranges.CURSOR.MOVE,
       values: {}
     };
     contextMap.ranges[Input.RIGHT_CLICK] = {
-      action: ranges.CURSOR.RIGHT_CLICK,
+      action: ranges.CURSOR.ATTACK,
       values: {}
     };
 
@@ -159,15 +159,23 @@
     controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
       //selectObjects(values);
     };
-    controlMap.controls[ranges.CURSOR.LEFT_CLICK] = function(entity, values) {
+    controlMap.controls[ranges.CURSOR.MOVE] = function(entity, values) {
       if (!controlMap.modes.MARKER) {
         return;
       }
 
-      selectObjects(values);
+      selectObjects(values, ranges.CURSOR.MOVE);
     };
 
-    function selectObjects(values) {
+    controlMap.controls[ranges.CURSOR.ATTACK] = function(entity, values) {
+      if (!controlMap.modes.MARKER) {
+        return;
+      }
+
+      selectObjects(values, ranges.CURSOR.ATTACK);
+    };
+
+    function selectObjects(values, actionCode) {
       var camera = options.camera;
       var eventManager = options.eventManager;
       var sceneManager = options.sceneManager;
@@ -184,7 +192,8 @@
 
         for (var i in intersects) {
           eventManager.trigger('titan_control.objects_selected', {
-            entity: sceneManager.getEntityByGraphicsId(intersects[i].object.id)
+            entity: sceneManager.getEntityByGraphicsId(intersects[i].object.id),
+            actionCode: actionCode
           });
         }
       }

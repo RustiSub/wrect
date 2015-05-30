@@ -27,6 +27,8 @@
     }
   };
 
+  var titanControl = wrect.Bundles.ProtoTitan.TitanControl;
+
   /**
    * @param options
    * @returns {wrect.ECS.Entity|wrect.ECS.Entity}
@@ -104,14 +106,14 @@
       speed: 0,
       initCallback: function () {
         eventManager.addListener(actionConstants.ENGINE.QUEUE.ADD, function (data) {
-          var systems = entity.components.TitanEngineSystemCollection.systems;
-          var movementSystem = systems[0];
+            var systemsCollection = entity.components.TitanEngineSystemCollection;
+            var system = systemsCollection.getSystem(data.systemCode);
 
-          var action = new components.TitanEngineAction(movementSystem.actions[0].options);
-          data.coord = new Vector3(data.coord);
-          action.data = data;
+            var action = new components.TitanEngineAction(system.getAction(data.actionCode).options);
+            data.coord = new Vector3(data.coord);
+            action.data = data;
 
-          movementSystem.queueAction(action);
+            system.queueAction(action);
         });
       },
       tickCallback: function () {},
@@ -126,13 +128,28 @@
       initCallback: function () {
         var action = this;
         eventManager.addListener('titan_control.tile_changed', function (data) {
-          eventManager.trigger(actionConstants.ENGINE.QUEUE.ADD, data);
+          if (data.actionCode === titanControl.Constants.Ranges.CURSOR.MOVE) {
+            data.systemCode = TitanEngine.Constants.Systems.MOVEMENT;
+            eventManager.trigger(actionConstants.ENGINE.QUEUE.ADD, data);
+          }
         });
       },
       tickCallback: function (data) {},
       updateCallback: function (updatePercentage, data) {},
       stopCallback: function() {
         return true;
+      }
+    }));
+
+    actions.addAction(new wrect.ECS.Component.Action({
+      speed: 0,
+      initCallback: function () {
+        eventManager.addListener('titan_control.tile_changed', function (data) {
+          if (data.actionCode === titanControl.Constants.Ranges.CURSOR.ATTACK) {
+            data.systemCode = TitanEngine.Constants.Systems.OFFENSIVE;
+            eventManager.trigger(actionConstants.ENGINE.QUEUE.ADD, data);
+          }
+        });
       }
     }));
 

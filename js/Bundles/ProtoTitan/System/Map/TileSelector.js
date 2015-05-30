@@ -33,16 +33,12 @@
       return;
     }
 
-    //this.eventManager.trigger('titan_control.selected_tile_clicked', {
-    //  entity: entity,
-    //  coord: entity.components.Grid.getTileCoord(entity.components.Coord.coord)
-    //});
-
     selectable.changed = false;
 
     this.eventManager.trigger('titan_control.tile_changed', {
       entity: entity,
-      coord: entity.components.Grid.getTileCoord(entity.components.Coord.coord)
+      coord: entity.components.Grid.getTileCoord(entity.components.Coord.coord),
+      actionCode: selectable.actionCode
     });
 
     if (selectable.selected) {
@@ -63,6 +59,7 @@
   wrect.ECS.System.Map.TileSelector.prototype.selectObject = function(eventData) {
     if (this.entities.indexOf(eventData.entity) !== -1) {
       eventData.entity.components.Selectable.changed = true;
+      eventData.entity.components.Selectable.actionCode = eventData.actionCode;
     }
   };
 }());

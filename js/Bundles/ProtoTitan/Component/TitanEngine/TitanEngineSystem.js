@@ -43,4 +43,21 @@
       action: action
     });
   };
+
+
+  /**
+   * @param {string} actionCode
+   * @returns {wrect.ECS.Component.TitanEngine.TitanEngineAction|boolean}
+   */
+  wrect.ECS.Component.TitanEngine.TitanEngineSystem.prototype.getAction = function(actionCode) {
+    for(var s = 0; s < this.actions.length; s++) {
+      var action = this.actions[s];
+
+      if (action.name === actionCode) {
+        return action;
+      }
+    }
+
+    return false;
+  };
 }());
