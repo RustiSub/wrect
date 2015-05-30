@@ -65,8 +65,10 @@
         {
           name: titanControl.Constants.Ranges.CURSOR.ATTACK,
           startCallback: function(data) {
-            //eventManager.trigger('titan_control.move', data);
-            console.log('trigger attack');
+            //titan_control.attack
+            eventManager.trigger('titan_control.attack', data);
+            //console.log(data.entity.components.Visual.graphics.material.color);
+            data.entity.components.Visual.graphics.material.color.setHex(0x000000);
           }
         }
       )

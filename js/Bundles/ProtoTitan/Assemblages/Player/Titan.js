@@ -147,6 +147,27 @@
       }
     }));
 
+    actions.addAction(new wrect.ECS.Component.Action({
+      speed: 1000,
+      updateTick: 1000,
+      initCallback: function () {
+        var action = this;
+        eventManager.addListener('titan_control.attack', function (entityData) {
+          eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
+            entity: entity,
+            action: action,
+            tile: entityData.entity
+          });
+        });
+      },
+      updateCallback: function (updatePercentage, data) {
+        data.tile.components.Visual.graphics.material.color.r += updatePercentage;
+      },
+      stopCallback: function() {
+        return true;
+      }
+    }));
+
     entity.addComponent(actions);
   };
 
