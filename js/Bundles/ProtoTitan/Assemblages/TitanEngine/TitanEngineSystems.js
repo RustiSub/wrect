@@ -15,32 +15,25 @@
   wrect.ECS.Assemblage.TitanEngineSystems = function (options) {
     this.eventManager = options.eventManager;
     var eventManager = this.eventManager;
-    this.steps = options.steps;
 
     this.systemsCollection = new components.TitanEngineSystemCollection({});
 
     var systemsCollection = this.systemsCollection;
 
-    var movementSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.MOVEMENT, eventManager: eventManager});
-    movementSystem.actions = [
-      new components.TitanEngineAction(
-        {
-          name: 'Forward',
-          startCallback: function(data) {
-            eventManager.trigger('titan_control.move', data);
-          }
-        }
-      ),
-      new components.TitanEngineAction({name: 'Backward'})
-    ];
-    movementSystem.steps = this.steps;
-
-    systemsCollection.addSystem(movementSystem);
+    systemsCollection.addSystem(this.createMovementSystem());
+    systemsCollection.addSystem(this.createOffensiveSystem());
   };
 
   wrect.ECS.Assemblage.TitanEngineSystems.prototype.createMovementSystem = function() {
     var eventManager = this.eventManager;
-    var movementSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.MOVEMENT, eventManager: eventManager});
+    var steps = new wrect.ECS.Assemblage.TitanEngineSteps({eventManager: eventManager}).steps;
+    var movementSystem = new components.TitanEngineSystem(
+      {
+        name: TitanEngine.Constants.Systems.MOVEMENT,
+        eventManager: eventManager,
+        steps: steps
+      }
+    );
     movementSystem.actions = [
       new components.TitanEngineAction(
         {
@@ -52,8 +45,32 @@
       ),
       new components.TitanEngineAction({name: 'Backward'})
     ];
-    movementSystem.steps = this.steps;
 
     return movementSystem;
+  };
+
+  wrect.ECS.Assemblage.TitanEngineSystems.prototype.createOffensiveSystem = function() {
+    var eventManager = this.eventManager;
+    var steps = new wrect.ECS.Assemblage.TitanEngineSteps({eventManager: eventManager}).steps;
+    var offensiveSystem = new components.TitanEngineSystem(
+      {
+        name: TitanEngine.Constants.Systems.OFFENSIVE,
+        eventManager: eventManager,
+        steps: steps
+      }
+    );
+    offensiveSystem.actions = [
+      new components.TitanEngineAction(
+        {
+          name: 'Attack',
+          startCallback: function(data) {
+            //eventManager.trigger('titan_control.move', data);
+            console.log('trigger attack');
+          }
+        }
+      )
+    ];
+
+    return offensiveSystem;
   };
 }());

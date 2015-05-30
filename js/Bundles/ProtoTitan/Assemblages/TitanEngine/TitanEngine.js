@@ -42,11 +42,9 @@
 
   wrect.ECS.Assemblage.TitanEngine.prototype.buildEngine = function() {
     var eventManager = this.entity.eventManager;
-    var titanEngineSteps = new wrect.ECS.Assemblage.TitanEngineSteps({eventManager: eventManager});
     var titanEngineSystems = new wrect.ECS.Assemblage.TitanEngineSystems(
       {
-        eventManager: eventManager,
-        steps: titanEngineSteps.steps
+        eventManager: eventManager
       }
     );
 
@@ -56,7 +54,7 @@
   };
 
   wrect.ECS.Assemblage.TitanEngine.prototype.createGui = function(systemsCollection) {
-    var shadow = document.querySelector('#guiContainer');//.createShadowRoot();
+    var shadow = document.querySelector('#guiContainer');
 
     var guiContent = document.querySelector('#titan-engine-gui').content;
     var systemContent = document.querySelector('#titan-engine-system').content;
@@ -72,14 +70,11 @@
       var system = systems[systemIndex];
       var id = (+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16);
       var clonedSystemContent = document.importNode(systemContent, true);
-      var clonedQueueContent = document.importNode(queueContent, true);
+      var systemRoot = clonedSystemContent.querySelector('.titan-engine-system');
+
       clonedSystemContent.querySelector('.system-title-container .system-title').innerHTML = system.name;
-
       guiRoot.appendChild(clonedSystemContent);
-
-      var systemRoot = document.querySelector('.titan-engine-system');
-
-      systemRoot.appendChild(clonedQueueContent);
+      systemRoot.appendChild(document.importNode(queueContent, true));
 
       system.id = 'system-' + system.name + '-' + id;
       systemRoot.id = system.id;
@@ -156,6 +151,7 @@
 
     this.entity.eventManager.addListener('titan_engine.tick.update', function (data) {
       var step = document.querySelector('.titan-engine-gui #' + data.step.id);
+
       var percentage = Math.round(data.percentage) + '%';
       step.querySelector('.progress-bar-container .progress-bar').style.width = percentage;
       step.querySelector('.progress-bar-container .progress-bar').innerHTML = percentage;
@@ -182,6 +178,10 @@
 
     this.entity.eventManager.addListener('titan_engine.queue.move', function (data) {
       var system = document.querySelector('#' + data.system.id);
+      if (!system) {
+        //console.log('#' + data.system.id);
+        //debugger;
+      }
       var toStep = system.querySelector('#' + data.toStep.id);
       var action = system.querySelector('#' + data.action.id);
 
