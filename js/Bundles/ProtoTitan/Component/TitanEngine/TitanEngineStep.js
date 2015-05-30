@@ -26,9 +26,14 @@
 
     this.action = false;
 
+    this.initCallback = options.initCallback || false;
     this.startCallback = options.startCallback || false;
     this.updateCallback = options.updateCallback || false;
     this.endCallback = options.endCallback || false;
+
+    if (this.initCallback) {
+      this.initCallback(this);
+    }
   };
 
   wrect.ECS.Component.TitanEngine.TitanEngineStep.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

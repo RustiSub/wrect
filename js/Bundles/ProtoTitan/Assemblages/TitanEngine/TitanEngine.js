@@ -42,43 +42,8 @@
 
   wrect.ECS.Assemblage.TitanEngine.prototype.buildEngine = function() {
     var eventManager = this.entity.eventManager;
-    var steps = [];
-
-    steps.push(new components.TitanEngineStep((
-    {
-      name: TitanEngine.Constants.Steps.INPUT,
-      updateTickLength: 1000,
-      updateCallback: function(cycleHandler, system) {
-        if (!this.action) {
-          cycleHandler.moveActionFromQueue(system);
-        }
-      }
-    })));
-    steps.push(new components.TitanEngineStep(({name: TitanEngine.Constants.Steps.PROCESS, updateTickLength: 1000})));
-    var outputStep = new components.TitanEngineStep((
-    {
-      name: TitanEngine.Constants.Steps.OUTPUT,
-      updateTickLength: 1000,
-      startCallback: function (action) {
-        action.data.step = this;
-        action.startCallback(action.data);
-      },
-      endCallback: function() {
-        this.updateTickLength = this.backupUpdateTickLength;
-        this.updateTick = this.updateTickLength;
-      }
-    }));
-
-    eventManager.addListener('titan_control.move.time', function(data) {
-      if (data.step && data.step === outputStep) {
-        data.step.backupUpdateTickLength = data.step.updateTickLength;
-        data.step.updateTickLength = data.time;
-        data.step.updateTick = data.time;
-      }
-    });
-
-    steps.push(outputStep);
-
+    var titanEngineSteps = new wrect.ECS.Assemblage.TitanEngineSteps({eventManager: eventManager});
+    var steps = titanEngineSteps.steps;
     var systemsCollection = new components.TitanEngineSystemCollection({});
 
     var movementSystem = new components.TitanEngineSystem({name: TitanEngine.Constants.Systems.MOVEMENT, eventManager: eventManager});
