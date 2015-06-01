@@ -16,14 +16,16 @@ var dirLight;
   wrect.Bundles.ProtoTitan.prototype.init = function() {
     console.log('ProtoTitan setup...');
 
-    this.setupCamera();
-    this.setupScene();
-    this.buildWorld();
     this.registerSystems();
+    this.setupCamera();
+    //this.setupScene();
+    this.buildWorld();
+
     this.setupMechanics();
     this.setupControls();
     this.setupGrid();
     this.setupPlayer();
+    this.buildTerrain();
 
     this.game.getRenderer().render();
 
@@ -93,42 +95,26 @@ var dirLight;
       material: new THREE.MeshLambertMaterial({color: 0xC38A09 }),
       receiveShadow: true
     });
+  };
 
-    createBlock({
-      position: new Vector3(100, 100, 50),
-      dimension: new Vector3(15, 15, 100),
-      frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
-      castShadow: true,
-      receiveShadow: true
-    });
+  wrect.Bundles.ProtoTitan.prototype.buildTerrain = function() {
 
-    createBlock({
-      position: new Vector3(-100, 100, 50),
-      dimension: new Vector3(15, 15, 100),
-      frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
-      castShadow: true,
-      receiveShadow: true
-    });
+    function createTerrain(coord) {
+     return new wrect.ECS.Assemblage.Map.Terrain({
+        coord: coord,
+        position: new Vector3(0, 0, 10),
+        dimension: new Vector3(20, 20, 20),
+        material:  new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
+        renderer: game.getRenderer(),
+        eventManager: game.getEventManager()
+      });
+    }
 
-    createBlock({
-      position: new Vector3(100, -100, 50),
-      dimension: new Vector3(15, 15, 100),
-      frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
-      castShadow: true,
-      receiveShadow: true
-    });
-
-    createBlock({
-      position: new Vector3(-100, -100, 50),
-      dimension: new Vector3(15, 15, 100),
-      frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 }),
-      castShadow: true,
-      receiveShadow: true
-    });
+    game.getEntityManager().addEntity(createTerrain(new Vector3(2, -2, 0)).entity);
+    game.getEntityManager().addEntity(createTerrain(new Vector3(-2, 2, 0)).entity);
+    game.getEntityManager().addEntity(createTerrain(new Vector3(3, -3, 0)).entity);
+    game.getEntityManager().addEntity(createTerrain(new Vector3(4, -3, 0)).entity);
+    game.getEntityManager().addEntity(createTerrain(new Vector3(3, -2, 0)).entity);
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupCamera = function() {
