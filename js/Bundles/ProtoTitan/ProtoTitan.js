@@ -18,7 +18,7 @@ var dirLight;
 
     this.registerSystems();
     this.setupCamera();
-    //this.setupScene();
+    this.setupScene();
     this.buildWorld();
 
     this.setupMechanics();

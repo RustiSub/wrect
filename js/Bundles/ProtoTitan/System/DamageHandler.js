@@ -61,9 +61,10 @@
     }
   };
 
-  wrect.ECS.System.DamageHandler.prototype.handleDamage = function(entity, data) {
-    if (this.checkDependencies(entity)) {
-      var health = entity.components.Health;
+  wrect.ECS.System.DamageHandler.prototype.handleDamage = function(data) {
+    console.log(this.checkDependencies(data.entity));
+    if (this.checkDependencies(data.entity)) {
+      var health = data.entity.components.Health;
       var damage = data.damage;
 
       this.addDamageToStack(health, damage);

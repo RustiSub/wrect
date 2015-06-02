@@ -162,7 +162,11 @@
       },
       tickCallback: function (data) {},
       updateCallback: function (updatePercentage, data) {
-        data.tile.components.Visual.graphics.material.color.r += updatePercentage;
+        console.log(data.entity);
+        eventManager.trigger(wrect.Bundles.ProtoTitan.Damage.Constants.DAMAGE, {
+          entity: data.entity
+        });
+        //data.tile.components.Visual.graphics.material.color.r += updatePercentage;
       },
       stopCallback: function() {
         return true;
