@@ -219,6 +219,16 @@ var dirLight;
           }
       )
     };
+
+    this.game.systems.post.DamageHandler = {
+      system: new wrect.ECS.System.DamageHandler(
+          {
+            game: this.game,
+            gameTime: this.game.getGameTime(),
+            eventManager: this.game.getEventManager()
+          }
+      )
+    };
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupPlayer = function() {

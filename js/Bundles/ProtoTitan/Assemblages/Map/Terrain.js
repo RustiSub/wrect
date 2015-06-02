@@ -39,5 +39,14 @@
     });
     coord.targetCoord = options.coord;
     this.entity.addComponent(coord);
+
+    var healthComponent = new wrect.ECS.Component.Health({
+      maxHealth: 100,
+      damageCallback: function(data) {
+        console.log(data, 'terrain is being damaged');
+      }
+    });
+
+    this.entity.addComponent(healthComponent);
   };
 }());
