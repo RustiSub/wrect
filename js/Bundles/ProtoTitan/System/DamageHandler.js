@@ -52,7 +52,7 @@
       health.damageCallback(damage);
     }
 
-    for (var d = 0; d < health.damageStates; d++) {
+    for (var d = 0; d < health.damageStates.length; d++) {
       var damageState = health.damageStates[d];
 
       if (health.currentHealth <= damageState.amount) {
@@ -62,12 +62,15 @@
   };
 
   wrect.ECS.System.DamageHandler.prototype.handleDamage = function(data) {
-    console.log(this.checkDependencies(data.entity));
-    if (this.checkDependencies(data.entity)) {
-      var health = data.entity.components.Health;
-      var damage = data.damage;
+    for (var e = 0; e < data.entities.length; e++) {
+      var entity = data.entities[e];
 
-      this.addDamageToStack(health, damage);
+      if (this.checkDependencies(entity)) {
+        var health = entity.components.Health;
+        var damage = data.damage;
+
+        this.addDamageToStack(health, damage);
+      }
     }
   };
 

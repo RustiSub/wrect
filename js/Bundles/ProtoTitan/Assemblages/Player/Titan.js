@@ -162,11 +162,13 @@
       },
       tickCallback: function (data) {},
       updateCallback: function (updatePercentage, data) {
-        console.log(data.entity);
         eventManager.trigger(wrect.Bundles.ProtoTitan.Damage.Constants.DAMAGE, {
-          entity: data.entity
+          entities: data.tile.components.Grid.getEntitiesFromCoord(data.tile.components.Coord.coord),
+          damage: new wrect.ECS.Component.Damage({
+            amount: 10
+          })
         });
-        //data.tile.components.Visual.graphics.material.color.r += updatePercentage;
+        data.tile.components.Visual.graphics.material.color.r += updatePercentage;
       },
       stopCallback: function() {
         return true;

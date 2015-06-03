@@ -18,14 +18,13 @@ var dirLight;
 
     this.registerSystems();
     this.setupCamera();
-    this.setupScene();
+    //this.setupScene();
     this.buildWorld();
 
     this.setupMechanics();
     this.setupControls();
     this.setupGrid();
     this.setupPlayer();
-    this.buildTerrain();
 
     this.game.getRenderer().render();
 
@@ -40,6 +39,8 @@ var dirLight;
       mapSize: new Vector3(9, 9, 9  ),
       tileSize: 50
     });
+console.log(map);
+    this.buildTerrain(map.entity.components.Grid);
 
     game.getEntityManager().addEntity(map.entity);
   };
@@ -97,10 +98,11 @@ var dirLight;
     });
   };
 
-  wrect.Bundles.ProtoTitan.prototype.buildTerrain = function() {
+  wrect.Bundles.ProtoTitan.prototype.buildTerrain = function(grid) {
 
     function createTerrain(coord) {
      return new wrect.ECS.Assemblage.Map.Terrain({
+        grid: grid,
         coord: coord,
         position: new Vector3(0, 0, 10),
         dimension: new Vector3(20, 20, 20),

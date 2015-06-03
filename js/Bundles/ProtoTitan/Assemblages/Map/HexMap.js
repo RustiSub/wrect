@@ -46,7 +46,7 @@
         grid: grid
       });
 
-      grid.tiles.push(tile.entity.components.Coord.coord);
+      grid.addTileEntity(coord, tile.entity);
       game.getEntityManager().addEntity(tile.entity);
     }
 

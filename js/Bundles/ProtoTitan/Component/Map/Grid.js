@@ -14,6 +14,7 @@
 
     this.tileSize = options.tileSize;
     this.tiles = options.tiles || [];
+    this.tileHashTable = {};
   };
 
   wrect.ECS.Component.Map.Grid.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
@@ -34,5 +35,31 @@
       (coord.x * (height/ 2)),
       5
     );
+  };
+
+  wrect.ECS.Component.Map.Grid.prototype.addTileEntity = function(coord, entity) {
+    this.tiles.push(entity);
+    if (!this.tileHashTable[this.tileCoordHashCode(coord)]) {
+      this.tileHashTable[this.tileCoordHashCode(coord)] = [];
+    }
+
+    this.tileHashTable[this.tileCoordHashCode(coord)].push(entity);
+  };
+
+  wrect.ECS.Component.Map.Grid.prototype.tileCoordHashCode = function(coord) {
+    return coord.x + '' + coord.y + '' + coord.z;
+  };
+
+  /**
+   *
+   * @param coord
+   * @returns {*}
+   */
+  wrect.ECS.Component.Map.Grid.prototype.getEntitiesFromCoord = function(coord) {
+    if (this.tileHashTable[this.tileCoordHashCode(coord)]) {
+      return this.tileHashTable[this.tileCoordHashCode(coord)];
+    }
+
+    return false;
   };
 }());

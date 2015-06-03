@@ -48,5 +48,7 @@
     });
 
     this.entity.addComponent(healthComponent);
+
+    options.grid.addTileEntity(coord.targetCoord, this.entity);
   };
 }());
