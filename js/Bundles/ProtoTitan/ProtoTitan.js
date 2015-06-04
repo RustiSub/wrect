@@ -39,7 +39,6 @@ var dirLight;
       mapSize: new Vector3(9, 9, 9  ),
       tileSize: 50
     });
-console.log(map);
     this.buildTerrain(map.entity.components.Grid);
 
     game.getEntityManager().addEntity(map.entity);

@@ -42,9 +42,32 @@
 
     var healthComponent = new wrect.ECS.Component.Health({
       maxHealth: 100,
-      damageCallback: function(data) {
-        console.log(data, 'terrain is being damaged');
-      }
+      damageCallback: function(entity, currentHealth, data) {
+        console.log(entity);
+        if (currentHealth <= 0) {
+          entity.components.Visual.graphics.material.color.setHex(0xFF0000);
+        }
+      },
+      damageStates: [
+        {
+          amount: 75,
+          callback: function(currentHealth, damage) {
+            //console.log('Warning: Health reduced to 75%', currentHealth, damage);
+          }
+        },
+        {
+          amount: 55,
+          callback: function(currentHealth, damage) {
+            //console.log('Warning: Health reduced to 55%. keep it up!', currentHealth, damage);
+          }
+        },
+        {
+          amount: 25,
+          callback: function(currentHealth, damage) {
+            //console.log('Warning: Health reduced to 25%. Is is allmost gone!', currentHealth, damage);
+          }
+        }
+      ]
     });
 
     this.entity.addComponent(healthComponent);

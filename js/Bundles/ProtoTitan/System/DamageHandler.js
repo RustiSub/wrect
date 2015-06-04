@@ -34,7 +34,7 @@
     var health = entity.components.Health;
 
     if (damage = this.getNextDamageSource(health)) {
-      this.applyDamage(health, damage);
+      this.applyDamage(entity, health, damage);
     }
   };
 
@@ -43,22 +43,26 @@
    * @param {wrect.ECS.Component.Health} health
    * @param {wrect.ECS.Component.Damage} damage
    */
-  wrect.ECS.System.DamageHandler.prototype.applyDamage = function(health, damage) {
-    health.currentHealth -= damage.amount;
-
+  wrect.ECS.System.DamageHandler.prototype.applyDamage = function(entity, health, damage) {
     health.damageStack.shift();
 
     if (health.damageCallback) {
-      health.damageCallback(damage);
+      health.damageCallback(entity, health.currentHealth, damage);
     }
 
-    for (var d = 0; d < health.damageStates.length; d++) {
-      var damageState = health.damageStates[d];
+    var damageRange = damage.amount > 0 ? 1 : -1;
 
-      if (health.currentHealth <= damageState.amount) {
-        damageState.callback(damage);
+    for (var h = 1; h <= Math.abs(damage.amount); h += damageRange) {
+      for (var d = 0; d < health.damageStates.length; d++) {
+        var damageState = health.damageStates[d];
+
+        if (health.currentHealth - h  === damageState.amount) {
+          damageState.callback(health.currentHealth, damage);
+        }
       }
     }
+
+    health.currentHealth -= damage.amount;
   };
 
   wrect.ECS.System.DamageHandler.prototype.handleDamage = function(data) {
