@@ -73,14 +73,9 @@
       }
     };
 
-    this.loadBundles();
+    this.camera.setCamera(new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 10000 ));
 
-    this.controls = new THREE.OrbitControls( this.camera.getCamera() );
-    this.controls.damping = 0.2;
-    var self = this;
-    this.controls.addEventListener( 'change', function() {
-      self.renderer.render();
-    } );
+    this.loadBundles();
   };
 
   wrect.Game.prototype.loadBundles = function() {
@@ -100,7 +95,7 @@
       if (self.pause) {return;}
       requestAnimationFrame(run);
 
-      self.controls.update();
+      //self.controls.update();
 
       self.gameTime.updateTime(timestamp);
 

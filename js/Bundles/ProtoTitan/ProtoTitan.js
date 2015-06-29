@@ -11,6 +11,16 @@ var dirLight;
   wrect.Bundles.ProtoTitan = function (options) {
     this.game = options.game;
     console.log('ProtoTitan loaded...');
+
+    this.game.controls = new THREE.OrbitControls( this.game.camera.getCamera() );
+    console.log(this.game.controls);
+    this.game.controls.damping = 0.2;
+    var game = this.game;
+    this.game.controls.addEventListener( 'change', function() {
+      game.renderer.render();
+    } );
+
+
   };
 
   wrect.Bundles.ProtoTitan.prototype.init = function() {
@@ -119,7 +129,7 @@ var dirLight;
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupCamera = function() {
-    this.game.camera.setCamera(new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 10000 ));
+
     var camera = this.game.camera.getCamera();
     camera.up = new THREE.Vector3( 0, 0, 1 );
     camera.position.z = 250;
