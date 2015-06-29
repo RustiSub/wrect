@@ -14,7 +14,9 @@
 
     this.eventManager = new wrect.Core.EventManager();
     this.entityManager = new wrect.Core.EntityManager({eventManager: this.eventManager});
-    this.gameTime = new wrect.Core.GameTime();
+    this.gameTime = new wrect.Core.GameTime({
+      eventManager: this.eventManager
+    });
     this.sceneManager = new wrect.Core.Rendering.SceneManager({eventManager: this.eventManager});
     this.camera = new wrect.Core.Rendering.Camera();
     this.renderer = new wrect.Core.Rendering.Renderer({
@@ -72,6 +74,13 @@
     };
 
     this.loadBundles();
+
+    this.controls = new THREE.OrbitControls( this.camera.getCamera() );
+    this.controls.damping = 0.2;
+    var self = this;
+    this.controls.addEventListener( 'change', function() {
+      self.renderer.render();
+    } );
   };
 
   wrect.Game.prototype.loadBundles = function() {
@@ -85,19 +94,13 @@
     var self = this;
     //var clock = new THREE.Clock();
 
-    var controls = new THREE.OrbitControls( this.camera.getCamera() );
-    controls.damping = 0.2;
-    controls.addEventListener( 'change', function() {
-      self.getRenderer().render();
-    } );
-
     requestAnimationFrame(run);
 
     function run(timestamp) {
       if (self.pause) {return;}
       requestAnimationFrame(run);
 
-      controls.update();
+      self.controls.update();
 
       self.gameTime.updateTime(timestamp);
 
@@ -108,6 +111,9 @@
       runSystemGroup(self.systems.post);
 
       self.getEventManager().trigger('game.updateEnd');
+
+        //dirLight.shadowCameraNear += 10;
+        //console.log(dirLight.shadowCameraNear);
 
       self.getRenderer().render();
 

@@ -17,6 +17,23 @@
       true: false
     };
     this.weight = options.weight || 0;
+    this.updateTickLength = options.updateTickLength || 1000;
+    this.updateTick = this.updateTickLength;
+    this.backupUpdateTickLength = this.updateTickLength;
+    this.tickCount = 0;
+    this.tickLength = options.tickLength || 1;
+    this.completed = false;
+
+    this.action = false;
+
+    this.initCallback = options.initCallback || false;
+    this.startCallback = options.startCallback || false;
+    this.updateCallback = options.updateCallback || false;
+    this.endCallback = options.endCallback || false;
+
+    if (this.initCallback) {
+      this.initCallback(this);
+    }
   };
 
   wrect.ECS.Component.TitanEngine.TitanEngineStep.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

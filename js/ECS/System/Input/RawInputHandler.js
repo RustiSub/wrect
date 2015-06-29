@@ -94,8 +94,15 @@
   };
 
   wrect.ECS.System.RawInputHandler.prototype.mouseDown = function(event) {
-    if (this.watchedTypes.indexOf(wrect.Core.Constants.Input.CLICK) !== -1) {
-      this.types[wrect.Core.Constants.Input.CLICK] = {
+    if (this.watchedTypes.indexOf(wrect.Core.Constants.Input.LEFT_CLICK) !== -1 && event.button === 0) {
+      this.types[wrect.Core.Constants.Input.LEFT_CLICK] = {
+        x: event.x,
+        y: event.y
+      };
+    }
+
+    if (this.watchedTypes.indexOf(wrect.Core.Constants.Input.RIGHT_CLICK) !== -1 && event.button === 2) {
+      this.types[wrect.Core.Constants.Input.RIGHT_CLICK] = {
         x: event.x,
         y: event.y
       };

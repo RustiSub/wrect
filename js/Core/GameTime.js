@@ -8,7 +8,8 @@
    * @class wrect.Core.GameTime
    * @constructor
    */
-  wrect.Core.GameTime = function() {
+  wrect.Core.GameTime = function(options) {
+    this.eventManager = options.eventManager;
     this.previousTime = 0;
     this.timeDelta = 0;
   };

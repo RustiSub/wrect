@@ -19,16 +19,6 @@
   wrect.ECS.Assemblage.Player.Titan = function (options) {
     this.entity = new Entity({eventManager: options.eventManager});
 
-    //var rigidBody = new wrect.ECS.Component.RigidBody({
-    //  dimensions: new Rectangle({
-    //    origin: options.position,
-    //    dimension: options.dimension,
-    //    material: options.material
-    //  }),
-    //  frozen: options.frozen
-    //});
-    //this.entity.addComponent(rigidBody);
-
     var visualComponent = new wrect.ECS.Component.Visual({
       color: options.color,
       alpha: options.alpha,
@@ -40,6 +30,8 @@
       }),
       renderer: options.renderer
     });
+    visualComponent.graphics.castShadow = true;
+    visualComponent.graphics.receiveShadow = true;
     this.entity.addComponent(visualComponent);
 
     this.entity.addComponent(new wrect.ECS.Component.Map.Coord({
@@ -50,15 +42,6 @@
     this.setupMoves();
 
     this.move(new Vector3(0, 0, 0));
-
-    this.entity.eventManager.addListener('titan_control.tile_changed', function(entityData) {
-      //if (this.entity.components.Coord.targetCoord.x !== entityData.coord.x ||
-      //    this.entity.components.Coord.targetCoord.y !== entityData.coord.y) {
-      //  this.move(entityData.coord);
-      //} else {
-      //  this.rotate();
-      //}
-    }, this);
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.setupMoves = function() {
@@ -116,12 +99,19 @@
       speed: 1000,
       initCallback: function () {
         var action = this;
-        eventManager.addListener('titan_control.tile_changed', function (entityData) {
+        eventManager.addListener('titan_control.move', function (entityData) {
           var a = entity.components.Coord.coord;
           var b = entityData.entity.components.Coord.coord;
           var gridDistance = (Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z)) / 2;
 
           action.setUpdateTick(gridDistance * action.speed);
+
+          if (entityData.step) {
+            eventManager.trigger('titan_control.move.time', {
+              step: entityData.step,
+              time: gridDistance * action.speed
+            });
+          }
 
           var marker = new wrect.ECS.Component.Map.Marker({
             coord: entityData.entity.components.Coord
@@ -151,6 +141,34 @@
 
         visual.graphics.position.x += updateVector.x;
         visual.graphics.position.y += updateVector.y;
+      },
+      stopCallback: function() {
+        return true;
+      }
+    }));
+
+    actions.addAction(new wrect.ECS.Component.Action({
+      speed: 1000,
+      updateTick: 1000,
+      initCallback: function () {
+        var action = this;
+        eventManager.addListener('titan_control.attack', function (entityData) {
+          eventManager.trigger(wrect.Bundles.ProtoTitan.Actions.Constants.START, {
+            entity: entity,
+            action: action,
+            tile: entityData.entity
+          });
+        });
+      },
+      tickCallback: function (data) {},
+      updateCallback: function (updatePercentage, data) {
+        eventManager.trigger(wrect.Bundles.ProtoTitan.Damage.Constants.DAMAGE, {
+          entities: data.tile.components.Grid.getEntitiesFromCoord(data.tile.components.Coord.coord),
+          damage: new wrect.ECS.Component.Damage({
+            amount: 10
+          })
+        });
+        data.tile.components.Visual.graphics.material.color.r += updatePercentage;
       },
       stopCallback: function() {
         return true;

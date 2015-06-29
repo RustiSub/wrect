@@ -16,6 +16,12 @@
   titanControl.Constants = titanControl.TitanControl || {};
   titanControl.Constants = {
     Actions: {
+      ENGINE: {
+        QUEUE: {
+          ADD: 'titan_control.actions.queue.add',
+          NEXT: 'titan_control.actions.queue.next'
+        }
+      },
       SPEAK: 'SPEAK',
       MOVE : {
         X: {
@@ -46,7 +52,8 @@
     Ranges: {
       CURSOR: {
         DISPLAY: 'DISPLAY',
-        CLICK: 'CLICK'
+        MOVE: 'MOVE',
+        ATTACK: 'ATTACK'
       }
     }
   };
@@ -80,12 +87,15 @@
       ],
       types: [
           Input.CURSOR,
-          Input.CLICK
+          Input.LEFT_CLICK,
+          Input.RIGHT_CLICK
       ]
     });
 
     var contextMap = new wrect.ECS.Component.Input.ContextMap();
     var ContextAction = wrect.ECS.Component.Input.ContextAction;
+
+    contextMap.actions[KeyMap.NUMPAD_6] = new ContextAction({action: actions.ENGINE.QUEUE.ADD});
 
     contextMap.actions[KeyMap.NUMPAD_5] = new ContextAction({action: actions.SPEAK});
     contextMap.actions[KeyMap.NUMPAD_8] = new ContextAction({action: actions.MOVE.Y.FORWARD});
@@ -100,23 +110,27 @@
       action: ranges.CURSOR.DISPLAY,
       values: {}
     };
-    contextMap.ranges[Input.CLICK] = {
-      action: ranges.CURSOR.CLICK,
+    contextMap.ranges[Input.LEFT_CLICK] = {
+      action: ranges.CURSOR.MOVE,
+      values: {}
+    };
+    contextMap.ranges[Input.RIGHT_CLICK] = {
+      action: ranges.CURSOR.ATTACK,
       values: {}
     };
 
     var controlMap = new wrect.ECS.Component.Input.ControlMap();
 
     controlMap.modes = {
-      VIEW : false,
-      MARKER: true
+      VIEW : true,
+      MARKER: false
     };
 
     controlMap.controls[actions.SPEAK] = function() {
       console.log('Player voice action enabled...');
     };
 
-    function setMovementControl(key) {
+    function setControl(key) {
       controlMap.controls[key] = function() {
         options.eventManager.trigger(key, {
           entity: entity
@@ -124,12 +138,13 @@
       };
     }
 
-    setMovementControl(actions.MOVE.X.FORWARD);
-    setMovementControl(actions.MOVE.X.BACKWARD);
-    setMovementControl(actions.MOVE.Y.FORWARD);
-    setMovementControl(actions.MOVE.Y.BACKWARD);
-    setMovementControl(actions.MOVE.Z.FORWARD);
-    setMovementControl(actions.MOVE.Z.BACKWARD);
+    setControl(actions.ENGINE.QUEUE.ADD);
+    setControl(actions.MOVE.X.FORWARD);
+    setControl(actions.MOVE.X.BACKWARD);
+    setControl(actions.MOVE.Y.FORWARD);
+    setControl(actions.MOVE.Y.BACKWARD);
+    setControl(actions.MOVE.Z.FORWARD);
+    setControl(actions.MOVE.Z.BACKWARD);
 
 
     controlMap.controls[states.TOGGLE.MARKER_MODE] = function(entity) {
@@ -144,15 +159,23 @@
     controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
       //selectObjects(values);
     };
-    controlMap.controls[ranges.CURSOR.CLICK] = function(entity, values) {
+    controlMap.controls[ranges.CURSOR.MOVE] = function(entity, values) {
       if (!controlMap.modes.MARKER) {
         return;
       }
 
-      selectObjects(values);
+      selectObjects(values, ranges.CURSOR.MOVE);
     };
 
-    function selectObjects(values) {
+    controlMap.controls[ranges.CURSOR.ATTACK] = function(entity, values) {
+      if (!controlMap.modes.MARKER) {
+        return;
+      }
+
+      selectObjects(values, ranges.CURSOR.ATTACK);
+    };
+
+    function selectObjects(values, actionCode) {
       var camera = options.camera;
       var eventManager = options.eventManager;
       var sceneManager = options.sceneManager;
@@ -169,29 +192,11 @@
 
         for (var i in intersects) {
           eventManager.trigger('titan_control.objects_selected', {
-            entity: sceneManager.getEntityByGraphicsId(intersects[i].object.id)
+            entity: sceneManager.getEntityByGraphicsId(intersects[i].object.id),
+            actionCode: actionCode
           });
         }
       }
-
-      //marker = new wrect.ECS.Assemblage.HexTile({
-      //  eventManager: game.getEventManager(),
-      //  renderer:  game.getRenderer(),
-      //  origin: new Vector3(pos.x, pos.y, 5),
-      //  size: 50
-      //});
-      //game.getEntityManager().addEntity(marker.entity);
-
-      //var block = new wrect.ECS.Assemblage.Block({
-      //  position: new Vector3(pos.x, pos.y, 0),
-      //  dimension: new Vector3(50, 50, 50),
-      //  color: 0x000000,
-      //  alpha: 1,
-      //  material: new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
-      //  renderer: game.getRenderer(),
-      //  eventManager: game.getEventManager()
-      //});
-      //game.getEntityManager().addEntity(block.entity);
     }
 
     this.entity.addComponent(rawInputMap);

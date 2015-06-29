@@ -1,8 +1,8 @@
+var dirLight;
 (function() {
   "use strict";
 
   wrect.Bundles = wrect.Bundles || {};
-
   var Vector3 = wrect.Physics.Vector3;
 
   /**
@@ -16,26 +16,30 @@
   wrect.Bundles.ProtoTitan.prototype.init = function() {
     console.log('ProtoTitan setup...');
 
+    this.registerSystems();
     this.setupCamera();
     //this.setupScene();
     this.buildWorld();
-    this.registerSystems();
 
-    //this.setupMechanics();
+    this.setupMechanics();
     this.setupControls();
-
     this.setupGrid();
-
     this.setupPlayer();
 
     this.game.getRenderer().render();
+
+    //this.game.controls.target.x = 0;
+    //this.game.controls.target.y = 0;
+    //this.game.controls.target.z = 0;
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupGrid = function() {
     var map = new wrect.ECS.Assemblage.HexMap({
-      mapSize: new Vector3(3, 3, 3),
+      //mapSize: new Vector3(27, 27, 27),
+      mapSize: new Vector3(9, 9, 9  ),
       tileSize: 50
     });
+    this.buildTerrain(map.entity.components.Grid);
 
     game.getEntityManager().addEntity(map.entity);
   };
@@ -78,47 +82,44 @@
       });
       game.getEntityManager().addEntity(block.entity);
 
+      block.entity.components.Visual.graphics.receiveShadow = options.receiveShadow || false;
+      block.entity.components.Visual.graphics.castShadow = options.castShadow || false;
+
       return block.entity;
     }
 
     createBlock({
-      position: new Vector3(-250, -250, 0),
-      dimension: new Vector3(500, 500, 5),
+      position: new Vector3(-5000, -5000, 0),
+      dimension: new Vector3(10000, 10000, 5),
       frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xC38A09 })
-    });
-
-    createBlock({
-      position: new Vector3(50, 50, 50),
-      dimension: new Vector3(15, 15, 100),
-      frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
-    });
-
-    createBlock({
-      position: new Vector3(-50, 50, 50),
-      dimension: new Vector3(15, 15, 100),
-      frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
-    });
-
-    createBlock({
-      position: new Vector3(50, -50, 50),
-      dimension: new Vector3(15, 15, 100),
-      frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
-    });
-
-    createBlock({
-      position: new Vector3(-50, -50, 50),
-      dimension: new Vector3(15, 15, 100),
-      frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xD0D0D0 })
+      material: new THREE.MeshLambertMaterial({color: 0xC38A09 }),
+      receiveShadow: true
     });
   };
 
+  wrect.Bundles.ProtoTitan.prototype.buildTerrain = function(grid) {
+
+    function createTerrain(coord) {
+     return new wrect.ECS.Assemblage.Map.Terrain({
+        grid: grid,
+        coord: coord,
+        position: new Vector3(0, 0, 10),
+        dimension: new Vector3(20, 20, 20),
+        material:  new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
+        renderer: game.getRenderer(),
+        eventManager: game.getEventManager()
+      });
+    }
+
+    game.getEntityManager().addEntity(createTerrain(new Vector3(2, -2, 0)).entity);
+    game.getEntityManager().addEntity(createTerrain(new Vector3(-2, 2, 0)).entity);
+    game.getEntityManager().addEntity(createTerrain(new Vector3(3, -3, 0)).entity);
+    game.getEntityManager().addEntity(createTerrain(new Vector3(4, -3, 0)).entity);
+    game.getEntityManager().addEntity(createTerrain(new Vector3(3, -2, 0)).entity);
+  };
+
   wrect.Bundles.ProtoTitan.prototype.setupCamera = function() {
-    this.game.camera.setCamera(new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 ));
+    this.game.camera.setCamera(new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 10000 ));
     var camera = this.game.camera.getCamera();
     camera.up = new THREE.Vector3( 0, 0, 1 );
     camera.position.z = 250;
@@ -133,39 +134,51 @@
     renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = false;
 
-    renderer.shadowCameraNear = 3;
-    renderer.shadowCameraFar = this.game.camera.getCamera().far;
-    renderer.shadowCameraFov = 50;
-
-    renderer.shadowMapBias = 0.0039;
-    renderer.shadowMapDarkness = 0.5;
-    renderer.shadowMapWidth = 1024;
-    renderer.shadowMapHeight = 1024;
-
     var scene = this.game.getSceneManager().getScene();
 
-    var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+    dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
     dirLight.color.setHSL(0.1, 1, 0.95);
-    dirLight.position.set(-1, 1, 1);
     dirLight.target.position.set(0, 0, 0);
-    dirLight.position.multiplyScalar(300);
-    scene.add( dirLight );
-
+    dirLight.position.x = 250;
+    dirLight.position.y = 250;
+    dirLight.position.z = 250;
     dirLight.castShadow = true;
-
     dirLight.shadowMapWidth = 2048;
     dirLight.shadowMapHeight = 2048;
 
-    var d = 250;
+    var d = 500;
+    dirLight.intensity = 1;
+    dirLight.shadowCameraNear = 0;
+    dirLight.shadowCameraFar = 4096;
 
     dirLight.shadowCameraLeft = -d;
     dirLight.shadowCameraRight = d;
     dirLight.shadowCameraTop = d;
     dirLight.shadowCameraBottom = -d;
-    //
-    dirLight.shadowCameraFar = 3500;
-    dirLight.shadowBias = -0.0001;
-    dirLight.shadowDarkness = 0.35;
+    //dirLight.shadowCameraVisible  = true;
+
+    scene.add( dirLight );
+
+    scene.fog = new THREE.Fog( 0xffffff, 1, 2500 );
+    scene.fog.color.setHSL( 0.6, 0, 1 );
+
+    var vertexShader = document.getElementById( 'vertexShader' ).textContent;
+    var fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
+    var uniforms = {
+      topColor: 	 { type: "c", value: new THREE.Color( 0x0077ff ) },
+      bottomColor: { type: "c", value: new THREE.Color( 0xffffff ) },
+      offset:		 { type: "f", value: 33 },
+      exponent:	 { type: "f", value: 0.6 }
+    };
+    uniforms.topColor.value.copy( dirLight.color );
+
+    scene.fog.color.copy( uniforms.bottomColor.value );
+
+    var skyGeo = new THREE.SphereGeometry( 4000, 32, 15 );
+    var skyMat = new THREE.ShaderMaterial( { vertexShader: vertexShader, fragmentShader: fragmentShader, uniforms: uniforms, side: THREE.BackSide } );
+
+    var sky = new THREE.Mesh( skyGeo, skyMat );
+    scene.add( sky );
   };
 
   wrect.Bundles.ProtoTitan.prototype.registerSystems = function() {
@@ -173,6 +186,7 @@
       system: new wrect.ECS.System.TitanEngine.CycleHandler(
           {
             game: this.game,
+            gameTime: this.game.gameTime,
             eventManager: this.game.getEventManager()
           }
       )
@@ -199,6 +213,16 @@
 
     this.game.systems.post.GridMover = {
       system: new wrect.ECS.System.Map.GridMover(
+          {
+            game: this.game,
+            gameTime: this.game.getGameTime(),
+            eventManager: this.game.getEventManager()
+          }
+      )
+    };
+
+    this.game.systems.post.DamageHandler = {
+      system: new wrect.ECS.System.DamageHandler(
           {
             game: this.game,
             gameTime: this.game.getGameTime(),
