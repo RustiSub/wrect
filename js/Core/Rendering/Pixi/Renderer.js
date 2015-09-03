@@ -2,10 +2,11 @@
   "use strict";
 
   wrect.Core.Rendering.Renderer.prototype.create = function () {
-    this.renderer = new PIXI.WebGLRenderer(800, 600);
+    this.renderer = PIXI.autoDetectRenderer(800, 600, { antialias: true });
+    document.body.appendChild(this.renderer.view);
   };
 
   wrect.Core.Rendering.Renderer.prototype.render = function() {
-    this.renderer.render(this.sceneManager.getScene(), this.camera.getCamera());
+    this.renderer.render(this.sceneManager.getScene());
   };
 }());
