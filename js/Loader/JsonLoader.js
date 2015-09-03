@@ -80,7 +80,8 @@
     if (this.ajaxRequest.responseText) {
       this.json = JSON.parse(this.ajaxRequest.responseText);
       this.loaded = true;
-      wrect.getGame().getEventManager().trigger('JsonLoader.done', this.ajaxRequest);
+
+      game.getEventManager().trigger('JsonLoader.done', this.ajaxRequest);
     }
   };
 }());

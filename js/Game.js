@@ -24,6 +24,8 @@
       camera: this.camera
     });
 
+    this.tileMapManager = new wrect.TileMap.TileMapManager(this);
+
     this.systems = {
       pre: {
         RawInputHandler: {
