@@ -4,15 +4,15 @@
   /**
    * @constructor
    */
-  wrect.Game = function() {
+  var Game = function() {
   };
 
-  wrect.Game.prototype.bootstrap = function() {
+  Game.prototype.bootstrap = function() {
 
     this.completeTree = [];
     this.treeHashes = [];
 
-    this.eventManager = new wrect.Core.EventManager();
+    this.eventManager = require('./Core/EventManager');
     this.entityManager = new wrect.Core.EntityManager({eventManager: this.eventManager});
     this.gameTime = new wrect.Core.GameTime({
       eventManager: this.eventManager
@@ -78,14 +78,14 @@
     this.loadBundles();
   };
 
-  wrect.Game.prototype.loadBundles = function() {
+  Game.prototype.loadBundles = function() {
     for (var bundleIndex in wrect.Bundles) if (wrect.Bundles.hasOwnProperty(bundleIndex)) {
       var bundle = new wrect.Bundles[bundleIndex]({game: this});
       bundle.init();
     }
   };
 
-  wrect.Game.prototype.run = function() {
+  Game.prototype.run = function() {
     var self = this;
     //var clock = new THREE.Clock();
 
@@ -120,7 +120,7 @@
   /**
    * @returns {wrect.Core.Rendering.Camera|*}
    */
-  wrect.Game.prototype.getCameraManager = function() {
+  Game.prototype.getCameraManager = function() {
     return this.camera;
   };
 
@@ -128,42 +128,44 @@
    *
    * @returns {wrect.Core.EventManager|*}
    */
-  wrect.Game.prototype.getEventManager = function() {
+  Game.prototype.getEventManager = function() {
     return this.eventManager;
   };
 
   /**
    * @returns {wrect.Core.EntityManager|*}
    */
-  wrect.Game.prototype.getEntityManager = function() {
+  Game.prototype.getEntityManager = function() {
     return this.entityManager;
   };
 
   /**
    * @returns {wrect.Core.Renderer|*}
    */
-  wrect.Game.prototype.getRenderer = function() {
+  Game.prototype.getRenderer = function() {
     return this.renderer;
   };
 
   /**
    * @returns {wrect.Core.SceneManager|*}
    */
-  wrect.Game.prototype.getSceneManager = function() {
+  Game.prototype.getSceneManager = function() {
     return this.sceneManager;
   };
 
   /**
    * @returns {wrect.Core.GameTime|*}
    */
-  wrect.Game.prototype.getGameTime = function() {
+  Game.prototype.getGameTime = function() {
     return this.gameTime;
   };
 
   /**
-   * @returns {wrect.Game}
+   * @returns {Game}
    */
-  wrect.Game.prototype.getGame = function() {
+  Game.prototype.getGame = function() {
     return this;
   }
+
+  module.exports = Game;
 }());

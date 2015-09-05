@@ -1,16 +1,14 @@
 (function() {
   "use strict";
 
-  wrect.Physics = wrect.Physics || {};
-
-  var Vector = wrect.Physics.Vector;
+  var Vector = require('./Vector');
 
   /**
    *
    * @class wrect.Physics.PhysicsBody
    * @constructor
    */
-  wrect.Physics.PhysicsBody = function (options) {
+  var PhysicsBody = function (options) {
     options = options || {};
 
     this.f = options.f || new Vector(0, 0);
@@ -24,4 +22,6 @@
 
     this.J = 0;
   };
+
+  module.exports = PhysicsBody;
 }());
