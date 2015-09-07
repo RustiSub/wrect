@@ -1,4 +1,4 @@
-require("./../normalize.css");
+//require("./../normalize.css");
 require("./../style/style.css");
 
 document.write(require("./wrect.js"));

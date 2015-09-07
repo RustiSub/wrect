@@ -8,7 +8,8 @@
    * @constructor
    */
   var EventManager = function() {
-    window.Event.call(this);
+    var Events = require('minivents');
+    Events.call(this);
   };
 
   /**
@@ -16,7 +17,7 @@
    */
   EventManager.prototype = Object.create( Event.prototype );
   EventManager.prototype.constructor = window.EventManager;
-  
+
   /**
    * Triggers an event
    * @param type

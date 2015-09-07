@@ -12,14 +12,26 @@
     this.completeTree = [];
     this.treeHashes = [];
 
-    this.eventManager = require('./Core/EventManager');
-    this.entityManager = new wrect.Core.EntityManager({eventManager: this.eventManager});
-    this.gameTime = new wrect.Core.GameTime({
+    var EventManager = require('./../js/Core/EventManager');
+    this.eventManager = new EventManager();
+    console.log(this.eventManager);
+
+    var EntityManager = require('./../js/Core/EntityManager');
+    this.entityManager = new EntityManager({eventManager: this.eventManager});
+
+    var GameTime = require('./../js/Core/GameTime');
+    this.gameTime = new GameTime({
       eventManager: this.eventManager
     });
-    this.sceneManager = new wrect.Core.Rendering.SceneManager({eventManager: this.eventManager});
-    this.camera = new wrect.Core.Rendering.Camera();
-    this.renderer = new wrect.Core.Rendering.Renderer({
+
+    var SceneManager = require('./../js/Core/Rendering/SceneManager');
+    this.sceneManager = new SceneManager({eventManager: this.eventManager});
+
+    var Camera = require('./../js/Core/Rendering/Camera');
+    this.camera = new Camera();
+
+    var Renderer = require('./../js/Core/Rendering/Renderer');
+    this.renderer = new Renderer({
       sceneManager: this.sceneManager,
       camera: this.camera
     });
@@ -165,7 +177,7 @@
    */
   Game.prototype.getGame = function() {
     return this;
-  }
+  };
 
   module.exports = Game;
 }());

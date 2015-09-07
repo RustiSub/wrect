@@ -1,8 +1,7 @@
 (function() {
   "use strict";
 
-  wrect.Core = wrect.Core || {};
-  wrect.Core.Rendering = wrect.Core.Rendering || {};
+  var Camera = function(options) {}
 
-  wrect.Core.Rendering.Camera = function(options) {}
+  module.exports = Camera;
 }());

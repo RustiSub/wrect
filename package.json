@@ -1,0 +1,23 @@
+{
+  "name": "wrect",
+  "version": "1.0.0",
+  "description": "![Suit_1.png](https://bitbucket.org/repo/M5xe8y/images/3761440461-Suit_1.png)",
+  "main": "build/bundle.js",
+  "dependencies": {
+    "ajax": "0.0.4",
+    "css-loader": "^0.17.0",
+    "minivents": "^1.1.7",
+    "pixi.js": "^3.0.7",
+    "style-loader": "^0.12.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:RustiSub/wrect.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
