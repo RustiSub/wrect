@@ -6,7 +6,7 @@
    * Manages tile maps
    * @constructor
    */
-  wrect.TileMap.TileMapManager = function(game) {
+  var TileMapManager = function(game) {
     this.game = game;
     this.currentTileMap = null;
     this.visibleDimensions = null;
@@ -14,7 +14,7 @@
     this.game.getEventManager().addListener('game.updateEnd', this.update, this);
   };
 
-  wrect.TileMap.TileMapManager.prototype.update = function() {
+  TileMapManager.prototype.update = function() {
     if (this.currentTileMap) {
       if (this.viewportChanged()) {
         this.updateTiles();
@@ -24,27 +24,27 @@
     }
   };
 
-  wrect.TileMap.TileMapManager.prototype.viewportChanged = function() {
+  TileMapManager.prototype.viewportChanged = function() {
     return this.previousVisibleDimensions.origin.x !== this.visibleDimensions.origin.x || this.previousVisibleDimensions.origin.y !== this.visibleDimensions.origin.y;
   };
 
-  wrect.TileMap.TileMapManager.prototype.updateTiles = function() {
+  TileMapManager.prototype.updateTiles = function() {
     this.currentTileMap.updateTiles(this.visibleDimensions);
   };
 
-  wrect.TileMap.TileMapManager.prototype.getCurrentTileMap = function() {
+  TileMapManager.prototype.getCurrentTileMap = function() {
     return this.currentTileMap;
   };
 
-  wrect.TileMap.TileMapManager.prototype.loadMap = function(path, mapper) {
+  TileMapManager.prototype.loadMap = function(path, mapper) {
     if (this.currentTileMap) {
       this.destroyCurrentTileMap();
     }
-    var parser = new wrect.TileMap.Parser();
+    var parser = new Parser();
     parser.loadTilemap(path, this.loadCallback, this, mapper);
   };
 
-  wrect.TileMap.TileMapManager.prototype.loadCallback = function(tileMap) {
+  TileMapManager.prototype.loadCallback = function(tileMap) {
     this.currentTileMap = tileMap;
     tileMap.init();
     this.visibleDimensions = this.game.getCamera().getDimensions();
@@ -66,7 +66,10 @@
     //ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(50,45));
   };
 
-  wrect.TileMap.TileMapManager.prototype.destroyCurrentTileMap = function() {
+  TileMapManager.prototype.destroyCurrentTileMap = function() {
     // DESTROY
   };
+
+  module.exports = TileMapManager;
+  
 }());

@@ -28,6 +28,6 @@
   };
 
   wrect.ECS.Component.Visual.prototype.setPosition = function(x, y) {
-    console.log('This needs to be implemented');
+    console.log('SetPosition needs to be implemented');
   }
 }());

@@ -24,11 +24,11 @@
   };
 
   Renderer.prototype.create = function () {
-    console.log(('This needs to be implemented'));
+    console.log(('Create needs to be implemented'));
   };
-
+  
   Renderer.prototype.render = function() {
-    console.log(('This needs to be implemented'));
+    console.log(('Render needs to be implemented'));
   };
 
   ///**

@@ -1,11 +1,9 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.System = wrect.ECS.System || {};
-
-  wrect.ECS.System.TimeStep = function (options) {
-    wrect.ECS.System.BaseSystem.call(this, options);
+  var BaseSystem = require('./BaseSystem');
+  var TimeStep = function (options) {
+    BaseSystem.call(this, options);
 
     this.options = options || {};
     this.systems = [];
@@ -15,16 +13,16 @@
     this.timeSteps = 0;
   };
 
-  wrect.ECS.System.TimeStep.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
-  wrect.ECS.System.TimeStep.prototype.constructor = wrect.ECS.System.TimeStep;
+  TimeStep.prototype = Object.create( BaseSystem.prototype );
+  TimeStep.prototype.constructor = TimeStep;
 
-  wrect.ECS.System.TimeStep.prototype.name = 'TimeStep';
+  TimeStep.prototype.name = 'TimeStep';
 
-  wrect.ECS.System.TimeStep.prototype.checkDependencies = function() {
+  TimeStep.prototype.checkDependencies = function() {
     return false;
   };
 
-  wrect.ECS.System.TimeStep.prototype.run = function() {
+  TimeStep.prototype.run = function() {
     var gameTime = this.options.game.gameTime;
 
     this.remainder += gameTime.getDelta() % this.fixedTimeStep;
@@ -34,5 +32,7 @@
       this.timeSteps += 1;
       this.remainder = this.remainder - this.fixedTimeStep;
     }
-  }
+  };
+  
+  module.exports = TimeStep;
 }());

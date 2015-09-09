@@ -14,7 +14,6 @@
 
     var EventManager = require('./../js/Core/EventManager');
     this.eventManager = new EventManager();
-    console.log(this.eventManager);
 
     var EntityManager = require('./../js/Core/EntityManager');
     this.entityManager = new EntityManager({eventManager: this.eventManager});
@@ -36,12 +35,21 @@
       camera: this.camera
     });
 
-    this.tileMapManager = new wrect.TileMap.TileMapManager(this);
+    var TileMapManager = require('./TileMap/TileMapManager');
+    this.tileMapManager = new TileMapManager(this);
+
+    var RawInputHandler = require('./ECS/System/Input/RawInputHandler');
+    var InputHandler = require('./ECS/System/Input/InputHandler');
+    var ControlMapHandler = require('./ECS/System/Input/ControlMapHandler');
+    var Linker = require('./ECS/System/Linker');
+    var Animator = require('./ECS/System/Animator');
+    var PhysicsEngine = require('./ECS/Assemblage/PhysicsEngine.js');
+    var Mover = require('./ECS/System/Mover.js');
 
     this.systems = {
       pre: {
         RawInputHandler: {
-          system: new wrect.ECS.System.RawInputHandler(
+          system: new RawInputHandler(
             {
               game: this,
               elementId: 'body',
@@ -50,7 +58,7 @@
           )
         },
         InputHandler: {
-          system: new wrect.ECS.System.InputHandler(
+          system: new InputHandler(
             {
               game: this,
               eventManager: this.eventManager
@@ -58,31 +66,31 @@
           )
         },
         ControlMapHandler: {
-          system: new wrect.ECS.System.ControlMapHandler(
+          system: new ControlMapHandler(
             {
               game: this
             }
           )
         },
         Linker: {
-          system: new wrect.ECS.System.Linker({game: this})
+          system: new Linker({game: this})
         },
         Animator: {
-          system: new wrect.ECS.System.Animator({game: this})
+          system: new Animator({game: this})
         }
       },
       main: {
         Physics: {
-          system: new wrect.ECS.Assemblage.PhysicsEngine({game: this})
+          system: new PhysicsEngine({game: this})
         }
       },
       post: {
         Mover: {
-          system: new wrect.ECS.System.Mover({game: this})
+          system: new Mover({game: this})
         }
         //,
         //Transformer: {
-        //  system: new wrect.ECS.System.Transformer()
+        //  system: new Transformer()
         //}
       }
     };
@@ -90,11 +98,13 @@
     this.loadBundles();
   };
 
+  var Bundles = 
+
   Game.prototype.loadBundles = function() {
-    for (var bundleIndex in wrect.Bundles) if (wrect.Bundles.hasOwnProperty(bundleIndex)) {
-      var bundle = new wrect.Bundles[bundleIndex]({game: this});
-      bundle.init();
-    }
+    // for (var bundleIndex in wrect.Bundles) if (wrect.Bundles.hasOwnProperty(bundleIndex)) {
+    //   var bundle = new wrect.Bundles[bundleIndex]({game: this});
+    //   bundle.init();
+    // }
   };
 
   Game.prototype.run = function() {

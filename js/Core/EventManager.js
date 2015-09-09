@@ -8,7 +8,7 @@
    * @constructor
    */
   var EventManager = function() {
-    var Events = require('minivents');
+    var Events = require('minivents');    
     Events.call(this);
   };
 

@@ -1,13 +1,11 @@
 (function () {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.System = wrect.ECS.System || {};
+  var Vector = require('../../Physics/Vector');
+  var BaseSystem = require('./BaseSystem');
 
-  var Vector = wrect.Physics.Vector;
-
-  wrect.ECS.System.QuadTree = function (options) {
-    wrect.ECS.System.BaseSystem.call(this, options);
+  var QuadTree = function (options) {
+    BaseSystem.call(this, options);
 
     this.options = options || {};
 
@@ -23,16 +21,16 @@
     };
   };
 
-  wrect.ECS.System.QuadTree.prototype = Object.create(wrect.ECS.System.BaseSystem.prototype);
-  wrect.ECS.System.QuadTree.prototype.constructor = wrect.ECS.System.QuadTree;
+  QuadTree.prototype = Object.create(BaseSystem.prototype);
+  QuadTree.prototype.constructor = QuadTree;
 
-  wrect.ECS.System.QuadTree.prototype.name = 'QuadTree';
+  QuadTree.prototype.name = 'QuadTree';
 
-  wrect.ECS.System.QuadTree.prototype.checkDependencies = function (entity) {
+  QuadTree.prototype.checkDependencies = function (entity) {
     return entity.components.RigidBody;
   };
 
-  wrect.ECS.System.QuadTree.prototype.run = function() {
+  QuadTree.prototype.run = function() {
     var game = this.options.game;
 
     function mapQuadTree(entities, range) {
@@ -162,5 +160,7 @@
 
       game.getSceneManager().getScene().add(line);
     }
-  }
+  };
+  
+  module.exports = QuadTree;
 }());

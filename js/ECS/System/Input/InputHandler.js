@@ -1,14 +1,13 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.System = wrect.ECS.System || {};
+  var BaseSystem = require('../BaseSystem');
 
   /**
    * @constructor
    */
-  wrect.ECS.System.InputHandler = function (options) {
-    wrect.ECS.System.BaseSystem.call(this, options);
+  var InputHandler = function (options) {
+    BaseSystem.call(this, options);
 
     this.options = options || {};
 
@@ -17,20 +16,20 @@
     this.eventManager.addListener('raw_input_handler.context.perform', this.handleInput, this);
   };
 
-  wrect.ECS.System.InputHandler.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
-  wrect.ECS.System.InputHandler.prototype.constructor = wrect.ECS.System.InputHandler;
-  wrect.ECS.System.InputHandler.prototype.name = 'InputHandler';
+  InputHandler.prototype = Object.create( BaseSystem.prototype );
+  InputHandler.prototype.constructor = InputHandler;
+  InputHandler.prototype.name = 'InputHandler';
 
-  wrect.ECS.System.InputHandler.prototype.checkDependencies = function(entity) {
+  InputHandler.prototype.checkDependencies = function(entity) {
     return false;
   };
 
-  wrect.ECS.System.InputHandler.prototype.perform = function(entity) {};
+  InputHandler.prototype.perform = function(entity) {};
 
   /**
    * @param event
    */
-  wrect.ECS.System.InputHandler.prototype.handleInput = function(event) {
+  InputHandler.prototype.handleInput = function(event) {
     var entity = event.entity;
     var contextMap = entity.components.ContextMap;
     var controlMap = entity.components.ControlMap;
@@ -57,7 +56,7 @@
     }
   };
 
-  wrect.ECS.System.InputHandler.prototype.refreshAction = function(releasedKey, contextMap) {
+  InputHandler.prototype.refreshAction = function(releasedKey, contextMap) {
     if (releasedKey in contextMap.actions) {
       var action = contextMap.actions[releasedKey];
 
@@ -65,7 +64,7 @@
     }
   };
 
-  wrect.ECS.System.InputHandler.prototype.handleAction = function(pressedKey, contextMap, controlMap) {
+  InputHandler.prototype.handleAction = function(pressedKey, contextMap, controlMap) {
     if (pressedKey in contextMap.actions) {
       var action = contextMap.actions[pressedKey];
 
@@ -76,7 +75,7 @@
     }
   };
 
-  wrect.ECS.System.InputHandler.prototype.handleState = function(pressedKey, contextMap, controlMap) {
+  InputHandler.prototype.handleState = function(pressedKey, contextMap, controlMap) {
     if (pressedKey in contextMap.states) {
       var action = contextMap.states[pressedKey];
 
@@ -84,7 +83,7 @@
     }
   };
 
-  wrect.ECS.System.InputHandler.prototype.handleRange = function(type, typesIndex, contextMap, controlMap) {
+  InputHandler.prototype.handleRange = function(type, typesIndex, contextMap, controlMap) {
     if (typesIndex in contextMap.ranges) {
       var range = contextMap.ranges[typesIndex];
 
@@ -94,4 +93,6 @@
       }
     }
   };
+
+  module.exports = InputHandler;
 }());
