@@ -1,10 +1,15 @@
 (function() {
   "use strict";
 
+  var Renderer;
+  var SceneManager;
+
   /**
    * @constructor
    */
-  var Game = function() {
+  var Game = function(options) {
+    Renderer = options.renderer || require('./Core/Rendering/Renderer');
+    SceneManager = options.sceneManager || require('./Core/Rendering/SceneManager');
   };
 
   Game.prototype.bootstrap = function() {
@@ -23,13 +28,11 @@
       eventManager: this.eventManager
     });
 
-    var SceneManager = require('./../js/Core/Rendering/SceneManager');
     this.sceneManager = new SceneManager({eventManager: this.eventManager});
 
     var Camera = require('./../js/Core/Rendering/Camera');
     this.camera = new Camera();
 
-    var Renderer = require('./../js/Core/Rendering/Renderer');
     this.renderer = new Renderer({
       sceneManager: this.sceneManager,
       camera: this.camera
@@ -98,13 +101,11 @@
     this.loadBundles();
   };
 
-  var Bundles = 
-
   Game.prototype.loadBundles = function() {
-    // for (var bundleIndex in wrect.Bundles) if (wrect.Bundles.hasOwnProperty(bundleIndex)) {
-    //   var bundle = new wrect.Bundles[bundleIndex]({game: this});
-    //   bundle.init();
-    // }
+     //for (var bundleIndex in wrect.Bundles) if (wrect.Bundles.hasOwnProperty(bundleIndex)) {
+     //  var bundle = new wrect.Bundles[bundleIndex]({game: this});
+     //  bundle.init();
+     //}
   };
 
   Game.prototype.run = function() {

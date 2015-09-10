@@ -2,6 +2,7 @@
   "use strict";
 
   var BaseSystem = require('../BaseSystem');
+  var Constants = require('../../../Core/Constants/KeyMap');
 
   var RawInputHandler = function (options) {
     BaseSystem.call(this, options);
@@ -84,8 +85,8 @@
   };
 
   RawInputHandler.prototype.mouseMove = function(event) {
-    if (this.watchedTypes.indexOf(wrect.Core.Constants.Input.CURSOR) !== -1) {
-      this.types[wrect.Core.Constants.Input.CURSOR] = {
+    if (this.watchedTypes.indexOf(Constants.Input.CURSOR) !== -1) {
+      this.types[Constants.Input.CURSOR] = {
         x: event.x,
         y: event.y
       };
@@ -93,15 +94,15 @@
   };
 
   RawInputHandler.prototype.mouseDown = function(event) {
-    if (this.watchedTypes.indexOf(wrect.Core.Constants.Input.LEFT_CLICK) !== -1 && event.button === 0) {
-      this.types[wrect.Core.Constants.Input.LEFT_CLICK] = {
+    if (this.watchedTypes.indexOf(Constants.Input.LEFT_CLICK) !== -1 && event.button === 0) {
+      this.types[Constants.Input.LEFT_CLICK] = {
         x: event.x,
         y: event.y
       };
     }
 
-    if (this.watchedTypes.indexOf(wrect.Core.Constants.Input.RIGHT_CLICK) !== -1 && event.button === 2) {
-      this.types[wrect.Core.Constants.Input.RIGHT_CLICK] = {
+    if (this.watchedTypes.indexOf(Constants.Input.RIGHT_CLICK) !== -1 && event.button === 2) {
+      this.types[Constants.Input.RIGHT_CLICK] = {
         x: event.x,
         y: event.y
       };
