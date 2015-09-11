@@ -3,8 +3,11 @@ window.onload = function() {
   var Game = require('./Game');
   var game = new Game(
     {
-      renderer: require('./Core/Rendering/Pixi/Renderer'),
-      sceneManager: require('./Core/Rendering/Pixi/SceneManager')
+      renderer: require('./Core/Rendering/Renderer'),
+      sceneManager: require('./Core/Rendering/SceneManager'),
+      bundles: [
+        require('./Bundles/ProtoDog/ProtoDog')
+      ]
     }
   );
   game.bootstrap();

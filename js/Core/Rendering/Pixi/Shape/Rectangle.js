@@ -1,9 +1,10 @@
 (function() {
   "use strict";
 
-  var Vector = wrect.Physics.Vector;
+  var Vector = require('../../../../Physics/Vector');
+  var Rectangle = require('../../../../Geometry/Shape/Rectangle');
 
-  wrect.Geometry.Rectangle.prototype.draw = function() {
+  Rectangle.prototype.draw = function() {
     var graphics = new PIXI.Graphics();
 
     graphics.beginFill(this.options.material.color, this.options.material.alpha);
@@ -13,7 +14,9 @@
     return graphics;
   };
 
-  wrect.Geometry.Rectangle.prototype.rotate = function(origin) {
+  Rectangle.prototype.rotate = function(origin) {
 
   };
+  
+  module.exports = Rectangle;  
 }());

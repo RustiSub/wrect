@@ -1,13 +1,12 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.Component = wrect.ECS.Component || {};
+  var BaseComponent = require('./BaseComponent');
+  
+  var Vector = require('../../Physics/Vector');
 
-  var Vector = wrect.Physics.Vector;
-
-  wrect.ECS.Component.Visual = function (options) {
-    wrect.ECS.Component.BaseComponent.call(this);
+  var Visual = function (options) {
+    BaseComponent.call(this);
 
     this.options = options || {};
     this.shape = options.shape;
@@ -19,15 +18,17 @@
     this.graphics = this.options.renderer.draw(this.shape);
   };
 
-  wrect.ECS.Component.Visual.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
-  wrect.ECS.Component.Visual.prototype.constructor = wrect.ECS.Component.Visual;
-  wrect.ECS.Component.Visual.prototype.name = 'Visual';
+  Visual.prototype = Object.create( BaseComponent.prototype );
+  Visual.prototype.constructor = Visual;
+  Visual.prototype.name = 'Visual';
 
-  wrect.ECS.Component.Visual.prototype.getGraphics = function() {
+  Visual.prototype.getGraphics = function() {
     return this.graphics;
   };
 
-  wrect.ECS.Component.Visual.prototype.setPosition = function(x, y) {
+  Visual.prototype.setPosition = function(x, y) {
     console.log('SetPosition needs to be implemented');
-  }
+  };
+  
+  module.exports = Visual;
 }());

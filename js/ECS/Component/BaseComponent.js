@@ -1,11 +1,10 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.Component = wrect.ECS.Component || {};
-
-  wrect.ECS.Component.BaseComponent = function () {
+  var BaseComponent = function () {
   };
 
-  wrect.ECS.Component.BaseComponent.prototype.name = 'BaseComponent';
+  BaseComponent.prototype.name = 'BaseComponent';
+  
+  module.exports = BaseComponent;
 }());

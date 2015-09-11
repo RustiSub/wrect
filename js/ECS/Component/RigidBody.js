@@ -1,22 +1,27 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.Component = wrect.ECS.Component || {};
+  var BaseComponent = require('./BaseComponent');
+  
+  var Dimensions = require('../../Geometry/Dimensions');
+  var PhysicsBody = require('../../Physics/PhysicsBody');  
+  var Vector = require('../../Physics/Vector');
 
-  wrect.ECS.Component.RigidBody = function (options) {
-    wrect.ECS.Component.BaseComponent.call(this);
+  var RigidBody = function (options) {
+    BaseComponent.call(this);
 
     options = options || {};
-    this.dimensions = options.dimensions || new wrect.Geometry.Dimensions();
-    this.physicsBody = options.physicsBody || new wrect.Physics.PhysicsBody();
-    this.move = new wrect.Physics.Vector(0, 0);
+    this.dimensions = options.dimensions || new Dimensions();
+    this.physicsBody = options.physicsBody || new PhysicsBody();
+    this.move = new Vector(0, 0);
 
     this.frozen = options.frozen;
     this.solid = true;
   };
 
-  wrect.ECS.Component.RigidBody.prototype = Object.create(wrect.ECS.Component.BaseComponent.prototype);
-  wrect.ECS.Component.RigidBody.prototype.constructor = wrect.ECS.Component.RigidBody;
-  wrect.ECS.Component.RigidBody.prototype.name = 'RigidBody';
+  RigidBody.prototype = Object.create(BaseComponent.prototype);
+  RigidBody.prototype.constructor = RigidBody;
+  RigidBody.prototype.name = 'RigidBody';
+  
+  module.exports = RigidBody;
 }());

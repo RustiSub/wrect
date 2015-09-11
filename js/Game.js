@@ -3,6 +3,7 @@
 
   var Renderer;
   var SceneManager;
+  var Bundles;
 
   /**
    * @constructor
@@ -10,6 +11,7 @@
   var Game = function(options) {
     Renderer = options.renderer || require('./Core/Rendering/Renderer');
     SceneManager = options.sceneManager || require('./Core/Rendering/SceneManager');
+    Bundles = options.bundles || [];
   };
 
   Game.prototype.bootstrap = function() {
@@ -102,10 +104,10 @@
   };
 
   Game.prototype.loadBundles = function() {
-     //for (var bundleIndex in wrect.Bundles) if (wrect.Bundles.hasOwnProperty(bundleIndex)) {
-     //  var bundle = new wrect.Bundles[bundleIndex]({game: this});
-     //  bundle.init();
-     //}
+     for (var bundleIndex = 0; bundleIndex < Bundles.length; bundleIndex++) {
+      var bundle = new Bundles[bundleIndex]({game: this});
+      bundle.init();
+     }
   };
 
   Game.prototype.run = function() {

@@ -2,19 +2,17 @@ var dirLight;
 (function() {
   "use strict";
 
-  wrect.Bundles = wrect.Bundles || {};
-
-  var Vector = wrect.Physics.Vector;
+  var Vector = require('../../Physics/Vector');
 
   /**
    * @constructor
    */
-  wrect.Bundles.ProtoDog = function (options) {
+  var ProtoDog = function (options) {
     this.game = options.game;
     console.log('ProtoDog loaded...');
   };
 
-  wrect.Bundles.ProtoDog.prototype.init = function() {
+  ProtoDog.prototype.init = function() {
     console.log('ProtoDog setup...');
 
     this.registerSystems();
@@ -30,26 +28,19 @@ var dirLight;
     this.game.getRenderer().render();
   };
 
-  wrect.Bundles.ProtoDog.prototype.setupMechanics = function() {
+  ProtoDog.prototype.setupMechanics = function() {
   };
 
-  wrect.Bundles.ProtoDog.prototype.setupControls = function() {
-    var titanControl = new wrect.ECS.Assemblage.TitanControl(
-        {
-          camera: game.getCameraManager().camera,
-          entityManager: game.getEntityManager(),
-          eventManager: game.getEventManager(),
-          sceneManager: game.getSceneManager(),
-          renderer: game.getRenderer()
-        }
-    );
+  ProtoDog.prototype.setupControls = function() {
 
-    game.getEntityManager().addEntity(titanControl.entity);
   };
 
-  wrect.Bundles.ProtoDog.prototype.buildWorld = function() {
+  ProtoDog.prototype.buildWorld = function() {
+    var Block = require('../../ECS/Assemblage/Block');
+    var game = this.game;
+    
     function createBlock(options) {
-      var block = new wrect.ECS.Assemblage.Block({
+      var block = new Block({
         position: options.position,
         dimension: options.dimension,
         material: options.material,
@@ -78,15 +69,17 @@ var dirLight;
     });
   };
 
-  wrect.Bundles.ProtoDog.prototype.setupCamera = function() {
+  ProtoDog.prototype.setupCamera = function() {
   };
 
-  wrect.Bundles.ProtoDog.prototype.setupScene = function() {
+  ProtoDog.prototype.setupScene = function() {
   };
 
-  wrect.Bundles.ProtoDog.prototype.registerSystems = function() {
+  ProtoDog.prototype.registerSystems = function() {
   };
 
-  wrect.Bundles.ProtoDog.prototype.setupPlayer = function() {
+  ProtoDog.prototype.setupPlayer = function() {
   };
+  
+  module.exports = ProtoDog;
 }());

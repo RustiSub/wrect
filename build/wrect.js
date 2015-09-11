@@ -1,5 +1,8 @@
 document.write(require("./../js/Class.js"));
 document.write(require("./../js/lib/store.js"));
+
+document.write(require("./wrect_pixi.js"));
+
 document.write(require("./../js/main.js"));
 
 //
