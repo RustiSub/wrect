@@ -1,12 +1,6 @@
-document.write(require("./../js/Class.js"));
-document.write(require("./../js/lib/store.js"));
+require("./../js/Class.js");
+require("./../js/lib/store.js");
 
-document.write(require("./wrect_pixi.js"));
+require("./wrect_pixi.js");
 
-document.write(require("./../js/main.js"));
-
-//
-//document.write(require(rootPath + "js/Core/Constants/KeyMap.js"));
-//
-////Physics
-//document.write(require("./../js/Physics/PhysicsBody"));
+require("./../js/main.js");
