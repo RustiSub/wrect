@@ -1,4 +1,4 @@
-# README #
+# WRECT#
 
 Wrect is an attempt to build a game engine that is suitable for prototyping various ideas.
 
