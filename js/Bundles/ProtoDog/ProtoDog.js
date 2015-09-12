@@ -16,11 +16,11 @@ var dirLight;
     console.log('ProtoDog setup...');
 
     this.registerSystems();
-    this.setupCamera();
-    this.setupScene();
-    this.buildWorld();
+    // this.setupCamera();
+    // this.setupScene();
+    // this.buildWorld();
 
-    this.setupMechanics();
+    // this.setupMechanics();
     //this.setupControls();
     //this.setupGrid();
     //this.setupPlayer();
