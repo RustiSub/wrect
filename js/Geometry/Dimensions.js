@@ -1,16 +1,14 @@
 (function() {
   "use strict";
 
-  wrect.Geometry = wrect.Geometry || {};
-
-  var Vector = wrect.Physics.Vector;
+  var Vector = require('../Physics/Vector');
 
   /**
    *
-   * @class wrect.Geometry.Dimensions
+   * @class Dimensions
    * @constructor
    */
-  wrect.Geometry.Dimensions = function () {
+  var Dimensions = function () {
     this.vertices = [];
     this.originalVertices = [];
     this.origin = new Vector(0, 0);
@@ -19,7 +17,7 @@
     this.offset = new Vector(0, 0);
   };
 
-  wrect.Geometry.Dimensions.prototype.move = function(v) {
+  Dimensions.prototype.move = function(v) {
     for(var vertexIndex in this.vertices) {
       var vertex = this.vertices[vertexIndex];
 
@@ -29,17 +27,19 @@
     this.origin = this.origin.add(v);
   };
 
-  wrect.Geometry.Dimensions.prototype.setOrigin = function(v) {
+  Dimensions.prototype.setOrigin = function(v) {
     this.origin = v;
     this.updateVertices();
   };
 
-  wrect.Geometry.Dimensions.prototype.updateVertices = function() {
+  Dimensions.prototype.updateVertices = function() {
   };
 
-  wrect.Geometry.Dimensions.prototype.rotate = function() {};
-  wrect.Geometry.Dimensions.prototype.getVertices = function() {};
-  wrect.Geometry.Dimensions.prototype.getCollisionVertices = function() {};
-  wrect.Geometry.Dimensions.prototype.getCenter = function() {};
-  wrect.Geometry.Dimensions.prototype.draw = function() {};
+  Dimensions.prototype.rotate = function() {};
+  Dimensions.prototype.getVertices = function() {};
+  Dimensions.prototype.getCollisionVertices = function() {};
+  Dimensions.prototype.getCenter = function() {};
+  Dimensions.prototype.draw = function() {};
+  
+  module.exports = Dimensions;
 }());

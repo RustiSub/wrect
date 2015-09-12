@@ -1,13 +1,11 @@
 (function() {
   "use strict";
 
-  wrect.Core = wrect.Core || {};
-
   /**
-   * @class wrect.Core.EntityManager
+   * @class EntityManager
    * @constructor
    */
-  wrect.Core.EntityManager = function(options) {
+  var EntityManager = function(options) {
     this._entities = [];
     this._entitiesByName = {};
     this.eventManager = options.eventManager;
@@ -16,7 +14,7 @@
   /**
    * @param {Entity} entity
    */
-  wrect.Core.EntityManager.prototype.addEntity = function(entity){
+  EntityManager.prototype.addEntity = function(entity){
     this._entities.push(entity);
     this._entitiesByName[entity.getId()] = entity;
     this.eventManager.trigger('entity_manager.add', {entity: entity});
@@ -25,7 +23,7 @@
   /**
    * @param {Entity} entity
    */
-  wrect.Core.EntityManager.prototype.removeEntity = function(entity){
+  EntityManager.prototype.removeEntity = function(entity){
     var index;
     console.log(this._entities, entity);
     if ((index = this._entities.indexOf(entity)) != -1) {
@@ -39,7 +37,7 @@
   /**
    * @param {string} name
    */
-  wrect.Core.EntityManager.prototype.removeEntityByName = function(name) {
+  EntityManager.prototype.removeEntityByName = function(name) {
     var entity = this._entitiesByName[name];
     if (entity) {
       this.removeEntity(entity);
@@ -50,7 +48,7 @@
    * Returns all entities
    * @returns {*}
    */
-  wrect.Core.EntityManager.prototype.getAllEntities = function(){
+  EntityManager.prototype.getAllEntities = function(){
     return this._entities;
   };
 
@@ -58,7 +56,7 @@
    * Returns all entities indexed by name
    * @returns {*}
    */
-  wrect.Core.EntityManager.prototype.getAllEntitiesByName = function() {
+  EntityManager.prototype.getAllEntitiesByName = function() {
       return this._entitiesByName;
   };
 
@@ -67,7 +65,7 @@
    * @param name
    * @returns {*}
    */
-  wrect.Core.EntityManager.prototype.getEntityByName = function(name){
+  EntityManager.prototype.getEntityByName = function(name){
     return this._entitiesByName[name];
   };
 
@@ -77,7 +75,7 @@
    * @param partOfName
    * @returns {Array}
    */
-  wrect.Core.EntityManager.prototype.getEntitiesByName = function(partOfName){
+  EntityManager.prototype.getEntitiesByName = function(partOfName){
     var found = [];
     for (var i = 0; i < this._entities.length; i++) {
       if (this._entities[i].name.indexOf(partOfName) != -1) {
@@ -88,7 +86,7 @@
     return found;
   };
 
-  wrect.Core.EntityManager.prototype.clearEntities = function(clearStage) {
+  EntityManager.prototype.clearEntities = function(clearStage) {
     this._entities = [];
     this._entitiesByName = {};
   };
@@ -96,13 +94,13 @@
   /**
    * Update all entities, called in Game.run();
    */
-  wrect.Core.EntityManager.prototype.update = function() {
+  EntityManager.prototype.update = function() {
     for (var i = 0; i < this._entities.length; i++) {
       this._entities[i].update();
     }
   };
 
-  wrect.Core.EntityManager.prototype.deselectAll = function() {
+  EntityManager.prototype.deselectAll = function() {
     for (var i = 0; i < this._entities.length; i++) {
       this._entities[i].deselect();
     }
@@ -111,15 +109,17 @@
   /**
    * Update all entities, called in Game.run();
    */
-  wrect.Core.EntityManager.prototype.update = function() {
+  EntityManager.prototype.update = function() {
     for (var i = 0; i < this._entities.length; i++) {
       this._entities[i].update();
     }
   };
 
-  wrect.Core.EntityManager.prototype.deselectAll = function() {
+  EntityManager.prototype.deselectAll = function() {
     for (var i = 0; i < this._entities.length; i++) {
       this._entities[i].deselect();
     }
   };
+
+  module.exports = EntityManager;
 })();

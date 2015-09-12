@@ -1,11 +1,9 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.System = wrect.ECS.System || {};
-
-  wrect.ECS.System.Animator = function (options) {
-    wrect.ECS.System.BaseSystem.call(this, options);
+  var BaseSystem = require('./BaseSystem');
+  var Animator = function (options) {
+    BaseSystem.call(this, options);
 
     this.options = options || {};
     this.lastFrame = 0;
@@ -13,16 +11,16 @@
     this.interval = 0;
   };
 
-  wrect.ECS.System.Animator.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
-  wrect.ECS.System.Animator.prototype.constructor = wrect.ECS.System.Animator;
+  Animator.prototype = Object.create( BaseSystem.prototype );
+  Animator.prototype.constructor = Animator;
 
-  wrect.ECS.System.Animator.prototype.name = 'Animator';
+  Animator.prototype.name = 'Animator';
 
-  wrect.ECS.System.Animator.prototype.checkDependencies = function(entity) {
+  Animator.prototype.checkDependencies = function(entity) {
     return entity.components.Animation ? true : false;
   };
 
-  wrect.ECS.System.Animator.prototype.run = function() {
+  Animator.prototype.run = function() {
     var gameTime = this.options.game.gameTime;
 
     this.interval = gameTime.getPreviousTime() - this.lastFrame;
@@ -76,7 +74,7 @@
   /**
    * @param {wrect.ECS.Component.ScriptedAnimation} scriptedAnimation
    */
-  wrect.ECS.System.Animator.prototype.perform = function(scriptedAnimation) {
+  Animator.prototype.perform = function(scriptedAnimation) {
 
   };
 
@@ -85,7 +83,7 @@
    * @param {wrect.ECS.Component.ScriptedAnimation} scriptedAnimation
    * @param {int} index
    */
-  wrect.ECS.System.Animator.prototype.start = function(animation, scriptedAnimation, index) {
+  Animator.prototype.start = function(animation, scriptedAnimation, index) {
     scriptedAnimation.state = wrect.Component.Animation.states.playing;
     scriptedAnimation.state = wrect.Component.Animation.startFrame = this.currentFrame;
     animation.playingAnimationIds.push(index);
@@ -96,14 +94,16 @@
    * @param {wrect.ECS.Component.ScriptedAnimation} scriptedAnimation
    * @param {int} index
    */
-  wrect.ECS.System.Animator.prototype.stop = function(animation, scriptedAnimation, index) {
+  Animator.prototype.stop = function(animation, scriptedAnimation, index) {
     scriptedAnimation.state = wrect.Component.Animation.states.stopped;
     scriptedAnimation.state = wrect.Component.Animation.currentFrame = scriptedAnimation.timing.stop;
 
     animation.playingAnimationIds.splice(index, 1);
   };
 
-  wrect.ECS.System.Animator.prototype.pause = function(scriptedAnimation) {
+  Animator.prototype.pause = function(scriptedAnimation) {
     scriptedAnimation.state = wrect.Component.Animation.states.paused;
   };
+
+  module.exports = Animator;
 }());

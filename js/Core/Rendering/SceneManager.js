@@ -1,10 +1,7 @@
 (function() {
   "use strict";
 
-  wrect.Core = wrect.Core || {};
-  wrect.Core.Rendering = wrect.Core.Rendering || {};
-
-  wrect.Core.Rendering.SceneManager = function (options) {
+  var SceneManager = function (options) {
     this.options = options || {};
 
     this.eventManager = options.eventManager;
@@ -16,16 +13,18 @@
   };
 
   /**
-   * @returns {wrect.Core.Rendering.SceneManager.scene|*}
+   * @returns {SceneManager.scene|*}
    */
-  wrect.Core.Rendering.SceneManager.prototype.getScene = function() {
+  SceneManager.prototype.getScene = function() {
     return this.scene;
   };
 
-  wrect.Core.Rendering.SceneManager.prototype.createScene = function() {};
+  SceneManager.prototype.createScene = function() {};
 
   /**
    * @param {wrect.ECS.Entity} entity
    */
-  wrect.Core.Rendering.SceneManager.prototype.add = function(entity) {};
+  SceneManager.prototype.add = function(entity) {};
+
+  module.exports = SceneManager;
 }());

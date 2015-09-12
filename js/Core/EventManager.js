@@ -1,30 +1,29 @@
 (function() {
   "use strict";
 
-  wrect.Core = wrect.Core || {};
-
   /**
    * Wrapper class for Minivents
    * @type {Events}
-   * @class wrect.Core.EventManager
+   * @class EventManager
    * @constructor
    */
-  wrect.Core.EventManager = function() {
-    window.Events.call(this);
+  var EventManager = function() {
+    var Events = require('minivents');    
+    Events.call(this);
   };
 
   /**
    * Inheritance logic
    */
-  wrect.Core.EventManager.prototype = Object.create( Events.prototype );
-  wrect.Core.EventManager.prototype.constructor = window.EventManager;
-  
+  EventManager.prototype = Object.create( Event.prototype );
+  EventManager.prototype.constructor = window.EventManager;
+
   /**
    * Triggers an event
    * @param type
    * @param [data]
    */
-  wrect.Core.EventManager.prototype.trigger = function(type, data) {
+  EventManager.prototype.trigger = function(type, data) {
     this.emit(type, data);
   };
 
@@ -34,7 +33,7 @@
    * @param func
    * @param [ctx]
    */
-  wrect.Core.EventManager.prototype.addListener = function(type, func, ctx) {
+  EventManager.prototype.addListener = function(type, func, ctx) {
     this.on(type, func, ctx);
   };
 
@@ -43,7 +42,9 @@
    * @param type
    * @param func
    */
-  wrect.Core.EventManager.prototype.removeListener = function(type, func) {
+  EventManager.prototype.removeListener = function(type, func) {
     this.off(type, func);
   };
+
+  module.exports = EventManager;
 }());

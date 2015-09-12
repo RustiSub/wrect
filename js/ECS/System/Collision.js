@@ -1,23 +1,22 @@
 (function () {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.System = wrect.ECS.System || {};
+  var BaseSystem = require('./BaseSystem');
 
-  wrect.ECS.System.Collision = function (options) {
-    wrect.ECS.System.BaseSystem.call(this, options);
+  var Collision = function (options) {
+    BaseSystem.call(this, options);
   };
 
-  wrect.ECS.System.Collision.prototype = Object.create(wrect.ECS.System.BaseSystem.prototype);
-  wrect.ECS.System.Collision.prototype.constructor = wrect.ECS.System.Collision;
+  Collision.prototype = Object.create(BaseSystem.prototype);
+  Collision.prototype.constructor = Collision;
 
-  wrect.ECS.System.Collision.prototype.name = 'Collision';
+  Collision.prototype.name = 'Collision';
 
-  wrect.ECS.System.Collision.prototype.checkDependencies = function () {
+  Collision.prototype.checkDependencies = function () {
     return false;
   };
 
-  wrect.ECS.System.Collision.prototype.satTest = function(shapeA, shapeB) {
+  Collision.prototype.satTest = function(shapeA, shapeB) {
     var a = shapeA.components.RigidBody.dimensions;
     var b = shapeB.components.RigidBody.dimensions;
 
@@ -152,7 +151,7 @@
     }
   };
 
-  wrect.ECS.System.Collision.prototype.run = function() {
+  Collision.prototype.run = function() {
     var game = this.options.game;
 
     //console.log('collision', game.completeTree.length);
@@ -175,5 +174,7 @@
         }
       }
     }
-  }
+  };
+  
+  module.exports = Collision;
 }());

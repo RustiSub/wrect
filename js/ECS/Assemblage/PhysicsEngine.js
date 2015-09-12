@@ -1,32 +1,36 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.Assemblage = wrect.ECS.Assemblage || {};
-
-  wrect.ECS.Assemblage.PhysicsEngine = function (options) {
+  var PhysicsEngine = function (options) {
     this.options = options || {};
     this.game = options.game;
 
-    this.timeStepSystem = new wrect.ECS.System.TimeStep({game: this.game});
+    var TimeStep = require('../System/TimeStep');
+    var Gravity = require('../System/Gravity');
+    var QuadTree = require('../System/QuadTree');
+    var Collision = require('../System/Collision');
+    var Physics = require('../System/Physics');
+
+    this.timeStepSystem = new TimeStep({game: this.game});
+
 
     this.systems = {
       Gravity: {
-        system: new wrect.ECS.System.Gravity({game: this.game})
+        system: new Gravity({game: this.game})
       },
       QuadTree: {
-        system: new wrect.ECS.System.QuadTree({game: this.game})
+        system: new QuadTree({game: this.game})
       },
       Collision: {
-        system: new wrect.ECS.System.Collision({game: this.game})
+        system: new Collision({game: this.game})
       },
       Physics: {
-        system: new wrect.ECS.System.Physics({game: this.game})
+        system: new Physics({game: this.game})
       }
     };
   };
 
-  wrect.ECS.Assemblage.PhysicsEngine.prototype.run = function() {
+  PhysicsEngine.prototype.run = function() {
     this.timeStepSystem.run();
 
     for (var steps = 0; steps < 1; steps++) {//this.timeStepSystem.timeSteps; steps++) {
@@ -36,4 +40,6 @@
       }
     }
   };
+
+  module.exports = PhysicsEngine;
 }());

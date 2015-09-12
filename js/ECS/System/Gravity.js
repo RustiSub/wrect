@@ -1,26 +1,25 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.System = wrect.ECS.System || {};
+  var BaseSystem = require('./BaseSystem');
 
-  wrect.ECS.System.Gravity = function (options) {
-    wrect.ECS.System.BaseSystem.call(this, options);
+  var Gravity = function (options) {
+    BaseSystem.call(this, options);
 
     this.options = options || {};
     this.gravityDirection = this.options.game.getRenderer().axisOrientation.y;
   };
 
-  wrect.ECS.System.Gravity.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
-  wrect.ECS.System.Gravity.prototype.constructor = wrect.ECS.System.Gravity;
+  Gravity.prototype = Object.create( BaseSystem.prototype );
+  Gravity.prototype.constructor = Gravity;
 
-  wrect.ECS.System.Gravity.prototype.name = 'Gravity';
+  Gravity.prototype.name = 'Gravity';
 
-  wrect.ECS.System.Gravity.prototype.checkDependencies = function(entity) {
+  Gravity.prototype.checkDependencies = function(entity) {
     return entity.components.RigidBody ? true : false;
   };
 
-  wrect.ECS.System.Gravity.prototype.perform = function(entity) {
+  Gravity.prototype.perform = function(entity) {
     if (entity.components.RigidBody && entity.components.RigidBody.gravity) {
       var rigidBody = entity.components.RigidBody;
 
@@ -28,5 +27,7 @@
       gravity.y *= this.gravityDirection;
       rigidBody.physicsBody.f = rigidBody.physicsBody.f.add(gravity);
     }
-  }
+  };
+  
+  module.exports = Gravity;
 }());

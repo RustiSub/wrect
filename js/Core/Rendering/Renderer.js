@@ -1,10 +1,7 @@
 (function() {
   "use strict";
 
-  wrect.Core = wrect.Core || {};
-  wrect.Core.Rendering = wrect.Core.Rendering || {};
-
-  wrect.Core.Rendering.Renderer = function (options) {
+  var Renderer = function (options) {
     this.options = options || {};
 
     this.options = options || {};
@@ -22,16 +19,16 @@
   /**
    * @param {wrect.Geometry.Dimensions} shape
    */
-  wrect.Core.Rendering.Renderer.prototype.draw = function(shape) {
+  Renderer.prototype.draw = function(shape) {
     return shape.draw();
   };
 
-  wrect.Core.Rendering.Renderer.prototype.create = function () {
-    console.log(('This needs to be implemented'));
+  Renderer.prototype.create = function () {
+    console.log(('Create needs to be implemented'));
   };
-
-  wrect.Core.Rendering.Renderer.prototype.render = function() {
-    console.log(('This needs to be implemented'));
+  
+  Renderer.prototype.render = function() {
+    console.log(('Render needs to be implemented'));
   };
 
   ///**
@@ -53,4 +50,6 @@
   // * @param {wrect.Geometry.Polyhedron} polyhedron
   // */
   //wrect.Core.Renderer.prototype.drawPolyhedron = function(polyhedron) {};
+
+  module.exports = Renderer;
 }());

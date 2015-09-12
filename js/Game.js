@@ -1,33 +1,60 @@
 (function() {
   "use strict";
 
+  var Renderer;
+  var SceneManager;
+  var Bundles;
+
   /**
    * @constructor
    */
-  wrect.Game = function() {
+  var Game = function(options) {
+    Renderer = options.renderer || require('./Core/Rendering/Renderer');
+    SceneManager = options.sceneManager || require('./Core/Rendering/SceneManager');
+    Bundles = options.bundles || [];
   };
 
-  wrect.Game.prototype.bootstrap = function() {
+  Game.prototype.bootstrap = function() {
 
     this.completeTree = [];
     this.treeHashes = [];
 
-    this.eventManager = new wrect.Core.EventManager();
-    this.entityManager = new wrect.Core.EntityManager({eventManager: this.eventManager});
-    this.gameTime = new wrect.Core.GameTime({
+    var EventManager = require('./../js/Core/EventManager');
+    this.eventManager = new EventManager();
+
+    var EntityManager = require('./../js/Core/EntityManager');
+    this.entityManager = new EntityManager({eventManager: this.eventManager});
+
+    var GameTime = require('./../js/Core/GameTime');
+    this.gameTime = new GameTime({
       eventManager: this.eventManager
     });
-    this.sceneManager = new wrect.Core.Rendering.SceneManager({eventManager: this.eventManager});
-    this.camera = new wrect.Core.Rendering.Camera();
-    this.renderer = new wrect.Core.Rendering.Renderer({
+
+    this.sceneManager = new SceneManager({eventManager: this.eventManager});
+
+    var Camera = require('./../js/Core/Rendering/Camera');
+    this.camera = new Camera();
+
+    this.renderer = new Renderer({
       sceneManager: this.sceneManager,
       camera: this.camera
     });
 
+    var TileMapManager = require('./TileMap/TileMapManager');
+    this.tileMapManager = new TileMapManager(this);
+
+    var RawInputHandler = require('./ECS/System/Input/RawInputHandler');
+    var InputHandler = require('./ECS/System/Input/InputHandler');
+    var ControlMapHandler = require('./ECS/System/Input/ControlMapHandler');
+    var Linker = require('./ECS/System/Linker');
+    var Animator = require('./ECS/System/Animator');
+    var PhysicsEngine = require('./ECS/Assemblage/PhysicsEngine.js');
+    var Mover = require('./ECS/System/Mover.js');
+
     this.systems = {
       pre: {
         RawInputHandler: {
-          system: new wrect.ECS.System.RawInputHandler(
+          system: new RawInputHandler(
             {
               game: this,
               elementId: 'body',
@@ -36,7 +63,7 @@
           )
         },
         InputHandler: {
-          system: new wrect.ECS.System.InputHandler(
+          system: new InputHandler(
             {
               game: this,
               eventManager: this.eventManager
@@ -44,53 +71,46 @@
           )
         },
         ControlMapHandler: {
-          system: new wrect.ECS.System.ControlMapHandler(
+          system: new ControlMapHandler(
             {
               game: this
             }
           )
         },
         Linker: {
-          system: new wrect.ECS.System.Linker({game: this})
+          system: new Linker({game: this})
         },
         Animator: {
-          system: new wrect.ECS.System.Animator({game: this})
+          system: new Animator({game: this})
         }
       },
       main: {
         Physics: {
-          system: new wrect.ECS.Assemblage.PhysicsEngine({game: this})
+          system: new PhysicsEngine({game: this})
         }
       },
       post: {
         Mover: {
-          system: new wrect.ECS.System.Mover({game: this})
+          system: new Mover({game: this})
         }
         //,
         //Transformer: {
-        //  system: new wrect.ECS.System.Transformer()
+        //  system: new Transformer()
         //}
       }
     };
 
     this.loadBundles();
-
-    this.controls = new THREE.OrbitControls( this.camera.getCamera() );
-    this.controls.damping = 0.2;
-    var self = this;
-    this.controls.addEventListener( 'change', function() {
-      self.renderer.render();
-    } );
   };
 
-  wrect.Game.prototype.loadBundles = function() {
-    for (var bundleIndex in wrect.Bundles) if (wrect.Bundles.hasOwnProperty(bundleIndex)) {
-      var bundle = new wrect.Bundles[bundleIndex]({game: this});
+  Game.prototype.loadBundles = function() {
+     for (var bundleIndex = 0; bundleIndex < Bundles.length; bundleIndex++) {
+      var bundle = new Bundles[bundleIndex]({game: this});
       bundle.init();
-    }
+     }
   };
 
-  wrect.Game.prototype.run = function() {
+  Game.prototype.run = function() {
     var self = this;
     //var clock = new THREE.Clock();
 
@@ -99,8 +119,6 @@
     function run(timestamp) {
       if (self.pause) {return;}
       requestAnimationFrame(run);
-
-      self.controls.update();
 
       self.gameTime.updateTime(timestamp);
 
@@ -112,13 +130,7 @@
 
       self.getEventManager().trigger('game.updateEnd');
 
-        //dirLight.shadowCameraNear += 10;
-        //console.log(dirLight.shadowCameraNear);
-
       self.getRenderer().render();
-
-      //THREE.AnimationHandler.update( clock.getDelta() / 2);
-      //self.camera.getCamera().rotation.y += 0.01;
     }
 
     function runSystemGroup(systems) {
@@ -133,7 +145,7 @@
   /**
    * @returns {wrect.Core.Rendering.Camera|*}
    */
-  wrect.Game.prototype.getCameraManager = function() {
+  Game.prototype.getCameraManager = function() {
     return this.camera;
   };
 
@@ -141,42 +153,44 @@
    *
    * @returns {wrect.Core.EventManager|*}
    */
-  wrect.Game.prototype.getEventManager = function() {
+  Game.prototype.getEventManager = function() {
     return this.eventManager;
   };
 
   /**
    * @returns {wrect.Core.EntityManager|*}
    */
-  wrect.Game.prototype.getEntityManager = function() {
+  Game.prototype.getEntityManager = function() {
     return this.entityManager;
   };
 
   /**
    * @returns {wrect.Core.Renderer|*}
    */
-  wrect.Game.prototype.getRenderer = function() {
+  Game.prototype.getRenderer = function() {
     return this.renderer;
   };
 
   /**
    * @returns {wrect.Core.SceneManager|*}
    */
-  wrect.Game.prototype.getSceneManager = function() {
+  Game.prototype.getSceneManager = function() {
     return this.sceneManager;
   };
 
   /**
    * @returns {wrect.Core.GameTime|*}
    */
-  wrect.Game.prototype.getGameTime = function() {
+  Game.prototype.getGameTime = function() {
     return this.gameTime;
   };
 
   /**
-   * @returns {wrect.Game}
+   * @returns {Game}
    */
-  wrect.Game.prototype.getGame = function() {
+  Game.prototype.getGame = function() {
     return this;
-  }
+  };
+
+  module.exports = Game;
 }());

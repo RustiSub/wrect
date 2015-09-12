@@ -1,15 +1,17 @@
 (function() {
   "use strict";
 
-  var Vector = wrect.Physics.Vector;
+  var Dimensions = require('../Dimensions');
+
+  var Vector = require('../../Physics/Vector');
 
   /**
    *
-   * @class wrect.Geometry.Rectangle
+   * @class Rectangle
    * @constructor
    */
-  wrect.Geometry.Rectangle = function (options) {
-    wrect.Geometry.Dimensions.call(this);
+  var Rectangle = function (options) {
+    Dimensions.call(this);
 
     this.options = options;
     this.origin = options.origin;
@@ -33,17 +35,19 @@
     ]
   };
 
-  wrect.Geometry.Rectangle.prototype = Object.create( wrect.Geometry.Dimensions.prototype );
-  wrect.Geometry.Rectangle.prototype.constructor = wrect.Geometry.Rectangle;
+  Rectangle.prototype = Object.create( Dimensions.prototype );
+  Rectangle.prototype.constructor = Rectangle;
 
-  wrect.Geometry.Rectangle.prototype.getVertices = function() {
+  Rectangle.prototype.getVertices = function() {
     return this.vertices;
   };
 
-  wrect.Geometry.Rectangle.prototype.getCollisionVertices = function() {
+  Rectangle.prototype.getCollisionVertices = function() {
     return this.vertices;
   };
 
-  wrect.Geometry.Rectangle.prototype.draw = function(renderer) {};
-  wrect.Geometry.Rectangle.prototype.rotate = function(origin) {};
+  Rectangle.prototype.draw = function(renderer) {};
+  Rectangle.prototype.rotate = function(origin) {};
+  
+  module.exports = Rectangle;
 }());

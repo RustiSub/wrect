@@ -1,24 +1,22 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.Assemblage = wrect.ECS.Assemblage || {};
-
-  var Entity = wrect.ECS.Entity;
-  var Vector3 = wrect.Physics.Vector3;
-  var Rectangle = wrect.Geometry.Rectangle;
+  var Entity = require('../Entity');
+  var Rectangle = require('../../Geometry/Shape/Rectangle');
+  var RigidBody = require('../Component/RigidBody');
+  var Visual = require('../Component/Visual');
 
   /**
    * @param options
-   * @returns {wrect.ECS.Entity|*}
+   * @returns {Entity|*}
    * @constructor
    */
-  wrect.ECS.Assemblage.Block = function (options) {
+  var Block = function (options) {
     this.entity = new Entity({
       eventManager: options.eventManager
     });
 
-    var rigidBody = new wrect.ECS.Component.RigidBody({
+    var rigidBody = new RigidBody({
       dimensions: new Rectangle({
         origin: options.position,
         dimension: options.dimension,
@@ -26,7 +24,7 @@
       }),
       frozen: options.frozen
     });
-    var visualComponent = new wrect.ECS.Component.Visual({
+    var visualComponent = new Visual({
       color: options.color,
       alpha: options.alpha,
       useSprite: options.useSprite,
@@ -37,4 +35,6 @@
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
   };
+  
+  module.exports = Block;
 }());

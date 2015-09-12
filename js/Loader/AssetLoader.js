@@ -16,8 +16,6 @@
    * @param callback
    */
   wrect.Loader.AssetLoader = function (urls, callback) {
-    var loader = new PIXI.AssetLoader(urls);
-    loader.load();
-    loader.addEventListener('onComplete', callback);
+
   };
 }());
