@@ -1,9 +1,7 @@
 (function() {
   'use strict';
-  var wrect = window.wrect;
 
-  wrect.TileMap = wrect.TileMap || {};
-  wrect.TileMap.Parser = function() {};
+  var Parser = function() {};
 
   /**
    * @param path
@@ -11,7 +9,7 @@
    * @param context
    * @param [mapper]
    */
-  wrect.TileMap.Parser.prototype.loadTilemap = function(path, callback, context, mapper) {
+  Parser.prototype.loadTilemap = function(path, callback, context, mapper) {
     var loader = new wrect.Loader.JsonLoader(path);
     var self = this;
     loader.load(function(xhr) {
@@ -29,11 +27,11 @@
    * @param json
    * @param mapper
    */
-  wrect.TileMap.Parser.prototype.parseTilemap = function(json, mapper) {
+  Parser.prototype.parseTilemap = function(json, mapper) {
     var i;
-    var tileMap = new wrect.TileMap.TileMap();
+    var tileMap = new TileMap();
     if (!mapper) {
-      mapper = new wrect.TileMap.Mapper.Tiled();
+      mapper = new Mapper.Tiled();
     }
 
     var tileMapDataObject = mapper.mapMap(json);
@@ -60,10 +58,10 @@
   /**
    *
    * @param layerData
-   * @returns {wrect.TileMap.TileLayer}
+   * @returns {TileLayer}
    */
-  wrect.TileMap.Parser.prototype.parseLayer = function(layerData) {
-    var layer = new wrect.TileMap.TileLayer();
+  Parser.prototype.parseLayer = function(layerData) {
+    var layer = new TileLayer();
     var i;
 
     layer.height = layerData.height;
@@ -94,10 +92,10 @@
   /**
    *
    * @param tileSetData
-   * @returns {wrect.TileMap.TileSet}
+   * @returns {TileSet}
    */
-  wrect.TileMap.Parser.prototype.parseTileSet = function(tileSetData) {
-    var tileSet = new wrect.TileMap.TileSet();
+  Parser.prototype.parseTileSet = function(tileSetData) {
+    var tileSet = new TileSet();
     tileSet.name = tileSetData.name;
     tileSet.imageHeight = tileSetData.imageHeight;
     tileSet.imageWidth = tileSetData.imageWidth;
@@ -116,10 +114,10 @@
   /**
    *
    * @param tileData
-   * @returns {wrect.TileMap.Tile}
+   * @returns {Tile}
    */
-  wrect.TileMap.Parser.prototype.parseTile = function(tileData) {
-    var tile = new wrect.TileMap.Tile();
+  Parser.prototype.parseTile = function(tileData) {
+    var tile = new Tile();
 
     tile.id = tileData.id;
     tile.rotation = tileData.rotation;
@@ -133,10 +131,10 @@
 
   /**
    * @param tileSetData
-   * @returns {wrect.TileMap.Mapper.TileDataObject}
+   * @returns {Mapper.TileDataObject}
    */
-  wrect.TileMap.Parser.prototype.parseObject = function(tileSetData) {
-    var object = new wrect.TileMap.Mapper.TileDataObject();
+  Parser.prototype.parseObject = function(tileSetData) {
+    var object = new Mapper.TileDataObject();
 
     object.id = tileSetData.id;
     object.name = tileSetData.name;
@@ -147,4 +145,5 @@
     return object;
   };
 
+  module.exports = Parser;
 }());

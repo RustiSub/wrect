@@ -1,6 +1,7 @@
 (function() {
   'use strict';
-  var wrect = window.wrect;
+
+  var Parser = require('/TileMap/Parser');
 
   /**
    * Manages tile maps
