@@ -1,32 +1,41 @@
 (function() {
   'use strict';
-  var wrect = window.wrect;
 
-  wrect.TileMap.Mapper = wrect.TileMap.Mapper || {};
-  var Vector = wrect.Physics.Vector;
+  /** @type Vector */
+  var Vector = require('Physics/Vector');
+  /** @type {TileDataObject} */
+  var TileDataObject = require('TileMap/Mapper/TileDataObject');
+  /** @type {TileMapDataObject} */
+  var TileMapDataObject = require('TileMap/Mapper/TileMapDataObject');
+  /** @type {TileSetDataObject} */
+  var TileSetDataObject = require('TileMap/Mapper/TileSetDataObject');
+  /** @type {TileLayerDataObject} */
+  var TileLayerDataObject = require('TileMap/Mapper/TileLayerDataObject');
+  /** @type {Polygon} */
+  var Polygon = require('Geometry/Shape/Polygon');
 
   /**
    * Mapper to map the Tiled editor's .json format to common DataObjects.
    * @constructor
    */
-  wrect.TileMap.Mapper.Tiled = function() {};
+  var Tiled = function() {};
 
-  wrect.TileMap.Mapper.Tiled.prototype.horizontalFlipFlag = 0x80000000;
+  Tiled.prototype.horizontalFlipFlag = 0x80000000;
 
-  wrect.TileMap.Mapper.Tiled.prototype.verticalFlipFlag = 0x40000000;
+  Tiled.prototype.verticalFlipFlag = 0x40000000;
 
-  wrect.TileMap.Mapper.Tiled.prototype.diagonalFlipFlag = 0x20000000;
+  Tiled.prototype.diagonalFlipFlag = 0x20000000;
 
-  wrect.TileMap.Mapper.Tiled.prototype.horizontalFlipDrawFlag = 1;
-  wrect.TileMap.Mapper.Tiled.prototype.verticalFlipDrawFlag = 2;
-  wrect.TileMap.Mapper.Tiled.prototype.diagonalFlipDrawFlag = 4;
+  Tiled.prototype.horizontalFlipDrawFlag = 1;
+  Tiled.prototype.verticalFlipDrawFlag = 2;
+  Tiled.prototype.diagonalFlipDrawFlag = 4;
 
   /**
-   * @returns {wrect.TileMap.Mapper.TileMapDataObject}
+   * @returns {TileMapDataObject}
    */
-  wrect.TileMap.Mapper.Tiled.prototype.mapMap = function(json) {
+  Tiled.prototype.mapMap = function(json) {
     var data = JSON.parse(json);
-    var tileMapDataObject = new wrect.TileMap.Mapper.TileMapDataObject();
+    var tileMapDataObject = new TileMapDataObject();
 
     for (i = 0; i < data.tilesets.length; i++) {
       tileMapDataObject.tileSets.push(this.mapTileSet(data.tilesets[i]));
@@ -52,10 +61,10 @@
    * @param tileHeight
    * @param tileWidth
    * @param tileSets
-   * @returns {wrect.TileMap.Mapper.TileLayerDataObject}
+   * @returns {TileLayerDataObject}
    */
-  wrect.TileMap.Mapper.Tiled.prototype.mapLayer = function(layerData, tileHeight, tileWidth, tileSets) {
-    var layer = new wrect.TileMap.Mapper.TileLayerDataObject();
+  Tiled.prototype.mapLayer = function(layerData, tileHeight, tileWidth, tileSets) {
+    var layer = new TileLayerDataObject();
 
     layer.type = layerData.type;
     layer.height = layerData.height;
@@ -89,10 +98,10 @@
    * @param tileHeight
    * @param tileWidth
    * @param tileSets
-   * @returns {wrect.TileMap.Mapper.TileDataObject}
+   * @returns {TileDataObject}
    */
-  wrect.TileMap.Mapper.Tiled.prototype.mapTile = function(tileData, tileHeight, tileWidth, tileSets) {
-    var tile = new wrect.TileMap.Mapper.TileDataObject();
+  Tiled.prototype.mapTile = function(tileData, tileHeight, tileWidth, tileSets) {
+    var tile = new TileDataObject();
     var flipAndRotateFlags = 0;
 
     // Flipping/rotation of sprites is done with flipping bits.
@@ -162,10 +171,10 @@
 
   /**
    * @param tileSetData
-   * @returns {wrect.TileMap.Mapper.TileSetDataObject}
+   * @returns {TileSetDataObject}
    */
-  wrect.TileMap.Mapper.Tiled.prototype.mapTileSet = function(tileSetData) {
-    var tileSet = new wrect.TileMap.Mapper.TileSetDataObject();
+  Tiled.prototype.mapTileSet = function(tileSetData) {
+    var tileSet = new TileSetDataObject();
 
     tileSet.imagePath = 'resources/levels/tilemap/' + tileSetData.name + '.png';
     tileSet.imageHeight = tileSetData.imageheight / tileSetData.tileheight;
@@ -184,16 +193,16 @@
 
   /**
    * @param tileSetData
-   * @returns {wrect.TileMap.Mapper.TileDataObject}
+   * @returns {TileDataObject}
    */
-  wrect.TileMap.Mapper.Tiled.prototype.mapObject = function(tileSetData) {
-    var object = new wrect.TileMap.Mapper.TileDataObject();
+  Tiled.prototype.mapObject = function(tileSetData) {
+    var object = new TileDataObject();
 
     object.id = tileSetData.id;
     object.name = tileSetData.name;
 
     if (tileSetData.polygon) {
-      object.dimensions = new wrect.Geometry.Polygon({
+      object.dimensions = new Polygon({
         origin: new Vector(tileSetData.x, tileSetData.y)
       });
       for (var p = 0; p < tileSetData.polygon.length; p++) {
@@ -205,4 +214,5 @@
     return object;
   };
 
+  module.exports = Tiled;
 }());

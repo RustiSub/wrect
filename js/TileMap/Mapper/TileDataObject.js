@@ -1,13 +1,10 @@
 (function() {
   'use strict';
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.System = wrect.ECS.System || {};
-  var Vector = wrect.Physics.Vector;
+  /** @type {Vector} */
+  var Vector = require('Physics/Vector');
 
-  wrect.TileMap.Mapper = wrect.TileMap.Mapper || {};
-
-  wrect.TileMap.Mapper.TileDataObject = function() {
+  var TileDataObject = function() {
     this.id = 0;
     this.name = '';
     this.height = 0;
@@ -19,4 +16,6 @@
       vertical: false
     };
   };
+
+  module.exports = TileDataObject;
 }());

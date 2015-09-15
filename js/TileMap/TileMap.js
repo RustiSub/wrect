@@ -1,16 +1,17 @@
 (function() {
   'use strict';
-  var PIXI = window.PIXI;
-  var wrect = window.wrect;
-  var Vector = wrect.Physics.Vector;
-  wrect.TileMap = wrect.TileMap || {};
+
+  var Vector = require('Physics/Vector');
+  var PIXI = require('lib/pixi');
+
+  var TileSprite = require('TileMap/TileSprite');
 
   /**
    * A TileMap. Contains layers and tiles.
    * @constructor
-   * @class wrect.TileMap.TileMap
+   * @class TileMap
    */
-  wrect.TileMap.TileMap = function() {
+  var TileMap = function() {
     this.layers = [];
     this.tileSets = {};
     this.baseTextures = {};
@@ -31,26 +32,26 @@
   /**
    * Initialise the TileMap. Call before building.
    */
-  wrect.TileMap.TileMap.prototype.init = function() {
+  TileMap.prototype.init = function() {
     this.buildBaseTextures();
-    if (wrect.getGame().debugTilemap) {
-      this._debugContainer = new PIXI.DisplayObjectContainer();
-      this._debugContainerText = new PIXI.DisplayObjectContainer();
-    }
+    //if (wrect.getGame().debugTilemap) {
+    //  this._debugContainer = new PIXI.DisplayObjectContainer();
+    //  this._debugContainerText = new PIXI.DisplayObjectContainer();
+    //}
   };
 
   /**
    * Add a layer
-   * @param {wrect.TileMap.TileLayer} layer
+   * @param {TileLayer} layer
    */
-  wrect.TileMap.TileMap.prototype.addLayer = function(layer) {
+  TileMap.prototype.addLayer = function(layer) {
     this.layers.push(layer);
   };
 
   /**
    * Create base textures for all layers
    */
-  wrect.TileMap.TileMap.prototype.buildBaseTextures = function() {
+  TileMap.prototype.buildBaseTextures = function() {
     for (var x in this.tileSets) {
       var ts = this.tileSets[x];
       this.baseTextures[ts.name] = PIXI.BaseTexture.fromImage(ts.imagePath);
@@ -60,7 +61,7 @@
   /**
    * Builds the sprites and rigid bodies and adds them to the game.
    */
-  wrect.TileMap.TileMap.prototype.build = function(dimensions) {
+  TileMap.prototype.build = function(dimensions) {
     for (var i = 0; i < this.layers.length; i++) {
       var layer = this.layers[i];
       var pixiLayerContainer = new PIXI.DisplayObjectContainer();
@@ -81,7 +82,7 @@
    * Updates the tiles for the current position
    * @param dimensions
    */
-  wrect.TileMap.TileMap.prototype.updateTiles = function(dimensions) {
+  TileMap.prototype.updateTiles = function(dimensions) {
     // Build the tiles within the dimensions once, then on update check which ones need to be moved and swapped.
     for (var i = 0; i < 1/*this.layers.length*/; i++) {
       var layer = this.layers[i];
@@ -93,11 +94,11 @@
 
   /**
    * Builds sprites of the tiles in the given layer and adds them to the passed displayContainer
-   * @param {wrect.TileMap.TileLayer} layer
+   * @param {TileLayer} layer
    * @param {wrect.Geometry.Rectangle} dimensions
    * @param {PIXI.DisplayObjectContainer} displayContainer
    */
-  wrect.TileMap.TileMap.prototype.buildTileSprites = function(layer, dimensions, displayContainer) {
+  TileMap.prototype.buildTileSprites = function(layer, dimensions, displayContainer) {
     var indexesToFill = this.getIndexesToFill(dimensions, 2, 2);
     var i;
 
@@ -111,7 +112,7 @@
       var baseTexture = this.baseTextures[tile.tileSetName];
       var frame = new PIXI.Texture(baseTexture, new PIXI.Rectangle(0, 0, tile.width, tile.height));
 
-      tile.sprite = new wrect.TileMap.TileSprite(frame);
+      tile.sprite = new TileSprite(frame);
       tile.sprite.tileIndex = 0;
       this.visibleTiles.push(tile);
       displayContainer.addChild(tile.sprite);
@@ -134,9 +135,9 @@
    * @param [extraRows]
    * @returns {Array}
    */
-  wrect.TileMap.TileMap.prototype.getIndexesToFill = function(dimensions, extraColumns, extraRows) {
+  TileMap.prototype.getIndexesToFill = function(dimensions, extraColumns, extraRows) {
     var bounds = dimensions.getBounds();
-    var tileHelper = wrect.TileMap.TileHelper;
+    var tileHelper = TileHelper;
 
     extraColumns = 0; //extraColumns || 0;
     extraRows = 0; //extraRows || 0;
@@ -166,10 +167,10 @@
 
   /**
    * Builds sprites of the tiles in the given layer and adds them to the passed displayContainer
-   * @param {wrect.TileMap.TileLayer} layer
+   * @param {TileLayer} layer
    * @param {wrect.Geometry.Rectangle} dimensions
    */
-  wrect.TileMap.TileMap.prototype.updateTileSprites = function(layer, dimensions) {
+  TileMap.prototype.updateTileSprites = function(layer, dimensions) {
     var indexesToFill = this.getIndexesToFill(dimensions, 1, 1);
     var changeableTiles = [];
     var tile;
@@ -268,12 +269,12 @@
 
   /**
    * Debug the tilemap. Draws a grid and text ids.
-   * @param {wrect.TileMap.Tile} tile
+   * @param {Tile} tile
    * @param {int} index
    * @param {PIXI.DisplayObjectContainer} displayContainer
    * @param {Boolean} once
    */
-  wrect.TileMap.TileMap.prototype.debug = function(tile, index, displayContainer, once) {
+  TileMap.prototype.debug = function(tile, index, displayContainer, once) {
 
     if (once === undefined || once) {
       // Only debug the first layer so the browser doesn't blow up.
@@ -294,7 +295,7 @@
   /**
    * @returns {Array}
    */
-  wrect.TileMap.TileMap.prototype.getAssets = function() {
+  TileMap.prototype.getAssets = function() {
     if (this.assets === null) {
       this.assets = [];
       for (var i in this.tileSets) {
@@ -307,9 +308,9 @@
 
   /**
    * Build the collision bodies
-   * @param {wrect.TileMap.TileLayer} layer
+   * @param {TileLayer} layer
    */
-  wrect.TileMap.TileMap.prototype.buildCollisionBodies = function(layer) {
+  TileMap.prototype.buildCollisionBodies = function(layer) {
     for (var i = 0; i < layer.objects.length; i++) {
       var object = layer.objects[i];
 
@@ -360,4 +361,6 @@
       //}
     }
   };
+
+  module.exports = TileMap;
 }());

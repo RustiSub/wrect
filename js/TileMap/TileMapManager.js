@@ -1,6 +1,8 @@
 (function() {
   'use strict';
-  var wrect = window.wrect;
+
+  /** @type {Parser} */
+  var Parser = require('TileMap/Parser');
 
   /**
    * Manages tile maps
@@ -40,7 +42,7 @@
     if (this.currentTileMap) {
       this.destroyCurrentTileMap();
     }
-    var parser = new Parser();
+    var parser = new Parser({eventManager: this.game.getEventManager()});
     parser.loadTilemap(path, this.loadCallback, this, mapper);
   };
 

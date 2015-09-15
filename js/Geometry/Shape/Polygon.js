@@ -1,25 +1,29 @@
 (function() {
   "use strict";
 
-  var Vector = wrect.Physics.Vector;
+  /** @type {Vector} */
+  var Vector = require('Physics/Vector');
+
+  /** @type {Dimensions} */
+  var Dimensions = require('Geometry/Dimensions');
 
   /**
    *
-   * @class wrect.Geometry.Polygon
+   * @class Polygon
    * @constructor
    */
-  wrect.Geometry.Polygon = function (options) {
-    wrect.Geometry.Dimensions.call(this);
+  var Polygon = function (options) {
+    Dimensions.call(this);
 
     this.vertices = options.vertices || [];
     this.origin = options.origin || new Vector(0, 0);
     this.offsetVertices = [];
   };
 
-  wrect.Geometry.Polygon.prototype = Object.create( wrect.Geometry.Dimensions.prototype );
-  wrect.Geometry.Polygon.prototype.constructor = wrect.Geometry.Polygon;
+  Polygon.prototype = Object.create( Dimensions.prototype );
+  Polygon.prototype.constructor = Polygon;
 
-  wrect.Geometry.Polygon.prototype.getBounds = function() {
+  Polygon.prototype.getBounds = function() {
     return {
       topLeft: this.vertices[0],
       topRight: this.vertices[1],
@@ -28,11 +32,11 @@
     };
   };
 
-  wrect.Geometry.Polygon.prototype.getCollisionVertices = function() {
+  Polygon.prototype.getCollisionVertices = function() {
     return this.vertices;
   };
 
-  wrect.Geometry.Polygon.prototype.draw = function(graphics, options) {
+  Polygon.prototype.draw = function(graphics, options) {
     graphics.clear();
 
     graphics.beginFill(options.color || 0x000000, options.alpha);
@@ -47,4 +51,6 @@
 
     graphics.endFill();
   };
+
+  module.exports = Polygon;
 }());

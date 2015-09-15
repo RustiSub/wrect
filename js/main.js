@@ -13,5 +13,5 @@ window.onload = function() {
   game.bootstrap();
   game.run();
 
-  //game.tileMapManager.loadMap('resources/levels/tilemap/kitchen.json');
+  game.tileMapManager.loadMap('resources/levels/tilemap/kitchen.json');
 };
