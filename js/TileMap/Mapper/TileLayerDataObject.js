@@ -1,9 +1,10 @@
 (function() {
   'use strict';
 
+  /** @type {Vector} */
   var Vector = require('Physics/Vector');
 
-  wrect.TileMap.Mapper.TileLayerDataObject = function() {
+  var TileLayerDataObject = function() {
     this.tiles = [];
     this.height = 0;
     this.width = 0;
@@ -15,4 +16,6 @@
     this.pixelWidth = 0;
     this.tileSet = null;
   };
+
+  module.exports = TileLayerDataObject;
 }());

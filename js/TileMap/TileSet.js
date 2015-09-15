@@ -1,14 +1,11 @@
 (function() {
   'use strict';
 
-  var wrect = window.wrect;
-  wrect.TileMap = wrect.TileMap || {};
-
   /**
    * @constructor
    * @class wrect.TileMap.TileSet
    */
-  wrect.TileMap.TileSet = function() {
+  var TileSet = function() {
     this.imagePath = '';
     this.name = '';
     this.imageHeight = 0;
@@ -20,4 +17,6 @@
     this.imagePixelWidth = 0;
     this.imagePixelHeight = 0;
   };
+
+  module.exports = TileSet;
 }());

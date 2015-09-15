@@ -1,7 +1,31 @@
 (function() {
   'use strict';
 
-  var Parser = function() {};
+  var JsonLoader = require('Loader/JsonLoader');
+
+  /** @type TileMap */
+  var TileMap = require('TileMap/TileMap');
+  /** @type Tiled */
+  var Tiled = require('TileMap/Mapper/Tiled');
+  /** @type {TileLayer} */
+  var TileLayer = require('TileMap/TileLayer');
+  /** @type {Tile} */
+  var Tile = require('TileMap/Tile');
+  /** @type {TileDataObject} */
+  var TileDataObject = require('TileMap/Mapper/TileDataObject');
+  /** @type {TileSet} */
+  var TileSet = require('TileMap/TileSet');
+
+
+  /**
+   * @class Parser
+   * @param options
+   * @module js/TileMap/Parser
+   * @constructor
+   */
+  var Parser = function(options) {
+    this.eventManager = options.eventManager;
+  };
 
   /**
    * @param path
@@ -10,7 +34,10 @@
    * @param [mapper]
    */
   Parser.prototype.loadTilemap = function(path, callback, context, mapper) {
-    var loader = new wrect.Loader.JsonLoader(path);
+    var loader = new JsonLoader({
+      eventManager: this.eventManager,
+      url: path
+    });
     var self = this;
     loader.load(function(xhr) {
       var tilemap = self.parseTilemap(xhr.responseText, mapper);
@@ -31,7 +58,7 @@
     var i;
     var tileMap = new TileMap();
     if (!mapper) {
-      mapper = new Mapper.Tiled();
+      mapper = new Tiled();
     }
 
     var tileMapDataObject = mapper.mapMap(json);
@@ -134,7 +161,7 @@
    * @returns {Mapper.TileDataObject}
    */
   Parser.prototype.parseObject = function(tileSetData) {
-    var object = new Mapper.TileDataObject();
+    var object = new TileDataObject();
 
     object.id = tileSetData.id;
     object.name = tileSetData.name;

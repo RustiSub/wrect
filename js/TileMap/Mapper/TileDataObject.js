@@ -1,6 +1,7 @@
 (function() {
   'use strict';
 
+  /** @type {Vector} */
   var Vector = require('Physics/Vector');
 
   var TileDataObject = function() {

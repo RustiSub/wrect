@@ -1,3 +1,5 @@
+var path = require('./node_modules/path/path');
+
 module.exports = {
     entry: "./app/main.js",
     output: {
@@ -8,5 +10,9 @@ module.exports = {
         loaders: [
             { test: /\.css$/, loader: "style!css" }
         ]
+    },
+    resolve: {
+      root: path.resolve('./js'),
+      extensions: ['', '.js']
     }
 };

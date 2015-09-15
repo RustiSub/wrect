@@ -1,20 +1,20 @@
 (function() {
   'use strict';
-  var wrect = window.wrect;
 
-  wrect.TileMap = wrect.TileMap || {};
+  /** @type {Vector} */
+  var Vector = require('Physics/Vector');
 
   /**
    * @constructor
    * @class wrect.TileMap.Tile
    */
-  wrect.TileMap.Tile = function() {
+  var Tile = function() {
     this.id = 0;
     this.height = 0;
     this.width = 0;
     this.rotation = 0;
     this.tileSetName = '';
-    this.position = new wrect.Physics.Vector(0, 0);
+    this.position = new Vector(0, 0);
     this.flipped = {
       horizontal: false,
       vertical: false
@@ -24,4 +24,6 @@
     // Mock an entity for collisions
     this.components = {};
   };
+
+  module.exports = Tile;
 }());

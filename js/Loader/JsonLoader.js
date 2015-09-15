@@ -1,8 +1,5 @@
 (function(){
   'use strict';
-  var wrect = window.wrect;
-
-  wrect.Loader = wrect.Loader || {};
 
   /**
    * The json file loader is used to load in JSON data and parse it
@@ -12,16 +9,18 @@
    * @class JsonLoader
    * @uses EventTarget
    * @constructor
-   * @param url {String} The url of the JSON file
    */
-  wrect.Loader.JsonLoader = function (url) {
+  var JsonLoader = function (options) {
 
     /**
      * URL of the file to load
      * @property url
      * @type {String}
      */
-    this.url = url;
+    this.url = options.url;
+
+
+    this.eventManager = options.eventManager;
 
     /**
      * [read-only] The base url
@@ -30,7 +29,7 @@
      * @type String
      * @readOnly
      */
-    this.baseUrl = url.replace(/[^\/]*$/, '');
+    this.baseUrl = this.url.replace(/[^\/]*$/, '');
 
     /**
      * [read-only] Whether the data has loaded yet
@@ -48,7 +47,7 @@
    * @method load
    * @param {Function} [onLoadCallback]
    */
-  wrect.Loader.JsonLoader.prototype.load = function (onLoadCallback) {
+  JsonLoader.prototype.load = function (onLoadCallback) {
 
     var self = this;
 
@@ -76,12 +75,14 @@
   /**
    * Parse the response and fire the loaded event.
    */
-  wrect.Loader.JsonLoader.prototype.onJSONLoaded = function() {
+  JsonLoader.prototype.onJSONLoaded = function() {
     if (this.ajaxRequest.responseText) {
       this.json = JSON.parse(this.ajaxRequest.responseText);
       this.loaded = true;
 
-      game.getEventManager().trigger('JsonLoader.done', this.ajaxRequest);
+      this.eventManager.trigger('JsonLoader.done', this.ajaxRequest);
     }
   };
+
+  module.exports = JsonLoader;
 }());

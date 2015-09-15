@@ -1,7 +1,18 @@
 (function() {
   'use strict';
 
+  /** @type Vector */
   var Vector = require('Physics/Vector');
+  /** @type {TileDataObject} */
+  var TileDataObject = require('TileMap/Mapper/TileDataObject');
+  /** @type {TileMapDataObject} */
+  var TileMapDataObject = require('TileMap/Mapper/TileMapDataObject');
+  /** @type {TileSetDataObject} */
+  var TileSetDataObject = require('TileMap/Mapper/TileSetDataObject');
+  /** @type {TileLayerDataObject} */
+  var TileLayerDataObject = require('TileMap/Mapper/TileLayerDataObject');
+  /** @type {Polygon} */
+  var Polygon = require('Geometry/Shape/Polygon');
 
   /**
    * Mapper to map the Tiled editor's .json format to common DataObjects.
@@ -191,7 +202,7 @@
     object.name = tileSetData.name;
 
     if (tileSetData.polygon) {
-      object.dimensions = new wrect.Geometry.Polygon({
+      object.dimensions = new Polygon({
         origin: new Vector(tileSetData.x, tileSetData.y)
       });
       for (var p = 0; p < tileSetData.polygon.length; p++) {
