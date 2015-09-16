@@ -16,7 +16,6 @@
   /** @type {TileSet} */
   var TileSet = require('TileMap/TileSet');
 
-
   /**
    * @class Parser
    * @param options
@@ -40,8 +39,9 @@
     });
     var self = this;
     loader.load(function(xhr) {
+      var AssetLoader = require('Loader/AssetLoader');
       var tilemap = self.parseTilemap(xhr.responseText, mapper);
-      wrect.Loader.AssetLoader(tilemap.getAssets(), function() {
+      AssetLoader(tilemap.getAssets(), function() {
         if (typeof callback === 'function') {
           callback.call(context, tilemap);
         }

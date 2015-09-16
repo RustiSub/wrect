@@ -61,11 +61,11 @@
   /**
    * Builds the sprites and rigid bodies and adds them to the game.
    */
-  TileMap.prototype.build = function(dimensions) {
+  TileMap.prototype.build = function(dimensions, displayContainer) {
     for (var i = 0; i < this.layers.length; i++) {
       var layer = this.layers[i];
       var pixiLayerContainer = new PIXI.DisplayObjectContainer();
-      wrect.getGame().getCamera().displayContainer.addChildAt(pixiLayerContainer, i);
+      displayContainer.addChildAt(pixiLayerContainer, i);
 
       if (!layer.isCollisionLayer) {
         this.buildTileSprites(layer, dimensions, pixiLayerContainer);

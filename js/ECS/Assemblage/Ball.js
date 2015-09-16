@@ -1,12 +1,16 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.Assemblage = wrect.ECS.Assemblage || {};
-
-  var Entity = wrect.ECS.Entity;
-  var Vector = wrect.Physics.Vector;
-  var Circle = wrect.Geometry.Circle;
+  /** @type {Entity} */
+  var Entity = require('ECS/Entity');
+  /** @type {Vector} */
+  var Vector = require('Physics/Vector');
+  /** @type {Circle} */
+  var Circle = require('Geometry/Shape/Circle');
+  /** @type {RigidBody} */
+  var RigidBody = require('ECS/Component/RigidBody');
+  /** @type {Visual} */
+  var Visual = require('ECS/Component/Visual');
 
   wrect.ECS.Assemblage.Ball = function (options) {
     this.entity = new Entity();
@@ -15,11 +19,11 @@
       origin: new Vector(options.x, options.y),
       radius: options.radius
         });
-    var rigidBody = new wrect.ECS.Component.RigidBody({
+    var rigidBody = new RigidBody({
       dimensions: circle
     });
 
-    var visualComponent = new wrect.ECS.Component.Visual({
+    var visualComponent = new Visual({
       color: options.color,
       alpha: options.alpha,
       graphics: new PIXI.Graphics(),
