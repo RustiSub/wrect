@@ -1,12 +1,15 @@
 (function() {
   "use strict";
 
-  wrect.Core.Rendering.Camera = function() {};
+  var Camera = require('Core/Rendering/Camera');
 
-  wrect.Core.Rendering.Camera.prototype.getCamera = function() {
+  Camera.prototype.getCamera = function() {
     return this.camera;
   };
-  wrect.Core.Rendering.Camera.prototype.setCamera = function(camera) {
+  Camera.prototype.setCamera = function(camera) {
     this.camera = camera;
+    this.camera.container = new PIXI.DisplayObjectContainer();
   };
+
+  module.exports = Camera;
 }());

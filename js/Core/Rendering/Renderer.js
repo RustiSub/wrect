@@ -3,8 +3,8 @@
 
   var Renderer = function (options) {
     this.options = options || {};
-
-    this.options = options || {};
+    this.options.width = this.options.width || 1280;
+    this.options.height = this.options.height || 720;
     this.sceneManager = options.sceneManager;
     this.axisOrientation = {
       x: 1,

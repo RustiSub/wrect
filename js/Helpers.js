@@ -1,6 +1,9 @@
 (function() {
     "use strict";
-    window.Helpers = {
+
+    var Class = require('Class');
+
+    var Helpers = {
       object: {
         merge: function( original, extended ) {
           for( var key in extended ) {
@@ -27,7 +30,7 @@
           if(
             !object || typeof(object) !== 'object' ||
             object instanceof HTMLElement ||
-            object instanceof window.Class
+            object instanceof Class
           ) {
             return object;
           }
@@ -50,7 +53,7 @@
         // DO NOT USE, only kept just in case it proves to be useful for the future.
         buildObjectFromJso: function(jso) {
           if (jso.className !== undefined) {
-            var constructorFunction = window.Helpers.function.getFunctionFromString(jso.className);
+            var constructorFunction = Helpers.function.getFunctionFromString(jso.className);
             // TODO: implement constructor params from jso
             var classInstance = new constructorFunction();
             for (var y in jso.callbacks) {
@@ -191,37 +194,37 @@
   /**
    * @deprecated
    */
-  window.Helpers.getFunctionFromString = window.Helpers.function.getFunctionFromString;
+  Helpers.getFunctionFromString = Helpers.function.getFunctionFromString;
 
   /**
    * @deprecated
    */
-  window.Helpers.merge = window.Helpers.object.merge;
+  Helpers.merge = Helpers.object.merge;
 
   /**
    * @deprecated
    */
-  window.Helpers.copy = window.Helpers.object.copy;
+  Helpers.copy = Helpers.object.copy;
 
   /**
    * @deprecated
    */
-  window.Helpers.hasClass = window.Helpers.dom.hasClass;
+  Helpers.hasClass = Helpers.dom.hasClass;
 
   /**
    * @deprecated
    */
-  window.Helpers.removeClass = window.Helpers.dom.removeClass;
+  Helpers.removeClass = Helpers.dom.removeClass;
 
   /**
    * @deprecated
    */
-  window.Helpers.addClass = window.Helpers.dom.addClass;
+  Helpers.addClass = Helpers.dom.addClass;
 
   /**
    * @deprecated
    */
-  window.Helpers.addClasses = window.Helpers.dom.addClasses;
+  Helpers.addClasses = Helpers.dom.addClasses;
 
   ////
   // Private functions
@@ -229,4 +232,6 @@
   function index(obj,i) {
     return obj[i];
   }
+
+  module.exports = Helpers;
 })();

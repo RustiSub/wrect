@@ -16,7 +16,7 @@ var dirLight;
     console.log('ProtoDog setup...');
 
     this.registerSystems();
-    // this.setupCamera();
+    this.setupCamera();
     // this.setupScene();
     // this.buildWorld();
 
@@ -70,6 +70,8 @@ var dirLight;
   };
 
   ProtoDog.prototype.setupCamera = function() {
+    var Camera = require('Core/Rendering/Camera');
+    this.game.camera.setCamera(new Camera());
   };
 
   ProtoDog.prototype.setupScene = function() {

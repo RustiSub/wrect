@@ -27,7 +27,7 @@
   };
 
   TileMapManager.prototype.viewportChanged = function() {
-    return this.previousVisibleDimensions.origin.x !== this.visibleDimensions.origin.x || this.previousVisibleDimensions.origin.y !== this.visibleDimensions.origin.y;
+    //return this.previousVisibleDimensions.origin.x !== this.visibleDimensions.origin.x || this.previousVisibleDimensions.origin.y !== this.visibleDimensions.origin.y;
   };
 
   TileMapManager.prototype.updateTiles = function() {
@@ -49,23 +49,26 @@
   TileMapManager.prototype.loadCallback = function(tileMap) {
     this.currentTileMap = tileMap;
     tileMap.init();
-    this.visibleDimensions = this.game.getCamera().getDimensions();
+    this.visibleDimensions = this.game.camera.getCamera().getDimensions();
+    var Helpers = require('Helpers');
     this.previousVisibleDimensions = Helpers.object.copy(this.visibleDimensions);
-    tileMap.build(this.visibleDimensions);
 
-    var ball = new wrect.ECS.Assemblage.Ball({
-      x: 260,
-      y: 350,
-      radius: 20,
-      color: 0xF0E000
-    });
-    game.getEntityManager().addEntity(ball);
+    tileMap.build(this.visibleDimensions, this.game.camera.getCamera().container);
 
-    ball.components.RigidBody.gravity = true;
-    ball.addComponent(new wrect.ECS.Component.ControlScheme.Player());
-
-    ball.components.RigidBody.physicsBody.m = 1;
-    //ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(50,45));
+    //var Ball = require('ECS/Assemblage/Ball');
+    //var ball = new Ball({
+    //  x: 260,
+    //  y: 350,
+    //  radius: 20,
+    //  color: 0xF0E000
+    //});
+    //game.getEntityManager().addEntity(ball);
+    //
+    //ball.components.RigidBody.gravity = true;
+    //ball.addComponent(new wrect.ECS.Component.ControlScheme.Player());
+    //
+    //ball.components.RigidBody.physicsBody.m = 1;
+    ////ball.components.RigidBody.physicsBody.f = ball.components.RigidBody.physicsBody.f.add(new wrect.Physics.Vector(50,45));
   };
 
   TileMapManager.prototype.destroyCurrentTileMap = function() {

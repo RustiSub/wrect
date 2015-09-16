@@ -4,7 +4,7 @@
   var Renderer = require('../Renderer');
 
   Renderer.prototype.create = function () {
-    this.renderer = PIXI.autoDetectRenderer(800, 600, { antialias: true });
+    this.renderer = PIXI.autoDetectRenderer(this.options.width, this.options.height, { antialias: true });
     document.body.appendChild(this.renderer.view);
   };
 

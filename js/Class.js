@@ -61,4 +61,6 @@
 
     // export
     global.Class = BaseClass;
+
+  module.exports = BaseClass;
 })(this);

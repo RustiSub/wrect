@@ -1,8 +1,5 @@
 (function(){
   'use strict';
-  var wrect = window.wrect;
-
-  wrect.Loader = wrect.Loader || {};
 
   /**
    * The json file loader is used to load in JSON data and parse it
@@ -15,7 +12,17 @@
    * @param urls {Array} Array of urls to resources
    * @param callback
    */
-  wrect.Loader.AssetLoader = function (urls, callback) {
+  var AssetLoader = function (urls, callback) {
 
+    //var loader = new PIXI.AssetLoader(urls);
+    //loader.load();
+    //loader.addEventListener('onComplete', callback);
+    var loader = PIXI.loader;
+
+    loader.add(urls);
+    loader.on('complete', callback);
+    loader.load();
   };
+
+  module.exports = AssetLoader;
 }());

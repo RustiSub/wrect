@@ -1,15 +1,19 @@
 (function() {
   "use strict";
 
-  var Vector = wrect.Physics.Vector;
+  /** @type {Vector} */
+  var Vector = require('Physics/Vector');
+
+  /** @type {Dimensions} */
+  var Dimensions = require('Geometry/Dimensions');
 
   /**
    *
-   * @class wrect.Geometry.Circle
+   * @class Circle
    * @constructor
    */
-  wrect.Geometry.Circle = function (options) {
-    wrect.Geometry.Dimensions.call(this);
+  var Circle = function (options) {
+    Dimensions.call(this);
 
     this.origin = options.origin;
     this.vertices = [options.origin];
@@ -18,10 +22,10 @@
     this.offsetVertices = [];
   };
 
-  wrect.Geometry.Circle.prototype = Object.create( wrect.Geometry.Dimensions.prototype );
-  wrect.Geometry.Circle.prototype.constructor = wrect.Geometry.Circle;
+  Circle.prototype = Object.create( Dimensions.prototype );
+  Circle.prototype.constructor = Circle;
 
-  wrect.Geometry.Circle.prototype.getBounds = function() {
+  Circle.prototype.getBounds = function() {
     var topLeft = this.vertices[0].subtract(new Vector(this.radius, 0)).subtract(new Vector(0, this.radius));
 
     return {
@@ -32,11 +36,11 @@
     };
   };
 
-  wrect.Geometry.Circle.prototype.getCenter = function() {
+  Circle.prototype.getCenter = function() {
     return this.origin;
   };
 
-  wrect.Geometry.Circle.prototype.getCollisionVertices = function(axis) {
+  Circle.prototype.getCollisionVertices = function(axis) {
     if (typeof axis != 'undefined') {
       return [
         this.origin.add(axis.unitScalar(this.radius)),
@@ -48,7 +52,7 @@
     return [this.origin];
   };
 
-  wrect.Geometry.Circle.prototype.draw = function(graphics, options) {
+  Circle.prototype.draw = function(graphics, options) {
     graphics.clear();
 
     graphics.beginFill(options.color || 0x000000, options.alpha);
@@ -57,4 +61,6 @@
 
     graphics.endFill();
   };
+
+  module.exports = Circle;
 }());
