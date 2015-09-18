@@ -20,7 +20,7 @@
 
     var self = this;
 
-    this.captureElement = document.getElementById(this.options.elementId);    
+    this.captureElement = document.getElementById(this.options.elementId);
     this.captureElement.addEventListener('keydown', function(event) {self.keyDown.call(self, event);});
     this.captureElement.addEventListener('keyup', function(event) {self.keyUp.call(self, event);});
     this.captureElement.addEventListener('mousemove', function(event) {self.mouseMove.call(self, event);});

@@ -1,16 +1,15 @@
 (function() {
   "use strict";
 
-  wrect.ECS = wrect.ECS || {};
-  wrect.ECS.Component = wrect.ECS.Component || {};
+  /** @type {Vector} */
+  var Vector = require('Physics/Vector');
+  /** @type {BaseComponent} */
+  var BaseComponent = require('ECS/Component/BaseComponent');
 
-  var Vector = wrect.Physics.Vector;
+  var BaseMaterial = function (options) {
+    BaseComponent.call(this);
 
-  wrect.ECS.Component.BaseMaterial = function (options) {
     var game = options.game;
-
-    wrect.ECS.Component.BaseComponent.call(this);
-
     this.options = options || {};
     this.bounce = options.bounce || 1/2;
     this.bounceFriction =  options.bounceFriction || 0;
@@ -57,7 +56,7 @@
     }, this);
   };
 
-  wrect.ECS.Component.BaseMaterial.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );
-  wrect.ECS.Component.BaseMaterial.prototype.constructor = wrect.ECS.Component.BaseMaterial;
-  wrect.ECS.Component.BaseMaterial.prototype.name = 'BaseMaterial';
+  BaseMaterial.prototype = Object.create( BaseComponent.prototype );
+  BaseMaterial.prototype.constructor = BaseMaterial;
+  BaseMaterial.prototype.name = 'BaseMaterial';
 }());

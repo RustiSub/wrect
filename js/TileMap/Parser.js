@@ -24,6 +24,8 @@
    */
   var Parser = function(options) {
     this.eventManager = options.eventManager;
+    this.entityManager = options.entityManager;
+    this.renderer = options.renderer;
   };
 
   /**
@@ -56,7 +58,10 @@
    */
   Parser.prototype.parseTilemap = function(json, mapper) {
     var i;
-    var tileMap = new TileMap();
+    var tileMap = new TileMap({
+      entityManager: this.entityManager,
+      renderer: this.renderer
+    });
     if (!mapper) {
       mapper = new Tiled();
     }

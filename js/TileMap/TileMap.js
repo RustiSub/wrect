@@ -1,7 +1,12 @@
 (function() {
   'use strict';
 
+  /** @type {Vector} */
   var Vector = require('Physics/Vector');
+  /** @type {BaseMaterial} */
+  var BaseMaterial = require('ECS/Component/BaseMaterial');
+  /** @type {LineShape} */
+  var LineShape = require('ECS/Assemblage/LineShape');
   var PIXI = require('lib/pixi');
 
   var TileSprite = require('TileMap/TileSprite');
@@ -11,7 +16,9 @@
    * @constructor
    * @class TileMap
    */
-  var TileMap = function() {
+  var TileMap = function(options) {
+    this.entityManager = options.entityManager;
+    this.renderer = options.renderer;
     this.layers = [];
     this.tileSets = {};
     this.baseTextures = {};
@@ -117,15 +124,15 @@
       this.visibleTiles.push(tile);
       displayContainer.addChild(tile.sprite);
 
-      if (wrect.getGame().debugTilemap === true) {
-        this.debug(tile, tilePosition, displayContainer, false);
-      }
+      //if (wrect.getGame().debugTilemap === true) {
+      //  this.debug(tile, tilePosition, displayContainer, false);
+      //}
     }
 
-    if (wrect.getGame().debugTilemap) {
-      displayContainer.addChild(this._debugContainerText);
-      displayContainer.addChild(this._debugContainer);
-    }
+    //if (wrect.getGame().debugTilemap) {
+    //  displayContainer.addChild(this._debugContainerText);
+    //  displayContainer.addChild(this._debugContainer);
+    //}
   };
 
   /**
@@ -137,7 +144,7 @@
    */
   TileMap.prototype.getIndexesToFill = function(dimensions, extraColumns, extraRows) {
     var bounds = dimensions.getBounds();
-    var tileHelper = TileHelper;
+    var tileHelper = require('TileMap/TileHelper');
 
     extraColumns = 0; //extraColumns || 0;
     extraRows = 0; //extraRows || 0;
@@ -318,16 +325,18 @@
         continue;
       }
 
-      var polygon = new wrect.ECS.Assemblage.LineShape({
+      var polygon = new LineShape({
+        eventManager: this.eventManager,
+        renderer: this.renderer,
         origin: object.dimensions.origin,
         vertices: object.dimensions.vertices,
         color: 0x00FFFF,
         alpha: 0.25
       });
 
-      polygon.addComponent(new wrect.ECS.Component.BaseMaterial({absorb: new wrect.Physics.Vector(0.001, 0.1)}));
+      polygon.addComponent(new BaseMaterial({absorb: new Vector(0.001, 0.1)}));
 
-      game.getEntityManager().addEntity(polygon);
+      this.entityManager.addEntity(polygon);
 
       //var x = (i % this.width) * tile.width;
       //var y = Math.floor(i / this.height) * tile.height;

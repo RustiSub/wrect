@@ -19,7 +19,7 @@
     this.completeTree = [];
     this.treeHashes = [];
 
-    var EventManager = require('./../js/Core/EventManager');
+    var EventManager = require('Core/EventManager');
     this.eventManager = new EventManager();
 
     var EntityManager = require('./../js/Core/EntityManager');
