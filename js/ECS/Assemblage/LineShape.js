@@ -31,16 +31,8 @@
       shape: rigidBody.dimensions
     });
 
-    visualComponent.draw(visualComponent.graphics, visualComponent.options);
-
     this.entity.addComponent(rigidBody);
     this.entity.addComponent(visualComponent);
-    //entity.addComponent( new ECS.Components.Position());
-    //entity.addComponent( new ECS.Components.Collision());
-
-    rigidBody.dimensions.move(options.origin || new Vector(0, 0));
-
-    return this.entity;
   };
 
   module.exports = LineShape;

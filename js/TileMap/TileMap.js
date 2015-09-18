@@ -18,6 +18,7 @@
    */
   var TileMap = function(options) {
     this.entityManager = options.entityManager;
+    this.eventManager = options.eventManager;
     this.renderer = options.renderer;
     this.layers = [];
     this.tileSets = {};
@@ -334,7 +335,12 @@
         alpha: 0.25
       });
 
-      polygon.addComponent(new BaseMaterial({absorb: new Vector(0.001, 0.1)}));
+      polygon.addComponent(new BaseMaterial(
+        {
+          eventManager: this.eventManager,
+          absorb: new Vector(0.001, 0.1)
+        }
+      ));
 
       this.entityManager.addEntity(polygon);
 

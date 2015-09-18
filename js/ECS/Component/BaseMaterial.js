@@ -9,13 +9,13 @@
   var BaseMaterial = function (options) {
     BaseComponent.call(this);
 
-    var game = options.game;
+    this.eventManager = options.eventManager;
     this.options = options || {};
     this.bounce = options.bounce || 1/2;
     this.bounceFriction =  options.bounceFriction || 0;
     this.friction = options.friction || 20;
 
-    game.getEventManager().addListener('physics.collide.absorb', function(data) {
+    this.eventManager.addListener('physics.collide.absorb', function(data) {
       if (this !== data.material) {
         return;
       }
@@ -59,4 +59,6 @@
   BaseMaterial.prototype = Object.create( BaseComponent.prototype );
   BaseMaterial.prototype.constructor = BaseMaterial;
   BaseMaterial.prototype.name = 'BaseMaterial';
+
+  module.exports = BaseMaterial;
 }());

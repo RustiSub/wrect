@@ -60,6 +60,7 @@
     var i;
     var tileMap = new TileMap({
       entityManager: this.entityManager,
+      eventManager: this.eventManager,
       renderer: this.renderer
     });
     if (!mapper) {
