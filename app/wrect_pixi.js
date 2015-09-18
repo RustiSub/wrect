@@ -4,3 +4,4 @@ require('../js/Core/Rendering/Pixi/Camera');
 require('../js/Core/Rendering/Pixi/Component/Visual');
 
 require('../js/Core/Rendering/Pixi/Shape/Rectangle');
+require('../js/Core/Rendering/Pixi/Shape/Polygon');

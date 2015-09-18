@@ -48,6 +48,15 @@
 
   Rectangle.prototype.draw = function(renderer) {};
   Rectangle.prototype.rotate = function(origin) {};
-  
+
+  Rectangle.prototype.getBounds = function() {
+    return {
+      topLeft: this.vertices[0],
+      topRight: this.vertices[1],
+      bottomRight: this.vertices[2],
+      bottomLeft: this.vertices[3]
+    }
+  };
+
   module.exports = Rectangle;
 }());

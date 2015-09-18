@@ -1,7 +1,8 @@
 (function() {
   "use strict";
 
-  var SceneManager = require('../SceneManager');
+  var SceneManager = require('Core/Rendering/SceneManager');
+  var PIXI = require('lib/pixi');
 
   SceneManager.prototype.createScene = function() {
     this.objects = {};

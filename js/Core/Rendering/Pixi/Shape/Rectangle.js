@@ -1,8 +1,8 @@
 (function() {
   "use strict";
 
-  var Vector = require('../../../../Physics/Vector');
-  var Rectangle = require('../../../../Geometry/Shape/Rectangle');
+  /** @type {Rectangle} */
+  var Rectangle = require('Geometry/Shape/Rectangle');
 
   Rectangle.prototype.draw = function() {
     var graphics = new PIXI.Graphics();

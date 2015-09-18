@@ -42,7 +42,13 @@
     if (this.currentTileMap) {
       this.destroyCurrentTileMap();
     }
-    var parser = new Parser({eventManager: this.game.getEventManager()});
+    var parser = new Parser(
+      {
+        eventManager: this.game.getEventManager(),
+        entityManager: this.game.getEntityManager(),
+        renderer: this.game.getRenderer()
+      }
+    );
     parser.loadTilemap(path, this.loadCallback, this, mapper);
   };
 

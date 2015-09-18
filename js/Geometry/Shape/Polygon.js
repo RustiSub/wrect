@@ -15,6 +15,7 @@
   var Polygon = function (options) {
     Dimensions.call(this);
 
+    this.options = options;
     this.vertices = options.vertices || [];
     this.origin = options.origin || new Vector(0, 0);
     this.offsetVertices = [];
@@ -36,21 +37,7 @@
     return this.vertices;
   };
 
-  Polygon.prototype.draw = function(graphics, options) {
-    graphics.clear();
-
-    graphics.beginFill(options.color || 0x000000, options.alpha);
-    graphics.moveTo(this.vertices[0].x, this.vertices[0].y);
-
-    for(var v = 0; v < this.vertices.length; v++) {
-      var vertex = this.vertices[v];
-      graphics.lineTo(vertex.x, vertex.y);
-    }
-
-    graphics.moveTo(this.vertices[0].x, this.vertices[0].y);
-
-    graphics.endFill();
-  };
+  Polygon.prototype.draw = function(renderer) {};
 
   module.exports = Polygon;
 }());

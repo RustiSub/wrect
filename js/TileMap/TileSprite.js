@@ -1,6 +1,8 @@
 (function() {
   'use strict';
   var PIXI = require('lib/pixi');
+  /** @type {Vector} */
+  var Vector = require('Physics/Vector');
 
   /**
    * @Class TileSprite
@@ -10,7 +12,7 @@
    */
   var TileSprite = function (texture) {
     PIXI.Sprite.call(this, texture);
-    this.tilePosition = new wrect.Physics.Vector(0, 0);
+    this.tilePosition = new Vector(0, 0);
     this.tileIndex = 0;
   };
 
