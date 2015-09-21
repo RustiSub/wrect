@@ -14,7 +14,9 @@
 
   var LineShape = function (options) {
     this.entity = new Entity({
-      eventManager: options.eventManager
+      eventManager: options.eventManager,
+      renderer: options.renderer,
+      name: options.name
     });
 
     var polygon = options.shape || new Polygon({vertices: options.vertices});
@@ -26,7 +28,6 @@
       renderer: options.renderer,
       color: options.color,
       alpha: options.alpha,
-      graphics: new PIXI.Graphics(),
       useSprite: options.useSprite,
       shape: rigidBody.dimensions
     });

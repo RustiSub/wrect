@@ -8,7 +8,7 @@
   };
   Camera.prototype.setCamera = function(camera) {
     this.camera = camera;
-    this.camera.container = new PIXI.DisplayObjectContainer();
+    this.camera.container = new PIXI.Container();
   };
 
   module.exports = Camera;

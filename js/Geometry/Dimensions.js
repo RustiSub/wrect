@@ -36,7 +36,9 @@
   };
 
   Dimensions.prototype.rotate = function() {};
-  Dimensions.prototype.getVertices = function() {};
+  Dimensions.prototype.getVertices = function() {
+    return this.vertices;
+  };
   Dimensions.prototype.getCollisionVertices = function() {};
   Dimensions.prototype.getCenter = function() {};
   Dimensions.prototype.draw = function() {};

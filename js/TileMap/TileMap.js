@@ -1,11 +1,8 @@
 (function() {
   'use strict';
 
-  /** @type {Vector} */
   var Vector = require('Physics/Vector');
-  /** @type {BaseMaterial} */
   var BaseMaterial = require('ECS/Component/BaseMaterial');
-  /** @type {LineShape} */
   var LineShape = require('ECS/Assemblage/LineShape');
   var PIXI = require('lib/pixi');
 
@@ -72,7 +69,7 @@
   TileMap.prototype.build = function(dimensions, displayContainer) {
     for (var i = 0; i < this.layers.length; i++) {
       var layer = this.layers[i];
-      var pixiLayerContainer = new PIXI.DisplayObjectContainer();
+      var pixiLayerContainer = new PIXI.Container();
       displayContainer.addChildAt(pixiLayerContainer, i);
 
       if (!layer.isCollisionLayer) {
@@ -104,7 +101,7 @@
    * Builds sprites of the tiles in the given layer and adds them to the passed displayContainer
    * @param {TileLayer} layer
    * @param {wrect.Geometry.Rectangle} dimensions
-   * @param {PIXI.DisplayObjectContainer} displayContainer
+   * @param {PIXI.Container} displayContainer
    */
   TileMap.prototype.buildTileSprites = function(layer, dimensions, displayContainer) {
     var indexesToFill = this.getIndexesToFill(dimensions, 2, 2);
@@ -255,7 +252,7 @@
       tile.sprite.alpha = layer.opacity;
 
       var frame = new PIXI.Texture(this.baseTextures[tile.tileSetName], new PIXI.Rectangle(x * tile.width, y * tile.height, tile.width, tile.height));
-      tile.sprite.setTexture(frame);
+      tile.sprite.texture = frame;
       //tile.sprite.texture.frame.x = x * tile.width;
       //tile.sprite.texture.frame.y = y * tile.height;
       tile.sprite.position.x = xPosition;
@@ -279,7 +276,7 @@
    * Debug the tilemap. Draws a grid and text ids.
    * @param {Tile} tile
    * @param {int} index
-   * @param {PIXI.DisplayObjectContainer} displayContainer
+   * @param {PIXI.Container} displayContainer
    * @param {Boolean} once
    */
   TileMap.prototype.debug = function(tile, index, displayContainer, once) {
@@ -327,6 +324,7 @@
       }
 
       var polygon = new LineShape({
+        name: 'CollisionBody',
         eventManager: this.eventManager,
         renderer: this.renderer,
         origin: object.dimensions.origin,
@@ -335,14 +333,13 @@
         alpha: 0.25
       });
 
-      polygon.addComponent(new BaseMaterial(
+      polygon.entity.addComponent(new BaseMaterial(
         {
           eventManager: this.eventManager,
           absorb: new Vector(0.001, 0.1)
         }
       ));
-
-      this.entityManager.addEntity(polygon);
+      this.entityManager.addEntity(polygon.entity);
 
       //var x = (i % this.width) * tile.width;
       //var y = Math.floor(i / this.height) * tile.height;

@@ -38,10 +38,6 @@
   Rectangle.prototype = Object.create( Dimensions.prototype );
   Rectangle.prototype.constructor = Rectangle;
 
-  Rectangle.prototype.getVertices = function() {
-    return this.vertices;
-  };
-
   Rectangle.prototype.getCollisionVertices = function() {
     return this.vertices;
   };

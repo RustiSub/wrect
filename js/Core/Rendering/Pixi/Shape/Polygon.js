@@ -22,6 +22,8 @@
     graphics.moveTo(this.vertices[0].x, this.vertices[0].y);
 
     graphics.endFill();
+
+    return graphics;
   };
 
   Polygon.prototype.rotate = function(origin) {
