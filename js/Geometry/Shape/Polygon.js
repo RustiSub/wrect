@@ -39,5 +39,9 @@
 
   Polygon.prototype.draw = function(renderer) {};
 
+  Polygon.prototype.getVertices = function() {
+    return this.vertices;
+  };
+
   module.exports = Polygon;
 }());

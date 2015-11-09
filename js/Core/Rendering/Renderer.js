@@ -17,9 +17,12 @@
   };
 
   /**
-   * @param {wrect.Geometry.Dimensions} shape
+   * @param {Dimensions} shape
    */
   Renderer.prototype.draw = function(shape) {
+    //console.log(shape);
+    //console.log(shape.draw());
+    //debugger;
     return shape.draw();
   };
 

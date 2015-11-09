@@ -52,21 +52,21 @@ var dirLight;
       return block.entity;
     }
 
-    createBlock({
-      position: new Vector(0, 0),
-      dimension: new Vector(100, 100),
-      material: {
-        color: 0xFF0000
-      }
-    });
-
-    createBlock({
-      position: new Vector(500, 0),
-      dimension: new Vector(100, 100),
-      material: {
-        color: 0x0000FF
-      }
-    });
+    //createBlock({
+    //  position: new Vector(0, 0),
+    //  dimension: new Vector(100, 100),
+    //  material: {
+    //    color: 0xFF0000
+    //  }
+    //});
+    //
+    //createBlock({
+    //  position: new Vector(500, 0),
+    //  dimension: new Vector(100, 100),
+    //  material: {
+    //    color: 0x0000FF
+    //  }
+    //});
   };
 
   ProtoDog.prototype.setupCamera = function() {

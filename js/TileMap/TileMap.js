@@ -1,8 +1,11 @@
 (function() {
   'use strict';
 
+  /** @type {Vector} */
   var Vector = require('Physics/Vector');
+  /** @type {BaseMaterial} */
   var BaseMaterial = require('ECS/Component/BaseMaterial');
+  /** @type {LineShape} */
   var LineShape = require('ECS/Assemblage/LineShape');
   var PIXI = require('lib/pixi');
 
@@ -40,8 +43,8 @@
   TileMap.prototype.init = function() {
     this.buildBaseTextures();
     //if (wrect.getGame().debugTilemap) {
-    //  this._debugContainer = new PIXI.DisplayObjectContainer();
-    //  this._debugContainerText = new PIXI.DisplayObjectContainer();
+      this._debugContainer = new PIXI.Container();
+      this._debugContainerText = new PIXI.Container();
     //}
   };
 
@@ -104,6 +107,7 @@
    * @param {PIXI.Container} displayContainer
    */
   TileMap.prototype.buildTileSprites = function(layer, dimensions, displayContainer) {
+
     var indexesToFill = this.getIndexesToFill(dimensions, 2, 2);
     var i;
 
@@ -123,13 +127,13 @@
       displayContainer.addChild(tile.sprite);
 
       //if (wrect.getGame().debugTilemap === true) {
-      //  this.debug(tile, tilePosition, displayContainer, false);
+        this.debug(tile, tilePosition, displayContainer, false);
       //}
     }
 
     //if (wrect.getGame().debugTilemap) {
-    //  displayContainer.addChild(this._debugContainerText);
-    //  displayContainer.addChild(this._debugContainer);
+      displayContainer.addChild(this._debugContainerText);
+      displayContainer.addChild(this._debugContainer);
     //}
   };
 
