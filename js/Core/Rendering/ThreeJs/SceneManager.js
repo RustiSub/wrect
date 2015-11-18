@@ -1,9 +1,9 @@
 (function() {
   "use strict";
 
-  wrect.Core = wrect.Core || {};
+  var SceneManager = require('Core/Rendering/SceneManager');
 
-  wrect.Core.Rendering.SceneManager.prototype.createScene = function() {
+  SceneManager.prototype.createScene = function() {
     this.scene = new THREE.Scene();
 
     this.objects = {};
@@ -24,7 +24,7 @@
   /**
    * @param {Object} entityData
    */
-  wrect.Core.Rendering.SceneManager.prototype.add = function(entityData) {
+  SceneManager.prototype.add = function(entityData) {
     if (entityData.entity.components.Visual) {
       var graphics = entityData.entity.components.Visual.getGraphics();
       this.objects[graphics.id] = entityData.entity;
@@ -35,15 +35,17 @@
   /**
    * @param {Object} entityData
    */
-  wrect.Core.Rendering.SceneManager.prototype.remove = function(entityData) {
+  SceneManager.prototype.remove = function(entityData) {
     if (entityData.entity.components.Visual) {
       this.scene.remove(entityData.entity.components.Visual.getGraphics());
     }
   };
 
-  wrect.Core.Rendering.SceneManager.prototype.getEntityByGraphicsId = function(id) {
+  SceneManager.prototype.getEntityByGraphicsId = function(id) {
     if (this.objects[id]) {
       return this.objects[id];
     }
   };
+
+  module.exports = SceneManager;
 }());

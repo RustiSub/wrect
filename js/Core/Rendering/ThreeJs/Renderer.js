@@ -1,7 +1,9 @@
 (function() {
   "use strict";
 
-  wrect.Core.Rendering.Renderer.prototype.create = function () {
+  var Renderer = require('../Renderer');
+
+  Renderer.prototype.create = function () {
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     //this.renderer.setClearColor( 0x000000, 1);
@@ -17,7 +19,9 @@
     container.appendChild( this.renderer.domElement );
   };
 
-  wrect.Core.Rendering.Renderer.prototype.render = function() {
+  Renderer.prototype.render = function() {
     this.renderer.render(this.sceneManager.getScene(), this.camera.getCamera());
   };
+
+  module.exports = Renderer;
 }());
