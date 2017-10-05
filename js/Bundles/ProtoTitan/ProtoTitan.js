@@ -18,7 +18,7 @@ var dirLight;
 
     this.registerSystems();
     this.setupCamera();
-    //this.setupScene();
+    this.setupScene();
     this.buildWorld();
 
     this.setupMechanics();
@@ -34,12 +34,11 @@ var dirLight;
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupGrid = function() {
-    var map = new wrect.ECS.Assemblage.HexMap({
-      //mapSize: new Vector3(27, 27, 27),
-      mapSize: new Vector3(9, 9, 9  ),
+    var map = new wrect.ECS.Assemblage.SquareMap({
+      mapSize: new Vector3(4, 4, 0),
       tileSize: 50
     });
-    this.buildTerrain(map.entity.components.Grid);
+    // this.buildTerrain(map.entity.components.Grid);
 
     game.getEntityManager().addEntity(map.entity);
   };

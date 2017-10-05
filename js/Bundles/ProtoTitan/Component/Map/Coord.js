@@ -29,13 +29,11 @@
 
   wrect.ECS.Component.Map.Coord.prototype.getWorldCoord = function(coord) {
     var size = this.size;
-    var width = (size * 1.5);
-    var height = (size * 2 * (Math.sqrt(3) / 2));
 
+    //TODO: Something is wrong with the translations to square tiles
     return new Vector3(
-      coord.x * width,
-      coord.y * height +
-      (coord.x * (height/ 2)),
+        (coord.x * size) / 2,
+        (coord.y * size) / 2,
       5
     );
   };
