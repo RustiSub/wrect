@@ -50,7 +50,7 @@
         renderer:  game.getRenderer(),
         origin: new Vector3(pos.x, pos.y, 5),
         size: options.tileSize,
-        material: new THREE.MeshBasicMaterial({color: 0xFFFFFF, side: THREE.DoubleSide, transparent: true, opacity: 0.5}),
+        material: new THREE.MeshBasicMaterial({color: 0xFFFFFF, side: THREE.DoubleSide, transparent: false, opacity: 0.5}),
         coord: new Vector3(coord.x, coord.y, coord.z),
         grid: grid
       });

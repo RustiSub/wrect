@@ -91,7 +91,7 @@ var dirLight;
       position: new Vector3(-5000, -5000, 0),
       dimension: new Vector3(10000, 10000, 5),
       frozen: 1,
-      material: new THREE.MeshLambertMaterial({color: 0xC38A09 }),
+      material: new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
       receiveShadow: true
     });
   };

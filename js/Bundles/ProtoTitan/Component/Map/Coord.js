@@ -30,10 +30,9 @@
   wrect.ECS.Component.Map.Coord.prototype.getWorldCoord = function(coord) {
     var size = this.size;
 
-    //TODO: Something is wrong with the translations to square tiles
     return new Vector3(
-        (coord.x * size) / 2,
-        (coord.y * size) / 2,
+        (coord.x * size) + (size / 2),
+        (coord.y * size) + (size / 2),
       5
     );
   };

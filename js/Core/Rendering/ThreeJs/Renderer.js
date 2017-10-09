@@ -14,6 +14,7 @@
     this.renderer.shadowMapCullFace = THREE.CullFaceBack;
 
     var container = document.getElementById( 'container' );
+    this.renderer.domElement.id = 'canvas';
     container.appendChild( this.renderer.domElement );
   };
 

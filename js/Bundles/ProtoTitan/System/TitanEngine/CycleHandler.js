@@ -66,16 +66,10 @@
       percentage: percentage
     });
 
-    if (step.updateTick <= 0) {
-      step.tickCount += 1;
-      this.eventManager.trigger('titan_engine.tick.passed', {step: step});
-      if (step.tickCount === step.tickLength) {
-        step.completed = true;
+    step.completed = true;
 
-        if (step.action && step.endCallback) {
-          step.endCallback(step.action);
-        }
-      }
+    if (step.action && step.endCallback) {
+      step.endCallback(step.action);
     }
   };
 

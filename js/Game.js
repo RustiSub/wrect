@@ -30,7 +30,7 @@
           system: new wrect.ECS.System.RawInputHandler(
             {
               game: this,
-              elementId: 'body',
+              elementId: 'canvas',
               eventManager: this.eventManager
             }
           )

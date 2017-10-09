@@ -157,27 +157,6 @@
   };
 
   wrect.ECS.Assemblage.TitanEngine.prototype.registerListeners = function registerListeners() {
-    this.entity.eventManager.addListener('titan_engine.system.reset', function (data) {
-      var steps = document.querySelectorAll('#' + data.system.id + ' .progress-bar-container .progress-bar');
-
-      for (var stepIndex = 0; stepIndex < steps.length; stepIndex++) {
-        var step = steps[stepIndex];
-        step.style.width = '0%';
-      }
-    });
-
-    this.entity.eventManager.addListener('titan_engine.tick.update', function (data) {
-      var step = document.querySelector('.titan-engine-gui #' + data.step.id);
-
-      var percentage = Math.round(data.percentage) + '%';
-      step.querySelector('.progress-bar-container .progress-bar').style.width = percentage;
-      step.querySelector('.progress-bar-container .progress-bar').innerHTML = percentage;
-    });
-
-    this.entity.eventManager.addListener('titan_engine.tick', function (data) {
-      //console.log(data.step.name);
-    });
-
     var actionContent = document.querySelector('#titan-engine-action').content;
 
     this.entity.eventManager.addListener('titan_engine.queue.add', function (data) {
@@ -195,10 +174,7 @@
 
     this.entity.eventManager.addListener('titan_engine.queue.move', function (data) {
       var system = document.querySelector('#' + data.system.id);
-      if (!system) {
-        //console.log('#' + data.system.id);
-        //debugger;
-      }
+
       var toStep = system.querySelector('#' + data.toStep.id);
       var action = system.querySelector('#' + data.action.id);
 
