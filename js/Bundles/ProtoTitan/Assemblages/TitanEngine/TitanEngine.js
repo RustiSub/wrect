@@ -62,6 +62,8 @@
     var systemContent = document.querySelector('#titan-engine-system').content;
     var queueContent = document.querySelector('#titan-engine-queue').content;
     var stepContent = document.querySelector('#titan-engine-step').content;
+    var toolBoxContent = document.querySelector('#titan-engine-action-toolbox').content;
+    var toolBoxActionContent = document.querySelector('#titan-engine-action-toolbox-action').content;
 
     shadow.appendChild(guiContent);
 
@@ -76,7 +78,20 @@
 
       clonedSystemContent.querySelector('.system-title-container .system-title').innerHTML = system.name;
       guiRoot.appendChild(clonedSystemContent);
-      systemRoot.appendChild(document.importNode(queueContent, true));
+
+      var clonedQueueContent = document.importNode(queueContent, true);
+
+      for (var actionIndex in system.actions) {
+        var action = system.actions[actionIndex];
+        var clonedToolBoxContent = document.importNode(toolBoxContent, true);
+        var clonedToolBoxActionContent = document.importNode(toolBoxActionContent, true);
+
+        clonedToolBoxActionContent.querySelector('.toolbox-action').innerHTML = action.name;
+        clonedToolBoxContent.querySelector('.action-toolbox-container').appendChild(clonedToolBoxActionContent);
+        clonedQueueContent.querySelector('.queue-action-container').appendChild(clonedToolBoxContent);
+      }
+
+      systemRoot.appendChild(document.importNode(clonedQueueContent, true));
 
       system.id = 'system-' + system.name + '-' + id;
       systemRoot.id = system.id;

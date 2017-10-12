@@ -15,6 +15,7 @@
     this.eventManager.addListener('titan_control.objects_selected', this.selectObject, this);
 
     this.selectedTiles = [];
+    this.highlightedTiles = [];
   };
 
   wrect.ECS.System.Map.TileSelector.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -27,12 +28,12 @@
   };
 
   wrect.ECS.System.Map.TileSelector.prototype.perform = function(entity) {
+
     var selectable = entity.components.Selectable;
 
     if (!selectable.changed) {
       return;
     }
-
     selectable.changed = false;
 
     this.eventManager.trigger('titan_control.tile_changed', {
@@ -41,18 +42,41 @@
       actionCode: selectable.actionCode
     });
 
-    if (selectable.selected) {
-      selectable.deselectCallback(entity);
-      selectable.actionPerformed = true;
-      selectable.selected = false;
+    if (selectable.actionCode === wrect.Bundles.ProtoTitan.TitanControl.Constants.Ranges.CURSOR.DISPLAY) {
+      if (!selectable.highlight) {
+        selectable.highlight = true;
 
-      this.selectedTiles.splice(this.selectedTiles.indexOf(entity), 1);
-    } else {
-      selectable.selectCallback(entity);
-      selectable.actionPerformed = true;
-      selectable.selected = true;
+        for (var selectedTileIndex in this.highlightedTiles) {
+          var selectedTile = this.highlightedTiles[selectedTileIndex];
+          selectedTile.components.Selectable.changed = true;
+          selectedTile.components.Selectable.actionCode = wrect.Bundles.ProtoTitan.TitanControl.Constants.Ranges.CURSOR.HIDE;
+        }
 
-      this.selectedTiles.push(entity);
+        if (selectable.highlight) {
+          selectable.highlightCallback(entity);
+
+          this.highlightedTiles.push(entity);
+        }
+      }
+    } else if (selectable.actionCode === wrect.Bundles.ProtoTitan.TitanControl.Constants.Ranges.CURSOR.HIDE) {
+      selectable.unhighlightCallback(entity);
+      selectable.highlight = false;
+
+      this.highlightedTiles.splice(this.highlightedTiles.indexOf(entity), 1);
+    } else if (selectable.actionCode === wrect.Bundles.ProtoTitan.TitanControl.Constants.Ranges.CURSOR.MOVE) {
+      if (selectable.selected) {
+        selectable.deselectCallback(entity);
+        selectable.actionPerformed = true;
+        selectable.selected = false;
+
+        this.selectedTiles.splice(this.selectedTiles.indexOf(entity), 1);
+      } else {
+        selectable.selectCallback(entity);
+        selectable.actionPerformed = true;
+        selectable.selected = true;
+
+        this.selectedTiles.push(entity);
+      }
     }
   };
 

@@ -43,8 +43,7 @@
             eventManager.trigger('titan_control.move', data);
           }
         }
-      ),
-      new components.TitanEngineAction({name: 'Backward'})
+      )
     ];
 
     return movementSystem;
@@ -63,15 +62,13 @@
     offensiveSystem.actions = [
       new components.TitanEngineAction(
         {
-          name: titanControl.Constants.Ranges.CURSOR.ATTACK,
+          name: titanControl.Constants.Actions.ATTACK,
           startCallback: function(data) {
-            //titan_control.attack
             eventManager.trigger('titan_control.attack', data);
-            //console.log(data.entity.components.Visual.graphics.material.color);
             data.entity.components.Visual.graphics.material.color.setHex(0x000000);
           }
         }
-      )
+      ),
     ];
 
     return offensiveSystem;

@@ -54,6 +54,14 @@
       },
       deselectCallback: function(entity) {
         entity.components.Visual.graphics.material.color.setHex(0xFFFFFF);
+      },
+      highlightCallback: function(entity) {
+        entity.components.Visual.graphics.material.transparent = true;
+        entity.components.Visual.graphics.material.opacity = 0.3;
+      },
+      unhighlightCallback: function(entity) {
+        entity.components.Visual.graphics.material.transparent = false;
+        entity.components.Visual.graphics.material.opacity = 0;
       }
     }));
 

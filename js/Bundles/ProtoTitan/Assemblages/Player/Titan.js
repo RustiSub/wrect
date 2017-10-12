@@ -42,6 +42,30 @@
     this.setupMoves();
 
     this.move(new Vector3(0, 0, 0));
+
+    this.setupStats();
+  };
+
+  wrect.ECS.Assemblage.Player.Titan.prototype.setupStats = function() {
+    var entity = this.entity;
+
+
+    var visualComponent = new wrect.ECS.Component.Visual({
+      shape: new Rectangle({
+        origin: options.origin || new Vector3(0, 0, 0),
+        dimension: {
+          x: tile.size,
+          y: tile.size,
+          z: 0
+        },
+        material: material
+      }),
+      renderer: options.renderer
+    });
+
+    this.entity.addComponent(tile);
+    this.entity.addComponent(options.coord);
+    this.entity.addComponent(visualComponent);
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.setupMoves = function() {

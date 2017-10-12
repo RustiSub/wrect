@@ -14,6 +14,8 @@
 
     this.selectCallback = options.selectCallback ||function() {};
     this.deselectCallback = options.deselectCallback ||function() {};
+    this.highlightCallback = options.highlightCallback ||function() {};
+    this.unhighlightCallback = options.unhighlightCallback ||function() {};
   };
 
   wrect.ECS.Component.Selectable.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

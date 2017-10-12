@@ -36,7 +36,8 @@
           FORWARD: 'titan_control.actions.move.z.forward',
           BACKWARD: 'titan_control.actions.move.z.backward'
         }
-      }
+      },
+      ATTACK: 'ATTACK'
     },
     States: {
       MOVE : {
@@ -52,6 +53,7 @@
     Ranges: {
       CURSOR: {
         DISPLAY: 'DISPLAY',
+        HIDE: 'HIDE',
         MOVE: 'MOVE',
         ATTACK: 'ATTACK'
       }
@@ -122,8 +124,8 @@
     var controlMap = new wrect.ECS.Component.Input.ControlMap();
 
     controlMap.modes = {
-      VIEW : true,
-      MARKER: false
+      VIEW : false,
+      MARKER: true
     };
 
     controlMap.controls[actions.SPEAK] = function() {
@@ -157,7 +159,8 @@
       console.log('Display target reticule ...', values);
     };
     controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
-      //selectObjects(values);
+      selectObjects(values, ranges.CURSOR.DISPLAY);
+      //console.log(values);
     };
     controlMap.controls[ranges.CURSOR.MOVE] = function(entity, values) {
       if (!controlMap.modes.MARKER) {
