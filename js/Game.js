@@ -178,5 +178,5 @@
    */
   wrect.Game.prototype.getGame = function() {
     return this;
-  }
+  };
 }());

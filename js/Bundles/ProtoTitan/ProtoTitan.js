@@ -229,6 +229,15 @@ var dirLight;
           }
       )
     };
+
+    this.game.systems.post.Gui = {
+      system: new wrect.ECS.System.Gui(
+          {
+            game: this.game,
+            eventManager: this.game.getEventManager()
+          }
+      )
+    };
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupPlayer = function() {

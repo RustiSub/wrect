@@ -27,19 +27,15 @@
 
     this.entity.addComponent(actionPoints);
 
-    var visualComponent = new wrect.ECS.Component.Visual({
-      color: options.color,
-      alpha: options.alpha,
-      useSprite: options.useSprite,
-      shape: new Rectangle({
-        origin: options.position,
-        dimension: options.dimension,
-        material: options.material
-      }),
-      renderer: options.renderer
+    var visualComponent = new wrect.ECS.Component.GuiElement({
+      id: 'gui-element-action-points',
+      template: 'js/Bundles/ProtoTitan/Assemblages/Economy/ActionPoints.html',
+      updateCallback: function() {
+        document.querySelector('#action-points-available').textContent = actionPoints.resource;
+        document.querySelector('#action-points-total').textContent = actionPoints.max;
+      }
     });
-    visualComponent.graphics.castShadow = true;
-    visualComponent.graphics.receiveShadow = true;
+
     this.entity.addComponent(visualComponent);
   };
 }());

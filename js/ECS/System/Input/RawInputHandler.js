@@ -21,10 +21,11 @@
     var self = this;
 
     this.captureElement = document.getElementById(this.options.elementId);
-    this.captureElement.addEventListener('keydown', function(event) {self.keyDown.call(self, event);});
-    this.captureElement.addEventListener('keyup', function(event) {self.keyUp.call(self, event);});
     this.captureElement.addEventListener('mousemove', function(event) {self.mouseMove.call(self, event);});
     this.captureElement.addEventListener('mousedown', function(event) {self.mouseDown.call(self, event);});
+
+    document.addEventListener('keydown', function(event) {self.keyDown.call(self, event);});
+    document.addEventListener('keyup', function(event) {self.keyUp.call(self, event);});
   };
 
   wrect.ECS.System.RawInputHandler.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );

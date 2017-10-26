@@ -12,7 +12,7 @@
     this.resource = options.resource || 0;
     this.originalResource = options.originalResource || this.resource;
     this.min = options.min || 0;
-    this.max = options.min || 100;
+    this.max = options.max || 100;
   };
 
   wrect.ECS.Component.ResourceCollection.prototype = Object.create( wrect.ECS.Component.BaseComponent.prototype );

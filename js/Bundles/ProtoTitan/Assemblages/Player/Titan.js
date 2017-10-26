@@ -47,25 +47,11 @@
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.setupStats = function() {
-    var entity = this.entity;
-
-
-    var visualComponent = new wrect.ECS.Component.Visual({
-      shape: new Rectangle({
-        origin: options.origin || new Vector3(0, 0, 0),
-        dimension: {
-          x: tile.size,
-          y: tile.size,
-          z: 0
-        },
-        material: material
-      }),
-      renderer: options.renderer
+    var actionPoints = new wrect.ECS.Assemblage.Economy.ActionPoints({
+      eventManager: game.getEventManager()
     });
 
-    this.entity.addComponent(tile);
-    this.entity.addComponent(options.coord);
-    this.entity.addComponent(visualComponent);
+    game.getEntityManager().addEntity(actionPoints.entity);
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.setupMoves = function() {
