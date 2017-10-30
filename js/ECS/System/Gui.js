@@ -24,11 +24,7 @@
   wrect.ECS.System.Gui.prototype.perform = function(entity) {
     var guiElement = entity.components.GuiElement;
 
-    if (guiElement.addedToScene) {
-      return true;
-    }
-
-    if (guiElement.loaded) {
+    if (!guiElement.addedToScene && guiElement.loaded) {
       var content = document.querySelector('#' + guiElement.id).import;
 
       var el = content.querySelector('#' + guiElement.id + '-template').content;
@@ -42,6 +38,7 @@
 
     if (guiElement.requiresUpdate) {
       guiElement.updateCallback();
+      guiElement.requiresUpdate = false;
     }
   };
 }());
