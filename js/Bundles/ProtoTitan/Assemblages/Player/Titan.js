@@ -44,6 +44,7 @@
     this.move(new Vector3(0, 0, 0));
 
     this.setupStats();
+    this.setupControlScheme();
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.setupStats = function() {
@@ -52,6 +53,14 @@
     });
 
     game.getEntityManager().addEntity(actionPoints.entity);
+  };
+
+  wrect.ECS.Assemblage.Player.Titan.prototype.setupControlScheme = function() {
+    var controlScheme = new wrect.ECS.Assemblage.Control.ControlScheme({
+      eventManager: game.getEventManager()
+    });
+
+    game.getEntityManager().addEntity(controlScheme.entity);
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.setupMoves = function() {

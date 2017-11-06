@@ -6,12 +6,12 @@
   wrect.ECS.Assemblage.Economy = wrect.ECS.Assemblage.Economy || {};
 
   var Entity = wrect.ECS.Entity;
-  var KeyMap = wrect.Core.Constants.KeyMap;
   var Economy = wrect.ECS.Assemblage.Economy;
 
   Economy.Constants = {};
   Economy.Constants.Actions = {
-    SPEAK: 'SPEAK'
+    ADD: 'ADD',
+    REMOVE: 'REMOVE'
   };
 
   /**
@@ -22,6 +22,16 @@
   wrect.ECS.Assemblage.Economy.ActionPoints = function (options) {
     this.entity = new Entity({eventManager: options.eventManager});
 
+    this.actionPoints = this.setup();
+    this.visualComponent = this.setupVisuals(this.actionPoints);
+
+    this.setupControls(this.actionPoints, this.visualComponent);
+  };
+
+  /**
+   * @returns {wrect.ECS.Component.ResourceCollection}
+   */
+  wrect.ECS.Assemblage.Economy.ActionPoints.prototype.setup = function () {
     var actionPoints = new wrect.ECS.Component.ResourceCollection(
         {
           originalResource: 10,
@@ -34,37 +44,46 @@
 
     this.entity.addComponent(actionPoints);
 
+    return actionPoints;
+  };
+
+  /**
+   * @param actionPoints
+   * @returns {wrect.ECS.Component.GuiElement}
+   */
+  wrect.ECS.Assemblage.Economy.ActionPoints.prototype.setupVisuals = function (actionPoints) {
     var visualComponent = new wrect.ECS.Component.GuiElement({
       id: 'gui-element-action-points',
       template: 'js/Bundles/ProtoTitan/Assemblages/Economy/ActionPoints.html',
-      updateCallback: function() {
+      updateCallback: function () {
         document.querySelector('#action-points-available').textContent = actionPoints.resource;
         document.querySelector('#action-points-total').textContent = actionPoints.max;
       }
     });
 
-    var controlMap = new wrect.ECS.Component.Input.ControlMap();
+    this.entity.addComponent(visualComponent);
 
-    controlMap.controls[Economy.Constants.Actions.SPEAK] = function(entity, values, action) {
-      console.log('Remove Resource');
-      actionPoints.removeResource(1);
-      visualComponent.forceUpdate();
+    return visualComponent;
+  };
+
+  /**
+   * @param actionPoints
+   * @param visualComponent
+   */
+  wrect.ECS.Assemblage.Economy.ActionPoints.prototype.setupControls = function (actionPoints, visualComponent) {
+    var controlMap = new wrect.ECS.Component.Input.ControlMap();
+    var self = this;
+
+    controlMap.controls[Economy.Constants.Actions.ADD] = function (entity, values, action) {
+      self.addActionPoints(actionPoints, visualComponent);
     };
 
-    var rawInputMap = new wrect.ECS.Component.Input.RawInputMap({
-      keys: [
-        KeyMap.a
-      ]
-    });
-
-    var contextMap = new wrect.ECS.Component.Input.ContextMap();
-
-    contextMap.actions[KeyMap.a] = new wrect.ECS.Component.Input.ContextAction({action: Economy.Constants.Actions.SPEAK});
-
     this.entity.addComponent(controlMap);
-    this.entity.addComponent(rawInputMap);
-    this.entity.addComponent(contextMap);
+  };
 
-    this.entity.addComponent(visualComponent);
+  wrect.ECS.Assemblage.Economy.ActionPoints.prototype.addActionPoints = function(actionPoints, visualComponent) {
+    console.log('Remove Resource');
+    actionPoints.removeResource(1);
+    visualComponent.forceUpdate();
   };
 }());

@@ -22,7 +22,7 @@
           NEXT: 'titan_control.actions.queue.next'
         }
       },
-      SPEAK: 'SPEAK',
+      ADD: 'SPEAK',
       MOVE : {
         X: {
           FORWARD: 'titan_control.actions.move.x.forward',
@@ -70,7 +70,13 @@
    * @constructor
    */
   wrect.ECS.Assemblage.TitanControl = function (options) {
-    this.entity = new Entity({eventManager: options.eventManager});
+    this.entity = new Entity(
+        {
+          eventManager: options.eventManager,
+          name: 'TitanControl'
+        }
+    );
+
     var entity = this.entity;
 
     var rawInputMap = new wrect.ECS.Component.Input.RawInputMap({
@@ -99,7 +105,7 @@
 
     contextMap.actions[KeyMap.NUMPAD_6] = new ContextAction({action: actions.ENGINE.QUEUE.ADD});
 
-    contextMap.actions[KeyMap.NUMPAD_5] = new ContextAction({action: actions.SPEAK});
+    contextMap.actions[KeyMap.NUMPAD_5] = new ContextAction({action: actions.ADD});
     contextMap.actions[KeyMap.NUMPAD_8] = new ContextAction({action: actions.MOVE.Y.FORWARD});
     contextMap.actions[KeyMap.NUMPAD_2] = new ContextAction({action: actions.MOVE.Y.BACKWARD});
     contextMap.actions[KeyMap.NUMPAD_9] = new ContextAction({action: actions.MOVE.X.FORWARD});
@@ -128,7 +134,7 @@
       MARKER: true
     };
 
-    controlMap.controls[actions.SPEAK] = function() {
+    controlMap.controls[actions.ADD] = function() {
       console.log('Player voice action enabled...');
     };
 

@@ -33,7 +33,7 @@
   wrect.ECS.System.RawInputHandler.prototype.name = 'RawInputHandler';
 
   wrect.ECS.System.RawInputHandler.prototype.checkDependencies = function(entity) {
-    return entity.components.RawInputMap && entity.components.ContextMap ? true : false;
+    return entity.components.RawInputMap && entity.components.ContextMap;
   };
 
   wrect.ECS.System.RawInputHandler.prototype.addEntity = function(data) {
@@ -54,7 +54,8 @@
       }
     }
 
-    this.watchedTypes = entity.components.RawInputMap.types;
+    this.watchedTypes = this.watchedTypes.concat(entity.components.RawInputMap.types);
+    console.log(this.watchedTypes);
   };
 
   wrect.ECS.System.RawInputHandler.prototype.perform = function(entity) {
@@ -65,8 +66,8 @@
       types: this.types
     });
 
-    this.releasedKeys = [];
-    this.types = {};
+    // this.releasedKeys = [];
+    // this.types = {};
   };
 
   wrect.ECS.System.RawInputHandler.prototype.keyDown = function(event) {

@@ -46,7 +46,8 @@
         ControlMapHandler: {
           system: new wrect.ECS.System.ControlMapHandler(
             {
-              game: this
+              game: this,
+              eventManager: this.eventManager
             }
           )
         },

@@ -11,6 +11,11 @@
     wrect.ECS.System.BaseSystem.call(this, options);
 
     this.options = options || {};
+
+    this.eventManager = options.eventManager;
+
+    this.eventManager.addListener('input_handler.control.perform', this.handleInput, this);
+    this.actions = [];
   };
 
   wrect.ECS.System.ControlMapHandler.prototype = Object.create( wrect.ECS.System.BaseSystem.prototype );
@@ -18,18 +23,29 @@
   wrect.ECS.System.ControlMapHandler.prototype.name = 'ControlMapHandler';
 
   wrect.ECS.System.ControlMapHandler.prototype.checkDependencies = function(entity) {
-    return entity.components.ControlMap ? true : false;
+    return entity.components.ControlMap;
   };
 
   wrect.ECS.System.ControlMapHandler.prototype.perform = function(entity) {
     var controls = entity.components.ControlMap.controls;
-    var actions = entity.components.ControlMap.actions;
-    for (var actionIndex in  actions) if (actions.hasOwnProperty(actionIndex)) {
-      var action = actions[actionIndex];
+
+    for (var actionIndex in this.actions) if (this.actions.hasOwnProperty(actionIndex)) {
+      var action = this.actions[actionIndex];
       if (controls[action.action]) {
         controls[action.action](entity, action.values);
-        actions.splice(actions.indexOf(action), 1);
+        this.actions.splice(this.actions.indexOf(action), 1);
       }
     }
+  };
+
+  wrect.ECS.System.ControlMapHandler.prototype.handleInput = function(event) {
+    this.actions.push(event.action);
+
+    // action.state = wrect.ECS.Component.Input.Constants.STATES.ON;
+
+    // if (!(range in controlMap.actions)) {
+    //   range.values = type;
+    //   //controlMap.actions.push(range);
+    // }
   };
 }());
