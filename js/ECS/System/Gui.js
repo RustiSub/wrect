@@ -34,6 +34,8 @@
       guiContainer.appendChild(clonedQueueContent);
 
       guiElement.addedToScene = true;
+
+      guiElement.setupCallback();
     }
 
     if (guiElement.requiresUpdate) {

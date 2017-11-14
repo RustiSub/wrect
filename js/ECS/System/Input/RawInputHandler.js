@@ -55,19 +55,22 @@
     }
 
     this.watchedTypes = this.watchedTypes.concat(entity.components.RawInputMap.types);
-    console.log(this.watchedTypes);
   };
 
-  wrect.ECS.System.RawInputHandler.prototype.perform = function(entity) {
-    this.eventManager.trigger('raw_input_handler.context.perform', {
-      entity: entity,
-      pressedKeys: this.pressedKeys,
-      releasedKeys: this.releasedKeys,
-      types: this.types
-    });
+  wrect.ECS.System.RawInputHandler.prototype.run = function() {
+    for (var e = 0; e < this.entities.length; e++) {
+      var entity = this.entities[e];
+
+      this.eventManager.trigger('raw_input_handler.context.perform', {
+        entity: entity,
+        pressedKeys: this.pressedKeys,
+        releasedKeys: this.releasedKeys,
+        types: this.types
+      });
+    }
 
     // this.releasedKeys = [];
-    // this.types = {};
+    this.types = {};
   };
 
   wrect.ECS.System.RawInputHandler.prototype.keyDown = function(event) {

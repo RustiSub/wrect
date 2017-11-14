@@ -7,6 +7,7 @@
   wrect.Core.Constants.KeyMap = {
     SHIFT: 16,
     a: 65,
+    z: 90,
     NUMPAD_0: 96,
     NUMPAD_1: 97,
     NUMPAD_2: 98,

@@ -55,6 +55,7 @@
         DISPLAY: 'DISPLAY',
         HIDE: 'HIDE',
         MOVE: 'MOVE',
+        TILE_ACTION: 'TILE_ACTION',
         ATTACK: 'ATTACK'
       }
     }
@@ -118,10 +119,10 @@
       action: ranges.CURSOR.DISPLAY,
       values: {}
     };
-    contextMap.ranges[Input.LEFT_CLICK] = {
-      action: ranges.CURSOR.MOVE,
-      values: {}
-    };
+    // contextMap.ranges[Input.LEFT_CLICK] = {
+    //   action: ranges.CURSOR.TILE_ACTION,
+    //   values: {}
+    // };
     contextMap.ranges[Input.RIGHT_CLICK] = {
       action: ranges.CURSOR.ATTACK,
       values: {}
@@ -155,34 +156,26 @@
     setControl(actions.MOVE.Z.BACKWARD);
 
 
-    controlMap.controls[states.TOGGLE.MARKER_MODE] = function(entity) {
-      controlMap.modes.VIEW = !controlMap.modes.VIEW;
-      controlMap.modes.MARKER = !controlMap.modes.MARKER;
-
-      console.log('Cursor mode: ', controlMap.modes);
-    };
-    controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values, action) {
-      console.log('Display target reticule ...', values);
-    };
+    // controlMap.controls[states.TOGGLE.MARKER_MODE] = function(entity) {
+    //   controlMap.modes.VIEW = !controlMap.modes.VIEW;
+    //   controlMap.modes.MARKER = !controlMap.modes.MARKER;
+    //
+    //   console.log('Cursor mode: ', controlMap.modes);
+    // };
     controlMap.controls[ranges.CURSOR.DISPLAY] = function(entity, values) {
       selectObjects(values, ranges.CURSOR.DISPLAY);
-      //console.log(values);
     };
-    controlMap.controls[ranges.CURSOR.MOVE] = function(entity, values) {
-      if (!controlMap.modes.MARKER) {
-        return;
-      }
+    controlMap.controls[ranges.CURSOR.TILE_ACTION] = function(entity, values) {
 
-      selectObjects(values, ranges.CURSOR.MOVE);
     };
-
-    controlMap.controls[ranges.CURSOR.ATTACK] = function(entity, values) {
-      if (!controlMap.modes.MARKER) {
-        return;
-      }
-
-      selectObjects(values, ranges.CURSOR.ATTACK);
-    };
+    //
+    // controlMap.controls[ranges.CURSOR.ATTACK] = function(entity, values) {
+    //   if (!controlMap.modes.MARKER) {
+    //     return;
+    //   }
+    //
+    //   selectObjects(values, ranges.CURSOR.ATTACK);
+    // };
 
     function selectObjects(values, actionCode) {
       var camera = options.camera;
@@ -198,7 +191,6 @@
       var intersects = raycaster.intersectObjects(sceneManager.getScene().children);
       // Change color if hit block
       if (intersects.length > 0) {
-
         for (var i in intersects) {
           eventManager.trigger('titan_control.objects_selected', {
             entity: sceneManager.getEntityByGraphicsId(intersects[i].object.id),

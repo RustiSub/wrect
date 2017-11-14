@@ -12,6 +12,7 @@
     this.id = options.id || {};
     this.template = options.template || {};
     this.updateCallback = options.updateCallback || function() {};
+    this.setupCallback = options.setupCallback || function() {};
 
     this.loaded = false;
     this.addedToScene = false;

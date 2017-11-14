@@ -92,6 +92,7 @@
   wrect.ECS.System.InputHandler.prototype.handleRange = function(type, typesIndex, contextMap) {
     if (typesIndex in contextMap.ranges) {
       var range = contextMap.ranges[typesIndex];
+      range.values = type;
 
       this.eventManager.trigger('input_handler.control.perform', {
         action: range

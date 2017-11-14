@@ -25,7 +25,7 @@
     this.actionPoints = this.setup();
     this.visualComponent = this.setupVisuals(this.actionPoints);
 
-    this.setupControls(this.actionPoints, this.visualComponent);
+    this.controlMap = this.setupControls(this.actionPoints, this.visualComponent);
   };
 
   /**
@@ -52,9 +52,15 @@
    * @returns {wrect.ECS.Component.GuiElement}
    */
   wrect.ECS.Assemblage.Economy.ActionPoints.prototype.setupVisuals = function (actionPoints) {
+    var self = this;
+
     var visualComponent = new wrect.ECS.Component.GuiElement({
       id: 'gui-element-action-points',
       template: 'js/Bundles/ProtoTitan/Assemblages/Economy/ActionPoints.html',
+      setupCallback: function() {
+        document.querySelector('#action-points-remove').addEventListener('click', function () {self.controlMap.controls[Economy.Constants.Actions.REMOVE]();}, false);
+        document.querySelector('#action-points-add').addEventListener('click', function () {self.controlMap.controls[Economy.Constants.Actions.ADD]();}, false);
+      },
       updateCallback: function () {
         document.querySelector('#action-points-available').textContent = actionPoints.resource;
         document.querySelector('#action-points-total').textContent = actionPoints.max;
@@ -69,21 +75,23 @@
   /**
    * @param actionPoints
    * @param visualComponent
+   * @returns {wrect.ECS.Component.Input.ControlMap}
    */
   wrect.ECS.Assemblage.Economy.ActionPoints.prototype.setupControls = function (actionPoints, visualComponent) {
     var controlMap = new wrect.ECS.Component.Input.ControlMap();
-    var self = this;
 
-    controlMap.controls[Economy.Constants.Actions.ADD] = function (entity, values, action) {
-      self.addActionPoints(actionPoints, visualComponent);
+    controlMap.controls[Economy.Constants.Actions.ADD] = function () {
+      actionPoints.addResource(1);
+      visualComponent.forceUpdate();
+    };
+
+    controlMap.controls[Economy.Constants.Actions.REMOVE] = function () {
+      actionPoints.removeResource(1);
+      visualComponent.forceUpdate();
     };
 
     this.entity.addComponent(controlMap);
-  };
 
-  wrect.ECS.Assemblage.Economy.ActionPoints.prototype.addActionPoints = function(actionPoints, visualComponent) {
-    console.log('Remove Resource');
-    actionPoints.removeResource(1);
-    visualComponent.forceUpdate();
+    return controlMap;
   };
 }());

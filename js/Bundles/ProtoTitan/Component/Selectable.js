@@ -10,6 +10,7 @@
     this.options = options || {};
 
     this.selected = false;
+    this.changed = false;
     this.actionPerformed = false;
 
     this.selectCallback = options.selectCallback ||function() {};

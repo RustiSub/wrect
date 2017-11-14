@@ -40,12 +40,5 @@
 
   wrect.ECS.System.ControlMapHandler.prototype.handleInput = function(event) {
     this.actions.push(event.action);
-
-    // action.state = wrect.ECS.Component.Input.Constants.STATES.ON;
-
-    // if (!(range in controlMap.actions)) {
-    //   range.values = type;
-    //   //controlMap.actions.push(range);
-    // }
   };
 }());

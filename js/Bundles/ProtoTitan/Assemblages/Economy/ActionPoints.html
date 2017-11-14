@@ -2,11 +2,20 @@
     <style>
         .action-points {
             background: red;
+            z-index: 1;
+            position:fixed;
+            bottom:0px;
         }
     </style>
     <div id="gui-element-action-points-content" class="action-points">
-        <span id="action-points-available" class="action-points-available"><content></content></span>
-        /
-        <span id="action-points-total" class="action-points-total"><content></content></span>
+        <div>
+            <span id="action-points-available" class="action-points-available"><content></content></span>
+            /
+            <span id="action-points-total" class="action-points-total"><content></content></span>
+        </div>
+        <div>
+            <button id="action-points-remove">REMOVE</button>
+            <button id="action-points-add">ADD</button>
+        </div>
     </div>
 </template>
