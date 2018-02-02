@@ -24,7 +24,7 @@ var dirLight;
     this.setupMechanics();
     this.setupControls();
     this.setupGrid();
-    this.setupPlayer();
+    this.setupChessPieces();
 
     this.game.getRenderer().render();
 
@@ -35,7 +35,7 @@ var dirLight;
 
   wrect.Bundles.ProtoTitan.prototype.setupGrid = function() {
     var map = new wrect.ECS.Assemblage.SquareMap({
-      mapSize: new Vector3(4, 4, 0),
+      mapSize: new Vector3(8, 8, 0),
       tileSize: 50
     });
     // this.buildTerrain(map.entity.components.Grid);
@@ -44,13 +44,6 @@ var dirLight;
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupMechanics = function() {
-    var titanEngine = new wrect.ECS.Assemblage.TitanEngine(
-      {
-        eventManager: game.getEventManager()
-      }
-    );
-
-    game.getEntityManager().addEntity(titanEngine.entity);
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupControls = function() {
@@ -94,27 +87,6 @@ var dirLight;
       material: new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
       receiveShadow: true
     });
-  };
-
-  wrect.Bundles.ProtoTitan.prototype.buildTerrain = function(grid) {
-
-    function createTerrain(coord) {
-     return new wrect.ECS.Assemblage.Map.Terrain({
-        grid: grid,
-        coord: coord,
-        position: new Vector3(0, 0, 10),
-        dimension: new Vector3(20, 20, 20),
-        material:  new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
-        renderer: game.getRenderer(),
-        eventManager: game.getEventManager()
-      });
-    }
-
-    game.getEntityManager().addEntity(createTerrain(new Vector3(2, -2, 0)).entity);
-    game.getEntityManager().addEntity(createTerrain(new Vector3(-2, 2, 0)).entity);
-    game.getEntityManager().addEntity(createTerrain(new Vector3(3, -3, 0)).entity);
-    game.getEntityManager().addEntity(createTerrain(new Vector3(4, -3, 0)).entity);
-    game.getEntityManager().addEntity(createTerrain(new Vector3(3, -2, 0)).entity);
   };
 
   wrect.Bundles.ProtoTitan.prototype.setupCamera = function() {
@@ -181,16 +153,6 @@ var dirLight;
   };
 
   wrect.Bundles.ProtoTitan.prototype.registerSystems = function() {
-    this.game.systems.pre.TitanEngine = {
-      system: new wrect.ECS.System.TitanEngine.CycleHandler(
-          {
-            game: this.game,
-            gameTime: this.game.gameTime,
-            eventManager: this.game.getEventManager()
-          }
-      )
-    };
-
     this.game.systems.pre.TileSelector = {
       system: new wrect.ECS.System.Map.TileSelector(
         {
@@ -209,6 +171,15 @@ var dirLight;
         }
       )
     };
+
+/*    this.game.systems.pre.ActionHandler = {
+      system: new wrect.ECS.System.StackHandler(
+          {
+            game: this.game,
+            eventManager: this.game.getEventManager()
+          }
+      )
+    };*/
 
     this.game.systems.post.GridMover = {
       system: new wrect.ECS.System.Map.GridMover(
@@ -240,15 +211,34 @@ var dirLight;
     };
   };
 
-  wrect.Bundles.ProtoTitan.prototype.setupPlayer = function() {
-    var player = new wrect.ECS.Assemblage.Player.Titan({
-      position: new Vector3(0, 0, 25),
-      dimension: new Vector3(15, 30, 50),
-      material:  new THREE.MeshLambertMaterial({color: 0xFFFFFF }),
+  wrect.Bundles.ProtoTitan.prototype.setupChessPieces = function() {
+    this.setupColorChessPieces(new Vector3(0, 0, 0), 0x0000FF);
+    this.setupColorChessPieces(new Vector3(0, 5, 0), 0xFF0000);
+  };
+
+  wrect.Bundles.ProtoTitan.prototype.setupColorChessPieces = function(originGridPosition, color) {
+    this.setupChessPiece((new Vector3(0, 1, 0)).add(originGridPosition), color);
+    this.setupChessPiece((new Vector3(1, 1, 0)).add(originGridPosition), color);
+    this.setupChessPiece((new Vector3(2, 1, 0)).add(originGridPosition), color);
+    this.setupChessPiece((new Vector3(3, 1, 0)).add(originGridPosition), color);
+    this.setupChessPiece((new Vector3(4, 1, 0)).add(originGridPosition), color);
+    this.setupChessPiece((new Vector3(5, 1, 0)).add(originGridPosition), color);
+    this.setupChessPiece((new Vector3(6, 1, 0)).add(originGridPosition), color);
+    this.setupChessPiece((new Vector3(7, 1, 0)).add(originGridPosition), color);
+  };
+
+  wrect.Bundles.ProtoTitan.prototype.setupChessPiece = function(startCoord, color) {
+    var piece = new wrect.ECS.Assemblage.Chess.Piece({
+      shape: new wrect.Geometry.Circle({
+        origin: new Vector3(0, 0, 25),
+        dimension: new Vector3(15, 30, 50),
+        material: new THREE.MeshLambertMaterial({color: color })
+      }),
+      startCoord: startCoord,
       renderer: game.getRenderer(),
       eventManager: game.getEventManager()
     });
 
-    game.getEntityManager().addEntity(player.entity);
+    game.getEntityManager().addEntity(piece.entity);
   };
 }());

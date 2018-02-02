@@ -11,7 +11,9 @@
   wrect.Geometry.Circle = function (options) {
     wrect.Geometry.Dimensions.call(this);
 
+    this.options = options;
     this.origin = options.origin;
+    this.dimension = options.dimension;
     this.vertices = [options.origin];
     this.radius = options.radius;
 

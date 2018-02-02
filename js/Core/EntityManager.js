@@ -14,7 +14,7 @@
   };
 
   /**
-   * @param {Entity} entity
+   * @param {wrect.ECS.Entity} entity
    */
   wrect.Core.EntityManager.prototype.addEntity = function(entity){
     this._entities.push(entity);

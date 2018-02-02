@@ -25,10 +25,12 @@
   wrect.ECS.System.Map.GridMover.prototype.perform = function(entity) {
     var coord = entity.components.Coord;
 
-    if ((coord.targetCoord.x !== coord.coord.x) || (coord.targetCoord.y !== coord.coord.y) || (coord.targetCoord.z !== coord.coord.z)) {
-      var worldCoord = coord.getWorldCoord(coord.targetCoord);
+    if ( entity.components.Coord.forceMove || (coord.targetCoord.x !== coord.coord.x) || (coord.targetCoord.y !== coord.coord.y) || (coord.targetCoord.z !== coord.coord.z)) {
+      entity.components.Coord.forceMove = false;
 
+      var worldCoord = coord.getWorldCoord(coord.targetCoord);
       var visual = entity.components.Visual;
+
       visual.setPosition(worldCoord.x, worldCoord.y, visual.graphics.position.z);
       coord.coord.x = coord.targetCoord.x;
       coord.coord.y = coord.targetCoord.y;

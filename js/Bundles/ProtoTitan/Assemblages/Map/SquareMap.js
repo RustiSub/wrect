@@ -45,15 +45,19 @@
 
       var pos = getTileCoord(coord, size);
 
+      var color = 0xFFFFFF;
+
       var tile = new wrect.ECS.Assemblage.SquareTile({
         eventManager: game.getEventManager(),
         renderer:  game.getRenderer(),
         origin: new Vector3(pos.x, pos.y, 5),
         size: options.tileSize,
-        material: new THREE.MeshBasicMaterial({color: 0xFFFFFF, side: THREE.DoubleSide, transparent: false, opacity: 0.5}),
+        material: new THREE.MeshBasicMaterial({color: color, side: THREE.DoubleSide, transparent: false, opacity: 0.5}),
         coord: new Vector3(coord.x, coord.y, coord.z),
         grid: grid
       });
+
+      tile.entity.components.Visual.graphics.receiveShadow = true;
 
       grid.addTileEntity(coord, tile.entity);
       game.getEntityManager().addEntity(tile.entity);
@@ -70,8 +74,8 @@
   wrect.ECS.Assemblage.SquareMap.prototype.generateMapCoords = function(size) {
     var coords = [];
 
-    for (var x = -size.x; x <= size.x; x++) {
-      for (var y = -size.y; y <= size.y; y++) {
+    for (var x = 0; x < size.x; x++) {
+      for (var y = 0; y < size.y; y++) {
           coords.push(new Vector3(x, y, 0));
       }
     }

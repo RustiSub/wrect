@@ -43,11 +43,11 @@
 
     this.move(new Vector3(0, 0, 0));
 
-    this.setupStats();
+    this.setupActions();
     this.setupControlScheme();
   };
 
-  wrect.ECS.Assemblage.Player.Titan.prototype.setupStats = function() {
+  wrect.ECS.Assemblage.Player.Titan.prototype.setupActions = function() {
     var actionPoints = new wrect.ECS.Assemblage.Economy.ActionPoints({
       eventManager: game.getEventManager()
     });
@@ -203,6 +203,6 @@
   };
 
   wrect.ECS.Assemblage.Player.Titan.prototype.rotate = function() {
-    this.entity.components.Visual.getGraphics().rotation.z += 30 * (Math.PI /180);
+    //this.entity.components.Visual.getGraphics().rotation.z += 30 * (Math.PI /180);
   };
 }());

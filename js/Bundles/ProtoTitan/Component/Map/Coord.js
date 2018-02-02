@@ -13,7 +13,9 @@
     this.options = options || {};
     this.coord = options.coord || new Vector3(0, 0, 0);
     this.size = options.size;
-    this.targetCoord = new Vector3(this.coord.x, this.coord.y, this.coord.z);
+    this.targetCoord = options.targetCoord || new Vector3(this.coord.x, this.coord.y, this.coord.z);
+
+    this.forceMove = options.forceMove || false;
 
     this.updateWorldCoords();
   };
